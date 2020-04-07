@@ -1,8 +1,9 @@
 ---
-title: "'Strand_Specific_Effect_Size_Extraction.Rmd"
+title: "'Strand Specific Effect Size Extraction.Rmd"
 author: "Jonathan Reardon"
 output:
-  html_document: default
+  html_document: 
+    keep_md: true
   #pdf_document: default
 editor_options:
   chunk_output_type: inline
@@ -10,7 +11,7 @@ editor_options:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = T,
-                      results = "hide")
+                      fig.path = "README_figs/README-")
 library(reticulate)
 library(ggplot2)
 library(dplyr)
@@ -19,7 +20,6 @@ use_python("/usr/local/bin/python3")
 ```
 
 ```{python}
-# import necessary libraries
 import json
 from collections import Counter
 from pprint import pprint
@@ -116,7 +116,8 @@ def get_data(strand_key, strand_value, outcome_choice):
                         SESMD=(data["References"][section]["Outcomes"][0]["SESMD"])
                         year=(data["References"][section]["Year"])
                         intervention=(data["References"][section]["Outcomes"][0]["InterventionText"])
-                        outcome_studies.append([strand_key, strand_value, outcome_id, outcome_text, outcome_type, year, intervention, SMD, SESMD])
+                        outcome_studies.append([strand_key, strand_value, outcome_id, outcome_text, 
+                                                outcome_type, year, intervention, SMD, SESMD])
               
     # display number of studies found within selected strand
     print('Number of studies within strand {}: {}'.format(strand_value, len(outcome_studies)), "\n")
@@ -125,7 +126,8 @@ def get_data(strand_key, strand_value, outcome_choice):
     pd.set_option('display.max_columns', 15)
     
     # convert data list to pandas dataframe for viewing
-    df_primary = pd.DataFrame(outcome_studies, columns=['AttributeId', 'Strand', 'OutcomeId', 'OutcomeType', 'ShortTitle', 'Year', 'Intervention', 'SMD', 'SESMD'])
+    df_primary = pd.DataFrame(outcome_studies, columns=['AttributeId', 'Strand', 'OutcomeId', 'OutcomeType', 
+                                                        'ShortTitle', 'Year', 'Intervention', 'SMD', 'SESMD'])
     
     # round effect sizes to two decimal points
     df_primary.loc[:, "SMD"] = df_primary["SMD"].astype(float).round(2)
@@ -169,7 +171,7 @@ ggplot(data=subset(feedback_df, !is.na(Intervention)), aes(SMD, SESMD, color=Int
     theme(legend.title=element_blank()) +
     annotate(geom="text", x=feedback_mean_SMD+.15, y=-.1, label=round(feedback_mean_SMD, 2), color="black") +
     ylim(-0.2, 1.75) +
-    ggtitle("Scatterplot of SMD by SESMD broken down by Intervention, Feedback strand only")
+    ggtitle("SMD by SESMD broken down by Intervention, Feedback strand only")
 ```
 
 ```{python}
@@ -207,7 +209,7 @@ ggplot(data=subset(oral_lang_df, !is.na(Intervention)), aes(SMD, SESMD, color=In
     theme(legend.title=element_blank()) +
     annotate(geom="text", x=oral_lang_mean_SMD+.15, y=-.1, label=round(oral_lang_mean_SMD, 2), color="black") +
     ylim(-0.2, 1.75) +
-    ggtitle("Scatterplot of SMD by SESMD broken down by Intervention, Oral Language strand only")
+    ggtitle("SMD by SESMD broken down by Intervention, Oral Language strand only")
 ```
 
 ```{python}
@@ -241,7 +243,7 @@ master_df$Intervention[master_df$Intervention==""] <- NA
 filter(master_df, !is.na(Intervention)) %>%
   ggplot(aes(fill=Intervention, y=SMD, x=Strand)) +
   geom_bar(position="dodge", stat="identity", color="black", na.rm=TRUE) +
-  ggtitle("Barplot of SMD by Strand, broken down by Intervention")
+  ggtitle("SMD by Strand, broken down by Intervention")
 
 ```
 
@@ -250,7 +252,7 @@ filter(master_df, !is.na(Intervention)) %>%
 filter(master_df, !is.na(Intervention)) %>%
   ggplot(aes(fill=Intervention, y=SMD, x=Strand)) +
   geom_dotplot(binaxis='y', stackdir='center', dotsize=.6, binwidth=.2, na.rm=TRUE) +
-  ggtitle("Dotplot of SMD by Strand, broken down by Intervention")
+  ggtitle("SMD by Strand, broken down by Intervention")
 ```
 
 ```{r, fig.width=12,fig.height=5}
@@ -264,6 +266,6 @@ filter(master_df, !is.na(Intervention)) %>%
 filter(master_df, !is.na(Intervention)) %>%
   ggplot(aes(fill=Intervention, y=SMD, x=Strand)) +
   geom_dotplot(binaxis='y', stackdir='center', dotsize=.6, binwidth=.2, na.rm=TRUE) +
-  ggtitle("Dotplot of SMD by Strand, broken down by Intervention")
+  ggtitle("SMD by Strand, broken down by Intervention")
 ```
 
