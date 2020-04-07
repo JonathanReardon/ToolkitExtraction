@@ -1,11 +1,11 @@
 ---
-title: "'Strand Specific Effect Size Extraction.Rmd"
+title: '''Strand Specific Effect Size Extraction.Rmd'
 author: "Jonathan Reardon"
 output:
-   pdf_document:
-    keep_md: true
-  #html_document: 
-    #keep_md: true
+  html_document:
+    df_print: paged
+  pdf_document:
+    keep_md: yes
 editor_options:
   chunk_output_type: inline
 ---
