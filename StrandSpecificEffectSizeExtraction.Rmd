@@ -2,9 +2,10 @@
 title: "'Strand Specific Effect Size Extraction.Rmd"
 author: "Jonathan Reardon"
 output:
-  html_document: 
+   pdf_document:
     keep_md: true
-  #pdf_document: default
+  #html_document: 
+    #keep_md: true
 editor_options:
   chunk_output_type: inline
 ---
@@ -247,7 +248,6 @@ filter(master_df, !is.na(Intervention)) %>%
 
 ```
 
-
 ```{r, fig.width=12,fig.height=5}
 filter(master_df, !is.na(Intervention)) %>%
   ggplot(aes(fill=Intervention, y=SMD, x=Strand)) +
@@ -259,7 +259,6 @@ filter(master_df, !is.na(Intervention)) %>%
 filter(master_df, !is.na(Intervention)) %>%
   ggplot(aes(y=SMD, x=Strand, size=Intervention, color=Intervention)) +
   geom_jitter(shape=16, position=position_jitter(.2), size=2, shape=21)
-```
 ```
 
 ```{r, fig.width=12,fig.height=5}
