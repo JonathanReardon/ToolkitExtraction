@@ -28,7 +28,7 @@ import pandas as pd
 plt.style.use('ggplot')
 
 # import dataset
-with open('Batch1.json') as f:
+with open('/home/jon/json/Batch1.json') as f:
     data=json.load(f)
     
 ###################################################
