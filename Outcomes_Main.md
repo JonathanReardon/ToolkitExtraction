@@ -325,7 +325,6 @@ ggplot(data=subset(all_strands_df, !is.na(Intervention)), aes(SMD, SESMD, color=
 ```
 
 ![](README_figs/README-unnamed-chunk-5-1.png)<!-- -->
-![](images/README-unnamed-chunk-5-1.png)
 
 
 ```r

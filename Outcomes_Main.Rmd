@@ -2,13 +2,16 @@
 title: "Outcomes_Main.Rmd"
 author: "Jonathan Reardon"
 output:
-  pdf_document: default
-  #html_document: default
+  html_document:
+    keep_md: true
+  #pdf_document: default
 editor_options:
   chunk_output_type: inline
 ---
 
-```{r setup}
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = T,
+                      fig.path = "README_figs/README-")
 library(reticulate)
 library(ggplot2)
 library(dplyr)
