@@ -11,17 +11,10 @@ editor_options:
   chunk_output_type: inline
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = T,
-                      fig.path = "StrandSpecificEffectSizeExtraction_figs/")
-library(reticulate)
-library(ggplot2)
-library(dplyr)
-library(reshape2)
-use_python("/usr/local/bin/python3")
-```
 
-```{python}
+
+
+```python
 import json
 from collections import Counter
 from pprint import pprint
@@ -141,12 +134,33 @@ strands = get_strand_info()
 get_strand_summary()
 ```
 
-```{python}
+```
+## Counter({'Oral language interventions': 138,
+##          'Feedback': 114,
+##          'Peer tutoring': 109,
+##          'Teaching assistants': 62,
+##          'Small group tuition': 30,
+##          'One to one tuition': 10,
+##          'Phonics': 6,
+##          'Digital technology': 4,
+##          'Metacognition and self-regulation': 4,
+##          'Parental engagement': 1,
+##          'Extending school time': 1,
+##          'Reducing class size': 1})
+```
+
+
+```python
 strand_id = get_strand_value("Feedback") 
 feedback = get_data(strand_id[0], strand_id[1], "Primary outcome")
 ```
 
-```{r}
+```
+## Number of studies within strand Feedback: 89
+```
+
+
+```r
 feedback_df <- data.frame(py$feedback)
 
 feedback_df$Intervention <- as.character(feedback_df$Intervention)
@@ -157,11 +171,25 @@ feedback_mean_SMD <- mean(feedback_df$SMD, na.rm=TRUE)
 feedback_mean_SESMD <- mean(feedback_df$SESMD, na.rm=TRUE)
 
 feedback_mean_SMD
-feedback_mean_SESMD
+```
 
+```
+## [1] 0.5135955
+```
+
+```r
+feedback_mean_SESMD
+```
+
+```
+## [1] 0.2914607
+```
+
+```r
 View(feedback_df)
 ```
-```{r, fig.width=11,fig.height=5}
+
+```r
 ggplot(data=subset(feedback_df, !is.na(Intervention)), aes(SMD, SESMD, color=Intervention)) + 
     geom_point(alpha=1, na.rm=TRUE, size=3) +
     theme_grey() +
@@ -176,13 +204,50 @@ ggplot(data=subset(feedback_df, !is.na(Intervention)), aes(SMD, SESMD, color=Int
     ggtitle("SMD by SESMD broken down by Intervention, Feedback strand only")
 ```
 
-```{python}
+![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-4-1.png)<!-- -->
+
+
+```python
 strand_id = get_strand_value("Oral language interventions") 
 oral_lang = get_data(strand_id[0], strand_id[1], "Primary outcome")
+```
+
+```
+## Number of studies within strand Oral language interventions: 89
+```
+
+```python
 print(oral_lang.head(10))
 ```
 
-```{r}
+```
+##    AttributeId                       Strand  OutcomeId      OutcomeType  \
+## 0      5023563  Oral language interventions      45530  Primary outcome   
+## 1      5023563  Oral language interventions      45614  Primary outcome   
+## 2      5023563  Oral language interventions      51144  Primary outcome   
+## 3      5023563  Oral language interventions      45528  Primary outcome   
+## 4      5023563  Oral language interventions      50379  Primary outcome   
+## 5      5023563  Oral language interventions      51160  Primary outcome   
+## 6      5023563  Oral language interventions      51135  Primary outcome   
+## 7      5023563  Oral language interventions      45621  Primary outcome   
+## 8      5023563  Oral language interventions      50557  Primary outcome   
+## 9      5023563  Oral language interventions      49410  Primary outcome   
+## 
+##         ShortTitle  Year                     Intervention   SMD  SESMD  
+## 0     Ammon (1971)  1971          Literacy: reading other  0.00   0.29  
+## 1    Anders (1984)  1984  Literacy: reading comprehension  1.66   0.30  
+## 2   Aram (2004) OL  2004          Literacy: reading other  0.36   0.27  
+## 3      Aram (2006)  2006  Literacy: reading comprehension  0.04   0.23  
+## 4     Banks (1987)  1987          Literacy: reading other -0.18   0.23  
+## 5   Baumann (2002)  2002  Literacy: reading comprehension -0.07   0.31  
+## 6      Beck (2007)  2007          Literacy: reading other  1.15   0.32  
+## 7  Bereiter (1985)  1985  Literacy: reading comprehension  0.53   0.37  
+## 8     Block (2006)  2006  Literacy: reading comprehension  0.30   0.08  
+## 9     Bonds (1987)  1987  Literacy: reading comprehension  0.98   0.23
+```
+
+
+```r
 oral_lang_df <- data.frame(py$oral_lang)
 
 oral_lang_df$Intervention <- as.character(oral_lang_df$Intervention)
@@ -193,13 +258,26 @@ oral_lang_mean_SMD <- mean(oral_lang_df$SMD, na.rm=TRUE)
 oral_lang_mean_SESMD <- mean(oral_lang_df$SESMD, na.rm=TRUE)
 
 oral_lang_mean_SMD
-oral_lang_mean_SESMD
+```
 
+```
+## [1] 0.567191
+```
+
+```r
+oral_lang_mean_SESMD
+```
+
+```
+## [1] 0.2639773
+```
+
+```r
 View(oral_lang_df)
 ```
 
-```{r, fig.width=11,fig.height=5}
 
+```r
 ggplot(data=subset(oral_lang_df, !is.na(Intervention)), aes(SMD, SESMD, color=Intervention)) + 
     geom_point(alpha=1, na.rm=TRUE, size=3) +
     theme_grey() +
@@ -214,58 +292,149 @@ ggplot(data=subset(oral_lang_df, !is.na(Intervention)), aes(SMD, SESMD, color=In
     ggtitle("SMD by SESMD broken down by Intervention, Oral Language strand only")
 ```
 
-```{python}
+![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-7-1.png)<!-- -->
+
+
+```python
 strand_id = get_strand_value("Oral language interventions") 
 oral_lang = get_data(strand_id[0], strand_id[1], "Primary outcome")
+```
 
+```
+## Number of studies within strand Oral language interventions: 89
+```
+
+```python
 strand_id = get_strand_value("Feedback") 
 feedback = get_data(strand_id[0], strand_id[1], "Primary outcome")
+```
 
+```
+## Number of studies within strand Feedback: 89
+```
+
+```python
 strand_id = get_strand_value("Peer tutoring") 
 peer_tut = get_data(strand_id[0], strand_id[1], "Primary outcome")
+```
 
+```
+## Number of studies within strand Peer tutoring: 94
+```
+
+```python
 strand_id = get_strand_value("Teaching assistants") 
 teaching_assist = get_data(strand_id[0], strand_id[1], "Primary outcome")
+```
 
+```
+## Number of studies within strand Teaching assistants: 42
+```
+
+```python
 strand_id = get_strand_value("Small group tuition") 
 small_group = get_data(strand_id[0], strand_id[1], "Primary outcome")
+```
 
+```
+## Number of studies within strand Small group tuition: 26
+```
+
+```python
 strand_id = get_strand_value("One to one tuition") 
 one_to_one = get_data(strand_id[0], strand_id[1], "Primary outcome")
+```
 
+```
+## Number of studies within strand One to one tuition: 9
+```
+
+```python
 master_df = pd.concat([oral_lang, feedback, peer_tut, teaching_assist, small_group, one_to_one])
 master_df
 ```
 
-```{r, fig.width=12,fig.height=5}
+```
+##     AttributeId                       Strand  OutcomeId      OutcomeType  \
+## 0       5023563  Oral language interventions      45530  Primary outcome   
+## 1       5023563  Oral language interventions      45614  Primary outcome   
+## 2       5023563  Oral language interventions      51144  Primary outcome   
+## 3       5023563  Oral language interventions      45528  Primary outcome   
+## 4       5023563  Oral language interventions      50379  Primary outcome   
+## ..          ...                          ...        ...              ...   
+## 4       5023562           One to one tuition      47552  Primary outcome   
+## 5       5023562           One to one tuition      46178  Primary outcome   
+## 6       5023562           One to one tuition      46256  Primary outcome   
+## 7       5023562           One to one tuition      47554  Primary outcome   
+## 8       5023562           One to one tuition      46242  Primary outcome   
+## 
+##         ShortTitle  Year                     Intervention   SMD  SESMD  
+## 0     Ammon (1971)  1971          Literacy: reading other  0.00   0.29  
+## 1    Anders (1984)  1984  Literacy: reading comprehension  1.66   0.30  
+## 2   Aram (2004) OL  2004          Literacy: reading other  0.36   0.27  
+## 3      Aram (2006)  2006  Literacy: reading comprehension  0.04   0.23  
+## 4     Banks (1987)  1987          Literacy: reading other -0.18   0.23  
+## ..             ...   ...                              ...   ...    ...  
+## 4     Patel (2017)  2017  Literacy: reading comprehension  0.00   0.07  
+## 5       Roy (2019)  2019  Literacy: reading comprehension  0.07   0.06  
+## 6      Rutt (2014)  2014                      Mathematics  0.21   0.11  
+## 7      Rutt (2015)  2015  Literacy: reading comprehension  0.12   0.07  
+## 8       See (2018)  2018                      Mathematics  0.20   0.12  
+## 
+## [349 rows x 9 columns]
+```
 
+
+```r
 master_df <- data.frame(py$master_df)
+```
+
+```
+## Warning in py_to_r.pandas.core.frame.DataFrame(x): index contains duplicated
+## values: row names not set
+```
+
+```r
 master_df$Intervention[master_df$Intervention==""] <- NA
            
 filter(master_df, !is.na(Intervention)) %>%
   ggplot(aes(fill=Intervention, y=SMD, x=Strand)) +
   geom_bar(position="dodge", stat="identity", color="black", na.rm=TRUE) +
   ggtitle("SMD by Strand, broken down by Intervention")
-
 ```
 
-```{r, fig.width=12,fig.height=5}
+![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-9-1.png)<!-- -->
+
+
+```r
 filter(master_df, !is.na(Intervention)) %>%
   ggplot(aes(fill=Intervention, y=SMD, x=Strand)) +
   geom_dotplot(binaxis='y', stackdir='center', dotsize=.6, binwidth=.2, na.rm=TRUE) +
   ggtitle("SMD by Strand, broken down by Intervention")
 ```
 
-```{r, fig.width=12,fig.height=5}
+![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-10-1.png)<!-- -->
+
+
+```r
 filter(master_df, !is.na(Intervention)) %>%
   ggplot(aes(y=SMD, x=Strand, size=Intervention, color=Intervention)) +
   geom_jitter(shape=16, position=position_jitter(.2), size=2, shape=21)
 ```
 
-```{r, fig.width=12,fig.height=5}
+```
+## Warning: Duplicated aesthetics after name standardisation: shape
+```
+
+![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-11-1.png)<!-- -->
+
+
+```r
 filter(master_df, !is.na(Intervention)) %>%
   ggplot(aes(fill=Intervention, y=SMD, x=Strand)) +
   geom_dotplot(binaxis='y', stackdir='center', dotsize=.6, binwidth=.2, na.rm=TRUE) +
   ggtitle("SMD by Strand, broken down by Intervention")
 ```
+
+![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-12-1.png)<!-- -->
 
