@@ -308,7 +308,7 @@ ggplot(data=subset(all_strands_df, !is.na(Intervention)), aes(SMD, SESMD)) + geo
     ggtitle("Scatterplot of SMD by SESMD")
 ```
 
-![](Outcomes_Main_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+![](README_figs/README-unnamed-chunk-4-1.png)<!-- -->
 
 
 ```r
@@ -324,7 +324,7 @@ ggplot(data=subset(all_strands_df, !is.na(Intervention)), aes(SMD, SESMD, color=
     ggtitle("Scatterplot of SMD by SESMD broken down by Intervention")
 ```
 
-![](Outcomes_Main_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+![](README_figs/README-unnamed-chunk-5-1.png)<!-- -->
 
 
 ```r
@@ -334,7 +334,7 @@ ggplot(data=all_strands_df, aes(Year, SMD)) +
     ggtitle("Barplot of SMD by Year")
 ```
 
-![](Outcomes_Main_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+![](README_figs/README-unnamed-chunk-6-1.png)<!-- -->
 
 
 ```r
@@ -344,7 +344,7 @@ ggplot(data=all_strands_df, aes(Year, SMD)) +
     ggtitle("Boxplot of SMD by Year")
 ```
 
-![](Outcomes_Main_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
+![](README_figs/README-unnamed-chunk-7-1.png)<!-- -->
 
 
 ```r
@@ -371,7 +371,7 @@ all_strands_df %>%
 grid.arrange(p1, p2, p3, p4, ncol=2)
 ```
 
-![](Outcomes_Main_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+![](README_figs/README-unnamed-chunk-8-1.png)<!-- -->
 
 
 ```python
@@ -408,7 +408,7 @@ filter(feedback_df, !is.na(Intervention)) %>%
   ylim(-1,6)
 ```
 
-![](Outcomes_Main_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+![](README_figs/README-unnamed-chunk-10-1.png)<!-- -->
 
 ```r
 filter(oral_lang, !is.na(Intervention)) %>%
@@ -419,5 +419,5 @@ filter(oral_lang, !is.na(Intervention)) %>%
   ylim(-1,6)
 ```
 
-![](Outcomes_Main_files/figure-html/unnamed-chunk-10-2.png)<!-- -->
+![](README_figs/README-unnamed-chunk-10-2.png)<!-- -->
 
