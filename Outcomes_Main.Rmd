@@ -11,7 +11,7 @@ editor_options:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = T,
-                      fig.path = "README_figs/README-")
+                      fig.path = "OutcomesMain_figs/")
 library(reticulate)
 library(ggplot2)
 library(dplyr)
@@ -19,7 +19,6 @@ library(reshape2)
 library(gridExtra)
 use_python("/usr/local/bin/python3")
 ```
-
 
 ```{python}
 # import necessary libraries
