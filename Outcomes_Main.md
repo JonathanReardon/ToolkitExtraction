@@ -10,6 +10,16 @@ editor_options:
 ---
 
 
+```r
+knitr::opts_chunk$set(echo = T,
+                      fig.path = "OutcomesMain_figs/")
+library(reticulate)
+library(ggplot2)
+library(dplyr)
+library(reshape2)
+library(gridExtra)
+use_python("/usr/local/bin/python3")
+```
 
 
 ```python

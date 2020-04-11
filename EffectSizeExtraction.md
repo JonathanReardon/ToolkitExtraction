@@ -11,7 +11,15 @@ editor_options:
 ---
 
 
-
+```r
+knitr::opts_chunk$set(echo = T,
+                      fig.path = "EffectSizeExtraction_figs/")
+library(reticulate)
+library(ggplot2)
+library(dplyr)
+library(gridExtra)
+use_python("/usr/local/bin/python3")
+```
 
 
 ```python
@@ -170,7 +178,6 @@ print(df_secondary.head(15))
 ## 13       Literacy: decoding/phonics  1.62   0.30  
 ## 14                      Mathematics  0.22   0.23
 ```
-
 
 
 ```r
