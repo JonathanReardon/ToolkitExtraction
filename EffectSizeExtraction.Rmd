@@ -10,7 +10,7 @@ editor_options:
   chunk_output_type: inline
 ---
 
-```{r setup, include=FALSE}
+```{r setup, message=FALSE}
 knitr::opts_chunk$set(echo = T,
                       fig.path = "EffectSizeExtraction_figs/")
 library(reticulate)
@@ -19,7 +19,6 @@ library(dplyr)
 library(gridExtra)
 use_python("/usr/local/bin/python3")
 ```
-
 
 ```{python}
 # import necessary packages
@@ -88,7 +87,6 @@ print(df_secondary.head(15))
 
 #print(df_primary["Intervention"])
 ```
-
 
 ```{r}
 primary_df <- data.frame(py$df_primary)
