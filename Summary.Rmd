@@ -1,0 +1,131 @@
+---
+title: "Summary.Rmd"
+author: "Jonathan Reardon"
+output:
+  html_document:
+    keep_md: true
+    df_print: paged
+  #pdf_document: default
+editor_options:
+  chunk_output_type: inline
+---
+
+```{r message=FALSE}
+library(reticulate)
+library(ggplot2)
+library(dplyr)
+library(reshape2)
+library(gridExtra)
+use_python("/usr/local/bin/python3")
+```
+
+```{python}
+# import necessary libraries
+import json
+from collections import Counter
+from pprint import pprint
+from matplotlib import pyplot as plt
+import pandas as pd
+plt.style.use('ggplot')
+
+# import dataset
+with open('/home/jon/json/Batch1.json') as f:
+    data=json.load(f)
+    
+###################################################
+### GET STRAND LABELS AND KEYS FROM TOP OUTER LAYER
+###################################################
+
+def get_strand_info():
+    ''' 
+    a function that returns
+    a dict containing strand labels
+    and corresponding attribute ids
+    '''
+    strands={}
+    for counter, element in enumerate(data["CodeSets"][0]["Attributes"]["AttributesList"]):
+        attribute_name=(data["CodeSets"][0]["Attributes"]["AttributesList"][counter]["AttributeName"])
+        attribute_id=(data["CodeSets"][0]["Attributes"]["AttributesList"][counter]["AttributeId"])
+        strands.update( {attribute_id:attribute_name} )
+    return strands
+    
+######################################
+### DISPLAY STRAND SUMMARY INFORMATION 
+######################################
+    
+def get_strand_summary():
+    '''
+    A function that produces a basic
+    summary of strand study counts
+    and a graph to display them
+    '''
+    global counts, strand_title
+    strand_overview=[]
+    for element in range(len(data["References"])):
+        for key, value in strands.items():
+          if "Codes" in data["References"][element]:
+            for section in range(len(data["References"][element]["Codes"])):
+                if key == data["References"][element]["Codes"][section]["AttributeId"]:
+                    a=(data["References"][element]["ItemId"])
+                    b=(data["References"][element]["Title"])
+                    strand_overview.append([value, key, a, b])
+
+    strand_title=[]
+    for element in strand_overview:
+        strand_title.append(element[0])
+
+    counts = Counter(strand_title) 
+    pprint(counts)
+
+######################################################
+###  GET INFO FROM STRAND SPECIFIC STUDIES
+######################################################
+
+def get_data():
+    '''
+    A function that accepts a strand id and a variable of
+    interest and returns a list of that id and the variable
+    values.
+    '''
+    outcome_studies=[] 
+
+    # iterate over each section of 'references'
+    for section in range(len(data["References"])):
+        if "Codes" in data["References"][section]:
+          for study in range(len(data["References"][section]["Codes"])):
+              # check each study to see if strand id is present
+              for item, value in strands.items():
+                  if item == data["References"][section]["Codes"][study]["AttributeId"]:
+                    shorttitle=(data["References"][section]["ShortTitle"])
+                    year=(data["References"][section]["Year"])
+                    studyID=(data["References"][section]["ItemId"])
+                    outcome_studies.append([shorttitle, year, studyID, value])
+              
+  
+    # convert data list to pandas dataframe for viewing
+    df_primary = pd.DataFrame(outcome_studies, columns=['Author', 'Year', 'StudyID', 'Strand'])
+    
+    return df_primary
+
+```
+
+```{python}
+strands = get_strand_info()
+get_strand_summary()
+```
+
+```{python}
+pprint(strands)
+```
+
+```{python}
+data = get_data()
+```
+
+```{r}
+all <- data.frame(py$data)
+#View(all)
+print(all)
+#write.csv(all,'/home/jon/json/batch1.csv', row.names=FALSE)
+```
+
