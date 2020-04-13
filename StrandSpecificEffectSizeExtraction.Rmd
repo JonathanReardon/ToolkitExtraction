@@ -116,10 +116,13 @@ def get_data(strand_key, strand_value, outcome_choice):
                         outcome_text=(data["References"][section]["Outcomes"][0]["OutcomeText"])
                         SMD=(data["References"][section]["Outcomes"][0]["SMD"])
                         SESMD=(data["References"][section]["Outcomes"][0]["SESMD"])
+                        CIupperSMD=(data["References"][section]["Outcomes"][0]["CIUpperSMD"])
+                        CIlowerSMD=(data["References"][section]["Outcomes"][0]["CILowerSMD"])
                         year=(data["References"][section]["Year"])
                         intervention=(data["References"][section]["Outcomes"][0]["InterventionText"])
                         outcome_studies.append([strand_key, strand_value, outcome_id, outcome_text, 
-                                                outcome_type, year, intervention, SMD, SESMD])
+                                                outcome_type, year, intervention, SMD, SESMD, CIupperSMD,
+                                                CIlowerSMD])
               
     # display number of studies found within selected strand
     print('Number of studies within strand {}: {}'.format(strand_value, len(outcome_studies)), "\n")
@@ -129,11 +132,14 @@ def get_data(strand_key, strand_value, outcome_choice):
     
     # convert data list to pandas dataframe for viewing
     df_primary = pd.DataFrame(outcome_studies, columns=['AttributeId', 'Strand', 'OutcomeId', 'OutcomeType', 
-                                                        'ShortTitle', 'Year', 'Intervention', 'SMD', 'SESMD'])
+                                                        'ShortTitle', 'Year', 'Intervention', 'SMD', 'SESMD',
+                                                        'CIupper', 'CIlower'])
     
     # round effect sizes to two decimal points
-    df_primary.loc[:, "SMD"] = df_primary["SMD"].astype(float).round(2)
-    df_primary.loc[:, "SESMD"] = df_primary["SESMD"].astype(float).round(2)
+    df_primary.loc[:, "SMD"] = df_primary["SMD"].astype(float).round(4)
+    df_primary.loc[:, "SESMD"] = df_primary["SESMD"].astype(float).round(4)
+    df_primary.loc[:, "CIupper"] = df_primary["CIupper"].astype(float).round(4)
+    df_primary.loc[:, "CIlower"] = df_primary["CIlower"].astype(float).round(4)
     
     return df_primary
 
@@ -160,7 +166,25 @@ feedback_mean_SMD
 feedback_mean_SESMD
 
 View(feedback_df)
+
+library(ggplot2)
+p <- ggplot(feedback_df, aes(y=ShortTitle, x=SMD, xmin=CIlower, xmax=CIupper))+
+  geom_point(color='black') +
+  geom_errorbarh(height=.1) +
+  scale_x_continuous(limits=c(-2,2), name='Standardized Mean Difference') +
+  ylab('Reference') +
+  geom_vline(xintercept=0, color='black', linetype='dashed')
 ```
+```{r}
+ggplot(feedback_df, aes(y=ShortTitle, x=SMD, xmin=CIlower, xmax=CIupper))+
+  geom_point(color='black') +
+  geom_errorbarh(height=.1) +
+  scale_x_continuous(limits=c(-2,2), name='Standardized Mean Difference') +
+  ylab('Reference') +
+  geom_vline(xintercept=0, color='black', linetype='dashed')
+```
+
+
 ```{r, fig.width=11,fig.height=5}
 ggplot(data=subset(feedback_df, !is.na(Intervention)), aes(SMD, SESMD, color=Intervention)) + 
     geom_point(alpha=1, na.rm=TRUE, size=3) +

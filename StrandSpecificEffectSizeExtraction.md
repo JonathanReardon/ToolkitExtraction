@@ -109,10 +109,13 @@ def get_data(strand_key, strand_value, outcome_choice):
                         outcome_text=(data["References"][section]["Outcomes"][0]["OutcomeText"])
                         SMD=(data["References"][section]["Outcomes"][0]["SMD"])
                         SESMD=(data["References"][section]["Outcomes"][0]["SESMD"])
+                        CIupperSMD=(data["References"][section]["Outcomes"][0]["CIUpperSMD"])
+                        CIlowerSMD=(data["References"][section]["Outcomes"][0]["CILowerSMD"])
                         year=(data["References"][section]["Year"])
                         intervention=(data["References"][section]["Outcomes"][0]["InterventionText"])
                         outcome_studies.append([strand_key, strand_value, outcome_id, outcome_text, 
-                                                outcome_type, year, intervention, SMD, SESMD])
+                                                outcome_type, year, intervention, SMD, SESMD, CIupperSMD,
+                                                CIlowerSMD])
               
     # display number of studies found within selected strand
     print('Number of studies within strand {}: {}'.format(strand_value, len(outcome_studies)), "\n")
@@ -122,11 +125,14 @@ def get_data(strand_key, strand_value, outcome_choice):
     
     # convert data list to pandas dataframe for viewing
     df_primary = pd.DataFrame(outcome_studies, columns=['AttributeId', 'Strand', 'OutcomeId', 'OutcomeType', 
-                                                        'ShortTitle', 'Year', 'Intervention', 'SMD', 'SESMD'])
+                                                        'ShortTitle', 'Year', 'Intervention', 'SMD', 'SESMD',
+                                                        'CIupper', 'CIlower'])
     
     # round effect sizes to two decimal points
-    df_primary.loc[:, "SMD"] = df_primary["SMD"].astype(float).round(2)
-    df_primary.loc[:, "SESMD"] = df_primary["SESMD"].astype(float).round(2)
+    df_primary.loc[:, "SMD"] = df_primary["SMD"].astype(float).round(4)
+    df_primary.loc[:, "SESMD"] = df_primary["SESMD"].astype(float).round(4)
+    df_primary.loc[:, "CIupper"] = df_primary["CIupper"].astype(float).round(4)
+    df_primary.loc[:, "CIlower"] = df_primary["CIlower"].astype(float).round(4)
     
     return df_primary
 
@@ -174,7 +180,7 @@ feedback_mean_SMD
 ```
 
 ```
-## [1] 0.5135955
+## [1] 0.5133944
 ```
 
 ```r
@@ -182,12 +188,41 @@ feedback_mean_SESMD
 ```
 
 ```
-## [1] 0.2914607
+## [1] 0.2915416
 ```
 
 ```r
 View(feedback_df)
+
+library(ggplot2)
+p <- ggplot(feedback_df, aes(y=ShortTitle, x=SMD, xmin=CIlower, xmax=CIupper))+
+  geom_point(color='black') +
+  geom_errorbarh(height=.1) +
+  scale_x_continuous(limits=c(-2,2), name='Standardized Mean Difference') +
+  ylab('Reference') +
+  geom_vline(xintercept=0, color='black', linetype='dashed')
 ```
+
+```r
+ggplot(feedback_df, aes(y=ShortTitle, x=SMD, xmin=CIlower, xmax=CIupper))+
+  geom_point(color='black') +
+  geom_errorbarh(height=.1) +
+  scale_x_continuous(limits=c(-2,2), name='Standardized Mean Difference') +
+  ylab('Reference') +
+  geom_vline(xintercept=0, color='black', linetype='dashed')
+```
+
+```
+## Warning: Removed 3 rows containing missing values (geom_point).
+```
+
+```
+## Warning: Removed 9 rows containing missing values (geom_errorbarh).
+```
+
+![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-4-1.png)<!-- -->
+
+
 
 ```r
 ggplot(data=subset(feedback_df, !is.na(Intervention)), aes(SMD, SESMD, color=Intervention)) + 
@@ -204,7 +239,7 @@ ggplot(data=subset(feedback_df, !is.na(Intervention)), aes(SMD, SESMD, color=Int
     ggtitle("SMD by SESMD broken down by Intervention, Feedback strand only")
 ```
 
-![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-4-1.png)<!-- -->
+![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-5-1.png)<!-- -->
 
 
 ```python
@@ -233,17 +268,29 @@ print(oral_lang.head(10))
 ## 8      5023563  Oral language interventions      50557  Primary outcome   
 ## 9      5023563  Oral language interventions      49410  Primary outcome   
 ## 
-##         ShortTitle  Year                     Intervention   SMD  SESMD  
-## 0     Ammon (1971)  1971          Literacy: reading other  0.00   0.29  
-## 1    Anders (1984)  1984  Literacy: reading comprehension  1.66   0.30  
-## 2   Aram (2004) OL  2004          Literacy: reading other  0.36   0.27  
-## 3      Aram (2006)  2006  Literacy: reading comprehension  0.04   0.23  
-## 4     Banks (1987)  1987          Literacy: reading other -0.18   0.23  
-## 5   Baumann (2002)  2002  Literacy: reading comprehension -0.07   0.31  
-## 6      Beck (2007)  2007          Literacy: reading other  1.15   0.32  
-## 7  Bereiter (1985)  1985  Literacy: reading comprehension  0.53   0.37  
-## 8     Block (2006)  2006  Literacy: reading comprehension  0.30   0.08  
-## 9     Bonds (1987)  1987  Literacy: reading comprehension  0.98   0.23
+##         ShortTitle  Year                     Intervention     SMD   SESMD  \
+## 0     Ammon (1971)  1971          Literacy: reading other  0.0000  0.2949   
+## 1    Anders (1984)  1984  Literacy: reading comprehension  1.6616  0.2971   
+## 2   Aram (2004) OL  2004          Literacy: reading other  0.3624  0.2673   
+## 3      Aram (2006)  2006  Literacy: reading comprehension  0.0396  0.2310   
+## 4     Banks (1987)  1987          Literacy: reading other -0.1756  0.2289   
+## 5   Baumann (2002)  2002  Literacy: reading comprehension -0.0699  0.3087   
+## 6      Beck (2007)  2007          Literacy: reading other  1.1537  0.3206   
+## 7  Bereiter (1985)  1985  Literacy: reading comprehension  0.5271  0.3665   
+## 8     Block (2006)  2006  Literacy: reading comprehension  0.3000  0.0800   
+## 9     Bonds (1987)  1987  Literacy: reading comprehension  0.9764  0.2275   
+## 
+##    CIupper  CIlower  
+## 0   0.5780  -0.5780  
+## 1   2.2439   1.0792  
+## 2   0.8862  -0.1614  
+## 3   0.4923  -0.4131  
+## 4   0.2729  -0.6242  
+## 5   0.5352  -0.6749  
+## 6   1.7821   0.5253  
+## 7   1.2454  -0.1912  
+## 8   0.4568   0.1432  
+## 9   1.4223   0.5304
 ```
 
 
@@ -261,7 +308,7 @@ oral_lang_mean_SMD
 ```
 
 ```
-## [1] 0.567191
+## [1] 0.5674135
 ```
 
 ```r
@@ -269,7 +316,7 @@ oral_lang_mean_SESMD
 ```
 
 ```
-## [1] 0.2639773
+## [1] 0.2637682
 ```
 
 ```r
@@ -292,7 +339,7 @@ ggplot(data=subset(oral_lang_df, !is.na(Intervention)), aes(SMD, SESMD, color=In
     ggtitle("SMD by SESMD broken down by Intervention, Oral Language strand only")
 ```
 
-![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-7-1.png)<!-- -->
+![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-8-1.png)<!-- -->
 
 
 ```python
@@ -368,20 +415,33 @@ master_df
 ## 7       5023562           One to one tuition      47554  Primary outcome   
 ## 8       5023562           One to one tuition      46242  Primary outcome   
 ## 
-##         ShortTitle  Year                     Intervention   SMD  SESMD  
-## 0     Ammon (1971)  1971          Literacy: reading other  0.00   0.29  
-## 1    Anders (1984)  1984  Literacy: reading comprehension  1.66   0.30  
-## 2   Aram (2004) OL  2004          Literacy: reading other  0.36   0.27  
-## 3      Aram (2006)  2006  Literacy: reading comprehension  0.04   0.23  
-## 4     Banks (1987)  1987          Literacy: reading other -0.18   0.23  
-## ..             ...   ...                              ...   ...    ...  
-## 4     Patel (2017)  2017  Literacy: reading comprehension  0.00   0.07  
-## 5       Roy (2019)  2019  Literacy: reading comprehension  0.07   0.06  
-## 6      Rutt (2014)  2014                      Mathematics  0.21   0.11  
-## 7      Rutt (2015)  2015  Literacy: reading comprehension  0.12   0.07  
-## 8       See (2018)  2018                      Mathematics  0.20   0.12  
+##         ShortTitle  Year                     Intervention     SMD   SESMD  \
+## 0     Ammon (1971)  1971          Literacy: reading other  0.0000  0.2949   
+## 1    Anders (1984)  1984  Literacy: reading comprehension  1.6616  0.2971   
+## 2   Aram (2004) OL  2004          Literacy: reading other  0.3624  0.2673   
+## 3      Aram (2006)  2006  Literacy: reading comprehension  0.0396  0.2310   
+## 4     Banks (1987)  1987          Literacy: reading other -0.1756  0.2289   
+## ..             ...   ...                              ...     ...     ...   
+## 4     Patel (2017)  2017  Literacy: reading comprehension  0.0010  0.0663   
+## 5       Roy (2019)  2019  Literacy: reading comprehension  0.0709  0.0625   
+## 6      Rutt (2014)  2014                      Mathematics  0.2100  0.1097   
+## 7      Rutt (2015)  2015  Literacy: reading comprehension  0.1200  0.0689   
+## 8       See (2018)  2018                      Mathematics  0.2050  0.1176   
 ## 
-## [349 rows x 9 columns]
+##     CIupper  CIlower  
+## 0    0.5780  -0.5780  
+## 1    2.2439   1.0792  
+## 2    0.8862  -0.1614  
+## 3    0.4923  -0.4131  
+## 4    0.2729  -0.6242  
+## ..      ...      ...  
+## 4    0.1310  -0.1290  
+## 5    0.1934  -0.0516  
+## 6    0.4250  -0.0050  
+## 7    0.2550  -0.0150  
+## 8    0.4354  -0.0254  
+## 
+## [349 rows x 11 columns]
 ```
 
 
@@ -403,7 +463,7 @@ filter(master_df, !is.na(Intervention)) %>%
   ggtitle("SMD by Strand, broken down by Intervention")
 ```
 
-![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-9-1.png)<!-- -->
+![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-10-1.png)<!-- -->
 
 
 ```r
@@ -413,7 +473,7 @@ filter(master_df, !is.na(Intervention)) %>%
   ggtitle("SMD by Strand, broken down by Intervention")
 ```
 
-![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-10-1.png)<!-- -->
+![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-11-1.png)<!-- -->
 
 
 ```r
@@ -426,7 +486,7 @@ filter(master_df, !is.na(Intervention)) %>%
 ## Warning: Duplicated aesthetics after name standardisation: shape
 ```
 
-![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-11-1.png)<!-- -->
+![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-12-1.png)<!-- -->
 
 
 ```r
@@ -436,5 +496,5 @@ filter(master_df, !is.na(Intervention)) %>%
   ggtitle("SMD by Strand, broken down by Intervention")
 ```
 
-![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-12-1.png)<!-- -->
+![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-13-1.png)<!-- -->
 
