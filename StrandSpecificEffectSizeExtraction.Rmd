@@ -166,16 +166,8 @@ feedback_mean_SMD
 feedback_mean_SESMD
 
 View(feedback_df)
-
-library(ggplot2)
-p <- ggplot(feedback_df, aes(y=ShortTitle, x=SMD, xmin=CIlower, xmax=CIupper))+
-  geom_point(color='black') +
-  geom_errorbarh(height=.1) +
-  scale_x_continuous(limits=c(-2,2), name='Standardized Mean Difference') +
-  ylab('Reference') +
-  geom_vline(xintercept=0, color='black', linetype='dashed')
 ```
-```{r}
+```{r, fig.width=8,fig.height=10}
 ggplot(feedback_df, aes(y=ShortTitle, x=SMD, xmin=CIlower, xmax=CIupper))+
   geom_point(color='black') +
   geom_errorbarh(height=.1) +
@@ -271,13 +263,6 @@ filter(master_df, !is.na(Intervention)) %>%
   geom_bar(position="dodge", stat="identity", color="black", na.rm=TRUE) +
   ggtitle("SMD by Strand, broken down by Intervention")
 
-```
-
-```{r, fig.width=12,fig.height=5}
-filter(master_df, !is.na(Intervention)) %>%
-  ggplot(aes(fill=Intervention, y=SMD, x=Strand)) +
-  geom_dotplot(binaxis='y', stackdir='center', dotsize=.6, binwidth=.2, na.rm=TRUE) +
-  ggtitle("SMD by Strand, broken down by Intervention")
 ```
 
 ```{r, fig.width=12,fig.height=5}

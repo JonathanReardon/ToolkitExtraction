@@ -193,14 +193,6 @@ feedback_mean_SESMD
 
 ```r
 View(feedback_df)
-
-library(ggplot2)
-p <- ggplot(feedback_df, aes(y=ShortTitle, x=SMD, xmin=CIlower, xmax=CIupper))+
-  geom_point(color='black') +
-  geom_errorbarh(height=.1) +
-  scale_x_continuous(limits=c(-2,2), name='Standardized Mean Difference') +
-  ylab('Reference') +
-  geom_vline(xintercept=0, color='black', linetype='dashed')
 ```
 
 ```r
@@ -468,16 +460,6 @@ filter(master_df, !is.na(Intervention)) %>%
 
 ```r
 filter(master_df, !is.na(Intervention)) %>%
-  ggplot(aes(fill=Intervention, y=SMD, x=Strand)) +
-  geom_dotplot(binaxis='y', stackdir='center', dotsize=.6, binwidth=.2, na.rm=TRUE) +
-  ggtitle("SMD by Strand, broken down by Intervention")
-```
-
-![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-11-1.png)<!-- -->
-
-
-```r
-filter(master_df, !is.na(Intervention)) %>%
   ggplot(aes(y=SMD, x=Strand, size=Intervention, color=Intervention)) +
   geom_jitter(shape=16, position=position_jitter(.2), size=2, shape=21)
 ```
@@ -486,7 +468,7 @@ filter(master_df, !is.na(Intervention)) %>%
 ## Warning: Duplicated aesthetics after name standardisation: shape
 ```
 
-![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-12-1.png)<!-- -->
+![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-11-1.png)<!-- -->
 
 
 ```r
@@ -496,5 +478,5 @@ filter(master_df, !is.na(Intervention)) %>%
   ggtitle("SMD by Strand, broken down by Intervention")
 ```
 
-![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-13-1.png)<!-- -->
+![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-12-1.png)<!-- -->
 
