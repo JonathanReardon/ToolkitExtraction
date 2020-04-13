@@ -1,5 +1,5 @@
 ---
-title: '''Strand Specific Effect Size Extraction.Rmd'
+title: 'Strand Specific Effect Size Extraction.Rmd'
 author: "Jonathan Reardon"
 output:
   html_document:
@@ -12,7 +12,17 @@ editor_options:
 ---
 
 
+```r
+knitr::opts_chunk$set(echo = T,
+                      fig.path = "StrandSpecificEffectSizeExtraction_figs/")
+library(reticulate)
+library(ggplot2)
+library(dplyr)
+library(reshape2)
+use_python("/usr/local/bin/python3")
+```
 
+**Get data with Python**
 
 ```python
 import json
@@ -165,6 +175,7 @@ feedback = get_data(strand_id[0], strand_id[1], "Primary outcome")
 ## Number of studies within strand Feedback: 89
 ```
 
+**Pass Feedback (strand) data to R as dataframe**
 
 ```r
 feedback_df <- data.frame(py$feedback)
@@ -176,40 +187,26 @@ feedback_df$Intervention <- as.factor(feedback_df$Intervention)
 feedback_mean_SMD <- mean(feedback_df$SMD, na.rm=TRUE)
 feedback_mean_SESMD <- mean(feedback_df$SESMD, na.rm=TRUE)
 
-feedback_mean_SMD
+#feedback_mean_SMD
+#feedback_mean_SESMD
+
+#View(feedback_df)
 ```
 
-```
-## [1] 0.5133944
-```
-
-```r
-feedback_mean_SESMD
-```
-
-```
-## [1] 0.2915416
-```
-
-```r
-View(feedback_df)
-```
+**Create Forest plot using SMD and confidence intervals for Feedback strand, Primary outcome only.**
 
 ```r
 ggplot(feedback_df, aes(y=ShortTitle, x=SMD, xmin=CIlower, xmax=CIupper))+
   geom_point(color='black') +
   geom_errorbarh(height=.1) +
-  scale_x_continuous(limits=c(-2,2), name='Standardized Mean Difference') +
+  scale_x_continuous(limits=c(-3,3), name='Standardized Mean Difference (95% CI)') +
   ylab('Reference') +
-  geom_vline(xintercept=0, color='black', linetype='dashed')
+  geom_vline(xintercept=0, color='black', linetype='dashed') +
+  theme_classic()
 ```
 
 ```
-## Warning: Removed 3 rows containing missing values (geom_point).
-```
-
-```
-## Warning: Removed 9 rows containing missing values (geom_errorbarh).
+## Warning: Removed 3 rows containing missing values (geom_errorbarh).
 ```
 
 ![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-4-1.png)<!-- -->
@@ -296,24 +293,30 @@ oral_lang_df$Intervention <- as.factor(oral_lang_df$Intervention)
 oral_lang_mean_SMD <- mean(oral_lang_df$SMD, na.rm=TRUE)
 oral_lang_mean_SESMD <- mean(oral_lang_df$SESMD, na.rm=TRUE)
 
-oral_lang_mean_SMD
+#View(oral_lang_df)
 ```
 
-```
-## [1] 0.5674135
-```
+**Create Forest plot using SMD and confidence intervals for Oral language intervention strand, Primary outcome only.**
 
 ```r
-oral_lang_mean_SESMD
+ggplot(oral_lang_df, aes(y=ShortTitle, x=SMD, xmin=CIlower, xmax=CIupper))+
+  geom_point(color='black') +
+  geom_errorbarh(height=.1) +
+  scale_x_continuous(limits=c(-3,3), name='Standardized Mean Difference (95% CI)') +
+  ylab('Reference') +
+  geom_vline(xintercept=0, color='black', linetype='dashed') +
+  theme_classic()
 ```
 
 ```
-## [1] 0.2637682
+## Warning: Removed 2 rows containing missing values (geom_point).
 ```
 
-```r
-View(oral_lang_df)
 ```
+## Warning: Removed 5 rows containing missing values (geom_errorbarh).
+```
+
+![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-8-1.png)<!-- -->
 
 
 ```r
@@ -331,7 +334,7 @@ ggplot(data=subset(oral_lang_df, !is.na(Intervention)), aes(SMD, SESMD, color=In
     ggtitle("SMD by SESMD broken down by Intervention, Oral Language strand only")
 ```
 
-![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-8-1.png)<!-- -->
+![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-9-1.png)<!-- -->
 
 
 ```python
@@ -455,7 +458,7 @@ filter(master_df, !is.na(Intervention)) %>%
   ggtitle("SMD by Strand, broken down by Intervention")
 ```
 
-![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-10-1.png)<!-- -->
+![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-11-1.png)<!-- -->
 
 
 ```r
@@ -468,7 +471,7 @@ filter(master_df, !is.na(Intervention)) %>%
 ## Warning: Duplicated aesthetics after name standardisation: shape
 ```
 
-![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-11-1.png)<!-- -->
+![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-12-1.png)<!-- -->
 
 
 ```r
@@ -478,5 +481,5 @@ filter(master_df, !is.na(Intervention)) %>%
   ggtitle("SMD by Strand, broken down by Intervention")
 ```
 
-![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-12-1.png)<!-- -->
+![](StrandSpecificEffectSizeExtraction_figs/unnamed-chunk-13-1.png)<!-- -->
 

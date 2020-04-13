@@ -1,5 +1,5 @@
 ---
-title: '''Strand Specific Effect Size Extraction.Rmd'
+title: 'Strand Specific Effect Size Extraction.Rmd'
 author: "Jonathan Reardon"
 output:
   html_document:
@@ -11,7 +11,7 @@ editor_options:
   chunk_output_type: inline
 ---
 
-```{r setup, include=FALSE}
+```{r setup, message=FALSE}
 knitr::opts_chunk$set(echo = T,
                       fig.path = "StrandSpecificEffectSizeExtraction_figs/")
 library(reticulate)
@@ -21,6 +21,7 @@ library(reshape2)
 use_python("/usr/local/bin/python3")
 ```
 
+**Get data with Python**
 ```{python}
 import json
 from collections import Counter
@@ -152,6 +153,7 @@ strand_id = get_strand_value("Feedback")
 feedback = get_data(strand_id[0], strand_id[1], "Primary outcome")
 ```
 
+**Pass Feedback (strand) data to R as dataframe**
 ```{r}
 feedback_df <- data.frame(py$feedback)
 
@@ -162,18 +164,21 @@ feedback_df$Intervention <- as.factor(feedback_df$Intervention)
 feedback_mean_SMD <- mean(feedback_df$SMD, na.rm=TRUE)
 feedback_mean_SESMD <- mean(feedback_df$SESMD, na.rm=TRUE)
 
-feedback_mean_SMD
-feedback_mean_SESMD
+#feedback_mean_SMD
+#feedback_mean_SESMD
 
-View(feedback_df)
+#View(feedback_df)
 ```
-```{r, fig.width=8,fig.height=10}
+
+**Create Forest plot using SMD and confidence intervals for Feedback strand, Primary outcome only.**
+```{r, message=FALSE, fig.width=8,fig.height=10}
 ggplot(feedback_df, aes(y=ShortTitle, x=SMD, xmin=CIlower, xmax=CIupper))+
   geom_point(color='black') +
   geom_errorbarh(height=.1) +
-  scale_x_continuous(limits=c(-2,2), name='Standardized Mean Difference') +
+  scale_x_continuous(limits=c(-3,3), name='Standardized Mean Difference (95% CI)') +
   ylab('Reference') +
-  geom_vline(xintercept=0, color='black', linetype='dashed')
+  geom_vline(xintercept=0, color='black', linetype='dashed') +
+  theme_classic()
 ```
 
 
@@ -208,10 +213,18 @@ oral_lang_df$Intervention <- as.factor(oral_lang_df$Intervention)
 oral_lang_mean_SMD <- mean(oral_lang_df$SMD, na.rm=TRUE)
 oral_lang_mean_SESMD <- mean(oral_lang_df$SESMD, na.rm=TRUE)
 
-oral_lang_mean_SMD
-oral_lang_mean_SESMD
+#View(oral_lang_df)
+```
 
-View(oral_lang_df)
+**Create Forest plot using SMD and confidence intervals for Oral language intervention strand, Primary outcome only.**
+```{r, message=FALSE, fig.width=8,fig.height=10}
+ggplot(oral_lang_df, aes(y=ShortTitle, x=SMD, xmin=CIlower, xmax=CIupper))+
+  geom_point(color='black') +
+  geom_errorbarh(height=.1) +
+  scale_x_continuous(limits=c(-3,3), name='Standardized Mean Difference (95% CI)') +
+  ylab('Reference') +
+  geom_vline(xintercept=0, color='black', linetype='dashed') +
+  theme_classic()
 ```
 
 ```{r, fig.width=11,fig.height=5}
