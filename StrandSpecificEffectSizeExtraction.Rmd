@@ -147,42 +147,78 @@ def get_data(strand_key, strand_value, outcome_choice):
 strands = get_strand_info()
 get_strand_summary()
 ```
+```{python}
+strand_id = get_strand_value("Oral language interventions") 
+oral_lang = get_data(strand_id[0], strand_id[1], "Primary outcome")
 
+oral_lang.head(10)
+```
+Pass 'oral language' strand pandas dataframe to R (as R dataframe) and make forest plot
+```{r, message=FALSE, fig.width=8,fig.height=12}
+oral_lang_df <- data.frame(py$oral_lang) # convert pandas dataframe (python) to R dataframe
+
+ggplot(oral_lang_df, aes(y=ShortTitle, x=SMD, xmin=CIlower, xmax=CIupper))+
+  geom_point(color='black', shape=15) +
+  geom_errorbarh(height=.7, linetype=1) +
+  scale_x_continuous(limits=c(-3,3), name='Standardized Mean Difference (95% CI)') +
+  ylab('Reference') +
+  geom_vline(xintercept=0, color='black', linetype='dashed') +
+  theme_classic()
+```
+```{r, fig.width=11,fig.height=5}
+# prepare data for dotplot
+oral_lang_df$Intervention <- as.character(oral_lang_df$Intervention)
+oral_lang_df$Intervention[oral_lang_df$Intervention==""] <- NA
+oral_lang_df$Intervention <- as.factor(oral_lang_df$Intervention)
+oral_lang_mean_SMD <- mean(oral_lang_df$SMD, na.rm=TRUE)
+oral_lang_mean_SESMD <- mean(oral_lang_df$SESMD, na.rm=TRUE)
+
+# View(oral_lang_df) # uncomment to view data in data viewer
+
+ggplot(data=subset(oral_lang_df, !is.na(Intervention)), aes(SMD, SESMD, color=Intervention)) + 
+    geom_point(alpha=1, na.rm=TRUE, size=3) +
+    theme_grey() +
+    geom_vline(xintercept=oral_lang_mean_SMD, linetype="dotted", color="black", size=1) +
+    theme(legend.title = element_text(color = "black", size = 10),
+          legend.text = element_text(color = "black", size = 8)) +
+    theme(legend.position="right") +
+    guides(fill=guide_legend(nrow=5, byrow=TRUE)) +
+    theme(legend.title=element_blank()) +
+    annotate(geom="text", x=oral_lang_mean_SMD+.15, y=-.1, label=round(oral_lang_mean_SMD, 2), color="black") +
+    ylim(-0.2, 1.75) +
+    ggtitle("SMD by SESMD broken down by Intervention, Oral Language strand, Primary outcome")
+```
+
+Get 'Feedback' strand data (effect sizes and confidence intervals) for Primary outcome studies
 ```{python}
 strand_id = get_strand_value("Feedback") 
 feedback = get_data(strand_id[0], strand_id[1], "Primary outcome")
+
+feedback.head(10)
 ```
+Pass 'feedback' strand pandas dataframe to R (as R dataframe) and make forest plot
+```{r, message=FALSE, fig.width=8,fig.height=12}
+feedback_df <- data.frame(py$feedback) # convert pandas dataframe (python) to R dataframe
 
-**Pass Feedback (strand) data to R as dataframe**
-```{r}
-feedback_df <- data.frame(py$feedback)
-
-feedback_df$Intervention <- as.character(feedback_df$Intervention)
-feedback_df$Intervention[feedback_df$Intervention==""] <- NA
-feedback_df$Intervention <- as.factor(feedback_df$Intervention)
-
-feedback_mean_SMD <- mean(feedback_df$SMD, na.rm=TRUE)
-feedback_mean_SESMD <- mean(feedback_df$SESMD, na.rm=TRUE)
-
-#feedback_mean_SMD
-#feedback_mean_SESMD
-
-#View(feedback_df)
-```
-
-**Create Forest plot using SMD and confidence intervals for Feedback strand, Primary outcome only.**
-```{r, message=FALSE, fig.width=8,fig.height=10}
 ggplot(feedback_df, aes(y=ShortTitle, x=SMD, xmin=CIlower, xmax=CIupper))+
-  geom_point(color='black') +
-  geom_errorbarh(height=.1) +
+  geom_point(color='black', shape=15) +
+  geom_errorbarh(height=.7, linetype=1) +
   scale_x_continuous(limits=c(-3,3), name='Standardized Mean Difference (95% CI)') +
   ylab('Reference') +
   geom_vline(xintercept=0, color='black', linetype='dashed') +
   theme_classic()
 ```
 
-
 ```{r, fig.width=11,fig.height=5}
+# prepare data for dotplot
+feedback_df$Intervention <- as.character(feedback_df$Intervention)
+feedback_df$Intervention[feedback_df$Intervention==""] <- NA
+feedback_df$Intervention <- as.factor(feedback_df$Intervention)
+feedback_mean_SMD <- mean(feedback_df$SMD, na.rm=TRUE)
+feedback_mean_SESMD <- mean(feedback_df$SESMD, na.rm=TRUE)
+
+# View(feedback_df) # uncomment to view data in dataviewer
+
 ggplot(data=subset(feedback_df, !is.na(Intervention)), aes(SMD, SESMD, color=Intervention)) + 
     geom_point(alpha=1, na.rm=TRUE, size=3) +
     theme_grey() +
@@ -197,52 +233,92 @@ ggplot(data=subset(feedback_df, !is.na(Intervention)), aes(SMD, SESMD, color=Int
     ggtitle("SMD by SESMD broken down by Intervention, Feedback strand only")
 ```
 
+Get 'Peer tutoring' strand data (effect sizes and confidence intervals) for Primary outcome studies
 ```{python}
-strand_id = get_strand_value("Oral language interventions") 
-oral_lang = get_data(strand_id[0], strand_id[1], "Primary outcome")
-print(oral_lang.head(10))
+strand_id = get_strand_value("Peer tutoring") 
+peertutor = get_data(strand_id[0], strand_id[1], "Primary outcome")
+
+peertutor.head(10)
 ```
+Pass 'peer tutoring' strand pandas dataframe to R (as R dataframe) and make forest plot
+```{r, message=FALSE, fig.width=8,fig.height=12}
+peer_tutoring_df <- data.frame(py$peertutor) # convert pandas dataframe (python) to R dataframe
 
-```{r}
-oral_lang_df <- data.frame(py$oral_lang)
-
-oral_lang_df$Intervention <- as.character(oral_lang_df$Intervention)
-oral_lang_df$Intervention[oral_lang_df$Intervention==""] <- NA
-oral_lang_df$Intervention <- as.factor(oral_lang_df$Intervention)
-
-oral_lang_mean_SMD <- mean(oral_lang_df$SMD, na.rm=TRUE)
-oral_lang_mean_SESMD <- mean(oral_lang_df$SESMD, na.rm=TRUE)
-
-#View(oral_lang_df)
-```
-
-**Create Forest plot using SMD and confidence intervals for Oral language intervention strand, Primary outcome only.**
-```{r, message=FALSE, fig.width=8,fig.height=10}
-ggplot(oral_lang_df, aes(y=ShortTitle, x=SMD, xmin=CIlower, xmax=CIupper))+
-  geom_point(color='black') +
-  geom_errorbarh(height=.1) +
+ggplot(feedback_df, aes(y=ShortTitle, x=SMD, xmin=CIlower, xmax=CIupper))+
+  geom_point(color='black', shape=15) +
+  geom_errorbarh(height=.7, linetype=1) +
   scale_x_continuous(limits=c(-3,3), name='Standardized Mean Difference (95% CI)') +
   ylab('Reference') +
   geom_vline(xintercept=0, color='black', linetype='dashed') +
   theme_classic()
 ```
-
 ```{r, fig.width=11,fig.height=5}
+# prepare data for dotplot
+peer_tutoring_df$Intervention <- as.character(peer_tutoring_df$Intervention)
+peer_tutoring_df$Intervention[feedback_df$Intervention==""] <- NA
+peer_tutoring_df$Intervention <- as.factor(peer_tutoring_df$Intervention)
+peer_tutoring_df_SMD <- mean(peer_tutoring_df$SMD, na.rm=TRUE)
+peer_tutoring_df_SESMD <- mean(peer_tutoring_df$SESMD, na.rm=TRUE)
 
-ggplot(data=subset(oral_lang_df, !is.na(Intervention)), aes(SMD, SESMD, color=Intervention)) + 
+# View(feedback_df) # uncomment to view data in dataviewer
+
+ggplot(data=subset(peer_tutoring_df, !is.na(Intervention)), aes(SMD, SESMD, color=Intervention)) + 
     geom_point(alpha=1, na.rm=TRUE, size=3) +
     theme_grey() +
-    geom_vline(xintercept=oral_lang_mean_SMD, linetype="dotted", color="black", size=1) +
+    geom_vline(xintercept=peer_tutoring_df_SMD, linetype="dotted", color="black", size=1) +
     theme(legend.title = element_text(color = "black", size = 10),
           legend.text = element_text(color = "black", size = 8)) +
     theme(legend.position="right") +
     guides(fill=guide_legend(nrow=5, byrow=TRUE)) +
     theme(legend.title=element_blank()) +
-    annotate(geom="text", x=oral_lang_mean_SMD+.15, y=-.1, label=round(oral_lang_mean_SMD, 2), color="black") +
+    annotate(geom="text", x=peer_tutoring_df_SMD+.15, y=-.1, label=round(peer_tutoring_df_SMD, 2), color="black") +
     ylim(-0.2, 1.75) +
-    ggtitle("SMD by SESMD broken down by Intervention, Oral Language strand only")
+    ggtitle("SMD by SESMD broken down by Intervention, Peer tutoring strand only")
 ```
 
+```{python}
+strand_id = get_strand_value("Teaching assistants") 
+teachingassist = get_data(strand_id[0], strand_id[1], "Primary outcome")
+
+teachingassist.head(10)
+```
+Pass 'teaching assistants' strand pandas dataframe to R (as R dataframe) and make forest plot
+```{r, message=FALSE, fig.width=8,fig.height=8}
+teaching_assistants_df <- data.frame(py$teachingassist)
+
+ggplot(teaching_assistants_df, aes(y=ShortTitle, x=SMD, xmin=CIlower, xmax=CIupper))+
+  geom_point(color='black', shape=15) +
+  geom_errorbarh(height=.4, linetype=1) +
+  scale_x_continuous(limits=c(-3,3), name='Standardized Mean Difference (95% CI)') +
+  ylab('Reference') +
+  geom_vline(xintercept=0, color='black', linetype='dashed') +
+  theme_classic()
+```
+```{r, fig.width=11,fig.height=5}
+# prepare data for dotplot
+teaching_assistants_df$Intervention <- as.character(teaching_assistants_df$Intervention)
+teaching_assistants_df$Intervention[teaching_assistants_df$Intervention==""] <- NA
+teaching_assistants_df$Intervention <- as.factor(teaching_assistants_df$Intervention)
+teaching_assistants_df_SMD <- mean(teaching_assistants_df$SMD, na.rm=TRUE)
+teaching_assistants_df_SESMD <- mean(teaching_assistants_df$SESMD, na.rm=TRUE)
+
+# View(feedback_df) # uncomment to view data in dataviewer
+
+ggplot(data=subset(teaching_assistants_df, !is.na(Intervention)), aes(SMD, SESMD, color=Intervention)) + 
+    geom_point(alpha=1, na.rm=TRUE, size=3) +
+    theme_grey() +
+    geom_vline(xintercept=teaching_assistants_df_SMD, linetype="dotted", color="black", size=1) +
+    theme(legend.title = element_text(color = "black", size = 10),
+          legend.text = element_text(color = "black", size = 8)) +
+    theme(legend.position="right") +
+    guides(fill=guide_legend(nrow=5, byrow=TRUE)) +
+    theme(legend.title=element_blank()) +
+    annotate(geom="text", x=peer_tutoring_df_SMD+.15, y=-.1, label=round(teaching_assistants_df_SMD, 2), color="black") +
+    ylim(-0.2, 1.75) +
+    ggtitle("SMD by SESMD broken down by Intervention, Teaching assistants strand only")
+```
+
+Call 'get data' function several times (for different strands) and combine into one 'master' dataframe
 ```{python}
 strand_id = get_strand_value("Oral language interventions") 
 oral_lang = get_data(strand_id[0], strand_id[1], "Primary outcome")
@@ -265,17 +341,17 @@ one_to_one = get_data(strand_id[0], strand_id[1], "Primary outcome")
 master_df = pd.concat([oral_lang, feedback, peer_tut, teaching_assist, small_group, one_to_one])
 master_df
 ```
-
+Pass the 'master' dataframe from Python to R
 ```{r, fig.width=12,fig.height=5}
-
 master_df <- data.frame(py$master_df)
 master_df$Intervention[master_df$Intervention==""] <- NA
+
+View(master_df)
            
 filter(master_df, !is.na(Intervention)) %>%
   ggplot(aes(fill=Intervention, y=SMD, x=Strand)) +
   geom_bar(position="dodge", stat="identity", color="black", na.rm=TRUE) +
   ggtitle("SMD by Strand, broken down by Intervention")
-
 ```
 
 ```{r, fig.width=12,fig.height=5}
