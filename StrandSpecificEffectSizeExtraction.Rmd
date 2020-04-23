@@ -153,7 +153,7 @@ oral_lang = get_data(strand_id[0], strand_id[1], "Primary outcome")
 
 oral_lang.head(10)
 ```
-Pass 'oral language' strand pandas dataframe to R (as R dataframe) and make forest plot
+**Pass 'oral language' strand pandas dataframe to R (as R dataframe) and make forest plot**
 ```{r, message=FALSE, fig.width=8,fig.height=12}
 oral_lang_df <- data.frame(py$oral_lang) # convert pandas dataframe (python) to R dataframe
 
@@ -189,14 +189,14 @@ ggplot(data=subset(oral_lang_df, !is.na(Intervention)), aes(SMD, SESMD, color=In
     ggtitle("SMD by SESMD broken down by Intervention, Oral Language strand, Primary outcome")
 ```
 
-Get 'Feedback' strand data (effect sizes and confidence intervals) for Primary outcome studies
+**Get 'Feedback' strand data (effect sizes and confidence intervals) for Primary outcome studies**
 ```{python}
 strand_id = get_strand_value("Feedback") 
 feedback = get_data(strand_id[0], strand_id[1], "Primary outcome")
 
 feedback.head(10)
 ```
-Pass 'feedback' strand pandas dataframe to R (as R dataframe) and make forest plot
+**Pass 'feedback' strand pandas dataframe to R (as R dataframe) and make forest plot**
 ```{r, message=FALSE, fig.width=8,fig.height=12}
 feedback_df <- data.frame(py$feedback) # convert pandas dataframe (python) to R dataframe
 
@@ -233,14 +233,14 @@ ggplot(data=subset(feedback_df, !is.na(Intervention)), aes(SMD, SESMD, color=Int
     ggtitle("SMD by SESMD broken down by Intervention, Feedback strand only")
 ```
 
-Get 'Peer tutoring' strand data (effect sizes and confidence intervals) for Primary outcome studies
+**Get 'Peer tutoring' strand data (effect sizes and confidence intervals) for Primary outcome studies**
 ```{python}
 strand_id = get_strand_value("Peer tutoring") 
 peertutor = get_data(strand_id[0], strand_id[1], "Primary outcome")
 
 peertutor.head(10)
 ```
-Pass 'peer tutoring' strand pandas dataframe to R (as R dataframe) and make forest plot
+**Pass 'peer tutoring' strand pandas dataframe to R (as R dataframe) and make forest plot**
 ```{r, message=FALSE, fig.width=8,fig.height=12}
 peer_tutoring_df <- data.frame(py$peertutor) # convert pandas dataframe (python) to R dataframe
 
@@ -282,7 +282,7 @@ teachingassist = get_data(strand_id[0], strand_id[1], "Primary outcome")
 
 teachingassist.head(10)
 ```
-Pass 'teaching assistants' strand pandas dataframe to R (as R dataframe) and make forest plot
+**Pass 'teaching assistants' strand pandas dataframe to R (as R dataframe) and make forest plot**
 ```{r, message=FALSE, fig.width=8,fig.height=8}
 teaching_assistants_df <- data.frame(py$teachingassist)
 
@@ -318,7 +318,7 @@ ggplot(data=subset(teaching_assistants_df, !is.na(Intervention)), aes(SMD, SESMD
     ggtitle("SMD by SESMD broken down by Intervention, Teaching assistants strand only")
 ```
 
-Call 'get data' function several times (for different strands) and combine into one 'master' dataframe
+**Call 'get data' function several times (for different strands) and combine into one 'master' dataframe**
 ```{python}
 strand_id = get_strand_value("Oral language interventions") 
 oral_lang = get_data(strand_id[0], strand_id[1], "Primary outcome")
