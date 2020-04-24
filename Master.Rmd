@@ -4,7 +4,7 @@ author: "Jonathan Reardon"
 output:
   html_document:
     keep_md: true
-    df_print: paged
+    #df_print: paged
   #pdf_document:
     #keep_md: true
 editor_options:
@@ -19,6 +19,7 @@ library(ggplot2)
 library(dplyr)
 library(reshape2)
 library(purrr)
+library(gridExtra)
 use_python("/usr/local/bin/python3")
 ```
 
@@ -27,6 +28,7 @@ use_python("/usr/local/bin/python3")
 import json
 from collections import Counter
 from pprint import pprint
+import numpy as np
 from matplotlib import pyplot as plt
 import pandas as pd
 plt.style.use('ggplot')
@@ -62,9 +64,9 @@ edu = get_edu_info()
 
 def get_all():
   finds=[]
-  
   find=0
   strandfind=0
+  exclude=np.nan
   
   studies=0
   # iterate over each section within each study of 'references'
@@ -80,8 +82,8 @@ def get_all():
                   find=value
                   label=key
               elif find==0:
-                  find="NaN"
-                  label="NaN"
+                  find=exclude
+                  label=exclude
                   
           # get strand data (feedback, peer tutoring etc.)
           for key,value in strands.items():
@@ -89,8 +91,8 @@ def get_all():
                   strandfind=value
                   strandlabel=key
               elif strandfind==0:
-                  strandfind="NaN"
-                  strandlabel="NaN"
+                  strandfind=exclude
+                  strandlabel=exclude
                   
           # get outcome data
           if "Outcomes" in data["References"][section]:
@@ -101,24 +103,24 @@ def get_all():
               CIupperSMD=(data["References"][section]["Outcomes"][0]["CIUpperSMD"])
               CIlowerSMD=(data["References"][section]["Outcomes"][0]["CILowerSMD"])
           else:
-              outcometext="NaN"
-              interventiontext="NaN"
-              SMD="NaN"
-              SESMD="NaN"
-              CIupperSMD="NaN"
-              CIlowerSMD="NaN"
+              outcometext=exclude
+              interventiontext=exclude
+              SMD=exclude
+              SESMD=exclude
+              CIupperSMD=exclude
+              CIlowerSMD=exclude
               
           # get year data
           if "Year" in data["References"][section]:
               year=data["References"][section]["Year"]
           else:
-              year="NaN"
+              year=exclude
               
           # get author data
           if "ShortTitle" in data["References"][section]:
               author=data["References"][section]["ShortTitle"]
           else:
-              author="NaN"
+              author=exclude
               
       finds.append([author, find, label, strandfind, strandlabel, interventiontext, 
                     outcometext, year, SMD, SESMD, CIupperSMD, CIlowerSMD])
@@ -130,7 +132,7 @@ def get_all():
                                     
   # round effect sizes to two decimal points
   df.loc[:, "SMD"] = df["SMD"].astype(float).round(4)
-  df.loc[:, "SESMD"] = df["SESMD"].astype(float).round(4)
+  df.loc[:, "SESMD"] = df["SESMD"].astype(float, errors='ignore').round(4)
   df.loc[:, "CIupper"] = df["CIupper"].astype(float).round(4)
   df.loc[:, "CIlower"] = df["CIlower"].astype(float).round(4)
                                     
@@ -142,7 +144,76 @@ all.head(10)
 
 ```{r message=FALSE}
 master_df <- py$all
-#View(master_df)
+View(master_df)
 master_df <- as.data.frame(lapply(master_df, unlist))
 head(master_df)
 ```
+**Make overall forest plot**
+```{r, message=FALSE, fig.width=8,fig.height=55}
+
+# remove missing values from key variables
+#master_df<- na.omit(subset(master_df, select = c(Author, SMD, CIlower, CIupper)))
+
+ggplot(data=na.omit(subset(master_df, select=c(Author, SMD, CIlower, CIupper))),
+                    aes(y=Author, x=SMD, xmin=CIlower, xmax=CIupper))+
+  geom_point(color='black', shape=15) +
+  geom_errorbarh(height=.7, linetype=1) +
+  scale_x_continuous(limits=c(-4,4), name='Standardized Mean Difference (95% CI)') +
+  ylab('Reference') +
+  geom_vline(xintercept=0, color='black', linetype='dashed') +
+  theme_classic()
+
+```
+
+```{r, fig.width=15,fig.height=16}
+# prepare data for dotplot
+master_df$Intervention <- as.character(master_df$Intervention)
+master_df$Intervention[master_df$Intervention==""] <- NA
+master_df$Intervention <- as.factor(master_df$Intervention)
+master_df_mean_SMD <- mean(master_df$SMD, na.rm=TRUE)
+master_dfk_mean_SESMD <- mean(master_df$SESMD, na.rm=TRUE)
+
+# View(feedback_df) # uncomment to view data in dataviewer
+
+smd_intervention <- ggplot(data=subset(master_df, !is.na(Intervention)), aes(SMD, SESMD, color=Intervention)) + 
+    geom_point(alpha=1, na.rm=TRUE, size=3) +
+    theme_grey() +
+    geom_vline(xintercept=master_df_mean_SMD, linetype="dotted", color="black", size=1) +
+    theme(legend.title = element_text(color = "black", size = 10),
+          legend.text = element_text(color = "black", size = 8)) +
+    theme(legend.position="right") +
+    guides(fill=guide_legend(nrow=5, byrow=TRUE)) +
+    theme(legend.title=element_blank()) +
+    annotate(geom="text", x=master_df_mean_SMD+.15, y=-.1, label=round(master_df_mean_SMD, 2), color="black") +
+    ylim(-0.2, 1.75) +
+    ggtitle("SMD by SESMD broken down by Intervention")
+
+smd_edusetting <- ggplot(data=subset(master_df, !is.na(EduSetting)), aes(SMD, SESMD, color=EduSetting)) + 
+    geom_point(alpha=1, na.rm=TRUE, size=3) +
+    theme_grey() +
+    geom_vline(xintercept=master_df_mean_SMD, linetype="dotted", color="black", size=1) +
+    theme(legend.title = element_text(color = "black", size = 10),
+          legend.text = element_text(color = "black", size = 8)) +
+    theme(legend.position="right") +
+    guides(fill=guide_legend(nrow=5, byrow=TRUE)) +
+    theme(legend.title=element_blank()) +
+    annotate(geom="text", x=master_df_mean_SMD+.15, y=-.1, label=round(master_df_mean_SMD, 2), color="black") +
+    ylim(-0.2, 1.75) +
+    ggtitle("SMD by SESMD broken down by Educational Setting")
+
+smd_strand <- ggplot(data=subset(master_df, !is.na(Strand)), aes(SMD, SESMD, color=Strand)) + 
+    geom_point(alpha=1, na.rm=TRUE, size=3) +
+    theme_grey() +
+    geom_vline(xintercept=master_df_mean_SMD, linetype="dotted", color="black", size=1) +
+    theme(legend.title = element_text(color = "black", size = 10),
+          legend.text = element_text(color = "black", size = 8)) +
+    theme(legend.position="right") +
+    guides(fill=guide_legend(nrow=5, byrow=TRUE)) +
+    theme(legend.title=element_blank()) +
+    annotate(geom="text", x=master_df_mean_SMD+.15, y=-.1, label=round(master_df_mean_SMD, 2), color="black") +
+    ylim(-0.2, 1.75) +
+    ggtitle("SMD by SESMD broken down by Strand")
+
+grid.arrange(smd_intervention, smd_edusetting, smd_strand)
+```
+
