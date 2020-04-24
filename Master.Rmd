@@ -18,6 +18,7 @@ library(reticulate)
 library(ggplot2)
 library(dplyr)
 library(reshape2)
+library(purrr)
 use_python("/usr/local/bin/python3")
 ```
 
@@ -59,76 +60,89 @@ def get_edu_info():
 
 edu = get_edu_info()
 
-finds=[]
-
-find=0
-strandfind=0
-
-studies=0
-# iterate over each section within each study of 'references'
-for section in range(len(data["References"])):
-    studies+=1
-    find=0
-    strandfind=0
-    for study in range(len(data["References"][section]["Codes"])):
-        
-        # get educational setting data (prmiary/elementary etc.)
-        for key,value in edu.items():
-            if key == data["References"][section]["Codes"][study]["AttributeId"]:
-                find=value
-                label=key
-            elif find==0:
-                find="NA"
-                label="NA"
-                
-        # get strand data (feedback, peer tutoring etc.)
-        for key,value in strands.items():
-            if key == data["References"][section]["Codes"][study]["AttributeId"]:
-                strandfind=value
-                strandlabel=key
-            elif strandfind==0:
-                strandfind="NA"
-                strandlabel="NA"
-                
-        # get outcome data
-        if "Outcomes" in data["References"][section]:
-            outcometext=data["References"][section]["Outcomes"][0]["OutcomeText"]
-            interventiontext=data["References"][section]["Outcomes"][0]["InterventionText"]
-            SMD=(data["References"][section]["Outcomes"][0]["SMD"])
-            SESMD=(data["References"][section]["Outcomes"][0]["SESMD"])
-            CIupperSMD=(data["References"][section]["Outcomes"][0]["CIUpperSMD"])
-            CIlowerSMD=(data["References"][section]["Outcomes"][0]["CILowerSMD"])
-        else:
-            outcometext="NA"
-            interventiontext="NA"
-            SMD="NA"
-            SESMD="NA"
-            CIupperSMD="NA"
-            CIlowerSMD="NA"
-            
-        # get year data
-        if "Year" in data["References"][section]:
-            year=data["References"][section]["Year"]
-        else:
-            year="NA"
-            
-        # get author data
-        if "ShortTitle" in data["References"][section]:
-            author=data["References"][section]["ShortTitle"]
-        else:
-            author="NA"
-            
-    finds.append([author, find, label, strandfind, strandlabel, interventiontext, 
-                  outcometext, year, SMD, SESMD, CIupperSMD, CIlowerSMD])
-    
-df = pd.DataFrame(finds, columns=['Author', 'Edu Setting', 'Edu ID', 'Strand', 'Strand ID', 
-                                  'Intervention', 'Outcome', 'Year', 'SMD', 'SESMD', 'CI upper', 'CI lower'])
-print(studies)
-df.head(10)
+def get_all():
+  finds=[]
+  
+  find=0
+  strandfind=0
+  
+  studies=0
+  # iterate over each section within each study of 'references'
+  for section in range(len(data["References"])):
+      studies+=1
+      find=0
+      strandfind=0
+      for study in range(len(data["References"][section]["Codes"])):
+          
+          # get educational setting data (prmiary/elementary etc.)
+          for key,value in edu.items():
+              if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                  find=value
+                  label=key
+              elif find==0:
+                  find="NaN"
+                  label="NaN"
+                  
+          # get strand data (feedback, peer tutoring etc.)
+          for key,value in strands.items():
+              if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                  strandfind=value
+                  strandlabel=key
+              elif strandfind==0:
+                  strandfind="NaN"
+                  strandlabel="NaN"
+                  
+          # get outcome data
+          if "Outcomes" in data["References"][section]:
+              outcometext=data["References"][section]["Outcomes"][0]["OutcomeText"]
+              interventiontext=data["References"][section]["Outcomes"][0]["InterventionText"]
+              SMD=(data["References"][section]["Outcomes"][0]["SMD"])
+              SESMD=(data["References"][section]["Outcomes"][0]["SESMD"])
+              CIupperSMD=(data["References"][section]["Outcomes"][0]["CIUpperSMD"])
+              CIlowerSMD=(data["References"][section]["Outcomes"][0]["CILowerSMD"])
+          else:
+              outcometext="NaN"
+              interventiontext="NaN"
+              SMD="NaN"
+              SESMD="NaN"
+              CIupperSMD="NaN"
+              CIlowerSMD="NaN"
+              
+          # get year data
+          if "Year" in data["References"][section]:
+              year=data["References"][section]["Year"]
+          else:
+              year="NaN"
+              
+          # get author data
+          if "ShortTitle" in data["References"][section]:
+              author=data["References"][section]["ShortTitle"]
+          else:
+              author="NaN"
+              
+      finds.append([author, find, label, strandfind, strandlabel, interventiontext, 
+                    outcometext, year, SMD, SESMD, CIupperSMD, CIlowerSMD])
+      
+  df = pd.DataFrame(finds, columns=['Author', 'EduSetting', 'EduID', 'Strand', 'Strand ID', 
+                                    'Intervention', 'Outcome', 'Year', 'SMD', 'SESMD', 'CIupper', 'CIlower'])
+                                    
+  df.fillna(0)
+                                    
+  # round effect sizes to two decimal points
+  df.loc[:, "SMD"] = df["SMD"].astype(float).round(4)
+  df.loc[:, "SESMD"] = df["SESMD"].astype(float).round(4)
+  df.loc[:, "CIupper"] = df["CIupper"].astype(float).round(4)
+  df.loc[:, "CIlower"] = df["CIlower"].astype(float).round(4)
+                                    
+  return df
+  
+all = get_all()
+all.head(10)
 ```
 
 ```{r message=FALSE}
-master_df <- data.frame(py$df)
+master_df <- py$all
 #View(master_df)
+master_df <- as.data.frame(lapply(master_df, unlist))
 head(master_df)
 ```
