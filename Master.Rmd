@@ -1,0 +1,133 @@
+---
+title: 'Strand Specific Effect Size Extraction.Rmd'
+author: "Jonathan Reardon"
+output:
+  html_document:
+    keep_md: true
+    df_print: paged
+  #pdf_document:
+    #keep_md: true
+editor_options:
+  chunk_output_type: inline
+---
+
+```{r setup, message=FALSE}
+knitr::opts_chunk$set(echo = T,
+                      fig.path = "StrandSpecificEffectSizeExtraction_figs/")
+library(reticulate)
+library(ggplot2)
+library(dplyr)
+library(reshape2)
+use_python("/usr/local/bin/python3")
+```
+
+```{python}
+# import necessary libraries
+import json
+from collections import Counter
+from pprint import pprint
+from matplotlib import pyplot as plt
+import pandas as pd
+plt.style.use('ggplot')
+
+# import dataset
+with open('/home/jon/json/ToolkitExtraction/data/Batch1.json') as f:
+    data=json.load(f)
+
+def get_strand_info():
+    ''' 
+    a function that returns
+    a dict containing strand labels
+    and corresponding attribute ids
+    '''
+    strands={}
+    for counter, element in enumerate(data["CodeSets"][0]["Attributes"]["AttributesList"]):
+        attribute_name=(data["CodeSets"][0]["Attributes"]["AttributesList"][counter]["AttributeName"])
+        attribute_id=(data["CodeSets"][0]["Attributes"]["AttributesList"][counter]["AttributeId"])
+        strands.update( {attribute_id:attribute_name} )
+    return strands
+
+strands = get_strand_info()
+
+def get_edu_info():
+    edu_setting={}
+    for counter, value in enumerate(data["CodeSets"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"]):
+        setting_code=data["CodeSets"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][counter]["AttributeId"]
+        setting_name=data["CodeSets"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][counter]["AttributeName"]
+        edu_setting.update( {setting_code:setting_name} )
+    return edu_setting
+
+edu = get_edu_info()
+
+finds=[]
+
+find=0
+strandfind=0
+
+studies=0
+# iterate over each section within each study of 'references'
+for section in range(len(data["References"])):
+    studies+=1
+    find=0
+    strandfind=0
+    for study in range(len(data["References"][section]["Codes"])):
+        
+        # get educational setting data (prmiary/elementary etc.)
+        for key,value in edu.items():
+            if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                find=value
+                label=key
+            elif find==0:
+                find="NA"
+                label="NA"
+                
+        # get strand data (feedback, peer tutoring etc.)
+        for key,value in strands.items():
+            if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                strandfind=value
+                strandlabel=key
+            elif strandfind==0:
+                strandfind="NA"
+                strandlabel="NA"
+                
+        # get outcome data
+        if "Outcomes" in data["References"][section]:
+            outcometext=data["References"][section]["Outcomes"][0]["OutcomeText"]
+            interventiontext=data["References"][section]["Outcomes"][0]["InterventionText"]
+            SMD=(data["References"][section]["Outcomes"][0]["SMD"])
+            SESMD=(data["References"][section]["Outcomes"][0]["SESMD"])
+            CIupperSMD=(data["References"][section]["Outcomes"][0]["CIUpperSMD"])
+            CIlowerSMD=(data["References"][section]["Outcomes"][0]["CILowerSMD"])
+        else:
+            outcometext="NA"
+            interventiontext="NA"
+            SMD="NA"
+            SESMD="NA"
+            CIupperSMD="NA"
+            CIlowerSMD="NA"
+            
+        # get year data
+        if "Year" in data["References"][section]:
+            year=data["References"][section]["Year"]
+        else:
+            year="NA"
+            
+        # get author data
+        if "ShortTitle" in data["References"][section]:
+            author=data["References"][section]["ShortTitle"]
+        else:
+            author="NA"
+            
+    finds.append([author, find, label, strandfind, strandlabel, interventiontext, 
+                  outcometext, year, SMD, SESMD, CIupperSMD, CIlowerSMD])
+    
+df = pd.DataFrame(finds, columns=['Author', 'Edu Setting', 'Edu ID', 'Strand', 'Strand ID', 
+                                  'Intervention', 'Outcome', 'Year', 'SMD', 'SESMD', 'CI upper', 'CI lower'])
+print(studies)
+df.head(10)
+```
+
+```{r setup, message=FALSE}
+master_df <- data.frame(py$df)
+View(master_df)
+```
