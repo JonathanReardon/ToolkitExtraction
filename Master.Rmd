@@ -184,9 +184,9 @@ def get_all():
           null+=1
       
       # convert data list ('finds') to Pandas dataframe
-      df = pd.DataFrame(finds, columns=['Author', 'EduSetting', 'Strand', 
-                                    'Intervention', 'Outcome', 'Year', 'Country', 'Publication type', 'SMD', 
-                                    'SESMD', 'CIupper', 'CIlower'])
+      df = pd.DataFrame(finds, columns=['Author', 'EducationalSetting', 'Strand', 
+                                       'Intervention', 'Outcome', 'Year', 'Country', 'PublicationType', 'SMD', 
+                                       'SESMD', 'CIupper', 'CIlower'])
                                     
       #df.fillna(0)
                                     
@@ -204,9 +204,19 @@ def get_all():
   
 all = get_all()
 ```
+**Pass complete dataset to R (dataframe) and view all for inspection**
+```{r}
+complete <- data.frame(py$all)
+
+# view complete dataset in external viewer (Rstudio)
+#View(complete)
+
+# view kable of complete dataset
+kable(complete[1:20,1:12]) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=11)
+```
 **Get 'feedback' 'peer tutoring' 'oral lang interventions' strand data, Primary Outcomes only**
 ```{python}
-
 Primary = all[all['Outcome'] == "Primary outcome"]
 Secondary = all[all['Outcome'] == "Secondary outcome(s)"]
 
@@ -219,15 +229,19 @@ print("Number of Primary outcome studies overall:                {}".format(len(
       "Number of Peer Tutoring strand (Primary outcome) studies: {}".format(len(peertut)),
       sep='\n')
 ```
-**Pass Feedback and Peer tutoring data frames from Python to R and make forest plots**
+**Pass Feedback and Peer tutoring data frames from Python to R and inspect with kable**
 ```{r, message=FALSE, warning=FALSE, fig.width=10,fig.height=12}
-
 all_df <- data.frame(py$all)
 #View(all_df)
 
 feedback <- data.frame(py$feedback)
 peertut <- data.frame(py$peertut)
 
+kable(feedback[1:10,1:12]) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=11)
+```
+**Make Feedback and Peer Tutoring Forest plots and display them**
+```{r, message=FALSE, warning=FALSE, fig.width=10,fig.height=12}
 feedback_plot <- ggplot(data=na.omit(subset(feedback, select=c(Author, SMD, CIlower, CIupper))),
                     aes(y=Author, x=SMD, xmin=CIlower, xmax=CIupper))+
                     geom_point(color='black', shape=15) +
@@ -247,13 +261,12 @@ peertut_plot <- ggplot(data=na.omit(subset(peertut, select=c(Author, SMD, CIlowe
                     geom_vline(xintercept=0, color='black', linetype='dashed') +
                     theme_classic() +
                     ggtitle("Peer Tutoring strand")
-
 grid.arrange(feedback_plot, peertut_plot, ncol=2)
 ```
 **Get 'Primary/elementary school' & 'Secondary/High school' data (Primary outcomes only), then from each of those get "Feedback" strand data only**
 ```{python}
-Elementary = Primary[Primary['EduSetting'] == "Primary/elementary school"]
-Sec = Primary[Primary['EduSetting'] == "Secondary/High school"]
+Elementary = Primary[Primary['EducationalSetting'] == "Primary/elementary school"]
+Sec = Primary[Primary['EducationalSetting'] == "Secondary/High school"]
 
 feedback_elementary = Elementary[Elementary['Strand'] == "Feedback"]
 feedback_secondary = Sec[Sec['Strand'] == "Feedback"]
@@ -262,11 +275,16 @@ print("Number of Primary/elementary school, primary outcome, feedbacks strand st
       "Number of Secondary/High school, primary outcome, feedbacks strand studies:     {}".format(len(feedback_secondary)),
       sep='\n')
 ```
-**Pass 'Primary/elementary school' & 'Secondary/High school' (Feedback Strand, Primary outcome) data frames from Python to R and make forest plots**
+**Pass 'Primary/elementary school' & 'Secondary/High school' (Feedback Strand, Primary outcome) data frames from Python to R and inspect with kable**
 ```{r, message=FALSE, warning=FALSE, fig.width=10,fig.height=7}
 Primary_feedback <- data.frame(py$feedback_elementary)
 High_feedback <- data.frame(py$feedback_secondary)
 
+kable(Primary_feedback[1:10,1:12]) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=11)
+```
+**Make Primary/Elementary and High school forest plots and display them**
+```{r, message=FALSE, warning=FALSE, fig.width=8,fig.height=7}
 Primary_plot <- ggplot(data=na.omit(subset(Primary_feedback, select=c(Author, SMD, CIlower, CIupper))),
                     aes(y=Author, x=SMD, xmin=CIlower, xmax=CIupper))+
                     geom_point(color='black', shape=15) +
@@ -289,6 +307,7 @@ High_plot <- ggplot(data=na.omit(subset(High_feedback, select=c(Author, SMD, CIl
 
 Primary_plot
 ```
+  
 **Get all study data (Primary outcome only), convert all missing data to NA. Remove "No information" cells (from educational setting column). Plot SMD/SESMD scatter plots groups by intervention, educational setting, strand, and country**
 ```{r, fig.width=14,fig.height=19}
 # Pass all Primary outcome studies to R dataframe (from Python)
@@ -299,11 +318,11 @@ master_df$Intervention <- as.character(master_df$Intervention)
 master_df$Intervention[master_df$Intervention=="NaN"] <- NA
 master_df$Intervention <- as.factor(master_df$Intervention)
 
-master_df$EduSetting <- as.character(master_df$EduSetting)
-master_df$EduSetting[master_df$EduSetting=="NaN"] <- NA
-master_df$EduSetting[master_df$EduSetting=="No information provided"] <- NA
-master_df$EduSetting[master_df$EduSetting=="Other educational setting (please specify)"] <- NA
-master_df$EduSetting <- as.factor(master_df$EduSetting)
+master_df$EducationalSetting <- as.character(master_df$EducationalSetting)
+master_df$EducationalSetting[master_df$EducationalSetting=="NaN"] <- NA
+master_df$EducationalSetting[master_df$EducationalSetting=="No information provided"] <- NA
+master_df$EducationalSetting[master_df$EducationalSetting=="Other educational setting (please specify)"] <- NA
+master_df$EducationalSetting <- as.factor(master_df$EducationalSetting)
 
 master_df$Strand <- as.character(master_df$Strand)
 master_df$Strand[master_df$Strand=="NaN"] <- NA
@@ -339,10 +358,11 @@ smd_intervention <- ggplot(data=subset(master_df, !is.na(Intervention)), aes(SMD
     theme(legend.title=element_blank()) +
     annotate(geom="text", x=master_df_mean_SMD+.15, y=-.1, label=round(master_df_mean_SMD, 2), color="black") +
     ylim(-0.2, 1.75) +
+    xlim(-1.5, 2.5) +
     ggtitle("SMD by SESMD grouped by Intervention")
 
 # Make SMD/SESMD scatter plot, (color) grouped by Educational Setting
-smd_edusetting <- ggplot(data=subset(master_df, !is.na(EduSetting)), aes(SMD, SESMD, color=EduSetting)) + 
+smd_edusetting <- ggplot(data=subset(master_df, !is.na(EducationalSetting)), aes(SMD, SESMD, color=EducationalSetting)) + 
     geom_point(alpha=1, na.rm=TRUE, size=1.5) +
     theme_grey() +
     geom_vline(xintercept=master_df_mean_SMD, linetype="dotted", color="black", size=1) +
@@ -353,6 +373,7 @@ smd_edusetting <- ggplot(data=subset(master_df, !is.na(EduSetting)), aes(SMD, SE
     theme(legend.title=element_blank()) +
     annotate(geom="text", x=master_df_mean_SMD+.15, y=-.1, label=round(master_df_mean_SMD, 2), color="black") +
     ylim(-0.2, 1.75) +
+    xlim(-1.5, 2.5) +
     ggtitle("SMD by SESMD grouped by Educational Setting")
 
 # Make SMD/SESMD scatter plot, (color) grouped by Strand
@@ -367,6 +388,7 @@ smd_strand <- ggplot(data=subset(master_df, !is.na(Strand)), aes(SMD, SESMD, col
     theme(legend.title=element_blank()) +
     annotate(geom="text", x=master_df_mean_SMD+.15, y=-.1, label=round(master_df_mean_SMD, 2), color="black") +
     ylim(-0.2, 1.75) +
+    xlim(-1.5, 2.5) +
     ggtitle("SMD by SESMD grouped by Strand")
 
 # Make SMD/SESMD scatter plot, (color) grouped by Country
@@ -381,6 +403,7 @@ smd_country <- ggplot(data=subset(master_df, !is.na(Country)), aes(SMD, SESMD, c
     theme(legend.title=element_blank()) +
     annotate(geom="text", x=master_df_mean_SMD+.15, y=-.1, label=round(master_df_mean_SMD, 2), color="black") +
     ylim(-0.2, 1.75) +
+    xlim(-1.5, 2.5) +
     ggtitle("SMD by SESMD grouped by Country")
 
 # use GridExtra to display all 4 plots neatly
