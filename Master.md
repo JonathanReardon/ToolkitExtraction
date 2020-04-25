@@ -219,14 +219,15 @@ all = get_all()
 complete <- data.frame(py$all)
 
 # view complete dataset in external viewer (Rstudio)
-#View(complete)
+View(complete)
 
+rownames(complete) <- NULL
 # view kable of complete dataset
 kable(complete[1:15,1:12]) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=10)
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=8)
 ```
 
-<table class="table table-striped table-hover table-condensed table-responsive table-bordered" style="font-size: 10px; margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover table-condensed table-responsive table-bordered" style="font-size: 8px; margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
    <th style="text-align:left;"> Author </th>
@@ -482,19 +483,19 @@ print("Number of Primary outcome studies overall:                {}".format(len(
 
 ```r
 all_df <- data.frame(py$all)
-#View(all_df)
+View(all_df)
 
 feedback <- data.frame(py$feedback)
 peertut <- data.frame(py$peertut)
 
-kable(feedback[1:10,1:12]) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=10)
+rownames(feedback) <- NULL
+kable(feedback[1:15,1:12]) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=8)
 ```
 
-<table class="table table-striped table-hover table-condensed table-responsive table-bordered" style="font-size: 10px; margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover table-condensed table-responsive table-bordered" style="font-size: 8px; margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
-   <th style="text-align:left;">   </th>
    <th style="text-align:left;"> Author </th>
    <th style="text-align:left;"> EducationalSetting </th>
    <th style="text-align:left;"> Strand </th>
@@ -511,7 +512,6 @@ kable(feedback[1:10,1:12]) %>%
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:left;"> 4 </td>
    <td style="text-align:left;"> Adler (1998) </td>
    <td style="text-align:left;"> Primary/elementary school </td>
    <td style="text-align:left;"> Feedback </td>
@@ -526,7 +526,6 @@ kable(feedback[1:10,1:12]) %>%
    <td style="text-align:right;"> -0.2721 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 11 </td>
    <td style="text-align:left;"> Anderson (1973) </td>
    <td style="text-align:left;"> Middle school </td>
    <td style="text-align:left;"> Feedback </td>
@@ -541,7 +540,6 @@ kable(feedback[1:10,1:12]) %>%
    <td style="text-align:right;"> 0.7020 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 17 </td>
    <td style="text-align:left;"> Arter (1994) </td>
    <td style="text-align:left;"> Primary/elementary school </td>
    <td style="text-align:left;"> Feedback </td>
@@ -556,7 +554,6 @@ kable(feedback[1:10,1:12]) %>%
    <td style="text-align:right;"> -0.0528 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 20 </td>
    <td style="text-align:left;"> Aumiller (1963) </td>
    <td style="text-align:left;"> Primary/elementary school </td>
    <td style="text-align:left;"> Feedback </td>
@@ -571,7 +568,6 @@ kable(feedback[1:10,1:12]) %>%
    <td style="text-align:right;"> -0.2903 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 21 </td>
    <td style="text-align:left;"> Baechie (1990) </td>
    <td style="text-align:left;"> Middle school </td>
    <td style="text-align:left;"> Feedback </td>
@@ -586,7 +582,6 @@ kable(feedback[1:10,1:12]) %>%
    <td style="text-align:right;"> 0.0952 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 35 </td>
    <td style="text-align:left;"> Benson (1979) 1_1 </td>
    <td style="text-align:left;"> Middle school </td>
    <td style="text-align:left;"> Feedback </td>
@@ -601,7 +596,6 @@ kable(feedback[1:10,1:12]) %>%
    <td style="text-align:right;"> -0.0152 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 36 </td>
    <td style="text-align:left;"> Benson (1979) 1_2 </td>
    <td style="text-align:left;"> Middle school </td>
    <td style="text-align:left;"> Feedback </td>
@@ -616,7 +610,6 @@ kable(feedback[1:10,1:12]) %>%
    <td style="text-align:right;"> -0.0737 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 41 </td>
    <td style="text-align:left;"> Bethge (1982) </td>
    <td style="text-align:left;"> Primary/elementary school </td>
    <td style="text-align:left;"> Feedback </td>
@@ -631,7 +624,6 @@ kable(feedback[1:10,1:12]) %>%
    <td style="text-align:right;"> 0.2619 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 43 </td>
    <td style="text-align:left;"> Bilsky (1978) </td>
    <td style="text-align:left;"> Secondary/High school </td>
    <td style="text-align:left;"> Feedback </td>
@@ -646,7 +638,6 @@ kable(feedback[1:10,1:12]) %>%
    <td style="text-align:right;"> 1.6338 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 47 </td>
    <td style="text-align:left;"> Block (1970) </td>
    <td style="text-align:left;"> Primary/elementary school </td>
    <td style="text-align:left;"> Feedback </td>
@@ -659,6 +650,76 @@ kable(feedback[1:10,1:12]) %>%
    <td style="text-align:right;"> 0.2479 </td>
    <td style="text-align:right;"> 1.0050 </td>
    <td style="text-align:right;"> 0.0331 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Boggiano (1985) 1_1 </td>
+   <td style="text-align:left;"> Primary/elementary school </td>
+   <td style="text-align:left;"> Feedback </td>
+   <td style="text-align:left;"> Literacy: writing </td>
+   <td style="text-align:left;"> Primary outcome </td>
+   <td style="text-align:right;"> 1985 </td>
+   <td style="text-align:left;"> USA </td>
+   <td style="text-align:left;"> Journal article </td>
+   <td style="text-align:right;"> 0.8454 </td>
+   <td style="text-align:right;"> 0.3026 </td>
+   <td style="text-align:right;"> 1.4385 </td>
+   <td style="text-align:right;"> 0.2523 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Bohannon (1975) </td>
+   <td style="text-align:left;"> Primary/elementary school </td>
+   <td style="text-align:left;"> Feedback </td>
+   <td style="text-align:left;"> Literacy: decoding/phonics </td>
+   <td style="text-align:left;"> Primary outcome </td>
+   <td style="text-align:right;"> 1975 </td>
+   <td style="text-align:left;"> USA </td>
+   <td style="text-align:left;"> Dissertation or thesis </td>
+   <td style="text-align:right;"> 2.7500 </td>
+   <td style="text-align:right;"> 0.6600 </td>
+   <td style="text-align:right;"> 4.0436 </td>
+   <td style="text-align:right;"> 1.4564 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Boulet (1990) 1_1 </td>
+   <td style="text-align:left;"> Secondary/High school </td>
+   <td style="text-align:left;"> Feedback </td>
+   <td style="text-align:left;"> Curriculum: other </td>
+   <td style="text-align:left;"> Primary outcome </td>
+   <td style="text-align:right;"> 1990 </td>
+   <td style="text-align:left;"> Canada </td>
+   <td style="text-align:left;"> Journal article </td>
+   <td style="text-align:right;"> -0.0329 </td>
+   <td style="text-align:right;"> 0.2838 </td>
+   <td style="text-align:right;"> 0.5233 </td>
+   <td style="text-align:right;"> -0.5891 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Boulet (1990) 1_2 </td>
+   <td style="text-align:left;"> Secondary/High school </td>
+   <td style="text-align:left;"> Feedback </td>
+   <td style="text-align:left;"> Curriculum: other </td>
+   <td style="text-align:left;"> Primary outcome </td>
+   <td style="text-align:right;"> 1990 </td>
+   <td style="text-align:left;"> Canada </td>
+   <td style="text-align:left;"> Journal article </td>
+   <td style="text-align:right;"> 0.2514 </td>
+   <td style="text-align:right;"> 0.2664 </td>
+   <td style="text-align:right;"> 0.7735 </td>
+   <td style="text-align:right;"> -0.2707 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Brandstetter (1978) 1_2 </td>
+   <td style="text-align:left;"> Primary/elementary school </td>
+   <td style="text-align:left;"> Feedback </td>
+   <td style="text-align:left;"> Literacy: reading comprehension </td>
+   <td style="text-align:left;"> Primary outcome </td>
+   <td style="text-align:right;"> 1978 </td>
+   <td style="text-align:left;"> USA </td>
+   <td style="text-align:left;"> Journal article </td>
+   <td style="text-align:right;"> 0.3700 </td>
+   <td style="text-align:right;"> 1.0700 </td>
+   <td style="text-align:right;"> 2.4672 </td>
+   <td style="text-align:right;"> -1.7272 </td>
   </tr>
 </tbody>
 </table>
@@ -712,14 +773,14 @@ print("Number of Primary/elementary school, primary outcome, feedbacks strand st
 Primary_feedback <- data.frame(py$feedback_elementary)
 High_feedback <- data.frame(py$feedback_secondary)
 
-kable(Primary_feedback[1:10,1:12]) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=10)
+rownames(Primary_feedback) <- NULL
+kable(Primary_feedback[1:15,1:12]) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=8)
 ```
 
-<table class="table table-striped table-hover table-condensed table-responsive table-bordered" style="font-size: 10px; margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover table-condensed table-responsive table-bordered" style="font-size: 8px; margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
-   <th style="text-align:left;">   </th>
    <th style="text-align:left;"> Author </th>
    <th style="text-align:left;"> EducationalSetting </th>
    <th style="text-align:left;"> Strand </th>
@@ -736,7 +797,6 @@ kable(Primary_feedback[1:10,1:12]) %>%
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:left;"> 4 </td>
    <td style="text-align:left;"> Adler (1998) </td>
    <td style="text-align:left;"> Primary/elementary school </td>
    <td style="text-align:left;"> Feedback </td>
@@ -751,7 +811,6 @@ kable(Primary_feedback[1:10,1:12]) %>%
    <td style="text-align:right;"> -0.2721 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 17 </td>
    <td style="text-align:left;"> Arter (1994) </td>
    <td style="text-align:left;"> Primary/elementary school </td>
    <td style="text-align:left;"> Feedback </td>
@@ -766,7 +825,6 @@ kable(Primary_feedback[1:10,1:12]) %>%
    <td style="text-align:right;"> -0.0528 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 20 </td>
    <td style="text-align:left;"> Aumiller (1963) </td>
    <td style="text-align:left;"> Primary/elementary school </td>
    <td style="text-align:left;"> Feedback </td>
@@ -781,7 +839,6 @@ kable(Primary_feedback[1:10,1:12]) %>%
    <td style="text-align:right;"> -0.2903 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 41 </td>
    <td style="text-align:left;"> Bethge (1982) </td>
    <td style="text-align:left;"> Primary/elementary school </td>
    <td style="text-align:left;"> Feedback </td>
@@ -796,7 +853,6 @@ kable(Primary_feedback[1:10,1:12]) %>%
    <td style="text-align:right;"> 0.2619 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 47 </td>
    <td style="text-align:left;"> Block (1970) </td>
    <td style="text-align:left;"> Primary/elementary school </td>
    <td style="text-align:left;"> Feedback </td>
@@ -811,7 +867,6 @@ kable(Primary_feedback[1:10,1:12]) %>%
    <td style="text-align:right;"> 0.0331 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 50 </td>
    <td style="text-align:left;"> Boggiano (1985) 1_1 </td>
    <td style="text-align:left;"> Primary/elementary school </td>
    <td style="text-align:left;"> Feedback </td>
@@ -826,7 +881,6 @@ kable(Primary_feedback[1:10,1:12]) %>%
    <td style="text-align:right;"> 0.2523 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 52 </td>
    <td style="text-align:left;"> Bohannon (1975) </td>
    <td style="text-align:left;"> Primary/elementary school </td>
    <td style="text-align:left;"> Feedback </td>
@@ -841,7 +895,6 @@ kable(Primary_feedback[1:10,1:12]) %>%
    <td style="text-align:right;"> 1.4564 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 64 </td>
    <td style="text-align:left;"> Brandstetter (1978) 1_2 </td>
    <td style="text-align:left;"> Primary/elementary school </td>
    <td style="text-align:left;"> Feedback </td>
@@ -856,7 +909,6 @@ kable(Primary_feedback[1:10,1:12]) %>%
    <td style="text-align:right;"> -1.7272 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 69 </td>
    <td style="text-align:left;"> Brookhart (2008) </td>
    <td style="text-align:left;"> Primary/elementary school </td>
    <td style="text-align:left;"> Feedback </td>
@@ -871,7 +923,6 @@ kable(Primary_feedback[1:10,1:12]) %>%
    <td style="text-align:right;"> -0.2381 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 82 </td>
    <td style="text-align:left;"> Butler (1986) 1_1 </td>
    <td style="text-align:left;"> Primary/elementary school </td>
    <td style="text-align:left;"> Feedback </td>
@@ -884,6 +935,76 @@ kable(Primary_feedback[1:10,1:12]) %>%
    <td style="text-align:right;"> 0.1742 </td>
    <td style="text-align:right;"> 1.8804 </td>
    <td style="text-align:right;"> 1.1976 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Butler (1986) 1_2 </td>
+   <td style="text-align:left;"> Primary/elementary school </td>
+   <td style="text-align:left;"> Feedback </td>
+   <td style="text-align:left;"> Literacy: writing </td>
+   <td style="text-align:left;"> Primary outcome </td>
+   <td style="text-align:right;"> 1986 </td>
+   <td style="text-align:left;"> Israel </td>
+   <td style="text-align:left;"> Journal article </td>
+   <td style="text-align:right;"> 1.1185 </td>
+   <td style="text-align:right;"> 0.1636 </td>
+   <td style="text-align:right;"> 1.4392 </td>
+   <td style="text-align:right;"> 0.7978 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Butler (1987) 1_2 </td>
+   <td style="text-align:left;"> Primary/elementary school </td>
+   <td style="text-align:left;"> Feedback </td>
+   <td style="text-align:left;"> Cognitive: reasoning </td>
+   <td style="text-align:left;"> Primary outcome </td>
+   <td style="text-align:right;"> 1987 </td>
+   <td style="text-align:left;"> Israel </td>
+   <td style="text-align:left;"> Journal article </td>
+   <td style="text-align:right;"> 0.5410 </td>
+   <td style="text-align:right;"> 0.2884 </td>
+   <td style="text-align:right;"> 1.1063 </td>
+   <td style="text-align:right;"> -0.0242 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Butler (1987) 1_3 </td>
+   <td style="text-align:left;"> Primary/elementary school </td>
+   <td style="text-align:left;"> Feedback </td>
+   <td style="text-align:left;"> Cognitive: reasoning </td>
+   <td style="text-align:left;"> Primary outcome </td>
+   <td style="text-align:right;"> 1987 </td>
+   <td style="text-align:left;"> Israel </td>
+   <td style="text-align:left;"> Journal article </td>
+   <td style="text-align:right;"> 0.3675 </td>
+   <td style="text-align:right;"> 0.2854 </td>
+   <td style="text-align:right;"> 0.9270 </td>
+   <td style="text-align:right;"> -0.1919 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Eggen (1978) </td>
+   <td style="text-align:left;"> Primary/elementary school </td>
+   <td style="text-align:left;"> Feedback </td>
+   <td style="text-align:left;"> Mathematics </td>
+   <td style="text-align:left;"> Primary outcome </td>
+   <td style="text-align:right;"> 1978 </td>
+   <td style="text-align:left;"> USA </td>
+   <td style="text-align:left;"> Journal article </td>
+   <td style="text-align:right;"> 0.6851 </td>
+   <td style="text-align:right;"> 0.3102 </td>
+   <td style="text-align:right;"> 1.2931 </td>
+   <td style="text-align:right;"> 0.0771 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Hanna (1976) </td>
+   <td style="text-align:left;"> Primary/elementary school </td>
+   <td style="text-align:left;"> Feedback </td>
+   <td style="text-align:left;"> Curriculum: other </td>
+   <td style="text-align:left;"> Primary outcome </td>
+   <td style="text-align:right;"> 1976 </td>
+   <td style="text-align:left;"> USA </td>
+   <td style="text-align:left;"> Journal article </td>
+   <td style="text-align:right;"> 0.2276 </td>
+   <td style="text-align:right;"> 0.0719 </td>
+   <td style="text-align:right;"> 0.3686 </td>
+   <td style="text-align:right;"> 0.0866 </td>
   </tr>
 </tbody>
 </table>

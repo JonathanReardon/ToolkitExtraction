@@ -209,11 +209,12 @@ all = get_all()
 complete <- data.frame(py$all)
 
 # view complete dataset in external viewer (Rstudio)
-#View(complete)
+View(complete)
 
+rownames(complete) <- NULL
 # view kable of complete dataset
 kable(complete[1:15,1:12]) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=10)
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=8)
 ```
 **Get 'feedback' 'peer tutoring' 'oral lang interventions' strand data, Primary Outcomes only**
 ```{python}
@@ -232,13 +233,14 @@ print("Number of Primary outcome studies overall:                {}".format(len(
 **Pass Feedback and Peer tutoring data frames from Python to R and inspect with kable**
 ```{r, message=FALSE, warning=FALSE, fig.width=10,fig.height=12}
 all_df <- data.frame(py$all)
-#View(all_df)
+View(all_df)
 
 feedback <- data.frame(py$feedback)
 peertut <- data.frame(py$peertut)
 
-kable(feedback[1:10,1:12]) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=10)
+rownames(feedback) <- NULL
+kable(feedback[1:15,1:12]) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=8)
 ```
 **Make Feedback and Peer Tutoring Forest plots and display them**
 ```{r, message=FALSE, warning=FALSE, fig.width=10,fig.height=12}
@@ -280,8 +282,9 @@ print("Number of Primary/elementary school, primary outcome, feedbacks strand st
 Primary_feedback <- data.frame(py$feedback_elementary)
 High_feedback <- data.frame(py$feedback_secondary)
 
-kable(Primary_feedback[1:10,1:12]) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=10)
+rownames(Primary_feedback) <- NULL
+kable(Primary_feedback[1:15,1:12]) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=8)
 ```
 **Make Primary/Elementary and High school forest plots and display them**
 ```{r, message=FALSE, warning=FALSE, fig.width=8,fig.height=7}
