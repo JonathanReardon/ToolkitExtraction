@@ -209,11 +209,11 @@ all = get_all()
 complete <- data.frame(py$all)
 
 # view complete dataset in external viewer (Rstudio)
-View(complete)
+#View(complete)
 
 rownames(complete) <- NULL
 # view kable of complete dataset
-kable(complete[1:15,1:12]) %>%
+kable(complete[1:15,1:12], booktabs=T) %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=8)
 ```
 **Get 'feedback' 'peer tutoring' 'oral lang interventions' strand data, Primary Outcomes only**
@@ -239,7 +239,7 @@ feedback <- data.frame(py$feedback)
 peertut <- data.frame(py$peertut)
 
 rownames(feedback) <- NULL
-kable(feedback[1:15,1:12]) %>%
+kable(feedback[1:10,1:12]) %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=8)
 ```
 **Make Feedback and Peer Tutoring Forest plots and display them**
@@ -283,7 +283,7 @@ Primary_feedback <- data.frame(py$feedback_elementary)
 High_feedback <- data.frame(py$feedback_secondary)
 
 rownames(Primary_feedback) <- NULL
-kable(Primary_feedback[1:15,1:12]) %>%
+kable(Primary_feedback[1:10,1:12]) %>%
   kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=8)
 ```
 **Make Primary/Elementary and High school forest plots and display them**
@@ -355,7 +355,7 @@ smd_intervention <- ggplot(data=subset(master_df, !is.na(Intervention)), aes(SMD
     theme_grey() +
     geom_vline(xintercept=master_df_mean_SMD, linetype="dotted", color="black", size=1) +
     theme(legend.title = element_text(color = "black", size = 10),
-          legend.text = element_text(color = "black", size = 8)) +
+          legend.text = element_text(color = "black", size = 11)) +
     theme(legend.position="right") +
     guides(fill=guide_legend(nrow=5, byrow=TRUE)) +
     theme(legend.title=element_blank()) +
@@ -370,7 +370,7 @@ smd_edusetting <- ggplot(data=subset(master_df, !is.na(EducationalSetting)), aes
     theme_grey() +
     geom_vline(xintercept=master_df_mean_SMD, linetype="dotted", color="black", size=1) +
     theme(legend.title = element_text(color = "black", size = 10),
-          legend.text = element_text(color = "black", size = 8)) +
+          legend.text = element_text(color = "black", size = 11)) +
     theme(legend.position="right") +
     guides(fill=guide_legend(nrow=5, byrow=TRUE)) +
     theme(legend.title=element_blank()) +
@@ -385,7 +385,7 @@ smd_strand <- ggplot(data=subset(master_df, !is.na(Strand)), aes(SMD, SESMD, col
     theme_grey() +
     geom_vline(xintercept=master_df_mean_SMD, linetype="dotted", color="black", size=1) +
     theme(legend.title = element_text(color = "black", size = 10),
-          legend.text = element_text(color = "black", size = 8)) +
+          legend.text = element_text(color = "black", size = 11)) +
     theme(legend.position="right") +
     guides(fill=guide_legend(nrow=5, byrow=TRUE)) +
     theme(legend.title=element_blank()) +
@@ -400,7 +400,7 @@ smd_country <- ggplot(data=subset(master_df, !is.na(Country)), aes(SMD, SESMD, c
     theme_grey() +
     geom_vline(xintercept=master_df_mean_SMD, linetype="dotted", color="black", size=1) +
     theme(legend.title = element_text(color = "black", size = 10),
-          legend.text = element_text(color = "black", size = 8)) +
+          legend.text = element_text(color = "black", size = 11)) +
     theme(legend.position="right") +
     guides(fill=guide_legend(nrow=5, byrow=TRUE)) +
     theme(legend.title=element_blank()) +
