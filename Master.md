@@ -222,11 +222,11 @@ complete <- data.frame(py$all)
 #View(complete)
 
 # view kable of complete dataset
-kable(complete[1:20,1:12]) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=11)
+kable(complete[1:15,1:12]) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=10)
 ```
 
-<table class="table table-striped table-hover table-condensed table-responsive table-bordered" style="font-size: 11px; margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover table-condensed table-responsive table-bordered" style="font-size: 10px; margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
    <th style="text-align:left;"> Author </th>
@@ -454,76 +454,6 @@ kable(complete[1:20,1:12]) %>%
    <td style="text-align:right;"> 0.4923 </td>
    <td style="text-align:right;"> -0.4131 </td>
   </tr>
-  <tr>
-   <td style="text-align:left;"> Arblaster (1991) </td>
-   <td style="text-align:left;"> NaN </td>
-   <td style="text-align:left;"> Peer tutoring </td>
-   <td style="text-align:left;"> Literacy: reading other </td>
-   <td style="text-align:left;"> Primary outcome </td>
-   <td style="text-align:right;"> 1991 </td>
-   <td style="text-align:left;"> UK (Select all that apply) </td>
-   <td style="text-align:left;"> Journal article </td>
-   <td style="text-align:right;"> 1.6870 </td>
-   <td style="text-align:right;"> 0.4016 </td>
-   <td style="text-align:right;"> 2.4741 </td>
-   <td style="text-align:right;"> 0.8999 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Armstrong (2000) </td>
-   <td style="text-align:left;"> Middle school </td>
-   <td style="text-align:left;"> Oral language interventions </td>
-   <td style="text-align:left;"> NaN </td>
-   <td style="text-align:left;"> NaN </td>
-   <td style="text-align:right;"> 2000 </td>
-   <td style="text-align:left;"> USA </td>
-   <td style="text-align:left;"> Dissertation or thesis </td>
-   <td style="text-align:right;"> NaN </td>
-   <td style="text-align:right;"> NaN </td>
-   <td style="text-align:right;"> NaN </td>
-   <td style="text-align:right;"> NaN </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Arter (1994) </td>
-   <td style="text-align:left;"> Primary/elementary school </td>
-   <td style="text-align:left;"> Feedback </td>
-   <td style="text-align:left;"> Literacy: writing </td>
-   <td style="text-align:left;"> Primary outcome </td>
-   <td style="text-align:right;"> 1994 </td>
-   <td style="text-align:left;"> USA </td>
-   <td style="text-align:left;"> Conference paper </td>
-   <td style="text-align:right;"> 0.3000 </td>
-   <td style="text-align:right;"> 0.1800 </td>
-   <td style="text-align:right;"> 0.6528 </td>
-   <td style="text-align:right;"> -0.0528 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Ashton (1983) </td>
-   <td style="text-align:left;"> NaN </td>
-   <td style="text-align:left;"> Summer schools </td>
-   <td style="text-align:left;"> NaN </td>
-   <td style="text-align:left;"> NaN </td>
-   <td style="text-align:right;"> 1983 </td>
-   <td style="text-align:left;"> NaN </td>
-   <td style="text-align:left;"> NaN </td>
-   <td style="text-align:right;"> NaN </td>
-   <td style="text-align:right;"> NaN </td>
-   <td style="text-align:right;"> NaN </td>
-   <td style="text-align:right;"> NaN </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Atherley (1989) </td>
-   <td style="text-align:left;"> Primary/elementary school </td>
-   <td style="text-align:left;"> Peer tutoring </td>
-   <td style="text-align:left;"> Literacy: reading comprehension </td>
-   <td style="text-align:left;"> Primary outcome </td>
-   <td style="text-align:right;"> 1989 </td>
-   <td style="text-align:left;"> UK (Select all that apply) </td>
-   <td style="text-align:left;"> Journal article </td>
-   <td style="text-align:right;"> 0.6814 </td>
-   <td style="text-align:right;"> 0.3356 </td>
-   <td style="text-align:right;"> 1.3391 </td>
-   <td style="text-align:right;"> 0.0237 </td>
-  </tr>
 </tbody>
 </table>
 **Get 'feedback' 'peer tutoring' 'oral lang interventions' strand data, Primary Outcomes only**
@@ -558,10 +488,10 @@ feedback <- data.frame(py$feedback)
 peertut <- data.frame(py$peertut)
 
 kable(feedback[1:10,1:12]) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=11)
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=10)
 ```
 
-<table class="table table-striped table-hover table-condensed table-responsive table-bordered" style="font-size: 11px; margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover table-condensed table-responsive table-bordered" style="font-size: 10px; margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
    <th style="text-align:left;">   </th>
@@ -783,10 +713,10 @@ Primary_feedback <- data.frame(py$feedback_elementary)
 High_feedback <- data.frame(py$feedback_secondary)
 
 kable(Primary_feedback[1:10,1:12]) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=11)
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=10)
 ```
 
-<table class="table table-striped table-hover table-condensed table-responsive table-bordered" style="font-size: 11px; margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover table-condensed table-responsive table-bordered" style="font-size: 10px; margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
    <th style="text-align:left;">   </th>

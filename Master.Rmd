@@ -212,8 +212,8 @@ complete <- data.frame(py$all)
 #View(complete)
 
 # view kable of complete dataset
-kable(complete[1:20,1:12]) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=11)
+kable(complete[1:15,1:12]) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=10)
 ```
 **Get 'feedback' 'peer tutoring' 'oral lang interventions' strand data, Primary Outcomes only**
 ```{python}
@@ -238,7 +238,7 @@ feedback <- data.frame(py$feedback)
 peertut <- data.frame(py$peertut)
 
 kable(feedback[1:10,1:12]) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=11)
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=10)
 ```
 **Make Feedback and Peer Tutoring Forest plots and display them**
 ```{r, message=FALSE, warning=FALSE, fig.width=10,fig.height=12}
@@ -281,7 +281,7 @@ Primary_feedback <- data.frame(py$feedback_elementary)
 High_feedback <- data.frame(py$feedback_secondary)
 
 kable(Primary_feedback[1:10,1:12]) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=11)
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive", "bordered"), full_width=T, font_size=10)
 ```
 **Make Primary/Elementary and High school forest plots and display them**
 ```{r, message=FALSE, warning=FALSE, fig.width=8,fig.height=7}
