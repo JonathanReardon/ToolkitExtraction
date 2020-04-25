@@ -46,7 +46,7 @@ with open('/home/jon/json/ToolkitExtraction/data/batch2.json') as f:
 
 These functions extract attribute names and ID's (e.g. strand, educational setting) and return Python dictionaries containing attribute ID's as 'keys' and attribute names as 'values'. The 'Codesets' section at the top of the file does not contain any data, only variable information.
 
-**Example dictionaries**
+**Example dictionaries**  
 strands&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= {5023544: 'Arts participation', 5023545: 'Aspiration interventions', .. }  
 edu_setting&nbsp;&nbsp;&nbsp;= {5215410: 'Nursery school/pre-school', 5215411: 'Primary/elementary school', 5215412, .. }
 ```{python}
@@ -90,7 +90,7 @@ def get_publication_type():
     return publication_type
 pub_type = get_publication_type()
 ```
-## Main data extraction function**
+## Main data extraction function
 ```{python}
 def get_all():
   finds=[]
@@ -204,7 +204,7 @@ def get_all():
   
 all = get_all()
 ```
-**Get 'feedback' 'peer tutoring' 'oral lang interventions' strand data, Primary outcomes only**
+**Get 'feedback' 'peer tutoring' 'oral lang interventions' strand data, Primary Outcomes only**
 ```{python}
 
 Primary = all[all['Outcome'] == "Primary outcome"]
@@ -264,7 +264,6 @@ print("Number of Primary/elementary school, primary outcome, feedbacks strand st
 ```
 **Pass 'Primary/elementary school' & 'Secondary/High school' (Feedback Strand, Primary outcome) data frames from Python to R and make forest plots**
 ```{r, message=FALSE, warning=FALSE, fig.width=10,fig.height=7}
-
 Primary_feedback <- data.frame(py$feedback_elementary)
 High_feedback <- data.frame(py$feedback_secondary)
 
@@ -290,8 +289,7 @@ High_plot <- ggplot(data=na.omit(subset(High_feedback, select=c(Author, SMD, CIl
 
 Primary_plot
 ```
-
-**Get all study data (Primary outcome only), convert all missing data to NA. Remove "No information" cells (from educational setting column). Plot SMD/SESMD scatter plots groups by intervention, educational setting, strand, and country.**
+**Get all study data (Primary outcome only), convert all missing data to NA. Remove "No information" cells (from educational setting column). Plot SMD/SESMD scatter plots groups by intervention, educational setting, strand, and country**
 ```{r, fig.width=14,fig.height=19}
 # Pass all Primary outcome studies to R dataframe (from Python)
 master_df <- data.frame(py$Primary)

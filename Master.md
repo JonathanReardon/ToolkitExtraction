@@ -48,7 +48,7 @@ with open('/home/jon/json/ToolkitExtraction/data/batch2.json') as f:
 
 These functions extract attribute names and ID's (e.g. strand, educational setting) and return Python dictionaries containing attribute ID's as 'keys' and attribute names as 'values'. The 'Codesets' section at the top of the file does not contain any data, only variable information.
 
-**Example dictionaries**
+**Example dictionaries**  
 strands&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= {5023544: 'Arts participation', 5023545: 'Aspiration interventions', .. }  
 edu_setting&nbsp;&nbsp;&nbsp;= {5215410: 'Nursery school/pre-school', 5215411: 'Primary/elementary school', 5215412, .. }
 
@@ -93,7 +93,7 @@ def get_publication_type():
     return publication_type
 pub_type = get_publication_type()
 ```
-## Main data extraction function**
+## Main data extraction function
 
 ```python
 def get_all():
@@ -213,7 +213,7 @@ all = get_all()
 ## Number of studies extracted (they have a 'Codes' section): 598
 ## Number of of missing studies (no 'Codes' section found):   18
 ```
-**Get 'feedback' 'peer tutoring' 'oral lang interventions' strand data, Primary outcomes only**
+**Get 'feedback' 'peer tutoring' 'oral lang interventions' strand data, Primary Outcomes only**
 
 ```python
 
@@ -317,8 +317,7 @@ Primary_plot
 ```
 
 ![](Master_figs/unnamed-chunk-7-1.png)<!-- -->
-
-**Get all study data (Primary outcome only), convert all missing data to NA. Remove "No information" cells (from educational setting column). Plot SMD/SESMD scatter plots groups by intervention, educational setting, strand, and country.**
+**Get all study data (Primary outcome only), convert all missing data to NA. Remove "No information" cells (from educational setting column). Plot SMD/SESMD scatter plots groups by intervention, educational setting, strand, and country**
 
 ```r
 # Pass all Primary outcome studies to R dataframe (from Python)
