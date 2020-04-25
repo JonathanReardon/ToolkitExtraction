@@ -10,7 +10,7 @@ output:
 editor_options:
   chunk_output_type: inline
 ---
-
+**Import R libraries, save figures to "Master_figs/"**
 
 ```r
 knitr::opts_chunk$set(echo = T,
@@ -21,9 +21,13 @@ library(dplyr)
 library(reshape2)
 library(purrr)
 library(gridExtra)
+library(kableExtra)
+library(forestplot)
+library(metafor)
 use_python("/usr/local/bin/python3")
+rm(list = ls())
 ```
-
+**Import Python packages and (json) dataset**
 
 ```python
 # import necessary libraries
@@ -35,201 +39,327 @@ from matplotlib import pyplot as plt
 import pandas as pd
 plt.style.use('ggplot')
 
-# import dataset
-with open('/home/jon/json/ToolkitExtraction/data/Batch1.json') as f:
+# import dataset (uncomment to select dataset of choice)
+with open('/home/jon/json/ToolkitExtraction/data/batch2.json') as f:
+#with open('/home/jon/json/ToolkitExtraction/data/Batch1.json') as f:
     data=json.load(f)
+```
+## CodeSets extraction
 
+These functions extract attribute names and ID's (e.g. strand, educational setting) and return Python dictionaries containing attribute ID's as 'keys' and attribute names as 'values'. The 'Codesets' section at the top of the file does not contain any data, only variable information.
+
+**Example dictionaries**
+strands&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= {5023544: 'Arts participation', 5023545: 'Aspiration interventions', .. }  
+edu_setting&nbsp;&nbsp;&nbsp;= {5215410: 'Nursery school/pre-school', 5215411: 'Primary/elementary school', 5215412, .. }
+
+```python
 def get_strand_info():
-    ''' 
-    a function that returns
-    a dict containing strand labels
-    and corresponding attribute ids
-    '''
+    '''Return a dict of Strand Attribute Names & Attribute ID's'''
     strands={}
     for counter, element in enumerate(data["CodeSets"][0]["Attributes"]["AttributesList"]):
         attribute_name=(data["CodeSets"][0]["Attributes"]["AttributesList"][counter]["AttributeName"])
         attribute_id=(data["CodeSets"][0]["Attributes"]["AttributesList"][counter]["AttributeId"])
         strands.update( {attribute_id:attribute_name} )
     return strands
-
 strands = get_strand_info()
 
 def get_edu_info():
+    '''Return a dict of Educational Setting Attribute Names & Attribute ID's'''
     edu_setting={}
     for counter, value in enumerate(data["CodeSets"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"]):
         setting_code=data["CodeSets"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][counter]["AttributeId"]
         setting_name=data["CodeSets"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][counter]["AttributeName"]
         edu_setting.update( {setting_code:setting_name} )
     return edu_setting
-
 edu = get_edu_info()
 
+def get_country_codes():
+  '''Return a dict of Country Attribute Names & Attribute ID's'''
+  country_codes={}
+  for counter, value in enumerate(data["CodeSets"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][0]["Attributes"]["AttributesList"]):
+      country_code=data["CodeSets"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][0]["Attributes"]["AttributesList"][counter]["AttributeId"]
+      country_name=data["CodeSets"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][0]["Attributes"]["AttributesList"][counter]["AttributeName"]
+      country_codes.update( {country_code:country_name} )
+  return country_codes
+countries = get_country_codes()
+
+def get_publication_type():
+    '''Return a dict of Publication Type Attribute Names & Attribute ID's'''
+    publication_type={}
+    for counter, element in enumerate(data["CodeSets"][2]["Attributes"]["AttributesList"][0]["Attributes"]["AttributesList"][0]):
+        attribute_name=(data["CodeSets"][2]["Attributes"]["AttributesList"][0]["Attributes"]["AttributesList"][counter]["AttributeName"])
+        attribute_id=(data["CodeSets"][2]["Attributes"]["AttributesList"][0]["Attributes"]["AttributesList"][counter]["AttributeId"])
+        publication_type.update( { attribute_id:attribute_name })
+    return publication_type
+pub_type = get_publication_type()
+```
+## Main data extraction function**
+
+```python
 def get_all():
   finds=[]
   find=0
   strandfind=0
+  countryfind=0
   exclude=np.nan
+  
+  extracted=0
+  null=0
   
   studies=0
   # iterate over each section within each study of 'references'
   for section in range(len(data["References"])):
-      studies+=1
       find=0
       strandfind=0
-      for study in range(len(data["References"][section]["Codes"])):
-          
-          # get educational setting data (prmiary/elementary etc.)
-          for key,value in edu.items():
-              if key == data["References"][section]["Codes"][study]["AttributeId"]:
-                  find=value
-                  label=key
-              elif find==0:
-                  find=exclude
-                  label=exclude
-                  
-          # get strand data (feedback, peer tutoring etc.)
-          for key,value in strands.items():
-              if key == data["References"][section]["Codes"][study]["AttributeId"]:
-                  strandfind=value
-                  strandlabel=key
-              elif strandfind==0:
-                  strandfind=exclude
-                  strandlabel=exclude
-                  
-          # get outcome data
-          if "Outcomes" in data["References"][section]:
-              outcometext=data["References"][section]["Outcomes"][0]["OutcomeText"]
-              interventiontext=data["References"][section]["Outcomes"][0]["InterventionText"]
-              SMD=(data["References"][section]["Outcomes"][0]["SMD"])
-              SESMD=(data["References"][section]["Outcomes"][0]["SESMD"])
-              CIupperSMD=(data["References"][section]["Outcomes"][0]["CIUpperSMD"])
-              CIlowerSMD=(data["References"][section]["Outcomes"][0]["CILowerSMD"])
-          else:
-              outcometext=exclude
-              interventiontext=exclude
-              SMD=exclude
-              SESMD=exclude
-              CIupperSMD=exclude
-              CIlowerSMD=exclude
-              
-          # get year data
-          if "Year" in data["References"][section]:
-              year=data["References"][section]["Year"]
-          else:
-              year=exclude
-              
-          # get author data
-          if "ShortTitle" in data["References"][section]:
-              author=data["References"][section]["ShortTitle"]
-          else:
-              author=exclude
-              
-      finds.append([author, find, label, strandfind, strandlabel, interventiontext, 
-                    outcometext, year, SMD, SESMD, CIupperSMD, CIlowerSMD])
       
-  df = pd.DataFrame(finds, columns=['Author', 'EduSetting', 'EduID', 'Strand', 'Strand ID', 
-                                    'Intervention', 'Outcome', 'Year', 'SMD', 'SESMD', 'CIupper', 'CIlower'])
+      if "Codes" in data["References"][section]:
+          extracted+=1
+          for study in range(len(data["References"][section]["Codes"])):
+    
+              # get publication type data
+              for key, value in pub_type.items():
+                  if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                      pubfind=value
+                      publabel=key
+                  elif find==0:
+                      pubfind=exclude
+                      publabel=exclude
+                  
+              # get country of study data
+              for key, value in countries.items():
+                  if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                      countryfind=value
+                      countrylabel=key
+                  elif find==0:
+                      countryfind=exclude
+                      countrylabel=exclude
+          
+              # get educational setting data (primary/elementary etc.)
+              for key,value in edu.items():
+                  if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                      find=value
+                      label=key
+                  elif find==0:
+                      find=exclude
+                      label=exclude
+                  
+              # get strand data (feedback, peer tutoring etc.)
+              for key,value in strands.items():
+                  if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                      strandfind=value
+                      strandlabel=key
+                  elif strandfind==0:
+                      strandfind=exclude
+                      strandlabel=exclude
+                  
+              # get outcome data if an "Outcomes" section exists
+              if "Outcomes" in data["References"][section]:
+                  outcometext=data["References"][section]["Outcomes"][0]["OutcomeText"]
+                  interventiontext=data["References"][section]["Outcomes"][0]["InterventionText"]
+                  SMD=(data["References"][section]["Outcomes"][0]["SMD"])
+                  SESMD=(data["References"][section]["Outcomes"][0]["SESMD"])
+                  CIupperSMD=(data["References"][section]["Outcomes"][0]["CIUpperSMD"])
+                  CIlowerSMD=(data["References"][section]["Outcomes"][0]["CILowerSMD"])
+              else:
+                  outcometext=exclude
+                  interventiontext=exclude
+                  SMD=exclude
+                  SESMD=exclude
+                  CIupperSMD=exclude
+                  CIlowerSMD=exclude
+              
+              # get year data 
+              if "Year" in data["References"][section]:
+                  year=int(data["References"][section]["Year"])
+              else:
+                  year=exclude
+              
+              # get author data
+              if "ShortTitle" in data["References"][section]:
+                  author=data["References"][section]["ShortTitle"]
+              else:
+                  author=exclude
+              
+          # append all extracted data to our 'finds' list
+          finds.append([author, find, strandfind, interventiontext, 
+                        outcometext, year, countryfind, pubfind, SMD, SESMD, CIupperSMD, CIlowerSMD])
+                        
+      else:
+          null+=1
+      
+      # convert data list ('finds') to Pandas dataframe
+      df = pd.DataFrame(finds, columns=['Author', 'EduSetting', 'Strand', 
+                                    'Intervention', 'Outcome', 'Year', 'Country', 'Publication type', 'SMD', 
+                                    'SESMD', 'CIupper', 'CIlower'])
                                     
-  df.fillna(0)
+      #df.fillna(0)
                                     
-  # round effect sizes to two decimal points
-  df.loc[:, "SMD"] = df["SMD"].astype(float).round(4)
-  df.loc[:, "SESMD"] = df["SESMD"].astype(float, errors='ignore').round(4)
-  df.loc[:, "CIupper"] = df["CIupper"].astype(float).round(4)
-  df.loc[:, "CIlower"] = df["CIlower"].astype(float).round(4)
-                                    
+      # round effect sizes and confidence interbals to four decimal points
+      df.loc[:, "SMD"] = df["SMD"].astype(float).round(4)
+      df.loc[:, "SESMD"] = df["SESMD"].astype(float, errors='ignore').round(4)
+      df.loc[:, "CIupper"] = df["CIupper"].astype(float).round(4)
+      df.loc[:, "CIlower"] = df["CIlower"].astype(float).round(4)
+         
+  print("Number of studies extracted (they have a 'Codes' section): {}".format(extracted),
+        "Number of of missing studies (no 'Codes' section found):   {}".format(null),
+        sep='\n')
+
   return df
   
 all = get_all()
-all.head(10)
 ```
 
 ```
-##               Author                 EduSetting  ...  CIupper CIlower
-## 0   Aarnoutse (1997)  Primary/elementary school  ...      NaN     NaN
-## 1   Aarnoutse (1998)  Primary/elementary school  ...      NaN     NaN
-## 2  Abbondanza (2013)      Secondary/High school  ...   0.8637  0.1712
-## 3       Adler (1998)  Primary/elementary school  ...   0.6021 -0.2721
-## 4     Ahlfors (1979)  Primary/elementary school  ...      NaN     NaN
-## 5     Allsopp (1995)              Middle school  ...   0.4027 -0.0835
-## 6       Ammon (1971)  Primary/elementary school  ...   0.5780 -0.5780
-## 7      Anders (1984)      Secondary/High school  ...   2.2439  1.0792
-## 8    Anderson (1973)              Middle school  ...   1.6074  0.7020
-## 9     Andrade (2008)  Primary/elementary school  ...   1.2220  0.4380
-## 
-## [10 rows x 12 columns]
+## Number of studies extracted (they have a 'Codes' section): 598
+## Number of of missing studies (no 'Codes' section found):   18
 ```
+**Get 'feedback' 'peer tutoring' 'oral lang interventions' strand data, Primary outcomes only**
 
+```python
 
-```r
-master_df <- py$all
-View(master_df)
-master_df <- as.data.frame(lapply(master_df, unlist))
-head(master_df)
+Primary = all[all['Outcome'] == "Primary outcome"]
+Secondary = all[all['Outcome'] == "Secondary outcome(s)"]
+
+feedback = Primary[Primary['Strand'] == "Feedback"]
+peertut = Primary[Primary['Strand'] == "Peer tutoring"]
+
+print("Number of Primary outcome studies overall:                {}".format(len(Primary)),
+      "Number of Secondary outcome studies overall:              {}".format(len(Secondary)),
+      "Number of Feedback strand (Primary outcome) studies:      {}".format(len(feedback)),
+      "Number of Peer Tutoring strand (Primary outcome) studies: {}".format(len(peertut)),
+      sep='\n')
 ```
 
 ```
-##              Author                EduSetting   EduID
-## 1  Aarnoutse (1997) Primary/elementary school 5215411
-## 2  Aarnoutse (1998) Primary/elementary school 5215411
-## 3 Abbondanza (2013)     Secondary/High school 5215413
-## 4      Adler (1998) Primary/elementary school 5215411
-## 5    Ahlfors (1979) Primary/elementary school 5215411
-## 6    Allsopp (1995)             Middle school 5215412
-##                        Strand Strand.ID                    Intervention
-## 1 Oral language interventions   5023563                             NaN
-## 2 Oral language interventions   5023563                             NaN
-## 3               Peer tutoring   5023548 Literacy: reading comprehension
-## 4                    Feedback   5023555               Literacy: writing
-## 5 Oral language interventions   5023563                             NaN
-## 6               Peer tutoring   5023548                     Mathematics
-##           Outcome Year    SMD  SESMD CIupper CIlower
-## 1             NaN 1997    NaN    NaN     NaN     NaN
-## 2             NaN 1998    NaN    NaN     NaN     NaN
-## 3 Primary outcome 2013 0.5174 0.1767  0.8637  0.1712
-## 4 Primary outcome 1998 0.1650 0.2230  0.6021 -0.2721
-## 5             NaN 1979    NaN    NaN     NaN     NaN
-## 6 Primary outcome 1995 0.1596 0.1241  0.4027 -0.0835
+## Number of Primary outcome studies overall:                366
+## Number of Secondary outcome studies overall:              63
+## Number of Feedback strand (Primary outcome) studies:      66
+## Number of Peer Tutoring strand (Primary outcome) studies: 86
 ```
-**Make overall forest plot**
+**Pass Feedback and Peer tutoring data frames from Python to R and make forest plots**
 
 ```r
-# remove missing values from key variables
-#master_df<- na.omit(subset(master_df, select = c(Author, SMD, CIlower, CIupper)))
+all_df <- data.frame(py$all)
+#View(all_df)
 
-ggplot(data=na.omit(subset(master_df, select=c(Author, SMD, CIlower, CIupper))),
+feedback <- data.frame(py$feedback)
+peertut <- data.frame(py$peertut)
+
+feedback_plot <- ggplot(data=na.omit(subset(feedback, select=c(Author, SMD, CIlower, CIupper))),
                     aes(y=Author, x=SMD, xmin=CIlower, xmax=CIupper))+
-  geom_point(color='black', shape=15) +
-  geom_errorbarh(height=.7, linetype=1) +
-  scale_x_continuous(limits=c(-4,4), name='Standardized Mean Difference (95% CI)') +
-  ylab('Reference') +
-  geom_vline(xintercept=0, color='black', linetype='dashed') +
-  theme_classic()
+                    geom_point(color='black', shape=15) +
+                    geom_errorbarh(height=.7, linetype=1) +
+                    scale_x_continuous(limits=c(-4,4), name='Standardized Mean Difference (95% CI)') +
+                    ylab('Reference') +
+                    geom_vline(xintercept=0, color='black', linetype='dashed') +
+                    theme_classic() +
+                    ggtitle("Feedback Strand")
+
+peertut_plot <- ggplot(data=na.omit(subset(peertut, select=c(Author, SMD, CIlower, CIupper))),
+                    aes(y=Author, x=SMD, xmin=CIlower, xmax=CIupper))+
+                    geom_point(color='black', shape=15) +
+                    geom_errorbarh(height=.7, linetype=1) +
+                    scale_x_continuous(limits=c(-4,4), name='Standardized Mean Difference (95% CI)') +
+                    ylab('Reference') +
+                    geom_vline(xintercept=0, color='black', linetype='dashed') +
+                    theme_classic() +
+                    ggtitle("Peer Tutoring strand")
+
+grid.arrange(feedback_plot, peertut_plot, ncol=2)
+```
+
+![](Master_figs/unnamed-chunk-5-1.png)<!-- -->
+**Get 'Primary/elementary school' & 'Secondary/High school' data (Primary outcomes only), then from each of those get "Feedback" strand data only**
+
+```python
+Elementary = Primary[Primary['EduSetting'] == "Primary/elementary school"]
+Sec = Primary[Primary['EduSetting'] == "Secondary/High school"]
+
+feedback_elementary = Elementary[Elementary['Strand'] == "Feedback"]
+feedback_secondary = Sec[Sec['Strand'] == "Feedback"]
+
+print("Number of Primary/elementary school, primary outcome, feedbacks strand studies: {}".format(len(feedback_elementary)),
+      "Number of Secondary/High school, primary outcome, feedbacks strand studies:     {}".format(len(feedback_secondary)),
+      sep='\n')
 ```
 
 ```
-## Warning: Removed 1 rows containing missing values (geom_point).
+## Number of Primary/elementary school, primary outcome, feedbacks strand studies: 34
+## Number of Secondary/High school, primary outcome, feedbacks strand studies:     11
 ```
-
-```
-## Warning: Removed 6 rows containing missing values (geom_errorbarh).
-```
-
-![](Master_figs/unnamed-chunk-3-1.png)<!-- -->
-
+**Pass 'Primary/elementary school' & 'Secondary/High school' (Feedback Strand, Primary outcome) data frames from Python to R and make forest plots**
 
 ```r
-# prepare data for dotplot
+Primary_feedback <- data.frame(py$feedback_elementary)
+High_feedback <- data.frame(py$feedback_secondary)
+
+Primary_plot <- ggplot(data=na.omit(subset(Primary_feedback, select=c(Author, SMD, CIlower, CIupper))),
+                    aes(y=Author, x=SMD, xmin=CIlower, xmax=CIupper))+
+                    geom_point(color='black', shape=15) +
+                    geom_errorbarh(height=.7, linetype=1) +
+                    scale_x_continuous(limits=c(-4,4), name='Standardized Mean Difference (95% CI)') +
+                    ylab('Reference') +
+                    geom_vline(xintercept=0, color='black', linetype='dashed') +
+                    theme_classic() +
+                    ggtitle("Primary School, Feedback Strand, Primary outcome")
+
+High_plot <- ggplot(data=na.omit(subset(High_feedback, select=c(Author, SMD, CIlower, CIupper))),
+                    aes(y=Author, x=SMD, xmin=CIlower, xmax=CIupper))+
+                    geom_point(color='black', shape=15) +
+                    geom_errorbarh(height=.7, linetype=1) +
+                    scale_x_continuous(limits=c(-4,4), name='Standardized Mean Difference (95% CI)') +
+                    ylab('Reference') +
+                    geom_vline(xintercept=0, color='black', linetype='dashed') +
+                    theme_classic() +
+                    ggtitle("High School, Feeback Strand, Primary Outcome")
+
+Primary_plot
+```
+
+![](Master_figs/unnamed-chunk-7-1.png)<!-- -->
+
+**Get all study data (Primary outcome only), convert all missing data to NA. Remove "No information" cells (from educational setting column). Plot SMD/SESMD scatter plots groups by intervention, educational setting, strand, and country.**
+
+```r
+# Pass all Primary outcome studies to R dataframe (from Python)
+master_df <- data.frame(py$Primary)
+
+# Clean data (insert NA for missing values and remove 'no info' cells)
 master_df$Intervention <- as.character(master_df$Intervention)
-master_df$Intervention[master_df$Intervention==""] <- NA
+master_df$Intervention[master_df$Intervention=="NaN"] <- NA
 master_df$Intervention <- as.factor(master_df$Intervention)
+
+master_df$EduSetting <- as.character(master_df$EduSetting)
+master_df$EduSetting[master_df$EduSetting=="NaN"] <- NA
+master_df$EduSetting[master_df$EduSetting=="No information provided"] <- NA
+master_df$EduSetting[master_df$EduSetting=="Other educational setting (please specify)"] <- NA
+master_df$EduSetting <- as.factor(master_df$EduSetting)
+
+master_df$Strand <- as.character(master_df$Strand)
+master_df$Strand[master_df$Strand=="NaN"] <- NA
+master_df$Strand <- as.factor(master_df$Strand)
+
+master_df$Country <- as.character(master_df$Country)
+master_df$Country[master_df$Country=="NaN"] <- NA
+master_df$Country <- as.factor(master_df$Country)
+
+master_df$Outcome <- as.character(master_df$Outcome)
+master_df$Outcome[master_df$Outcome=="NaN"] <- NA
+master_df$Outcome <- as.factor(master_df$Outcome)
+
+master_df$Country <- as.character(master_df$Country)
+master_df$Country[master_df$Country=="UK (Select all that apply)"] <- "UK"
+
+# get means for SMD and SESMD
 master_df_mean_SMD <- mean(master_df$SMD, na.rm=TRUE)
 master_dfk_mean_SESMD <- mean(master_df$SESMD, na.rm=TRUE)
 
-# View(feedback_df) # uncomment to view data in dataviewer
+# uncomment to view data in dataviewer
+#View(master_df) 
 
+# Make SMD/SESMD scatter plot, (color) grouped by Intervention
 smd_intervention <- ggplot(data=subset(master_df, !is.na(Intervention)), aes(SMD, SESMD, color=Intervention)) + 
-    geom_point(alpha=1, na.rm=TRUE, size=3) +
+    geom_point(alpha=1, na.rm=TRUE, size=1.5) +
     theme_grey() +
     geom_vline(xintercept=master_df_mean_SMD, linetype="dotted", color="black", size=1) +
     theme(legend.title = element_text(color = "black", size = 10),
@@ -239,10 +369,11 @@ smd_intervention <- ggplot(data=subset(master_df, !is.na(Intervention)), aes(SMD
     theme(legend.title=element_blank()) +
     annotate(geom="text", x=master_df_mean_SMD+.15, y=-.1, label=round(master_df_mean_SMD, 2), color="black") +
     ylim(-0.2, 1.75) +
-    ggtitle("SMD by SESMD broken down by Intervention")
+    ggtitle("SMD by SESMD grouped by Intervention")
 
+# Make SMD/SESMD scatter plot, (color) grouped by Educational Setting
 smd_edusetting <- ggplot(data=subset(master_df, !is.na(EduSetting)), aes(SMD, SESMD, color=EduSetting)) + 
-    geom_point(alpha=1, na.rm=TRUE, size=3) +
+    geom_point(alpha=1, na.rm=TRUE, size=1.5) +
     theme_grey() +
     geom_vline(xintercept=master_df_mean_SMD, linetype="dotted", color="black", size=1) +
     theme(legend.title = element_text(color = "black", size = 10),
@@ -252,10 +383,11 @@ smd_edusetting <- ggplot(data=subset(master_df, !is.na(EduSetting)), aes(SMD, SE
     theme(legend.title=element_blank()) +
     annotate(geom="text", x=master_df_mean_SMD+.15, y=-.1, label=round(master_df_mean_SMD, 2), color="black") +
     ylim(-0.2, 1.75) +
-    ggtitle("SMD by SESMD broken down by Educational Setting")
+    ggtitle("SMD by SESMD grouped by Educational Setting")
 
+# Make SMD/SESMD scatter plot, (color) grouped by Strand
 smd_strand <- ggplot(data=subset(master_df, !is.na(Strand)), aes(SMD, SESMD, color=Strand)) + 
-    geom_point(alpha=1, na.rm=TRUE, size=3) +
+    geom_point(alpha=1, na.rm=TRUE, size=1.5) +
     theme_grey() +
     geom_vline(xintercept=master_df_mean_SMD, linetype="dotted", color="black", size=1) +
     theme(legend.title = element_text(color = "black", size = 10),
@@ -265,10 +397,27 @@ smd_strand <- ggplot(data=subset(master_df, !is.na(Strand)), aes(SMD, SESMD, col
     theme(legend.title=element_blank()) +
     annotate(geom="text", x=master_df_mean_SMD+.15, y=-.1, label=round(master_df_mean_SMD, 2), color="black") +
     ylim(-0.2, 1.75) +
-    ggtitle("SMD by SESMD broken down by Strand")
+    ggtitle("SMD by SESMD grouped by Strand")
 
-grid.arrange(smd_intervention, smd_edusetting, smd_strand)
+# Make SMD/SESMD scatter plot, (color) grouped by Country
+smd_country <- ggplot(data=subset(master_df, !is.na(Country)), aes(SMD, SESMD, color=Country)) + 
+    geom_point(alpha=1, na.rm=TRUE, size=1.5) +
+    theme_grey() +
+    geom_vline(xintercept=master_df_mean_SMD, linetype="dotted", color="black", size=1) +
+    theme(legend.title = element_text(color = "black", size = 10),
+          legend.text = element_text(color = "black", size = 8)) +
+    theme(legend.position="right") +
+    guides(fill=guide_legend(nrow=5, byrow=TRUE)) +
+    theme(legend.title=element_blank()) +
+    annotate(geom="text", x=master_df_mean_SMD+.15, y=-.1, label=round(master_df_mean_SMD, 2), color="black") +
+    ylim(-0.2, 1.75) +
+    ggtitle("SMD by SESMD grouped by Country")
+
+# use GridExtra to display all 4 plots neatly
+grid.arrange(smd_intervention, smd_edusetting, smd_strand, smd_country, nrow=4)
 ```
 
-![](Master_figs/unnamed-chunk-4-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-8-1.png)<!-- -->
+
+
 
