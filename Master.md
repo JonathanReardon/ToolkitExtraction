@@ -926,7 +926,7 @@ Primary_plot
 
 ![](Master_figs/unnamed-chunk-7-1.png)<!-- -->
 
-**Subset 'Primary/elementary school' & 'Secondary/High school' data (Primary outcomes only), then from each of those get "Feedback" strand data only**
+**Subset 'USA' and 'UK' data (Primary outcomes only), then from each of those get "Feedback" strand data only**
 
 ```r
 countries <- primary_outcome %>% 
@@ -1205,8 +1205,8 @@ gglayers <- list(
         axis.text.y = element_text(colour = "black", size=12)),
   theme(axis.title.x = element_text(colour = "black", size=16),
         axis.title.y = element_text(colour = "black", size=16)),
-  theme(legend.title = element_text(color = "black", size = 12),
-        legend.text = element_text(color = "black", size = 11)),
+  theme(legend.title = element_text(color = "black", size = 14),
+        legend.text = element_text(color = "black", size = 12)),
   theme(plot.title = element_text(face="bold", colour="black", size="16"))
 )
 

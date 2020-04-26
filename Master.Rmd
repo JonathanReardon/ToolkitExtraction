@@ -325,7 +325,7 @@ High_plot <- ggplot(data=na.omit(subset(schools, select=c(EducationalSetting=="S
 Primary_plot
 ```
 
-**Subset 'Primary/elementary school' & 'Secondary/High school' data (Primary outcomes only), then from each of those get "Feedback" strand data only**
+**Subset 'USA' and 'UK' data (Primary outcomes only), then from each of those get "Feedback" strand data only**
 ```{r, message=FALSE, warning=FALSE, fig.width=10,fig.height=7}
 countries <- primary_outcome %>% 
   select(Author, Strand, Country, SMD, CIupper, CIlower) %>%
@@ -375,7 +375,7 @@ Primary_USA_plot
 ```
 
 **Make jittered dotplots of SMD by Decade, grouped by Strand, Intervention, Country, Educational Setting, and Publication Type**
-```{r, fig.width=20,fig.height=18}
+```{r, fig.width=20,fig.height=19}
 # list reusable layers to use on all plots (constants)
 gglayers <- list(
   ylim(-2,3.5),
@@ -384,8 +384,8 @@ gglayers <- list(
         axis.text.y = element_text(colour = "black", size=12)),
   theme(axis.title.x = element_text(colour = "black", size=16),
         axis.title.y = element_text(colour = "black", size=16)),
-  theme(legend.title = element_text(color = "black", size = 12),
-        legend.text = element_text(color = "black", size = 11)),
+  theme(legend.title = element_text(color = "black", size = 14),
+        legend.text = element_text(color = "black", size = 12)),
   theme(plot.title = element_text(face="bold", colour="black", size="16"))
 )
 
