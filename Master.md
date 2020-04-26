@@ -21,6 +21,7 @@ library(dplyr)
 library(reshape2)
 library(purrr)
 library(gridExtra)
+library(cowplot)
 library(kableExtra)
 library(forestplot)
 library(metafor)
@@ -1194,63 +1195,84 @@ Primary_USA_plot
 
 ![](Master_figs/unnamed-chunk-9-1.png)<!-- -->
 
-**Make jittered dotplots of SMD by Decade, grouped by Strand, Intervention, Country, Educational Setting, and Publication Type**
+## Jittered dotplots
+**list reusable layers to use on all plots (constants)**
 
 ```r
-# list reusable layers to use on all plots (constants)
 gglayers <- list(
+  geom_jitter(position=position_jitter(.2), size=3, shape=21, stroke=1, na.rm=TRUE),
   ylim(-2,3.5),
   theme(legend.justification = "top"),
   theme(axis.text.x = element_text(colour = "black", size=12),
         axis.text.y = element_text(colour = "black", size=12)),
   theme(axis.title.x = element_text(colour = "black", size=16),
         axis.title.y = element_text(colour = "black", size=16)),
-  theme(legend.title = element_text(color = "black", size = 14),
-        legend.text = element_text(color = "black", size = 12)),
-  theme(plot.title = element_text(face="bold", colour="black", size="16"))
+  theme(legend.title = element_text(color = "black", size = 12),
+        legend.text = element_text(color = "black", size = 10)),
+  theme(plot.title = element_text(colour="black", size="16"))
 )
+```
+**SMD by Decade, grouped by Strand**
 
+```r
 # plot of SMD by Decade grouped (color) by Strand
 strand <- filter(primary_outcome, !is.na(Strand)) %>%
   ggplot(aes(y=SMD, x=Decade, fill=Strand)) +
-  geom_jitter(position=position_jitter(.2), size=4, shape=21, stroke=1, na.rm=TRUE) +
   labs(fill = "Strand") +
-  ggtitle("Plot of SMD by Decade, grouped by Strand") + gglayers
+  ggtitle("SMD by Decade, grouped by Strand") + gglayers
+strand
+```
 
+![](Master_figs/unnamed-chunk-11-1.png)<!-- -->
+**SMD by Decade, grouped by Intervention**
+
+```r
 # plot of SMD by Decade grouped (color) by Intervention
 intervention <- filter(primary_outcome, !is.na(Intervention)) %>%
   ggplot(aes(y=SMD, x=Decade, fill=Intervention)) +
-  geom_jitter(position=position_jitter(.2), size=4, shape=21, stroke=1, na.rm=TRUE) +
   labs(fill = "Intervention") +
-  ggtitle("Plot of SMD by Decade, grouped by Intervention") + gglayers
+  ggtitle("SMD by Decade, grouped by Intervention") + gglayers
+intervention
+```
 
+![](Master_figs/unnamed-chunk-12-1.png)<!-- -->
+**SMD by Decade, grouped by Country**
+
+```r
 # plot of SMD by Decade grouped (color) by Country
 country <- filter(primary_outcome, !is.na(Country)) %>%
   ggplot(aes(y=SMD, x=Decade, fill=Country)) +
-  geom_jitter(position=position_jitter(.2), size=4, shape=21, stroke=1, na.rm=TRUE) +
   labs(fill = "Country") +
-  ggtitle("Plot of SMD by Decade, grouped by Country") + gglayers
+  ggtitle("SMD by Decade, grouped by Country") + gglayers
+country
+```
 
+![](Master_figs/unnamed-chunk-13-1.png)<!-- -->
+**SMD by Decade, grouped by Educational Setting**
+
+```r
 # plot of SMD by Decade grouped (color) by Educational Setting
 edu_setting <- filter(primary_outcome, !is.na(EducationalSetting)) %>%
   ggplot(aes(y=SMD, x=Decade, fill=EducationalSetting)) +
-  geom_jitter(position=position_jitter(.2), size=4, shape=21, stroke=1, na.rm=TRUE) +
   labs(fill = "Educational Setting") +
-  ggtitle("Plot of SMD by Decade, grouped by Educational Setting") + gglayers
+  ggtitle("SMD by Decade, grouped by Educational Setting") + gglayers
+edu_setting
+```
 
+![](Master_figs/unnamed-chunk-14-1.png)<!-- -->
+**SMD by Decade, grouped by PublicationType**
+
+```r
 # plot of SMD by Decade grouped (color) by Publication Type
 pub_type <- filter(primary_outcome, !is.na(PublicationType)) %>%
   ggplot(aes(y=SMD, x=Decade, fill=PublicationType)) +
-  geom_jitter(position=position_jitter(.2), size=4, shape=21, stroke=1, na.rm=TRUE) +
   labs(fill = "Publication Type") +
-  ggtitle("Plot of SMD by Decade, grouped by Publication Type") + gglayers
-
-# display all plots on a grid
-grid.arrange(strand, intervention, country, edu_setting, pub_type, ncol=2)
+  ggtitle("SMD by Decade, grouped by Publication Type") + gglayers
+pub_type
 ```
 
-![](Master_figs/unnamed-chunk-10-1.png)<!-- -->
-**Get all study data (Primary outcome only), convert all missing data to NA. Remove "No information" cells (from educational setting column). Plot SMD/SESMD scatter plots groups by intervention, educational setting, strand, and country**
+![](Master_figs/unnamed-chunk-15-1.png)<!-- -->
+**Plot SMD/SESMD scatter plots grouped by intervention, educational setting, strand, and country**
 
 ```r
 # get means for SMD and SESMD
@@ -1260,44 +1282,80 @@ master_dfk_mean_SESMD <- mean(primary_outcome$SESMD, na.rm=TRUE)
 # uncomment to view data in dataviewer
 #View(master_df) 
 
+# list reusable layers to use on all plots (constants)**
 gglayers <- list(
   theme_grey(),
   geom_vline(xintercept=master_df_mean_SMD, linetype="dotted", color="black", size=1),
-  theme(legend.title = element_text(color = "black", size = 10),
-  legend.text = element_text(color = "black", size = 11)),
-  theme(legend.position="right"),
-  guides(fill=guide_legend(nrow=5, byrow=TRUE)),
-  annotate(geom="text", x=master_df_mean_SMD+.15, y=-.1, label=round(master_df_mean_SMD, 2), color="black"),
+  annotate(geom="text", x=master_df_mean_SMD+.15, y=-.1, label=round(master_df_mean_SMD, 4), color="black"),
   ylim(-0.2, 1.75),
-  xlim(-1.5, 2.5)
+  xlim(-1.5, 2.5), 
+  theme(legend.justification = "top"),
+  theme(axis.text.x = element_text(colour = "black", size=12),
+        axis.text.y = element_text(colour = "black", size=12)),
+  theme(axis.title.x = element_text(colour = "black", size=16),
+        axis.title.y = element_text(colour = "black", size=16)),
+  theme(legend.title = element_text(color = "black", size = 13),
+        legend.text = element_text(color = "black", size = 12)),
+  theme(plot.title = element_text(face="bold", colour="black", size="16"))
 )
-  
+```
+**SMD by SESMD grouped by Intervention - all Primary outcome studies**
+
+```r
 # Make SMD/SESMD scatter plot, (color) grouped by Intervention
-smd_intervention <- ggplot(data=subset(primary_outcome, !is.na(Intervention)), aes(SMD, SESMD, color=Intervention)) + 
-    geom_point(alpha=1, na.rm=TRUE, size=1.5) +
+smd_intervention <- ggplot(data=subset(primary_outcome, !is.na(Intervention)), aes(SMD, SESMD, fill=Intervention)) + 
+    geom_point(alpha=1, na.rm=TRUE, size=3, shape=21, stroke=1) +
     ggtitle("SMD by SESMD grouped by Intervention") +
     labs(fill = "Intervention") + gglayers
-
-# Make SMD/SESMD scatter plot, (color) grouped by Educational Setting
-smd_edusetting <- ggplot(data=subset(primary_outcome, !is.na(EducationalSetting)), aes(SMD, SESMD, color=EducationalSetting)) + 
-    geom_point(alpha=1, na.rm=TRUE, size=1.5) +
-    ggtitle("SMD by SESMD grouped by Educational Setting") +
-    labs(fill = "Educational Setting") + gglayers
-
-# Make SMD/SESMD scatter plot, (color) grouped by Strand
-smd_strand <- ggplot(data=subset(primary_outcome, !is.na(Strand)), aes(SMD, SESMD, color=Strand)) + 
-    geom_point(alpha=1, na.rm=TRUE, size=1.5) +
-    ggtitle("SMD by SESMD grouped by Strand") +
-    labs(fill = "Strand") + gglayers
-
-# Make SMD/SESMD scatter plot, (color) grouped by Country
-smd_country <- ggplot(data=subset(primary_outcome, !is.na(Country)), aes(SMD, SESMD, color=Country)) + 
-    geom_point(alpha=1, na.rm=TRUE, size=1.5) +
-    ggtitle("SMD by SESMD grouped by Country") +
-    labs(fill = "Country") + gglayers
-
-# use GridExtra to display all 4 plots neatly
-grid.arrange(smd_intervention, smd_edusetting, smd_strand, smd_country, nrow=4)
+smd_intervention
 ```
 
-![](Master_figs/unnamed-chunk-11-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-17-1.png)<!-- -->
+**SMD by SESMD grouped by Educational Setting - all Primary outcome studies**
+
+```r
+# Make SMD/SESMD scatter plot, (color) grouped by Educational Setting
+smd_edusetting <- ggplot(data=subset(primary_outcome, !is.na(EducationalSetting)), aes(SMD, SESMD, fill=EducationalSetting)) + 
+    geom_point(alpha=1, na.rm=TRUE, size=3, shape=21, stroke=1) +
+    ggtitle("SMD by SESMD grouped by Educational Setting") +
+    labs(fill = "Educational Setting") + gglayers
+smd_edusetting
+```
+
+![](Master_figs/unnamed-chunk-18-1.png)<!-- -->
+**SMD by SESMD grouped by Strand - all Primary outcome studies**
+
+```r
+# Make SMD/SESMD scatter plot, (color) grouped by Strand
+smd_strand <- ggplot(data=subset(primary_outcome, !is.na(Strand)), aes(SMD, SESMD, fill=Strand)) + 
+    geom_point(alpha=1, na.rm=TRUE, size=3, shape=21, stroke=1) +
+    ggtitle("SMD by SESMD grouped by Strand") +
+    labs(fill = "Strand") + gglayers
+smd_strand
+```
+
+![](Master_figs/unnamed-chunk-19-1.png)<!-- -->
+**SMD by SESMD grouped by Country - all Primary outcome studies**
+
+```r
+# Make SMD/SESMD scatter plot, (color) grouped by Country
+smd_country <- ggplot(data=subset(primary_outcome, !is.na(Country)), aes(SMD, SESMD, fill=Country)) +
+    geom_point(alpha=1, na.rm=TRUE, size=3, shape=21, stroke=1) +
+    ggtitle("SMD by SESMD grouped by Country") +
+    labs(fill = "Country") + gglayers
+smd_country
+```
+
+![](Master_figs/unnamed-chunk-20-1.png)<!-- -->
+**SMD by SESMD grouped by Publication Type - all Primary outcome studies**
+
+```r
+# Make SMD/SESMD scatter plot, (color) grouped by Publication Type
+smd_pubtype <- ggplot(data=subset(primary_outcome, !is.na(PublicationType)), aes(SMD, SESMD, fill=PublicationType)) +
+    geom_point(alpha=1, na.rm=TRUE, size=3, shape=21, stroke=1) +
+    ggtitle("SMD by SESMD grouped by Publication Type") +
+    labs(fill = "Publication Type") + gglayers
+smd_pubtype
+```
+
+![](Master_figs/unnamed-chunk-21-1.png)<!-- -->
