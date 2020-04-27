@@ -10,6 +10,7 @@ output:
 editor_options:
   chunk_output_type: inline
 ---
+
 **Import R libraries, save figures to "Master_figs/"**
 
 ```r
@@ -45,6 +46,7 @@ with open('/home/jon/json/ToolkitExtraction/data/batch2.json') as f:
 #with open('/home/jon/json/ToolkitExtraction/data/Batch1.json') as f:
     data=json.load(f)
 ```
+
 ## CodeSets extraction
 
 These functions extract attribute names and ID's (e.g. strand, educational setting) and return Python dictionaries containing attribute ID's as 'keys' and attribute names as 'values'. The 'Codesets' section at the top of the file does not contain any data, only variable information.
@@ -94,6 +96,7 @@ def get_publication_type():
     return publication_type
 pub_type = get_publication_type()
 ```
+
 ## Main data extraction
 
 ```python
@@ -214,6 +217,7 @@ master_df = get_all()
 ## Number of studies extracted (they have a 'Codes' section): 598
 ## Number of of missing studies (no 'Codes' section found):   18
 ```
+
 **Function to check "Year" range, group by decade, and insert into new 'Decade' column. Reorder columns and subset all Primary (outcome) studies**
 
 ```python
@@ -245,6 +249,7 @@ master_df = master_df[["Author", "Year", "Decade", "Country", "Outcome", "Strand
 # subset all Primary Outcomes studies
 primary = master_df[master_df["Outcome"] == "Primary outcome"]
 ```
+
 **Data cleaning: replace all non-useful values with NA & convert columns to factors. Display Primary outcome dataset (25 rows here)**
 
 ```r
@@ -266,6 +271,10 @@ primary_outcome$Strand <- as.character(primary_outcome$Strand)
 primary_outcome$Strand[primary_outcome$Strand=="NaN"] <- NA
 primary_outcome$Strand <- as.factor(primary_outcome$Strand)
 
+primary_outcome$SESMD <- as.character(primary_outcome$SESMD)
+primary_outcome$SESMD[primary_outcome$SESMD=="NaN"] <- NA
+primary_outcome$SESMD <- as.numeric(primary_outcome$SESMD)
+
 primary_outcome$Country <- as.character(primary_outcome$Country)
 primary_outcome$Country[primary_outcome$Country=="NaN"] <- NA
 primary_outcome$Country <- as.factor(primary_outcome$Country)
@@ -285,7 +294,7 @@ primary_outcome$Country[primary_outcome$Country=="UK (Select all that apply)"] <
 primary_outcome$Country <- as.factor(primary_outcome$Country)
 
 # uncomment to view all primary outcome studies (rstudio)
-#View(primary_outcome)
+View(primary_outcome)
 
 rownames(primary_outcome) <- NULL
 # display data with kable and inspect subsetted columns (highlighted)
@@ -899,6 +908,7 @@ schools[1:25,1:6] %>%
   </tr>
 </tbody>
 </table>
+
 **Make Primary/Elementary and High school forest plots and display them**
 
 ```r
@@ -1159,6 +1169,7 @@ countries[1:25,1:6] %>%
   </tr>
 </tbody>
 </table>
+
 **Make UK and USA (Primary Outcome) study forest plots and display them**
 
 ```r
@@ -1195,6 +1206,341 @@ Primary_USA_plot
 
 ![](Master_figs/unnamed-chunk-9-1.png)<!-- -->
 
+**Subset "Teaching assistant" strand data from "Primary Outcomes" dataset, order by year, inspect the data with kable**
+
+```r
+df <- primary_outcome %>%
+      select(SMD, SESMD, Year, CIlower, CIupper, Strand, Author) %>%
+      filter(SESMD <= 2) %>%
+      filter(SMD >= -3.25) %>%
+      filter(SMD <= 3.00) %>%
+      filter(Strand=="Teaching assistants")
+
+# order data by year
+df_ta <- df[order(df$Year),]
+
+# display data with kable
+df_ta[1:25,1:7] %>%
+  mutate(
+    Strand  = cell_spec(Strand, color = "white", bold = T, background = spec_color(.9, end = .9))) %>%
+  kable(escape = F, align = "l") %>%
+  kable_styling(c("hover", "condensed", "responsive", "bordered"), full_width = F, font_size = 12)
+```
+
+<table class="table table-hover table-condensed table-responsive table-bordered" style="font-size: 12px; width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> SMD </th>
+   <th style="text-align:left;"> SESMD </th>
+   <th style="text-align:left;"> Year </th>
+   <th style="text-align:left;"> CIlower </th>
+   <th style="text-align:left;"> CIupper </th>
+   <th style="text-align:left;"> Strand </th>
+   <th style="text-align:left;"> Author </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 0.0180 </td>
+   <td style="text-align:left;"> 0.0626 </td>
+   <td style="text-align:left;"> 1990 </td>
+   <td style="text-align:left;"> -0.1048 </td>
+   <td style="text-align:left;"> 0.1408 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Word (1990) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> -0.0030 </td>
+   <td style="text-align:left;"> 0.0646 </td>
+   <td style="text-align:left;"> 1995 </td>
+   <td style="text-align:left;"> -0.1296 </td>
+   <td style="text-align:left;"> 0.1236 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Welch (1995) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.0488 </td>
+   <td style="text-align:left;"> 0.2378 </td>
+   <td style="text-align:left;"> 2005 </td>
+   <td style="text-align:left;"> 0.5828 </td>
+   <td style="text-align:left;"> 1.5148 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Brown (2005) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0.1236 </td>
+   <td style="text-align:left;"> 0.2282 </td>
+   <td style="text-align:left;"> 2006 </td>
+   <td style="text-align:left;"> -0.3236 </td>
+   <td style="text-align:left;"> 0.5709 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Hatcher (2006) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0.9523 </td>
+   <td style="text-align:left;"> 0.2585 </td>
+   <td style="text-align:left;"> 2006 </td>
+   <td style="text-align:left;"> 0.4456 </td>
+   <td style="text-align:left;"> 1.4590 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Vadasy (2006) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0.4676 </td>
+   <td style="text-align:left;"> 0.3096 </td>
+   <td style="text-align:left;"> 2007 </td>
+   <td style="text-align:left;"> -0.1393 </td>
+   <td style="text-align:left;"> 1.0744 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Vadasy (2007) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0.6266 </td>
+   <td style="text-align:left;"> 0.2403 </td>
+   <td style="text-align:left;"> 2008 </td>
+   <td style="text-align:left;"> 0.1556 </td>
+   <td style="text-align:left;"> 1.0976 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Bunn (2008) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0.8000 </td>
+   <td style="text-align:left;"> 0.5000 </td>
+   <td style="text-align:left;"> 2008 </td>
+   <td style="text-align:left;"> -0.1800 </td>
+   <td style="text-align:left;"> 1.7800 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Goetz (2008) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0.4354 </td>
+   <td style="text-align:left;"> 0.2531 </td>
+   <td style="text-align:left;"> 2008 </td>
+   <td style="text-align:left;"> -0.0607 </td>
+   <td style="text-align:left;"> 0.9315 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Vadasy (2008) TA </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1.4227 </td>
+   <td style="text-align:left;"> 0.4469 </td>
+   <td style="text-align:left;"> 2009 </td>
+   <td style="text-align:left;"> 0.5467 </td>
+   <td style="text-align:left;"> 2.2986 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Cole (2009) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0.1559 </td>
+   <td style="text-align:left;"> 0.1195 </td>
+   <td style="text-align:left;"> 2009 </td>
+   <td style="text-align:left;"> -0.0782 </td>
+   <td style="text-align:left;"> 0.3901 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Ratcliff (2009) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0.3178 </td>
+   <td style="text-align:left;"> 0.3474 </td>
+   <td style="text-align:left;"> 2010 </td>
+   <td style="text-align:left;"> -0.3631 </td>
+   <td style="text-align:left;"> 0.9987 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Graves (2010) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0.0969 </td>
+   <td style="text-align:left;"> 0.2725 </td>
+   <td style="text-align:left;"> 2012 </td>
+   <td style="text-align:left;"> -0.4372 </td>
+   <td style="text-align:left;"> 0.6311 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Burgoyne (2012) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0.0032 </td>
+   <td style="text-align:left;"> 0.4369 </td>
+   <td style="text-align:left;"> 2013 </td>
+   <td style="text-align:left;"> -0.8532 </td>
+   <td style="text-align:left;"> 0.8596 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Bennett (2013) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0.4000 </td>
+   <td style="text-align:left;"> 0.1200 </td>
+   <td style="text-align:left;"> 2013 </td>
+   <td style="text-align:left;"> 0.1648 </td>
+   <td style="text-align:left;"> 0.6352 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Holmes (2013) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0.6942 </td>
+   <td style="text-align:left;"> 0.2728 </td>
+   <td style="text-align:left;"> 2013 </td>
+   <td style="text-align:left;"> 0.1595 </td>
+   <td style="text-align:left;"> 1.2289 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Vadasy (2013) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0.0886 </td>
+   <td style="text-align:left;"> 0.2676 </td>
+   <td style="text-align:left;"> 2014 </td>
+   <td style="text-align:left;"> -0.4358 </td>
+   <td style="text-align:left;"> 0.6131 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Duff (2014) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> -0.0800 </td>
+   <td style="text-align:left;"> 0.0970 </td>
+   <td style="text-align:left;"> 2015 </td>
+   <td style="text-align:left;"> -0.2701 </td>
+   <td style="text-align:left;"> 0.1101 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Sheard (2015) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0.2000 </td>
+   <td style="text-align:left;"> 0.1100 </td>
+   <td style="text-align:left;"> 2015 </td>
+   <td style="text-align:left;"> -0.0156 </td>
+   <td style="text-align:left;"> 0.4156 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Styles (2015) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0.0241 </td>
+   <td style="text-align:left;"> 0.3594 </td>
+   <td style="text-align:left;"> 2016 </td>
+   <td style="text-align:left;"> -0.6803 </td>
+   <td style="text-align:left;"> 0.7286 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Cooper (2016) TA </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0.0128 </td>
+   <td style="text-align:left;"> 0.2652 </td>
+   <td style="text-align:left;"> 2016 </td>
+   <td style="text-align:left;"> -0.5068 </td>
+   <td style="text-align:left;"> 0.5325 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Fritts (2016) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0.2700 </td>
+   <td style="text-align:left;"> 0.1000 </td>
+   <td style="text-align:left;"> 2016 </td>
+   <td style="text-align:left;"> 0.0740 </td>
+   <td style="text-align:left;"> 0.4660 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Sibieta (2016) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0.2842 </td>
+   <td style="text-align:left;"> 0.1244 </td>
+   <td style="text-align:left;"> 2017 </td>
+   <td style="text-align:left;"> 0.0403 </td>
+   <td style="text-align:left;"> 0.5281 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Fricke (2017) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0.1800 </td>
+   <td style="text-align:left;"> 0.1301 </td>
+   <td style="text-align:left;"> 2018 </td>
+   <td style="text-align:left;"> -0.0750 </td>
+   <td style="text-align:left;"> 0.4350 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Nunes (2018) </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 0.0709 </td>
+   <td style="text-align:left;"> 0.0625 </td>
+   <td style="text-align:left;"> 2019 </td>
+   <td style="text-align:left;"> -0.0516 </td>
+   <td style="text-align:left;"> 0.1934 </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Teaching assistants</span> </td>
+   <td style="text-align:left;"> Roy (2019) </td>
+  </tr>
+</tbody>
+</table>
+**Make forest plot (with metafor) using "Teaching assistants" data, ordered by Year**
+
+```r
+random=rma(df_ta$SMD, sei=df_ta$SESMD, data=df_ta)
+
+forest(random, at=c(-1.0,0.0,1.0), showweights = TRUE,
+       ilab=cbind(df_ta$Author, df_ta$Year),
+       ilab.xpos=c(-7, -15),
+       slab=NA,
+       ilab.pos=4,
+       font=2, digits=2, col="darkgrey",
+       cex=1,
+       pch=15)
+
+text(-6.2, 27, "Study", cex=.9, font=2)
+text(5.4, 27, "SMD", cex=.9, font=2)
+text(7.5, 27, "(95% CI)", cex=.9, font=2)
+text(3.8, 27, "Weight", cex=.9, font=2)
+```
+
+![](Master_figs/unnamed-chunk-11-1.png)<!-- -->
+
+**Display metafor funnel plot for all data (primary outcome only)**
+
+```r
+# subset data (can control for outliers if we want)
+df_all <- primary_outcome %>%
+      select(SMD, SESMD, Year, CIlower, CIupper, Strand, Year, Author) %>%
+      filter(SESMD <= 1) %>%
+      filter(SMD >= -2.25) %>%
+      filter(SMD <= 2.00)
+
+random_all=rma(df_all$SMD, sei=df_all$SESMD, data=df_all)
+
+funnel(random_all)
+```
+
+![](Master_figs/unnamed-chunk-12-1.png)<!-- -->
+
+**Make alternative funnel plot with ggplot and display all (primary outcome) data (as above)**
+
+```r
+estimate = 0.3663
+se = 0.0231
+
+se.seq=seq(0, max(df$SESMD), 0.001)
+
+ll95 = estimate-(1.96*se.seq)
+ul95 = estimate+(1.96*se.seq)
+ 
+ll99 = estimate-(3.29*se.seq)
+ul99 = estimate+(3.29*se.seq)
+
+meanll95 = estimate-(1.96*se)
+meanul95 = estimate+(1.96*se)
+
+dfCI = data.frame(ll95, ul95, ll99, ul99, se.seq, estimate, meanll95, meanul95)
+
+alt_fp = ggplot(aes(x = SESMD, y = SMD), data = df_all) +
+  geom_point(shape = 1) +
+  xlab('SESMD') + ylab('SMD')+
+  geom_line(aes(x = se.seq, y = ll95), linetype = 'dotted', data = dfCI) +
+  geom_line(aes(x = se.seq, y = ul95), linetype = 'dotted', data = dfCI) +
+  geom_line(aes(x = se.seq, y = ll99), linetype = 'dashed', data = dfCI) +
+  geom_line(aes(x = se.seq, y = ul99), linetype = 'dashed', data = dfCI) +
+  scale_x_reverse()+
+  scale_y_continuous(breaks=seq(-1.25,2,0.25))+
+  coord_flip() +
+  theme_classic()
+alt_fp
+```
+
+![](Master_figs/unnamed-chunk-13-1.png)<!-- -->
+
 ## Jittered dotplots
 **list reusable layers to use on all plots (constants)**
 
@@ -1212,6 +1558,7 @@ gglayers <- list(
   theme(plot.title = element_text(colour="black", size="16"))
 )
 ```
+
 **SMD by Decade, grouped by Strand**
 
 ```r
@@ -1220,10 +1567,12 @@ strand <- filter(primary_outcome, !is.na(Strand)) %>%
   ggplot(aes(y=SMD, x=Decade, fill=Strand)) +
   labs(fill = "Strand") +
   ggtitle("SMD by Decade, grouped by Strand") + gglayers
+
 strand
 ```
 
-![](Master_figs/unnamed-chunk-11-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-15-1.png)<!-- -->
+
 **SMD by Decade, grouped by Intervention**
 
 ```r
@@ -1235,7 +1584,8 @@ intervention <- filter(primary_outcome, !is.na(Intervention)) %>%
 intervention
 ```
 
-![](Master_figs/unnamed-chunk-12-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-16-1.png)<!-- -->
+
 **SMD by Decade, grouped by Country**
 
 ```r
@@ -1247,7 +1597,8 @@ country <- filter(primary_outcome, !is.na(Country)) %>%
 country
 ```
 
-![](Master_figs/unnamed-chunk-13-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-17-1.png)<!-- -->
+
 **SMD by Decade, grouped by Educational Setting**
 
 ```r
@@ -1259,7 +1610,8 @@ edu_setting <- filter(primary_outcome, !is.na(EducationalSetting)) %>%
 edu_setting
 ```
 
-![](Master_figs/unnamed-chunk-14-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-18-1.png)<!-- -->
+
 **SMD by Decade, grouped by PublicationType**
 
 ```r
@@ -1271,7 +1623,8 @@ pub_type <- filter(primary_outcome, !is.na(PublicationType)) %>%
 pub_type
 ```
 
-![](Master_figs/unnamed-chunk-15-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-19-1.png)<!-- -->
+
 **Plot SMD/SESMD scatter plots grouped by intervention, educational setting, strand, and country**
 
 ```r
@@ -1299,6 +1652,7 @@ gglayers <- list(
   theme(plot.title = element_text(face="bold", colour="black", size="16"))
 )
 ```
+
 **SMD by SESMD grouped by Intervention - all Primary outcome studies**
 
 ```r
@@ -1310,7 +1664,8 @@ smd_intervention <- ggplot(data=subset(primary_outcome, !is.na(Intervention)), a
 smd_intervention
 ```
 
-![](Master_figs/unnamed-chunk-17-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-21-1.png)<!-- -->
+
 **SMD by SESMD grouped by Educational Setting - all Primary outcome studies**
 
 ```r
@@ -1322,7 +1677,8 @@ smd_edusetting <- ggplot(data=subset(primary_outcome, !is.na(EducationalSetting)
 smd_edusetting
 ```
 
-![](Master_figs/unnamed-chunk-18-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-22-1.png)<!-- -->
+
 **SMD by SESMD grouped by Strand - all Primary outcome studies**
 
 ```r
@@ -1334,7 +1690,8 @@ smd_strand <- ggplot(data=subset(primary_outcome, !is.na(Strand)), aes(SMD, SESM
 smd_strand
 ```
 
-![](Master_figs/unnamed-chunk-19-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-23-1.png)<!-- -->
+
 **SMD by SESMD grouped by Country - all Primary outcome studies**
 
 ```r
@@ -1346,7 +1703,8 @@ smd_country <- ggplot(data=subset(primary_outcome, !is.na(Country)), aes(SMD, SE
 smd_country
 ```
 
-![](Master_figs/unnamed-chunk-20-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-24-1.png)<!-- -->
+
 **SMD by SESMD grouped by Publication Type - all Primary outcome studies**
 
 ```r
@@ -1358,4 +1716,43 @@ smd_pubtype <- ggplot(data=subset(primary_outcome, !is.na(PublicationType)), aes
 smd_pubtype
 ```
 
-![](Master_figs/unnamed-chunk-21-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-25-1.png)<!-- -->
+
+**SMD by Decade and Country (density plots)**
+
+```r
+decade <- primary_outcome %>%
+          filter(!is.na(Country)) %>%
+          ggplot(aes(SMD, fill=Decade)) +
+          geom_density(alpha=0.7) +
+          scale_y_continuous(name = "Density") +
+          ggtitle("SMD by Decade") +
+          theme_classic()
+
+country <- primary_outcome %>%
+          filter(!is.na(Country)) %>%
+          ggplot(aes(SMD, fill=Country)) +
+          geom_density(alpha=0.7) +
+          scale_y_continuous(name = "Density") +
+          ggtitle("SMD by Country") +
+          theme_classic()
+grid.arrange(decade, country)
+```
+
+![](Master_figs/unnamed-chunk-26-1.png)<!-- -->
+
+**Categorywise bar char of educational setting by decade**
+
+```r
+edu_decade <- primary_outcome %>%
+     filter(!is.na(EducationalSetting)) %>%
+     ggplot(aes(x=Decade)) +
+     geom_bar(aes(fill=EducationalSetting), width = 0.5) + 
+     theme(axis.text.x = element_text(angle=0, vjust=0.6)) +
+     labs(title="Educational Setting over the past six decades")
+edu_decade
+```
+
+![](Master_figs/unnamed-chunk-27-1.png)<!-- -->
+
+

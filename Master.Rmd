@@ -10,6 +10,7 @@ output:
 editor_options:
   chunk_output_type: inline
 ---
+
 **Import R libraries, save figures to "Master_figs/"**
 ```{r setup, message=FALSE}
 knitr::opts_chunk$set(echo = T,
@@ -43,6 +44,7 @@ with open('/home/jon/json/ToolkitExtraction/data/batch2.json') as f:
 #with open('/home/jon/json/ToolkitExtraction/data/Batch1.json') as f:
     data=json.load(f)
 ```
+
 ## CodeSets extraction
 
 These functions extract attribute names and ID's (e.g. strand, educational setting) and return Python dictionaries containing attribute ID's as 'keys' and attribute names as 'values'. The 'Codesets' section at the top of the file does not contain any data, only variable information.
@@ -91,6 +93,7 @@ def get_publication_type():
     return publication_type
 pub_type = get_publication_type()
 ```
+
 ## Main data extraction
 ```{python}
 def get_all():
@@ -205,6 +208,7 @@ def get_all():
   
 master_df = get_all()
 ```
+
 **Function to check "Year" range, group by decade, and insert into new 'Decade' column. Reorder columns and subset all Primary (outcome) studies**
 ```{python}
 # add decade column
@@ -235,6 +239,7 @@ master_df = master_df[["Author", "Year", "Decade", "Country", "Outcome", "Strand
 # subset all Primary Outcomes studies
 primary = master_df[master_df["Outcome"] == "Primary outcome"]
 ```
+
 **Data cleaning: replace all non-useful values with NA & convert columns to factors. Display Primary outcome dataset (25 rows here)**
 ```{r, message=FALSE, warning=FALSE, fig.width=10,fig.height=7}
 # Pass all Primary outcome studies to R dataframe (from Python)
@@ -255,6 +260,10 @@ primary_outcome$Strand <- as.character(primary_outcome$Strand)
 primary_outcome$Strand[primary_outcome$Strand=="NaN"] <- NA
 primary_outcome$Strand <- as.factor(primary_outcome$Strand)
 
+primary_outcome$SESMD <- as.character(primary_outcome$SESMD)
+primary_outcome$SESMD[primary_outcome$SESMD=="NaN"] <- NA
+primary_outcome$SESMD <- as.numeric(primary_outcome$SESMD)
+
 primary_outcome$Country <- as.character(primary_outcome$Country)
 primary_outcome$Country[primary_outcome$Country=="NaN"] <- NA
 primary_outcome$Country <- as.factor(primary_outcome$Country)
@@ -274,7 +283,7 @@ primary_outcome$Country[primary_outcome$Country=="UK (Select all that apply)"] <
 primary_outcome$Country <- as.factor(primary_outcome$Country)
 
 # uncomment to view all primary outcome studies (rstudio)
-#View(primary_outcome)
+View(primary_outcome)
 
 rownames(primary_outcome) <- NULL
 # display data with kable and inspect subsetted columns (highlighted)
@@ -301,6 +310,7 @@ schools[1:25,1:6] %>%
   kable(escape = F, align = "l") %>%
   kable_styling(c("hover", "condensed", "responsive", "bordered"), full_width = F, font_size = 12)
 ```
+
 **Make Primary/Elementary and High school forest plots and display them**
 ```{r, message=FALSE, warning=FALSE, fig.width=8,fig.height=7}
 Primary_plot <- ggplot(data=na.omit(subset(schools, select=c(EducationalSetting=="Primary/elementary school", Author, SMD, CIlower, CIupper))),
@@ -342,6 +352,7 @@ countries[1:25,1:6] %>%
   kable(escape = F, align = "l") %>%
   kable_styling(c("hover", "condensed", "responsive", "bordered"), full_width = F, font_size = 12)
 ```
+
 **Make UK and USA (Primary Outcome) study forest plots and display them**
 ```{r, message=FALSE, warning=FALSE, fig.width=8,fig.height=10}
 Primary_UK_plot <- ggplot(data=na.omit(subset(countries, select=c(Country=="UK", Author, SMD, CIlower, CIupper))),
@@ -375,9 +386,93 @@ Primary_USA_plot <- ggplot(data=na.omit(subset(countries, select=c(Country=="UK"
 Primary_USA_plot
 ```
 
+**Subset "Teaching assistant" strand data from "Primary Outcomes" dataset, order by year, inspect the data with kable**
+```{r, message=FALSE, warning=FALSE, fig.width=7, fig.height=7}
+df <- primary_outcome %>%
+      select(SMD, SESMD, Year, CIlower, CIupper, Strand, Author) %>%
+      filter(SESMD <= 2) %>%
+      filter(SMD >= -3.25) %>%
+      filter(SMD <= 3.00) %>%
+      filter(Strand=="Teaching assistants")
+
+# order data by year
+df_ta <- df[order(df$Year),]
+
+# display data with kable
+df_ta[1:25,1:7] %>%
+  mutate(
+    Strand  = cell_spec(Strand, color = "white", bold = T, background = spec_color(.9, end = .9))) %>%
+  kable(escape = F, align = "l") %>%
+  kable_styling(c("hover", "condensed", "responsive", "bordered"), full_width = F, font_size = 12)
+```
+**Make forest plot (with metafor) using "Teaching assistants" data, ordered by Year**
+```{r, message=FALSE, warning=FALSE, fig.width=7, fig.height=7}
+random=rma(df_ta$SMD, sei=df_ta$SESMD, data=df_ta)
+
+forest(random, at=c(-1.0,0.0,1.0), showweights = TRUE,
+       ilab=cbind(df_ta$Author, df_ta$Year),
+       ilab.xpos=c(-7, -15),
+       slab=NA,
+       ilab.pos=4,
+       font=2, digits=2, col="darkgrey",
+       cex=1,
+       pch=15)
+
+text(-6.2, 27, "Study", cex=.9, font=2)
+text(5.4, 27, "SMD", cex=.9, font=2)
+text(7.5, 27, "(95% CI)", cex=.9, font=2)
+text(3.8, 27, "Weight", cex=.9, font=2)
+```
+
+**Display metafor funnel plot for all data (primary outcome only)**
+```{r, message=FALSE, warning=FALSE, fig.width=7, fig.height=7}
+# subset data (can control for outliers if we want)
+df_all <- primary_outcome %>%
+      select(SMD, SESMD, Year, CIlower, CIupper, Strand, Year, Author) %>%
+      filter(SESMD <= 1) %>%
+      filter(SMD >= -2.25) %>%
+      filter(SMD <= 2.00)
+
+random_all=rma(df_all$SMD, sei=df_all$SESMD, data=df_all)
+
+funnel(random_all)
+```
+
+**Make alternative funnel plot with ggplot and display all (primary outcome) data (as above)**
+```{r, message=FALSE, warning=FALSE, fig.width=6, fig.height=6}
+estimate = 0.3663
+se = 0.0231
+
+se.seq=seq(0, max(df$SESMD), 0.001)
+
+ll95 = estimate-(1.96*se.seq)
+ul95 = estimate+(1.96*se.seq)
+ 
+ll99 = estimate-(3.29*se.seq)
+ul99 = estimate+(3.29*se.seq)
+
+meanll95 = estimate-(1.96*se)
+meanul95 = estimate+(1.96*se)
+
+dfCI = data.frame(ll95, ul95, ll99, ul99, se.seq, estimate, meanll95, meanul95)
+
+alt_fp = ggplot(aes(x = SESMD, y = SMD), data = df_all) +
+  geom_point(shape = 1) +
+  xlab('SESMD') + ylab('SMD')+
+  geom_line(aes(x = se.seq, y = ll95), linetype = 'dotted', data = dfCI) +
+  geom_line(aes(x = se.seq, y = ul95), linetype = 'dotted', data = dfCI) +
+  geom_line(aes(x = se.seq, y = ll99), linetype = 'dashed', data = dfCI) +
+  geom_line(aes(x = se.seq, y = ul99), linetype = 'dashed', data = dfCI) +
+  scale_x_reverse()+
+  scale_y_continuous(breaks=seq(-1.25,2,0.25))+
+  coord_flip() +
+  theme_classic()
+alt_fp
+```
+
 ## Jittered dotplots
 **list reusable layers to use on all plots (constants)**
-```{r}
+```{r, message=FALSE, warning=FALSE, }
 gglayers <- list(
   geom_jitter(position=position_jitter(.2), size=3, shape=21, stroke=1, na.rm=TRUE),
   ylim(-2,3.5),
@@ -391,17 +486,20 @@ gglayers <- list(
   theme(plot.title = element_text(colour="black", size="16"))
 )
 ```
+
 **SMD by Decade, grouped by Strand**
-```{r, fig.width=10,fig.height=6}
+```{r, message=FALSE, warning=FALSE, fig.width=10,fig.height=6}
 # plot of SMD by Decade grouped (color) by Strand
 strand <- filter(primary_outcome, !is.na(Strand)) %>%
   ggplot(aes(y=SMD, x=Decade, fill=Strand)) +
   labs(fill = "Strand") +
   ggtitle("SMD by Decade, grouped by Strand") + gglayers
+
 strand
 ```
+
 **SMD by Decade, grouped by Intervention**
-```{r, fig.width=11,fig.height=6}
+```{r, message=FALSE, warning=FALSE, fig.width=11,fig.height=6}
 # plot of SMD by Decade grouped (color) by Intervention
 intervention <- filter(primary_outcome, !is.na(Intervention)) %>%
   ggplot(aes(y=SMD, x=Decade, fill=Intervention)) +
@@ -409,8 +507,9 @@ intervention <- filter(primary_outcome, !is.na(Intervention)) %>%
   ggtitle("SMD by Decade, grouped by Intervention") + gglayers
 intervention
 ```
+
 **SMD by Decade, grouped by Country**
-```{r, fig.width=9,fig.height=6}
+```{r, message=FALSE, warning=FALSE, fig.width=9,fig.height=6}
 # plot of SMD by Decade grouped (color) by Country
 country <- filter(primary_outcome, !is.na(Country)) %>%
   ggplot(aes(y=SMD, x=Decade, fill=Country)) +
@@ -418,8 +517,9 @@ country <- filter(primary_outcome, !is.na(Country)) %>%
   ggtitle("SMD by Decade, grouped by Country") + gglayers
 country
 ```
+
 **SMD by Decade, grouped by Educational Setting**
-```{r, fig.width=11.5,fig.height=7}
+```{r, message=FALSE, warning=FALSE, fig.width=11.5,fig.height=7}
 # plot of SMD by Decade grouped (color) by Educational Setting
 edu_setting <- filter(primary_outcome, !is.na(EducationalSetting)) %>%
   ggplot(aes(y=SMD, x=Decade, fill=EducationalSetting)) +
@@ -427,8 +527,9 @@ edu_setting <- filter(primary_outcome, !is.na(EducationalSetting)) %>%
   ggtitle("SMD by Decade, grouped by Educational Setting") + gglayers
 edu_setting
 ```
+
 **SMD by Decade, grouped by PublicationType**
-```{r, fig.width=10,fig.height=6}
+```{r, message=FALSE, warning=FALSE, fig.width=10,fig.height=6}
 # plot of SMD by Decade grouped (color) by Publication Type
 pub_type <- filter(primary_outcome, !is.na(PublicationType)) %>%
   ggplot(aes(y=SMD, x=Decade, fill=PublicationType)) +
@@ -436,8 +537,9 @@ pub_type <- filter(primary_outcome, !is.na(PublicationType)) %>%
   ggtitle("SMD by Decade, grouped by Publication Type") + gglayers
 pub_type
 ```
+
 **Plot SMD/SESMD scatter plots grouped by intervention, educational setting, strand, and country**
-```{r, fig.width=14,fig.height=19}
+```{r, message=FALSE, warning=FALSE, fig.width=14,fig.height=19}
 # get means for SMD and SESMD
 master_df_mean_SMD    <- mean(primary_outcome$SMD, na.rm=TRUE)
 master_dfk_mean_SESMD <- mean(primary_outcome$SESMD, na.rm=TRUE)
@@ -462,8 +564,9 @@ gglayers <- list(
   theme(plot.title = element_text(face="bold", colour="black", size="16"))
 )
 ```
+
 **SMD by SESMD grouped by Intervention - all Primary outcome studies**
-```{r, fig.width=15,fig.height=6}
+```{r, message=FALSE, warning=FALSE, fig.width=15,fig.height=6}
 # Make SMD/SESMD scatter plot, (color) grouped by Intervention
 smd_intervention <- ggplot(data=subset(primary_outcome, !is.na(Intervention)), aes(SMD, SESMD, fill=Intervention)) + 
     geom_point(alpha=1, na.rm=TRUE, size=3, shape=21, stroke=1) +
@@ -471,8 +574,9 @@ smd_intervention <- ggplot(data=subset(primary_outcome, !is.na(Intervention)), a
     labs(fill = "Intervention") + gglayers
 smd_intervention
 ```
+
 **SMD by SESMD grouped by Educational Setting - all Primary outcome studies**
-```{r, fig.width=16,fig.height=7}
+```{r, message=FALSE, warning=FALSE, fig.width=16,fig.height=7}
 # Make SMD/SESMD scatter plot, (color) grouped by Educational Setting
 smd_edusetting <- ggplot(data=subset(primary_outcome, !is.na(EducationalSetting)), aes(SMD, SESMD, fill=EducationalSetting)) + 
     geom_point(alpha=1, na.rm=TRUE, size=3, shape=21, stroke=1) +
@@ -480,8 +584,9 @@ smd_edusetting <- ggplot(data=subset(primary_outcome, !is.na(EducationalSetting)
     labs(fill = "Educational Setting") + gglayers
 smd_edusetting
 ```
+
 **SMD by SESMD grouped by Strand - all Primary outcome studies**
-```{r, fig.width=13,fig.height=6}
+```{r, message=FALSE, warning=FALSE, fig.width=13,fig.height=6}
 # Make SMD/SESMD scatter plot, (color) grouped by Strand
 smd_strand <- ggplot(data=subset(primary_outcome, !is.na(Strand)), aes(SMD, SESMD, fill=Strand)) + 
     geom_point(alpha=1, na.rm=TRUE, size=3, shape=21, stroke=1) +
@@ -489,8 +594,9 @@ smd_strand <- ggplot(data=subset(primary_outcome, !is.na(Strand)), aes(SMD, SESM
     labs(fill = "Strand") + gglayers
 smd_strand
 ```
+
 **SMD by SESMD grouped by Country - all Primary outcome studies**
-```{r, fig.width=12,fig.height=5}
+```{r, message=FALSE, warning=FALSE, fig.width=12,fig.height=5}
 # Make SMD/SESMD scatter plot, (color) grouped by Country
 smd_country <- ggplot(data=subset(primary_outcome, !is.na(Country)), aes(SMD, SESMD, fill=Country)) +
     geom_point(alpha=1, na.rm=TRUE, size=3, shape=21, stroke=1) +
@@ -498,8 +604,9 @@ smd_country <- ggplot(data=subset(primary_outcome, !is.na(Country)), aes(SMD, SE
     labs(fill = "Country") + gglayers
 smd_country
 ```
+
 **SMD by SESMD grouped by Publication Type - all Primary outcome studies**
-```{r, fig.width=12,fig.height=5}
+```{r, message=FALSE, warning=FALSE, fig.width=12,fig.height=5}
 # Make SMD/SESMD scatter plot, (color) grouped by Publication Type
 smd_pubtype <- ggplot(data=subset(primary_outcome, !is.na(PublicationType)), aes(SMD, SESMD, fill=PublicationType)) +
     geom_point(alpha=1, na.rm=TRUE, size=3, shape=21, stroke=1) +
@@ -507,3 +614,36 @@ smd_pubtype <- ggplot(data=subset(primary_outcome, !is.na(PublicationType)), aes
     labs(fill = "Publication Type") + gglayers
 smd_pubtype
 ```
+
+**SMD by Decade and Country (density plots)**
+```{r, message=FALSE, warning=FALSE, fig.width=9,fig.height=9}
+decade <- primary_outcome %>%
+          filter(!is.na(Country)) %>%
+          ggplot(aes(SMD, fill=Decade)) +
+          geom_density(alpha=0.7) +
+          scale_y_continuous(name = "Density") +
+          ggtitle("SMD by Decade") +
+          theme_classic()
+
+country <- primary_outcome %>%
+          filter(!is.na(Country)) %>%
+          ggplot(aes(SMD, fill=Country)) +
+          geom_density(alpha=0.7) +
+          scale_y_continuous(name = "Density") +
+          ggtitle("SMD by Country") +
+          theme_classic()
+grid.arrange(decade, country)
+```
+
+**Categorywise bar char of educational setting by decade**
+```{r, message=FALSE, warning=FALSE, fig.width=8,fig.height=6}
+edu_decade <- primary_outcome %>%
+     filter(!is.na(EducationalSetting)) %>%
+     ggplot(aes(x=Decade)) +
+     geom_bar(aes(fill=EducationalSetting), width = 0.5) + 
+     theme(axis.text.x = element_text(angle=0, vjust=0.6)) +
+     labs(title="Educational Setting over the past six decades")
+edu_decade
+```
+
+
