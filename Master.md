@@ -106,7 +106,8 @@ def get_all():
   strandfind=0
   countryfind=0
   exclude=np.nan
-  
+  outcomes=0
+  nooutcomes=0
   extracted=0
   null=0
   
@@ -158,6 +159,7 @@ def get_all():
                   
               # get outcome data if an "Outcomes" section exists
               if "Outcomes" in data["References"][section]:
+                  outcomes+=1
                   outcometext=data["References"][section]["Outcomes"][0]["OutcomeText"]
                   interventiontext=data["References"][section]["Outcomes"][0]["InterventionText"]
                   SMD=(data["References"][section]["Outcomes"][0]["SMD"])
@@ -165,6 +167,7 @@ def get_all():
                   CIupperSMD=(data["References"][section]["Outcomes"][0]["CIUpperSMD"])
                   CIlowerSMD=(data["References"][section]["Outcomes"][0]["CILowerSMD"])
               else:
+                  nooutcomes+=1
                   outcometext=exclude
                   interventiontext=exclude
                   SMD=exclude
@@ -298,7 +301,7 @@ View(primary_outcome)
 
 rownames(primary_outcome) <- NULL
 # display data with kable and inspect subsetted columns (highlighted)
-primary_outcome[1:25,1:12] %>%
+primary_outcome[1:25,1:13] %>%
   mutate(Outcome = cell_spec(Outcome, color = "white", bold = T, background = spec_color(.9, end = .9))) %>%
   kable(escape = F, align = "l") %>%
   column_spec(5, width="30mm") %>%
@@ -320,6 +323,7 @@ primary_outcome[1:25,1:12] %>%
    <th style="text-align:left;"> SMD </th>
    <th style="text-align:left;"> SESMD </th>
    <th style="text-align:left;"> CIupper </th>
+   <th style="text-align:left;"> CIlower </th>
   </tr>
  </thead>
 <tbody>
@@ -336,6 +340,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 0.5174 </td>
    <td style="text-align:left;"> 0.1767 </td>
    <td style="text-align:left;"> 0.8637 </td>
+   <td style="text-align:left;"> 0.1712 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Acalin (1995) </td>
@@ -350,6 +355,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> -0.1119 </td>
    <td style="text-align:left;"> 0.2464 </td>
    <td style="text-align:left;"> 0.3710 </td>
+   <td style="text-align:left;"> -0.5948 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Adler (1998) </td>
@@ -364,6 +370,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 0.1650 </td>
    <td style="text-align:left;"> 0.2230 </td>
    <td style="text-align:left;"> 0.6021 </td>
+   <td style="text-align:left;"> -0.2721 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Allor (2004) </td>
@@ -378,6 +385,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 0.5300 </td>
    <td style="text-align:left;"> 0.2400 </td>
    <td style="text-align:left;"> 1.0004 </td>
+   <td style="text-align:left;"> 0.0596 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Allsopp (1995) </td>
@@ -392,6 +400,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 0.1596 </td>
    <td style="text-align:left;"> 0.1241 </td>
    <td style="text-align:left;"> 0.4027 </td>
+   <td style="text-align:left;"> -0.0835 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Ammon (1971) </td>
@@ -406,6 +415,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 0.0000 </td>
    <td style="text-align:left;"> 0.2949 </td>
    <td style="text-align:left;"> 0.5780 </td>
+   <td style="text-align:left;"> -0.5780 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Anders (1984) </td>
@@ -420,6 +430,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 1.6616 </td>
    <td style="text-align:left;"> 0.2971 </td>
    <td style="text-align:left;"> 2.2439 </td>
+   <td style="text-align:left;"> 1.0792 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Anderson (1973) </td>
@@ -434,6 +445,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 1.1547 </td>
    <td style="text-align:left;"> 0.2310 </td>
    <td style="text-align:left;"> 1.6074 </td>
+   <td style="text-align:left;"> 0.7020 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Aram (2004) OL </td>
@@ -448,6 +460,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 0.3624 </td>
    <td style="text-align:left;"> 0.2673 </td>
    <td style="text-align:left;"> 0.8862 </td>
+   <td style="text-align:left;"> -0.1614 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Aram (2006) </td>
@@ -462,6 +475,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 0.0396 </td>
    <td style="text-align:left;"> 0.2310 </td>
    <td style="text-align:left;"> 0.4923 </td>
+   <td style="text-align:left;"> -0.4131 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Arblaster (1991) </td>
@@ -476,6 +490,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 1.6870 </td>
    <td style="text-align:left;"> 0.4016 </td>
    <td style="text-align:left;"> 2.4741 </td>
+   <td style="text-align:left;"> 0.8999 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Arter (1994) </td>
@@ -490,6 +505,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 0.3000 </td>
    <td style="text-align:left;"> 0.1800 </td>
    <td style="text-align:left;"> 0.6528 </td>
+   <td style="text-align:left;"> -0.0528 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Atherley (1989) </td>
@@ -504,6 +520,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 0.6814 </td>
    <td style="text-align:left;"> 0.3356 </td>
    <td style="text-align:left;"> 1.3391 </td>
+   <td style="text-align:left;"> 0.0237 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Aumiller (1963) </td>
@@ -518,6 +535,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> -0.0058 </td>
    <td style="text-align:left;"> 0.1451 </td>
    <td style="text-align:left;"> 0.2786 </td>
+   <td style="text-align:left;"> -0.2903 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Baechie (1990) </td>
@@ -532,6 +550,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 0.6548 </td>
    <td style="text-align:left;"> 0.2855 </td>
    <td style="text-align:left;"> 1.2143 </td>
+   <td style="text-align:left;"> 0.0952 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Baker (2000) </td>
@@ -546,6 +565,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 0.4043 </td>
    <td style="text-align:left;"> 0.2206 </td>
    <td style="text-align:left;"> 0.8367 </td>
+   <td style="text-align:left;"> -0.0281 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Baker (2005) </td>
@@ -560,6 +580,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 1.0958 </td>
    <td style="text-align:left;"> 0.3434 </td>
    <td style="text-align:left;"> 1.7688 </td>
+   <td style="text-align:left;"> 0.4228 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Banks (1987) </td>
@@ -574,6 +595,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 0.5767 </td>
    <td style="text-align:left;"> 0.1298 </td>
    <td style="text-align:left;"> 0.8312 </td>
+   <td style="text-align:left;"> 0.3222 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Bar-Eli (1982) </td>
@@ -588,6 +610,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 1.0033 </td>
    <td style="text-align:left;"> 0.3874 </td>
    <td style="text-align:left;"> 1.7627 </td>
+   <td style="text-align:left;"> 0.2439 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Beck (2007) </td>
@@ -602,6 +625,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 1.1537 </td>
    <td style="text-align:left;"> 0.3206 </td>
    <td style="text-align:left;"> 1.7821 </td>
+   <td style="text-align:left;"> 0.5253 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Bennett (2013) </td>
@@ -616,6 +640,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 0.0032 </td>
    <td style="text-align:left;"> 0.4369 </td>
    <td style="text-align:left;"> 0.8596 </td>
+   <td style="text-align:left;"> -0.8532 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Benson (1979) 1_1 </td>
@@ -630,6 +655,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 0.2200 </td>
    <td style="text-align:left;"> 0.1200 </td>
    <td style="text-align:left;"> 0.4552 </td>
+   <td style="text-align:left;"> -0.0152 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Benson (1979) 1_2 </td>
@@ -644,6 +670,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 0.2115 </td>
    <td style="text-align:left;"> 0.1455 </td>
    <td style="text-align:left;"> 0.4967 </td>
+   <td style="text-align:left;"> -0.0737 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Bereiter (1985) </td>
@@ -658,6 +685,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 0.5271 </td>
    <td style="text-align:left;"> 0.3665 </td>
    <td style="text-align:left;"> 1.2454 </td>
+   <td style="text-align:left;"> -0.1912 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Bethge (1982) </td>
@@ -672,6 +700,7 @@ primary_outcome[1:25,1:12] %>%
    <td style="text-align:left;"> 0.8552 </td>
    <td style="text-align:left;"> 0.3027 </td>
    <td style="text-align:left;"> 1.4485 </td>
+   <td style="text-align:left;"> 0.2619 </td>
   </tr>
 </tbody>
 </table>
@@ -1181,7 +1210,7 @@ Primary_UK_plot <- ggplot(data=na.omit(subset(countries, select=c(Country=="UK",
                     ylab('Reference') +
                     geom_vline(xintercept=0, color='black', linetype='dashed') +
                     theme_classic() +
-                    ggtitle("UK studies, Primary outcome") +
+                    ggtitle("UK studies, Feedback Strand (Primary outcome)") +
                     theme(axis.text.x = element_text(colour = "black", size=11),
                           axis.text.y = element_text(colour = "black", size=11)) +
                     theme(axis.title.x = element_text(colour = "black", size=16),
@@ -1195,7 +1224,7 @@ Primary_USA_plot <- ggplot(data=na.omit(subset(countries, select=c(Country=="UK"
                     ylab('Authors') +
                     geom_vline(xintercept=0, color='black', linetype='dashed') +
                     theme_classic() +
-                    ggtitle("USA studies, Primary Outcome") +
+                    ggtitle("USA studies, Feedback Strand (Primary Outcome)") +
                     theme(axis.text.x = element_text(colour = "black", size=11),
                           axis.text.y = element_text(colour = "black", size=11)) +
                     theme(axis.title.x = element_text(colour = "black", size=16),
@@ -1206,6 +1235,7 @@ Primary_USA_plot
 
 ![](Master_figs/unnamed-chunk-9-1.png)<!-- -->
 
+## Metafor
 **Subset "Teaching assistant" strand data from "Primary Outcomes" dataset, order by year, inspect the data with kable**
 
 ```r
@@ -1467,6 +1497,7 @@ df_ta[1:25,1:7] %>%
   </tr>
 </tbody>
 </table>
+
 **Make forest plot (with metafor) using "Teaching assistants" data, ordered by Year**
 
 ```r
@@ -1489,7 +1520,7 @@ text(3.8, 27, "Weight", cex=.9, font=2)
 
 ![](Master_figs/unnamed-chunk-11-1.png)<!-- -->
 
-**Display metafor funnel plot for all data (primary outcome only)**
+**Display metafor funnel plot for all studies (primary outcome only)**
 
 ```r
 # subset data (can control for outliers if we want)
@@ -1500,7 +1531,6 @@ df_all <- primary_outcome %>%
       filter(SMD <= 2.00)
 
 random_all=rma(df_all$SMD, sei=df_all$SESMD, data=df_all)
-
 funnel(random_all)
 ```
 
@@ -1625,7 +1655,7 @@ pub_type
 
 ![](Master_figs/unnamed-chunk-19-1.png)<!-- -->
 
-**Plot SMD/SESMD scatter plots grouped by intervention, educational setting, strand, and country**
+**Plot all Primary Outcome studies as SMD/SESMD scatter plots grouped by intervention, educational setting, strand, and country**
 
 ```r
 # get means for SMD and SESMD

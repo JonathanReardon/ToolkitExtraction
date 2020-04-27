@@ -102,7 +102,8 @@ def get_all():
   strandfind=0
   countryfind=0
   exclude=np.nan
-  
+  outcomes=0
+  nooutcomes=0
   extracted=0
   null=0
   
@@ -154,6 +155,7 @@ def get_all():
                   
               # get outcome data if an "Outcomes" section exists
               if "Outcomes" in data["References"][section]:
+                  outcomes+=1
                   outcometext=data["References"][section]["Outcomes"][0]["OutcomeText"]
                   interventiontext=data["References"][section]["Outcomes"][0]["InterventionText"]
                   SMD=(data["References"][section]["Outcomes"][0]["SMD"])
@@ -161,6 +163,7 @@ def get_all():
                   CIupperSMD=(data["References"][section]["Outcomes"][0]["CIUpperSMD"])
                   CIlowerSMD=(data["References"][section]["Outcomes"][0]["CILowerSMD"])
               else:
+                  nooutcomes+=1
                   outcometext=exclude
                   interventiontext=exclude
                   SMD=exclude
@@ -287,7 +290,7 @@ View(primary_outcome)
 
 rownames(primary_outcome) <- NULL
 # display data with kable and inspect subsetted columns (highlighted)
-primary_outcome[1:25,1:12] %>%
+primary_outcome[1:25,1:13] %>%
   mutate(Outcome = cell_spec(Outcome, color = "white", bold = T, background = spec_color(.9, end = .9))) %>%
   kable(escape = F, align = "l") %>%
   column_spec(5, width="30mm") %>%
@@ -363,7 +366,7 @@ Primary_UK_plot <- ggplot(data=na.omit(subset(countries, select=c(Country=="UK",
                     ylab('Reference') +
                     geom_vline(xintercept=0, color='black', linetype='dashed') +
                     theme_classic() +
-                    ggtitle("UK studies, Primary outcome") +
+                    ggtitle("UK studies, Feedback Strand (Primary outcome)") +
                     theme(axis.text.x = element_text(colour = "black", size=11),
                           axis.text.y = element_text(colour = "black", size=11)) +
                     theme(axis.title.x = element_text(colour = "black", size=16),
@@ -377,7 +380,7 @@ Primary_USA_plot <- ggplot(data=na.omit(subset(countries, select=c(Country=="UK"
                     ylab('Authors') +
                     geom_vline(xintercept=0, color='black', linetype='dashed') +
                     theme_classic() +
-                    ggtitle("USA studies, Primary Outcome") +
+                    ggtitle("USA studies, Feedback Strand (Primary Outcome)") +
                     theme(axis.text.x = element_text(colour = "black", size=11),
                           axis.text.y = element_text(colour = "black", size=11)) +
                     theme(axis.title.x = element_text(colour = "black", size=16),
@@ -386,6 +389,7 @@ Primary_USA_plot <- ggplot(data=na.omit(subset(countries, select=c(Country=="UK"
 Primary_USA_plot
 ```
 
+## Metafor
 **Subset "Teaching assistant" strand data from "Primary Outcomes" dataset, order by year, inspect the data with kable**
 ```{r, message=FALSE, warning=FALSE, fig.width=7, fig.height=7}
 df <- primary_outcome %>%
@@ -405,6 +409,7 @@ df_ta[1:25,1:7] %>%
   kable(escape = F, align = "l") %>%
   kable_styling(c("hover", "condensed", "responsive", "bordered"), full_width = F, font_size = 12)
 ```
+
 **Make forest plot (with metafor) using "Teaching assistants" data, ordered by Year**
 ```{r, message=FALSE, warning=FALSE, fig.width=7, fig.height=7}
 random=rma(df_ta$SMD, sei=df_ta$SESMD, data=df_ta)
@@ -424,7 +429,7 @@ text(7.5, 27, "(95% CI)", cex=.9, font=2)
 text(3.8, 27, "Weight", cex=.9, font=2)
 ```
 
-**Display metafor funnel plot for all data (primary outcome only)**
+**Display metafor funnel plot for all studies (primary outcome only)**
 ```{r, message=FALSE, warning=FALSE, fig.width=7, fig.height=7}
 # subset data (can control for outliers if we want)
 df_all <- primary_outcome %>%
@@ -434,7 +439,6 @@ df_all <- primary_outcome %>%
       filter(SMD <= 2.00)
 
 random_all=rma(df_all$SMD, sei=df_all$SESMD, data=df_all)
-
 funnel(random_all)
 ```
 
@@ -538,7 +542,7 @@ pub_type <- filter(primary_outcome, !is.na(PublicationType)) %>%
 pub_type
 ```
 
-**Plot SMD/SESMD scatter plots grouped by intervention, educational setting, strand, and country**
+**Plot all Primary Outcome studies as SMD/SESMD scatter plots grouped by intervention, educational setting, strand, and country**
 ```{r, message=FALSE, warning=FALSE, fig.width=14,fig.height=19}
 # get means for SMD and SESMD
 master_df_mean_SMD    <- mean(primary_outcome$SMD, na.rm=TRUE)
