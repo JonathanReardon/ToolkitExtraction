@@ -370,9 +370,9 @@ def decade_row(row):
   
 def random_row(row):
   if row["StudyDesign"] == "Prospective QED" or row["StudyDesign"]=="Retrospective QED  " or row["StudyDesign"] == "Interrupted time series QED" or row["StudyDesign"] =="RegressionDiscontinuity - not randomised":
-    outcome="non-random"
+    outcome="Non-random"
   elif row["StudyDesign"]=="Individual RCT" or row["StudyDesign"]=="Cluster RCT" or row["StudyDesign"]=="Multisite RCT" or row["StudyDesign"]=="Regression Discontinuity - not randomised":
-    outcome="random"
+    outcome="Random"
   else:
     outcome=""
   return outcome
@@ -445,6 +445,10 @@ primary_outcome$StudyRealism <- as.factor(primary_outcome$StudyRealism)
 primary_outcome$LevelofAssignment <- as.character(primary_outcome$LevelofAssignment)
 primary_outcome$LevelofAssignment[primary_outcome$LevelofAssignment=="NaN"] <- NA
 primary_outcome$LevelofAssignment <- as.factor(primary_outcome$LevelofAssignment)
+
+primary_outcome$Randomisation <- as.character(primary_outcome$Randomisation)
+primary_outcome$Randomisation[primary_outcome$Randomisation==""] <- NA
+primary_outcome$Randomisation <- as.factor(primary_outcome$Randomisation)
 
 primary_outcome$StudyDesign <- as.character(primary_outcome$StudyDesign)
 primary_outcome$StudyDesign[primary_outcome$StudyDesign=="NaN"] <- NA
@@ -668,7 +672,27 @@ gglayers <- list(
   theme(plot.title = element_text(colour="black", size="16"))
 )
 ```
+**SMD by Decade, grouped by Randomisation**
+```{r, message=FALSE, warning=FALSE, fig.width=10,fig.height=6}
+# plot of SMD by Decade grouped (color) by Strand
+Randomisation <- filter(primary_outcome, !is.na(Randomisation)) %>%
+  ggplot(aes(y=SMD, x=Decade, fill=Randomisation)) +
+  labs(fill = "Randomisation") +
+  ggtitle("SMD by Decade, grouped by Randomisation") + gglayers
 
+Randomisation
+```
+
+**SMD by Decade, grouped by Study Design**
+```{r, message=FALSE, warning=FALSE, fig.width=12,fig.height=6}
+# plot of SMD by Decade grouped (color) by Strand
+StudyDesign <- filter(primary_outcome, !is.na(StudyDesign)) %>%
+  ggplot(aes(y=SMD, x=Decade, fill=StudyDesign)) +
+  labs(fill = "StudyDesign") +
+  ggtitle("SMD by Decade, grouped by StudyDesign") + gglayers
+
+StudyDesign
+```
 **SMD by Decade, grouped by Strand**
 ```{r, message=FALSE, warning=FALSE, fig.width=10,fig.height=6}
 # plot of SMD by Decade grouped (color) by Strand
@@ -718,6 +742,16 @@ pub_type <- filter(primary_outcome, !is.na(PublicationType)) %>%
   labs(fill = "Publication Type") +
   ggtitle("SMD by Decade, grouped by Publication Type") + gglayers
 pub_type
+```
+
+**SMD by Randomisation**
+```{r, message=FALSE, warning=FALSE, fig.width=8,fig.height=6}
+# plot of SMD by Decade grouped (color) by Publication Type
+random <- filter(primary_outcome, !is.na(Randomisation)) %>%
+  ggplot(aes(y=SMD, x=Randomisation, fill=Randomisation)) +
+  labs(fill = "Randomisation") +
+  ggtitle("SMD by Decade, grouped by Randomisation") + gglayers
+random
 ```
 
 **Plot all Primary Outcome studies as SMD/SESMD scatter plots grouped by intervention, educational setting, strand, and country**
@@ -797,8 +831,18 @@ smd_pubtype <- ggplot(data=subset(primary_outcome, !is.na(PublicationType)), aes
 smd_pubtype
 ```
 
+**SMD by SESMD grouped by Randomisation - all Primary outcome studies**
+```{r, message=FALSE, warning=FALSE, fig.width=12,fig.height=5}
+# Make SMD/SESMD scatter plot, (color) grouped by Randomisation
+random <- ggplot(data=subset(primary_outcome, !is.na(Randomisation)), aes(SMD, SESMD, fill=Randomisation)) +
+    geom_point(alpha=1, na.rm=TRUE, size=3, shape=21, stroke=1) +
+    ggtitle("SMD by SESMD grouped by Randomisation") +
+    labs(fill = "Randomisation") + gglayers
+random
+```
+
 **SMD by Decade and Country (density plots)**
-```{r, message=FALSE, warning=FALSE, fig.width=9,fig.height=9}
+```{r, message=FALSE, warning=FALSE, fig.width=10,fig.height=15}
 decade <- primary_outcome %>%
           filter(!is.na(Country)) %>%
           ggplot(aes(SMD, fill=Decade)) +
@@ -808,13 +852,30 @@ decade <- primary_outcome %>%
           theme_classic()
 
 country <- primary_outcome %>%
-          filter(!is.na(Country)) %>%
-          ggplot(aes(SMD, fill=Country)) +
+           filter(!is.na(Country)) %>%
+           ggplot(aes(SMD, fill=Country)) +
+           geom_density(alpha=0.7) +
+           scale_y_continuous(name = "Density") +
+           ggtitle("SMD by Country") +
+           theme_classic()
+
+random <- primary_outcome %>%
+          filter(!is.na(Randomisation)) %>%
+          ggplot(aes(SMD, fill=Randomisation)) +
           geom_density(alpha=0.7) +
           scale_y_continuous(name = "Density") +
-          ggtitle("SMD by Country") +
+          ggtitle("SMD by Randomisation") +
           theme_classic()
-grid.arrange(decade, country)
+
+design <- primary_outcome %>%
+          filter(!is.na(StudyDesign)) %>%
+          ggplot(aes(SMD, fill=StudyDesign)) +
+          geom_density(alpha=0.7) +
+          scale_y_continuous(name = "Density") +
+          ggtitle("SMD by Study Design") +
+          theme_classic()
+
+grid.arrange(decade, country, random, design, ncol=1)
 ```
 
 **Categorywise bar char of educational setting by decade**

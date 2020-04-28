@@ -379,13 +379,24 @@ def decade_row(row):
     decade="2020-2029"
   return decade
   
+def random_row(row):
+  if row["StudyDesign"] == "Prospective QED" or row["StudyDesign"]=="Retrospective QED  " or row["StudyDesign"] == "Interrupted time series QED" or row["StudyDesign"] =="RegressionDiscontinuity - not randomised":
+    outcome="Non-random"
+  elif row["StudyDesign"]=="Individual RCT" or row["StudyDesign"]=="Cluster RCT" or row["StudyDesign"]=="Multisite RCT" or row["StudyDesign"]=="Regression Discontinuity - not randomised":
+    outcome="Random"
+  else:
+    outcome=""
+  return outcome
+  
 # Use "Year" data to get 'decade' information and add to new column
 master_df["Decade"] = master_df.apply(decade_row, axis=1)
+
+master_df["Randomisation"] = master_df.apply(random_row, axis=1)
 
 # reorder columns
 master_df = master_df[["Author", "Year", "Decade", "Country", "Outcome", "Strand", "PublicationType", 
                        "EducationalSetting", "Intervention", "StudentAge", "StudentGender",
-                       "StudyRealism", "StudyDesign", "LevelofAssignment", "ParticipantAssignment", "SMD", "SESMD", "CIupper", "CIlower"]]
+                       "StudyRealism", "LevelofAssignment", "StudyDesign", "ParticipantAssignment", "Randomisation", "SMD", "SESMD", "CIupper", "CIlower"]]
 
 # subset all Primary Outcomes studies
 primary = master_df[master_df["Outcome"] == "Primary outcome"]
@@ -447,6 +458,10 @@ primary_outcome$LevelofAssignment <- as.character(primary_outcome$LevelofAssignm
 primary_outcome$LevelofAssignment[primary_outcome$LevelofAssignment=="NaN"] <- NA
 primary_outcome$LevelofAssignment <- as.factor(primary_outcome$LevelofAssignment)
 
+primary_outcome$Randomisation <- as.character(primary_outcome$Randomisation)
+primary_outcome$Randomisation[primary_outcome$Randomisation==""] <- NA
+primary_outcome$Randomisation <- as.factor(primary_outcome$Randomisation)
+
 primary_outcome$StudyDesign <- as.character(primary_outcome$StudyDesign)
 primary_outcome$StudyDesign[primary_outcome$StudyDesign=="NaN"] <- NA
 primary_outcome$StudyDesign <- as.factor(primary_outcome$StudyDesign)
@@ -491,13 +506,13 @@ primary_outcome[1:25,1:19] %>%
    <th style="text-align:left;"> StudentAge </th>
    <th style="text-align:left;"> StudentGender </th>
    <th style="text-align:left;"> StudyRealism </th>
-   <th style="text-align:left;"> StudyDesign </th>
    <th style="text-align:left;"> LevelofAssignment </th>
+   <th style="text-align:left;"> StudyDesign </th>
    <th style="text-align:left;"> ParticipantAssignment </th>
+   <th style="text-align:left;"> Randomisation </th>
    <th style="text-align:left;"> SMD </th>
    <th style="text-align:left;"> SESMD </th>
    <th style="text-align:left;"> CIupper </th>
-   <th style="text-align:left;"> CIlower </th>
   </tr>
  </thead>
 <tbody>
@@ -514,13 +529,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> c("11", "12", "13") </td>
    <td style="text-align:left;"> Mixed gender </td>
    <td style="text-align:left;"> High ecological validity </td>
-   <td style="text-align:left;"> Prospective QED </td>
    <td style="text-align:left;"> Individual </td>
+   <td style="text-align:left;"> Prospective QED </td>
    <td style="text-align:left;"> Non-random, not matched prior to treatment </td>
+   <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 0.5174 </td>
    <td style="text-align:left;"> 0.1767 </td>
    <td style="text-align:left;"> 0.8637 </td>
-   <td style="text-align:left;"> 0.1712 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Acalin (1995) </td>
@@ -535,13 +550,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> c("5", "6", "7", "8", "9", "10") </td>
    <td style="text-align:left;"> Mixed gender </td>
    <td style="text-align:left;"> High ecological validity </td>
-   <td style="text-align:left;"> Retrospective QED </td>
    <td style="text-align:left;"> Individual </td>
+   <td style="text-align:left;"> Retrospective QED </td>
    <td style="text-align:left;"> Non-random, but matched </td>
+   <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> -0.1119 </td>
    <td style="text-align:left;"> 0.2464 </td>
    <td style="text-align:left;"> 0.3710 </td>
-   <td style="text-align:left;"> -0.5948 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Adler (1998) </td>
@@ -556,13 +571,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> c("8", "9") </td>
    <td style="text-align:left;"> Mixed gender </td>
    <td style="text-align:left;"> Low ecological validity </td>
-   <td style="text-align:left;"> Prospective QED </td>
    <td style="text-align:left;"> School - cluster </td>
+   <td style="text-align:left;"> Prospective QED </td>
    <td style="text-align:left;"> Unclear </td>
+   <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 0.1650 </td>
    <td style="text-align:left;"> 0.2230 </td>
    <td style="text-align:left;"> 0.6021 </td>
-   <td style="text-align:left;"> -0.2721 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Allor (2004) </td>
@@ -577,13 +592,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> NA </td>
    <td style="text-align:left;"> NA </td>
    <td style="text-align:left;"> NA </td>
+   <td style="text-align:left;"> NA </td>
    <td style="text-align:left;"> Individual RCT </td>
    <td style="text-align:left;"> NA </td>
-   <td style="text-align:left;"> NA </td>
+   <td style="text-align:left;"> Random </td>
    <td style="text-align:left;"> 0.5300 </td>
    <td style="text-align:left;"> 0.2400 </td>
    <td style="text-align:left;"> 1.0004 </td>
-   <td style="text-align:left;"> 0.0596 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Allsopp (1995) </td>
@@ -598,13 +613,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> c("12", "13", "14", "15") </td>
    <td style="text-align:left;"> Mixed gender </td>
    <td style="text-align:left;"> High ecological validity </td>
-   <td style="text-align:left;"> Cluster RCT </td>
    <td style="text-align:left;"> Class </td>
+   <td style="text-align:left;"> Cluster RCT </td>
    <td style="text-align:left;"> Non-random, not matched prior to treatment </td>
+   <td style="text-align:left;"> Random </td>
    <td style="text-align:left;"> 0.1596 </td>
    <td style="text-align:left;"> 0.1241 </td>
    <td style="text-align:left;"> 0.4027 </td>
-   <td style="text-align:left;"> -0.0835 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Ammon (1971) </td>
@@ -619,13 +634,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> c("4", "5") </td>
    <td style="text-align:left;"> Mixed gender </td>
    <td style="text-align:left;"> High ecological validity </td>
-   <td style="text-align:left;"> Individual RCT </td>
    <td style="text-align:left;"> Individual </td>
+   <td style="text-align:left;"> Individual RCT </td>
    <td style="text-align:left;"> Random (please specify) </td>
+   <td style="text-align:left;"> Random </td>
    <td style="text-align:left;"> 0.0000 </td>
    <td style="text-align:left;"> 0.2949 </td>
    <td style="text-align:left;"> 0.5780 </td>
-   <td style="text-align:left;"> -0.5780 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Anders (1984) </td>
@@ -640,13 +655,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> c("14", "15", "16", "17", "18") </td>
    <td style="text-align:left;"> No information provided </td>
    <td style="text-align:left;"> High ecological validity </td>
-   <td style="text-align:left;"> Multisite RCT </td>
    <td style="text-align:left;"> Class </td>
+   <td style="text-align:left;"> Multisite RCT </td>
    <td style="text-align:left;"> Random (please specify) </td>
+   <td style="text-align:left;"> Random </td>
    <td style="text-align:left;"> 1.6616 </td>
    <td style="text-align:left;"> 0.2971 </td>
    <td style="text-align:left;"> 2.2439 </td>
-   <td style="text-align:left;"> 1.0792 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Anderson (1973) </td>
@@ -661,13 +676,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> c("13", "14") </td>
    <td style="text-align:left;"> Male only </td>
    <td style="text-align:left;"> Low ecological validity </td>
-   <td style="text-align:left;"> Retrospective QED </td>
    <td style="text-align:left;"> Individual </td>
+   <td style="text-align:left;"> Retrospective QED </td>
    <td style="text-align:left;"> Random (please specify) </td>
+   <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 1.1547 </td>
    <td style="text-align:left;"> 0.2310 </td>
    <td style="text-align:left;"> 1.6074 </td>
-   <td style="text-align:left;"> 0.7020 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Aram (2004) OL </td>
@@ -682,13 +697,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> c("3", "4", "5") </td>
    <td style="text-align:left;"> Mixed gender </td>
    <td style="text-align:left;"> High ecological validity </td>
-   <td style="text-align:left;"> Retrospective QED </td>
    <td style="text-align:left;"> Class </td>
+   <td style="text-align:left;"> Retrospective QED </td>
    <td style="text-align:left;"> Random (please specify) </td>
+   <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 0.3624 </td>
    <td style="text-align:left;"> 0.2673 </td>
    <td style="text-align:left;"> 0.8862 </td>
-   <td style="text-align:left;"> -0.1614 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Aram (2006) </td>
@@ -703,13 +718,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> c("3", "4", "5") </td>
    <td style="text-align:left;"> Mixed gender </td>
    <td style="text-align:left;"> High ecological validity </td>
-   <td style="text-align:left;"> Prospective QED </td>
    <td style="text-align:left;"> School - cluster </td>
+   <td style="text-align:left;"> Prospective QED </td>
    <td style="text-align:left;"> Random (please specify) </td>
+   <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 0.0396 </td>
    <td style="text-align:left;"> 0.2310 </td>
    <td style="text-align:left;"> 0.4923 </td>
-   <td style="text-align:left;"> -0.4131 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Arblaster (1991) </td>
@@ -724,13 +739,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> NA </td>
    <td style="text-align:left;"> NA </td>
    <td style="text-align:left;"> Low ecological validity </td>
-   <td style="text-align:left;"> Prospective QED </td>
    <td style="text-align:left;"> Individual </td>
+   <td style="text-align:left;"> Prospective QED </td>
    <td style="text-align:left;"> Non-random, but matched </td>
+   <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 1.6870 </td>
    <td style="text-align:left;"> 0.4016 </td>
    <td style="text-align:left;"> 2.4741 </td>
-   <td style="text-align:left;"> 0.8999 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Arter (1994) </td>
@@ -745,13 +760,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> c("10", "11") </td>
    <td style="text-align:left;"> Mixed gender </td>
    <td style="text-align:left;"> High ecological validity </td>
-   <td style="text-align:left;"> Multisite RCT </td>
    <td style="text-align:left;"> Class </td>
+   <td style="text-align:left;"> Multisite RCT </td>
    <td style="text-align:left;"> Random (please specify) </td>
+   <td style="text-align:left;"> Random </td>
    <td style="text-align:left;"> 0.3000 </td>
    <td style="text-align:left;"> 0.1800 </td>
    <td style="text-align:left;"> 0.6528 </td>
-   <td style="text-align:left;"> -0.0528 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Atherley (1989) </td>
@@ -766,13 +781,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> 10 </td>
    <td style="text-align:left;"> Mixed gender </td>
    <td style="text-align:left;"> High ecological validity </td>
-   <td style="text-align:left;"> Prospective QED </td>
    <td style="text-align:left;"> Individual </td>
+   <td style="text-align:left;"> Prospective QED </td>
    <td style="text-align:left;"> Non-random, but matched </td>
+   <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 0.6814 </td>
    <td style="text-align:left;"> 0.3356 </td>
    <td style="text-align:left;"> 1.3391 </td>
-   <td style="text-align:left;"> 0.0237 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Aumiller (1963) </td>
@@ -787,13 +802,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> c("8", "9", "10", "11") </td>
    <td style="text-align:left;"> No information provided </td>
    <td style="text-align:left;"> High ecological validity </td>
-   <td style="text-align:left;"> Individual RCT </td>
    <td style="text-align:left;"> Individual </td>
+   <td style="text-align:left;"> Individual RCT </td>
    <td style="text-align:left;"> Random (please specify) </td>
+   <td style="text-align:left;"> Random </td>
    <td style="text-align:left;"> -0.0058 </td>
    <td style="text-align:left;"> 0.1451 </td>
    <td style="text-align:left;"> 0.2786 </td>
-   <td style="text-align:left;"> -0.2903 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Baechie (1990) </td>
@@ -808,13 +823,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> c("8", "9", "10", "11", "12", "13") </td>
    <td style="text-align:left;"> Mixed gender </td>
    <td style="text-align:left;"> Low ecological validity </td>
-   <td style="text-align:left;"> Prospective QED </td>
    <td style="text-align:left;"> Individual </td>
+   <td style="text-align:left;"> Prospective QED </td>
    <td style="text-align:left;"> Random (please specify) </td>
+   <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 0.6548 </td>
    <td style="text-align:left;"> 0.2855 </td>
    <td style="text-align:left;"> 1.2143 </td>
-   <td style="text-align:left;"> 0.0952 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Baker (2000) </td>
@@ -829,13 +844,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> NA </td>
    <td style="text-align:left;"> NA </td>
    <td style="text-align:left;"> NA </td>
+   <td style="text-align:left;"> NA </td>
    <td style="text-align:left;"> Individual RCT </td>
    <td style="text-align:left;"> NA </td>
-   <td style="text-align:left;"> NA </td>
+   <td style="text-align:left;"> Random </td>
    <td style="text-align:left;"> 0.4043 </td>
    <td style="text-align:left;"> 0.2206 </td>
    <td style="text-align:left;"> 0.8367 </td>
-   <td style="text-align:left;"> -0.0281 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Baker (2005) </td>
@@ -850,13 +865,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> c("6", "7") </td>
    <td style="text-align:left;"> Mixed gender </td>
    <td style="text-align:left;"> High ecological validity </td>
-   <td style="text-align:left;"> Prospective QED </td>
    <td style="text-align:left;"> Class </td>
+   <td style="text-align:left;"> Prospective QED </td>
    <td style="text-align:left;"> Non-random, not matched prior to treatment </td>
+   <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 1.0958 </td>
    <td style="text-align:left;"> 0.3434 </td>
    <td style="text-align:left;"> 1.7688 </td>
-   <td style="text-align:left;"> 0.4228 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Banks (1987) </td>
@@ -871,13 +886,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> c("7", "8", "9", "10", "11") </td>
    <td style="text-align:left;"> No information provided </td>
    <td style="text-align:left;"> High ecological validity </td>
-   <td style="text-align:left;"> Prospective QED </td>
    <td style="text-align:left;"> Class </td>
+   <td style="text-align:left;"> Prospective QED </td>
    <td style="text-align:left;"> Non-random, not matched prior to treatment </td>
+   <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 0.5767 </td>
    <td style="text-align:left;"> 0.1298 </td>
    <td style="text-align:left;"> 0.8312 </td>
-   <td style="text-align:left;"> 0.3222 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Bar-Eli (1982) </td>
@@ -892,13 +907,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> c("10", "11", "12", "7", "8") </td>
    <td style="text-align:left;"> Male only </td>
    <td style="text-align:left;"> High ecological validity </td>
-   <td style="text-align:left;"> Individual RCT </td>
    <td style="text-align:left;"> Individual </td>
+   <td style="text-align:left;"> Individual RCT </td>
    <td style="text-align:left;"> Random (please specify) </td>
+   <td style="text-align:left;"> Random </td>
    <td style="text-align:left;"> 1.0033 </td>
    <td style="text-align:left;"> 0.3874 </td>
    <td style="text-align:left;"> 1.7627 </td>
-   <td style="text-align:left;"> 0.2439 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Beck (2007) </td>
@@ -913,13 +928,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> c("5", "6", "7") </td>
    <td style="text-align:left;"> No information provided </td>
    <td style="text-align:left;"> High ecological validity </td>
-   <td style="text-align:left;"> Retrospective QED </td>
    <td style="text-align:left;"> Class </td>
+   <td style="text-align:left;"> Retrospective QED </td>
    <td style="text-align:left;"> Non-random, not matched prior to treatment </td>
+   <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 1.1537 </td>
    <td style="text-align:left;"> 0.3206 </td>
    <td style="text-align:left;"> 1.7821 </td>
-   <td style="text-align:left;"> 0.5253 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Bennett (2013) </td>
@@ -934,13 +949,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> c("7", "8", "9", "10", "11", "12") </td>
    <td style="text-align:left;"> Mixed gender </td>
    <td style="text-align:left;"> High ecological validity </td>
-   <td style="text-align:left;"> Individual RCT </td>
    <td style="text-align:left;"> Individual </td>
+   <td style="text-align:left;"> Individual RCT </td>
    <td style="text-align:left;"> Random (please specify) </td>
+   <td style="text-align:left;"> Random </td>
    <td style="text-align:left;"> 0.0032 </td>
    <td style="text-align:left;"> 0.4369 </td>
    <td style="text-align:left;"> 0.8596 </td>
-   <td style="text-align:left;"> -0.8532 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Benson (1979) 1_1 </td>
@@ -955,13 +970,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> c("12", "13", "14") </td>
    <td style="text-align:left;"> Mixed gender </td>
    <td style="text-align:left;"> High ecological validity </td>
-   <td style="text-align:left;"> Prospective QED </td>
    <td style="text-align:left;"> Class </td>
+   <td style="text-align:left;"> Prospective QED </td>
    <td style="text-align:left;"> Non-random, not matched prior to treatment </td>
+   <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 0.2200 </td>
    <td style="text-align:left;"> 0.1200 </td>
    <td style="text-align:left;"> 0.4552 </td>
-   <td style="text-align:left;"> -0.0152 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Benson (1979) 1_2 </td>
@@ -976,13 +991,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> c("12", "13", "14") </td>
    <td style="text-align:left;"> Mixed gender </td>
    <td style="text-align:left;"> High ecological validity </td>
-   <td style="text-align:left;"> Prospective QED </td>
    <td style="text-align:left;"> School - multi-site </td>
+   <td style="text-align:left;"> Prospective QED </td>
    <td style="text-align:left;"> Non-random, but matched </td>
+   <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 0.2115 </td>
    <td style="text-align:left;"> 0.1455 </td>
    <td style="text-align:left;"> 0.4967 </td>
-   <td style="text-align:left;"> -0.0737 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Bereiter (1985) </td>
@@ -997,13 +1012,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> c("12", "13") </td>
    <td style="text-align:left;"> No information provided </td>
    <td style="text-align:left;"> High ecological validity </td>
-   <td style="text-align:left;"> Multisite RCT </td>
    <td style="text-align:left;"> School - multi-site </td>
+   <td style="text-align:left;"> Multisite RCT </td>
    <td style="text-align:left;"> Random (please specify) </td>
+   <td style="text-align:left;"> Random </td>
    <td style="text-align:left;"> 0.5271 </td>
    <td style="text-align:left;"> 0.3665 </td>
    <td style="text-align:left;"> 1.2454 </td>
-   <td style="text-align:left;"> -0.1912 </td>
   </tr>
   <tr>
    <td style="text-align:left;"> Bethge (1982) </td>
@@ -1018,13 +1033,13 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> c("8", "9") </td>
    <td style="text-align:left;"> Mixed gender </td>
    <td style="text-align:left;"> Low ecological validity </td>
-   <td style="text-align:left;"> Individual RCT </td>
    <td style="text-align:left;"> Individual </td>
+   <td style="text-align:left;"> Individual RCT </td>
    <td style="text-align:left;"> Random (please specify) </td>
+   <td style="text-align:left;"> Random </td>
    <td style="text-align:left;"> 0.8552 </td>
    <td style="text-align:left;"> 0.3027 </td>
    <td style="text-align:left;"> 1.4485 </td>
-   <td style="text-align:left;"> 0.2619 </td>
   </tr>
 </tbody>
 </table>
@@ -1912,7 +1927,33 @@ gglayers <- list(
   theme(plot.title = element_text(colour="black", size="16"))
 )
 ```
+**SMD by Decade, grouped by Randomisation**
 
+```r
+# plot of SMD by Decade grouped (color) by Strand
+Randomisation <- filter(primary_outcome, !is.na(Randomisation)) %>%
+  ggplot(aes(y=SMD, x=Decade, fill=Randomisation)) +
+  labs(fill = "Randomisation") +
+  ggtitle("SMD by Decade, grouped by Randomisation") + gglayers
+
+Randomisation
+```
+
+![](Master_figs/unnamed-chunk-16-1.png)<!-- -->
+
+**SMD by Decade, grouped by Study Design**
+
+```r
+# plot of SMD by Decade grouped (color) by Strand
+StudyDesign <- filter(primary_outcome, !is.na(StudyDesign)) %>%
+  ggplot(aes(y=SMD, x=Decade, fill=StudyDesign)) +
+  labs(fill = "StudyDesign") +
+  ggtitle("SMD by Decade, grouped by StudyDesign") + gglayers
+
+StudyDesign
+```
+
+![](Master_figs/unnamed-chunk-17-1.png)<!-- -->
 **SMD by Decade, grouped by Strand**
 
 ```r
@@ -1925,7 +1966,7 @@ strand <- filter(primary_outcome, !is.na(Strand)) %>%
 strand
 ```
 
-![](Master_figs/unnamed-chunk-16-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-18-1.png)<!-- -->
 
 **SMD by Decade, grouped by Intervention**
 
@@ -1938,7 +1979,7 @@ intervention <- filter(primary_outcome, !is.na(Intervention)) %>%
 intervention
 ```
 
-![](Master_figs/unnamed-chunk-17-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-19-1.png)<!-- -->
 
 **SMD by Decade, grouped by Country**
 
@@ -1951,7 +1992,7 @@ country <- filter(primary_outcome, !is.na(Country)) %>%
 country
 ```
 
-![](Master_figs/unnamed-chunk-18-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-20-1.png)<!-- -->
 
 **SMD by Decade, grouped by Educational Setting**
 
@@ -1964,7 +2005,7 @@ edu_setting <- filter(primary_outcome, !is.na(EducationalSetting)) %>%
 edu_setting
 ```
 
-![](Master_figs/unnamed-chunk-19-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-21-1.png)<!-- -->
 
 **SMD by Decade, grouped by PublicationType**
 
@@ -1977,7 +2018,20 @@ pub_type <- filter(primary_outcome, !is.na(PublicationType)) %>%
 pub_type
 ```
 
-![](Master_figs/unnamed-chunk-20-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-22-1.png)<!-- -->
+
+**SMD by Randomisation**
+
+```r
+# plot of SMD by Decade grouped (color) by Publication Type
+random <- filter(primary_outcome, !is.na(Randomisation)) %>%
+  ggplot(aes(y=SMD, x=Randomisation, fill=Randomisation)) +
+  labs(fill = "Randomisation") +
+  ggtitle("SMD by Decade, grouped by Randomisation") + gglayers
+random
+```
+
+![](Master_figs/unnamed-chunk-23-1.png)<!-- -->
 
 **Plot all Primary Outcome studies as SMD/SESMD scatter plots grouped by intervention, educational setting, strand, and country**
 
@@ -2018,7 +2072,7 @@ smd_intervention <- ggplot(data=subset(primary_outcome, !is.na(Intervention)), a
 smd_intervention
 ```
 
-![](Master_figs/unnamed-chunk-22-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-25-1.png)<!-- -->
 
 **SMD by SESMD grouped by Educational Setting - all Primary outcome studies**
 
@@ -2031,7 +2085,7 @@ smd_edusetting <- ggplot(data=subset(primary_outcome, !is.na(EducationalSetting)
 smd_edusetting
 ```
 
-![](Master_figs/unnamed-chunk-23-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-26-1.png)<!-- -->
 
 **SMD by SESMD grouped by Strand - all Primary outcome studies**
 
@@ -2044,7 +2098,7 @@ smd_strand <- ggplot(data=subset(primary_outcome, !is.na(Strand)), aes(SMD, SESM
 smd_strand
 ```
 
-![](Master_figs/unnamed-chunk-24-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-27-1.png)<!-- -->
 
 **SMD by SESMD grouped by Country - all Primary outcome studies**
 
@@ -2057,7 +2111,7 @@ smd_country <- ggplot(data=subset(primary_outcome, !is.na(Country)), aes(SMD, SE
 smd_country
 ```
 
-![](Master_figs/unnamed-chunk-25-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-28-1.png)<!-- -->
 
 **SMD by SESMD grouped by Publication Type - all Primary outcome studies**
 
@@ -2070,7 +2124,20 @@ smd_pubtype <- ggplot(data=subset(primary_outcome, !is.na(PublicationType)), aes
 smd_pubtype
 ```
 
-![](Master_figs/unnamed-chunk-26-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-29-1.png)<!-- -->
+
+**SMD by SESMD grouped by Randomisation - all Primary outcome studies**
+
+```r
+# Make SMD/SESMD scatter plot, (color) grouped by Randomisation
+random <- ggplot(data=subset(primary_outcome, !is.na(Randomisation)), aes(SMD, SESMD, fill=Randomisation)) +
+    geom_point(alpha=1, na.rm=TRUE, size=3, shape=21, stroke=1) +
+    ggtitle("SMD by SESMD grouped by Randomisation") +
+    labs(fill = "Randomisation") + gglayers
+random
+```
+
+![](Master_figs/unnamed-chunk-30-1.png)<!-- -->
 
 **SMD by Decade and Country (density plots)**
 
@@ -2084,16 +2151,33 @@ decade <- primary_outcome %>%
           theme_classic()
 
 country <- primary_outcome %>%
-          filter(!is.na(Country)) %>%
-          ggplot(aes(SMD, fill=Country)) +
+           filter(!is.na(Country)) %>%
+           ggplot(aes(SMD, fill=Country)) +
+           geom_density(alpha=0.7) +
+           scale_y_continuous(name = "Density") +
+           ggtitle("SMD by Country") +
+           theme_classic()
+
+random <- primary_outcome %>%
+          filter(!is.na(Randomisation)) %>%
+          ggplot(aes(SMD, fill=Randomisation)) +
           geom_density(alpha=0.7) +
           scale_y_continuous(name = "Density") +
-          ggtitle("SMD by Country") +
+          ggtitle("SMD by Randomisation") +
           theme_classic()
-grid.arrange(decade, country)
+
+design <- primary_outcome %>%
+          filter(!is.na(StudyDesign)) %>%
+          ggplot(aes(SMD, fill=StudyDesign)) +
+          geom_density(alpha=0.7) +
+          scale_y_continuous(name = "Density") +
+          ggtitle("SMD by Study Design") +
+          theme_classic()
+
+grid.arrange(decade, country, random, design, ncol=1)
 ```
 
-![](Master_figs/unnamed-chunk-27-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-31-1.png)<!-- -->
 
 **Categorywise bar char of educational setting by decade**
 
@@ -2107,6 +2191,6 @@ edu_decade <- primary_outcome %>%
 edu_decade
 ```
 
-![](Master_figs/unnamed-chunk-28-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-32-1.png)<!-- -->
 
 
