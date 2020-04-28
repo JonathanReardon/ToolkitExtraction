@@ -44,7 +44,35 @@ with open('/home/jon/json/ToolkitExtraction/data/batch2.json') as f:
 #with open('/home/jon/json/ToolkitExtraction/data/Batch1.json') as f:
     data=json.load(f)
 ```
+**Flatten dataset into lists containing all attribute names and Ids to easily get top-level (CodeSets) information**
+```{python}
+def extract_values(obj, key):
+    """Pull all values of specified key from nested JSON."""
+    arr = []
 
+    def extract(obj, arr, key):
+        """Recursively search for values of key in JSON tree."""
+        if isinstance(obj, dict):
+            for k, v in obj.items():
+                if isinstance(v, (dict, list)):
+                    extract(v, arr, key)
+                elif k == key:
+                    arr.append(v)
+        elif isinstance(obj, list):
+            for item in obj:
+                extract(item, arr, key)
+        return arr
+
+    results = extract(obj, arr, key)
+    return results
+
+x = extract_values(data,'AttributeName')
+y = extract_values(data,'AttributeId')
+
+df=[]
+for xs, ys in zip(x, y):
+    df.append([xs, ys])
+```
 ## CodeSets extraction
 
 These functions extract attribute names and ID's (e.g. strand, educational setting) and return Python dictionaries containing attribute ID's as 'keys' and attribute names as 'values'. The 'Codesets' section at the top of the file does not contain any data, only variable information.
@@ -53,69 +81,177 @@ These functions extract attribute names and ID's (e.g. strand, educational setti
 strands&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= {5023544: 'Arts participation', 5023545: 'Aspiration interventions', .. }  
 edu_setting&nbsp;&nbsp;&nbsp;= {5215410: 'Nursery school/pre-school', 5215411: 'Primary/elementary school', 5215412, .. }
 ```{python}
+# STUDY DESIGN
+def get_study_design_info():
+    study_design={}
+    for counter, item in enumerate(df):
+        if item[0] == "What was the study design?":
+            for i in range(1,10):
+                study_design.update( {df[counter+i][1]:df[counter+i][0]} )
+    return study_design
+study_design = get_study_design_info()
+
+# STRAND
 def get_strand_info():
-    '''Return a dict of Strand Attribute Names & Attribute ID's'''
     strands={}
-    for counter, element in enumerate(data["CodeSets"][0]["Attributes"]["AttributesList"]):
-        attribute_name=(data["CodeSets"][0]["Attributes"]["AttributesList"][counter]["AttributeName"])
-        attribute_id=(data["CodeSets"][0]["Attributes"]["AttributesList"][counter]["AttributeId"])
-        strands.update( {attribute_id:attribute_name} )
+    for counter, item in enumerate(df):
+        if item[0] == "Arts participation":
+            for i in range(1,33):
+                strands.update( {df[counter+i][1]:df[counter+i][0]} )
     return strands
 strands = get_strand_info()
 
-def get_edu_info():
-    '''Return a dict of Educational Setting Attribute Names & Attribute ID's'''
+# PUBLICATION TYPE
+def get_pub_type_info():
+    pub_type={}
+    for counter, item in enumerate(df):
+        if item[0] == "Section 1 What is the publication type?":
+            for i in range(1,6):
+                pub_type.update( {df[counter+i][1]:df[counter+i][0]} )
+    return pub_type
+pub_type = get_pub_type_info()
+
+# PARTICIPANT ASSIGNMENT
+def get_participant_assignment_info():
+    participant_assignment={}
+    for counter, item in enumerate(df):
+        if item[0] == "How were participants assigned?":
+            for i in range(1,8):
+                participant_assignment.update( {df[counter+i][1]:df[counter+i][0]} )
+    return participant_assignment
+participant_assignment = get_participant_assignment_info()
+
+# LEVEL OF ASSIGNMENT
+def get_level_of_assignment_info():
+    level_of_assignment={}
+    for counter, item in enumerate(df):
+        if item[0] == "What was the level of assignment?":
+            for i in range(1,7):
+                level_of_assignment.update( {df[counter+i][1]:df[counter+i][0]} ) 
+    return level_of_assignment
+level_of_assignment = get_level_of_assignment_info()
+
+# STUDY REALISM
+def get_study_realism_info():
+    study_realism={}
+    for counter, item in enumerate(df):
+        if item[0] == "How realistic was the study?":
+            for i in range(1,4):
+                study_realism.update( {df[counter+i][1]:df[counter+i][0]} ) 
+    return study_realism
+study_realism = get_study_realism_info()
+
+# COUNTRIES
+def get_countries_info():
+    countries={}
+    for counter, item in enumerate(df):
+        if item[0] == "In which country/countries was the study carried out? (Select ALL that apply)":
+            for i in range(1,188):
+                countries.update( {df[counter+i][1]:df[counter+i][0]} ) 
+    return countries
+countries = get_countries_info()
+            
+# EDUCATIONAL SETTING
+def get_edu_setting_info():
     edu_setting={}
-    for counter, value in enumerate(data["CodeSets"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"]):
-        setting_code=data["CodeSets"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][counter]["AttributeId"]
-        setting_name=data["CodeSets"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][counter]["AttributeName"]
-        edu_setting.update( {setting_code:setting_name} )
+    for counter, item in enumerate(df):
+        if item[0] == "What is the educational setting (Select ALL that apply)":
+            for i in range(1,12):
+                edu_setting.update( {df[counter+i][1]:df[counter+i][0]} )   
     return edu_setting
-edu = get_edu_info()
-
-def get_country_codes():
-  '''Return a dict of Country Attribute Names & Attribute ID's'''
-  country_codes={}
-  for counter, value in enumerate(data["CodeSets"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][0]["Attributes"]["AttributesList"]):
-      country_code=data["CodeSets"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][0]["Attributes"]["AttributesList"][counter]["AttributeId"]
-      country_name=data["CodeSets"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][0]["Attributes"]["AttributesList"][counter]["AttributeName"]
-      country_codes.update( {country_code:country_name} )
-  return country_codes
-countries = get_country_codes()
-
-def get_publication_type():
-    '''Return a dict of Publication Type Attribute Names & Attribute ID's'''
-    publication_type={}
-    for counter, element in enumerate(data["CodeSets"][2]["Attributes"]["AttributesList"][0]["Attributes"]["AttributesList"][0]):
-        attribute_name=(data["CodeSets"][2]["Attributes"]["AttributesList"][0]["Attributes"]["AttributesList"][counter]["AttributeName"])
-        attribute_id=(data["CodeSets"][2]["Attributes"]["AttributesList"][0]["Attributes"]["AttributesList"][counter]["AttributeId"])
-        publication_type.update( { attribute_id:attribute_name })
-    return publication_type
-pub_type = get_publication_type()
+edu_setting = get_edu_setting_info()
+            
+# STUDENT GENDER
+def get_student_gender_info():
+    student_gender={}
+    for counter, item in enumerate(df):
+        if item[0] == "What is the gender of the students?":
+            for i in range(1,5):
+                student_gender.update( {df[counter+i][1]:df[counter+i][0]} ) 
+    return student_gender
+student_gender = get_student_gender_info()
+        
+# STUDENT AGE
+def get_student_age_info():
+    student_age={}
+    for counter, item in enumerate(df):
+        if item[0] == "What is the age of the students? (Select ALL that apply)":
+            for i in range(1,18):
+                student_age.update( {df[counter+i][1]:df[counter+i][0]} ) 
+    return student_age
+student_age = get_student_age_info()
 ```
 
 ## Main data extraction
 ```{python}
 def get_all():
-  finds=[]
-  find=0
-  strandfind=0
-  countryfind=0
   exclude=np.nan
   outcomes=0
   nooutcomes=0
   extracted=0
   null=0
-  
-  studies=0
+  finds=[]
   # iterate over each section within each study of 'references'
   for section in range(len(data["References"])):
       find=0
-      strandfind=0
-      
       if "Codes" in data["References"][section]:
           extracted+=1
+          studentagefind=[]
+          studentagelabel=[]
           for study in range(len(data["References"][section]["Codes"])):
+          
+              # get student age data
+              for key, value in student_age.items():
+                  if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                      studentagefind.append(value)
+                      studentagelabel.append(key)
+                  elif find==0:
+                      pass
+                      
+              # get study design data
+              for key, value in study_design.items():
+                  if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                      studydesignfind=value
+                      studydesignlabel=key
+                  elif find==0:
+                      studydesignfind=exclude
+                      studydesignlabel=exclude
+          
+              # get participant assignment data
+              for key, value in participant_assignment.items():
+                  if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                      participantassignmentfind=value
+                      participantassignmentlabel=key
+                  elif find==0:
+                      participantassignmentfind=exclude
+                      participantassignmentlabel=exclude
+          
+              # get study realism data
+              for key, value in level_of_assignment.items():
+                  if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                      levelassignmentfind=value
+                      levelassignmentlabel=key
+                  elif find==0:
+                      levelassignmentfind=exclude
+                      levelassignmentlabel=exclude
+          
+               # get study realism data
+              for key, value in study_realism.items():
+                  if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                      studyrealismfind=value
+                      studyrealismlabel=key
+                  elif find==0:
+                      studyrealismfind=exclude
+                      studyrealismlabel=exclude
+          
+              # get student gender data
+              for key, value in student_gender.items():
+                  if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                      studentgenderfind=value
+                      studentgenderlabel=key
+                  elif find==0:
+                      studentgenderfind=exclude
+                      studentgenderlabel=exclude
     
               # get publication type data
               for key, value in pub_type.items():
@@ -136,7 +272,7 @@ def get_all():
                       countrylabel=exclude
           
               # get educational setting data (primary/elementary etc.)
-              for key,value in edu.items():
+              for key,value in edu_setting.items():
                   if key == data["References"][section]["Codes"][study]["AttributeId"]:
                       find=value
                       label=key
@@ -149,7 +285,7 @@ def get_all():
                   if key == data["References"][section]["Codes"][study]["AttributeId"]:
                       strandfind=value
                       strandlabel=key
-                  elif strandfind==0:
+                  elif find==0:
                       strandfind=exclude
                       strandlabel=exclude
                   
@@ -182,27 +318,27 @@ def get_all():
                   author=data["References"][section]["ShortTitle"]
               else:
                   author=exclude
-              
+          
           # append all extracted data to our 'finds' list
-          finds.append([author, find, strandfind, interventiontext, 
-                        outcometext, year, countryfind, pubfind, SMD, SESMD, CIupperSMD, CIlowerSMD])
+          finds.append([author, find, strandfind, interventiontext, outcometext, year, countryfind, 
+                        pubfind, studentagefind, studentgenderfind, studydesignfind, levelassignmentfind, participantassignmentfind, 
+                        studyrealismfind, SMD, SESMD, CIupperSMD, CIlowerSMD])
                         
       else:
           null+=1
       
       # convert data list ('finds') to Pandas dataframe
       df = pd.DataFrame(finds, columns=['Author', 'EducationalSetting', 'Strand', 
-                                       'Intervention', 'Outcome', 'Year', 'Country', 'PublicationType', 'SMD', 
+                                       'Intervention', 'Outcome', 'Year', 'Country', 'PublicationType', 'StudentAge', 
+                                       'StudentGender', 'StudyDesign', 'LevelofAssignment', 'ParticipantAssignment','StudyRealism', 'SMD',
                                        'SESMD', 'CIupper', 'CIlower'])
-                                    
-      #df.fillna(0)
                                     
       # round effect sizes and confidence interbals to four decimal points
       df.loc[:, "SMD"] = df["SMD"].astype(float).round(4)
       df.loc[:, "SESMD"] = df["SESMD"].astype(float, errors='ignore').round(4)
       df.loc[:, "CIupper"] = df["CIupper"].astype(float).round(4)
       df.loc[:, "CIlower"] = df["CIlower"].astype(float).round(4)
-         
+      
   print("Number of studies extracted (they have a 'Codes' section): {}".format(extracted),
         "Number of of missing studies (no 'Codes' section found):   {}".format(null),
         sep='\n')
@@ -237,7 +373,8 @@ master_df["Decade"] = master_df.apply(decade_row, axis=1)
 
 # reorder columns
 master_df = master_df[["Author", "Year", "Decade", "Country", "Outcome", "Strand", "PublicationType", 
-                       "EducationalSetting", "Intervention", "SMD", "SESMD", "CIupper", "CIlower"]]
+                       "EducationalSetting", "Intervention", "StudentAge", "StudentGender",
+                       "StudyRealism", "StudyDesign", "LevelofAssignment", "ParticipantAssignment", "SMD", "SESMD", "CIupper", "CIlower"]]
 
 # subset all Primary Outcomes studies
 primary = master_df[master_df["Outcome"] == "Primary outcome"]
@@ -267,6 +404,12 @@ primary_outcome$SESMD <- as.character(primary_outcome$SESMD)
 primary_outcome$SESMD[primary_outcome$SESMD=="NaN"] <- NA
 primary_outcome$SESMD <- as.numeric(primary_outcome$SESMD)
 
+primary_outcome$StudentAge <- as.character(primary_outcome$StudentAge)
+primary_outcome$StudentAge[primary_outcome$StudentAge=="list()"] <- NA
+primary_outcome$StudentAge[primary_outcome$StudentAge=="No information provided"] <- NA
+primary_outcome$StudentAge[primary_outcome$StudentAge==""] <- NA
+primary_outcome$StudentAge <- as.factor(primary_outcome$StudentAge)
+
 primary_outcome$Country <- as.character(primary_outcome$Country)
 primary_outcome$Country[primary_outcome$Country=="NaN"] <- NA
 primary_outcome$Country <- as.factor(primary_outcome$Country)
@@ -275,10 +418,30 @@ primary_outcome$Outcome <- as.character(primary_outcome$Outcome)
 primary_outcome$Outcome[primary_outcome$Outcome=="NaN"] <- NA
 primary_outcome$Outcome <- as.factor(primary_outcome$Outcome)
 
+primary_outcome$StudentGender <- as.character(primary_outcome$StudentGender)
+primary_outcome$StudentGender[primary_outcome$StudentGender=="NaN"] <- NA
+primary_outcome$StudentGender <- as.factor(primary_outcome$StudentGender)
+
 primary_outcome$PublicationType <- as.character(primary_outcome$PublicationType)
 primary_outcome$PublicationType[primary_outcome$PublicationType=="NaN"] <- NA
 primary_outcome$PublicationType[primary_outcome$PublicationType=="Other (Please specify)"] <- NA
 primary_outcome$PublicationType <- as.factor(primary_outcome$PublicationType)
+
+primary_outcome$StudyRealism <- as.character(primary_outcome$StudyRealism)
+primary_outcome$StudyRealism[primary_outcome$StudyRealism=="NaN"] <- NA
+primary_outcome$StudyRealism <- as.factor(primary_outcome$StudyRealism)
+
+primary_outcome$LevelofAssignment <- as.character(primary_outcome$LevelofAssignment)
+primary_outcome$LevelofAssignment[primary_outcome$LevelofAssignment=="NaN"] <- NA
+primary_outcome$LevelofAssignment <- as.factor(primary_outcome$LevelofAssignment)
+
+primary_outcome$StudyDesign <- as.character(primary_outcome$StudyDesign)
+primary_outcome$StudyDesign[primary_outcome$StudyDesign=="NaN"] <- NA
+primary_outcome$StudyDesign <- as.factor(primary_outcome$StudyDesign)
+
+primary_outcome$ParticipantAssignment <- as.character(primary_outcome$ParticipantAssignment)
+primary_outcome$ParticipantAssignment[primary_outcome$ParticipantAssignment=="NaN"] <- NA
+primary_outcome$ParticipantAssignment <- as.factor(primary_outcome$ParticipantAssignment)
 
 # replace "UK (Select all that apply)" with "UK" for plotting without UK breakdown
 primary_outcome$Country <- as.character(primary_outcome$Country)
@@ -289,8 +452,12 @@ primary_outcome$Country <- as.factor(primary_outcome$Country)
 View(primary_outcome)
 
 rownames(primary_outcome) <- NULL
+
+# write df to csv
+write.csv(primary_outcome, "data.csv", row.names=FALSE)
+
 # display data with kable and inspect subsetted columns (highlighted)
-primary_outcome[1:25,1:13] %>%
+primary_outcome[1:25,1:19] %>%
   mutate(Outcome = cell_spec(Outcome, color = "white", bold = T, background = spec_color(.9, end = .9))) %>%
   kable(escape = F, align = "l") %>%
   column_spec(5, width="30mm") %>%
@@ -423,10 +590,10 @@ forest(random, at=c(-1.0,0.0,1.0), showweights = TRUE,
        cex=1,
        pch=15)
 
-text(-6.2, 27, "Study", cex=.9, font=2)
-text(5.4, 27, "SMD", cex=.9, font=2)
-text(7.5, 27, "(95% CI)", cex=.9, font=2)
-text(3.8, 27, "Weight", cex=.9, font=2)
+text(-6.2, 30, "Study", cex=.9, font=2)
+text(5.4, 30, "SMD", cex=.9, font=2)
+text(7.5, 30, "(95% CI)", cex=.9, font=2)
+text(3.8, 30, "Weight", cex=.9, font=2)
 ```
 
 **Display metafor funnel plot for all studies (primary outcome only)**
