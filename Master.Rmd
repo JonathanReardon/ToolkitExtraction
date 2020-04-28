@@ -368,13 +368,24 @@ def decade_row(row):
     decade="2020-2029"
   return decade
   
+def random_row(row):
+  if row["StudyDesign"] == "Prospective QED" or row["StudyDesign"]=="Retrospective QED  " or row["StudyDesign"] == "Interrupted time series QED" or row["StudyDesign"] =="RegressionDiscontinuity - not randomised":
+    outcome="non-random"
+  elif row["StudyDesign"]=="Individual RCT" or row["StudyDesign"]=="Cluster RCT" or row["StudyDesign"]=="Multisite RCT" or row["StudyDesign"]=="Regression Discontinuity - not randomised":
+    outcome="random"
+  else:
+    outcome=""
+  return outcome
+  
 # Use "Year" data to get 'decade' information and add to new column
 master_df["Decade"] = master_df.apply(decade_row, axis=1)
+
+master_df["Randomisation"] = master_df.apply(random_row, axis=1)
 
 # reorder columns
 master_df = master_df[["Author", "Year", "Decade", "Country", "Outcome", "Strand", "PublicationType", 
                        "EducationalSetting", "Intervention", "StudentAge", "StudentGender",
-                       "StudyRealism", "StudyDesign", "LevelofAssignment", "ParticipantAssignment", "SMD", "SESMD", "CIupper", "CIlower"]]
+                       "StudyRealism", "LevelofAssignment", "StudyDesign", "ParticipantAssignment", "Randomisation", "SMD", "SESMD", "CIupper", "CIlower"]]
 
 # subset all Primary Outcomes studies
 primary = master_df[master_df["Outcome"] == "Primary outcome"]
