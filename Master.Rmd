@@ -306,6 +306,12 @@ def get_all():
                   SESMD=exclude
                   CIupperSMD=exclude
                   CIlowerSMD=exclude
+                  
+              # get ItemId
+              if "ItemId" in  data["References"][section]:
+                  itemid = data["References"][section]["ItemId"]
+              else:
+                  itemid=exclude
               
               # get year data 
               if "Year" in data["References"][section]:
@@ -320,7 +326,7 @@ def get_all():
                   author=exclude
           
           # append all extracted data to our 'finds' list
-          finds.append([author, find, strandfind, interventiontext, outcometext, year, countryfind, 
+          finds.append([itemid, author, find, strandfind, interventiontext, outcometext, year, countryfind, 
                         pubfind, studentagefind, studentgenderfind, studydesignfind, levelassignmentfind, participantassignmentfind, 
                         studyrealismfind, SMD, SESMD, CIupperSMD, CIlowerSMD])
                         
@@ -328,7 +334,7 @@ def get_all():
           null+=1
       
       # convert data list ('finds') to Pandas dataframe
-      df = pd.DataFrame(finds, columns=['Author', 'EducationalSetting', 'Strand', 
+      df = pd.DataFrame(finds, columns=['ItemId', 'Author', 'EducationalSetting', 'Strand', 
                                        'Intervention', 'Outcome', 'Year', 'Country', 'PublicationType', 'StudentAge', 
                                        'StudentGender', 'StudyDesign', 'LevelofAssignment', 'ParticipantAssignment','StudyRealism', 'SMD',
                                        'SESMD', 'CIupper', 'CIlower'])
@@ -346,6 +352,7 @@ def get_all():
   return df
   
 master_df = get_all()
+master_df['ItemId']
 ```
 
 **Function to check "Year" range, group by decade, and insert into new 'Decade' column. Reorder columns and subset all Primary (outcome) studies**
@@ -383,7 +390,7 @@ master_df["Decade"] = master_df.apply(decade_row, axis=1)
 master_df["Randomisation"] = master_df.apply(random_row, axis=1)
 
 # reorder columns
-master_df = master_df[["Author", "Year", "Decade", "Country", "Outcome", "Strand", "PublicationType", 
+master_df = master_df[["ItemId", "Author", "Year", "Decade", "Country", "Outcome", "Strand", "PublicationType", 
                        "EducationalSetting", "Intervention", "StudentAge", "StudentGender",
                        "StudyRealism", "LevelofAssignment", "StudyDesign", "ParticipantAssignment", "Randomisation", "SMD", "SESMD", "CIupper", "CIlower"]]
 
@@ -469,7 +476,7 @@ View(primary_outcome)
 rownames(primary_outcome) <- NULL
 
 # write df to csv
-write.csv(primary_outcome, "data.csv", row.names=FALSE)
+#write.csv(primary_outcome, "data.csv", row.names=FALSE)
 
 # display data with kable and inspect subsetted columns (highlighted)
 primary_outcome[1:25,1:19] %>%
@@ -654,6 +661,24 @@ alt_fp = ggplot(aes(x = SESMD, y = SMD), data = df_all) +
   coord_flip() +
   theme_classic()
 alt_fp
+```
+## Barplots
+```{r, message=FALSE, warning=FALSE, fig.width=6, fig.height=6}
+
+p <- primary_outcome %>%
+  filter(!is.na(Randomisation)) %>%
+  group_by(Randomisation) %>%
+  summarize(mean = mean(SMD),
+            sd=sd(SMD),
+            n=n(),
+            se=sd(SMD)/sqrt(n))
+
+plot <- ggplot(p, aes(Randomisation, mean)) + 
+  geom_col() +
+  geom_errorbar(aes(ymin=mean-sd, ymax=mean+sd), width=0.2)
+plot
+
+
 ```
 
 ## Jittered dotplots
