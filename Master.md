@@ -311,6 +311,12 @@ def get_all():
                   SESMD=exclude
                   CIupperSMD=exclude
                   CIlowerSMD=exclude
+                  
+              # get ItemId
+              if "ItemId" in  data["References"][section]:
+                  itemid = data["References"][section]["ItemId"]
+              else:
+                  itemid=exclude
               
               # get year data 
               if "Year" in data["References"][section]:
@@ -325,7 +331,7 @@ def get_all():
                   author=exclude
           
           # append all extracted data to our 'finds' list
-          finds.append([author, find, strandfind, interventiontext, outcometext, year, countryfind, 
+          finds.append([itemid, author, find, strandfind, interventiontext, outcometext, year, countryfind, 
                         pubfind, studentagefind, studentgenderfind, studydesignfind, levelassignmentfind, participantassignmentfind, 
                         studyrealismfind, SMD, SESMD, CIupperSMD, CIlowerSMD])
                         
@@ -333,7 +339,7 @@ def get_all():
           null+=1
       
       # convert data list ('finds') to Pandas dataframe
-      df = pd.DataFrame(finds, columns=['Author', 'EducationalSetting', 'Strand', 
+      df = pd.DataFrame(finds, columns=['ItemId', 'Author', 'EducationalSetting', 'Strand', 
                                        'Intervention', 'Outcome', 'Year', 'Country', 'PublicationType', 'StudentAge', 
                                        'StudentGender', 'StudyDesign', 'LevelofAssignment', 'ParticipantAssignment','StudyRealism', 'SMD',
                                        'SESMD', 'CIupper', 'CIlower'])
@@ -356,6 +362,25 @@ master_df = get_all()
 ```
 ## Number of studies extracted (they have a 'Codes' section): 598
 ## Number of of missing studies (no 'Codes' section found):   18
+```
+
+```python
+master_df['ItemId']
+```
+
+```
+## 0      38111324
+## 1      38111325
+## 2      37116221
+## 3      39717125
+## 4      37092570
+##          ...   
+## 593    37092603
+## 594    40117237
+## 595    40117361
+## 596    37092801
+## 597    39253396
+## Name: ItemId, Length: 598, dtype: int64
 ```
 
 **Function to check "Year" range, group by decade, and insert into new 'Decade' column. Reorder columns and subset all Primary (outcome) studies**
@@ -394,7 +419,7 @@ master_df["Decade"] = master_df.apply(decade_row, axis=1)
 master_df["Randomisation"] = master_df.apply(random_row, axis=1)
 
 # reorder columns
-master_df = master_df[["Author", "Year", "Decade", "Country", "Outcome", "Strand", "PublicationType", 
+master_df = master_df[["ItemId", "Author", "Year", "Decade", "Country", "Outcome", "Strand", "PublicationType", 
                        "EducationalSetting", "Intervention", "StudentAge", "StudentGender",
                        "StudyRealism", "LevelofAssignment", "StudyDesign", "ParticipantAssignment", "Randomisation", "SMD", "SESMD", "CIupper", "CIlower"]]
 
@@ -481,7 +506,7 @@ View(primary_outcome)
 rownames(primary_outcome) <- NULL
 
 # write df to csv
-write.csv(primary_outcome, "data.csv", row.names=FALSE)
+write.csv(primary_outcome, "data_with_itemids.csv", row.names=FALSE)
 
 # display data with kable and inspect subsetted columns (highlighted)
 primary_outcome[1:25,1:19] %>%
@@ -494,6 +519,7 @@ primary_outcome[1:25,1:19] %>%
 <table class="table table-hover table-condensed table-responsive table-bordered" style="font-size: 9px; margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
+   <th style="text-align:left;"> ItemId </th>
    <th style="text-align:left;"> Author </th>
    <th style="text-align:left;"> Year </th>
    <th style="text-align:left;"> Decade </th>
@@ -512,16 +538,16 @@ primary_outcome[1:25,1:19] %>%
    <th style="text-align:left;"> Randomisation </th>
    <th style="text-align:left;"> SMD </th>
    <th style="text-align:left;"> SESMD </th>
-   <th style="text-align:left;"> CIupper </th>
   </tr>
  </thead>
 <tbody>
   <tr>
+   <td style="text-align:left;"> 37116221 </td>
    <td style="text-align:left;"> Abbondanza (2013) </td>
    <td style="text-align:left;"> 2013 </td>
    <td style="text-align:left;"> 2010-2019 </td>
-   <td style="text-align:left;"> USA </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> USA </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> Peer tutoring </td>
    <td style="text-align:left;"> Dissertation or thesis </td>
    <td style="text-align:left;"> Secondary/High school </td>
@@ -535,14 +561,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 0.5174 </td>
    <td style="text-align:left;"> 0.1767 </td>
-   <td style="text-align:left;"> 0.8637 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 39717125 </td>
    <td style="text-align:left;"> Acalin (1995) </td>
    <td style="text-align:left;"> 1995 </td>
    <td style="text-align:left;"> 1990-1999 </td>
-   <td style="text-align:left;"> USA </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> USA </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> One to one tuition </td>
    <td style="text-align:left;"> Dissertation or thesis </td>
    <td style="text-align:left;"> Primary/elementary school </td>
@@ -556,14 +582,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> -0.1119 </td>
    <td style="text-align:left;"> 0.2464 </td>
-   <td style="text-align:left;"> 0.3710 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 37092570 </td>
    <td style="text-align:left;"> Adler (1998) </td>
    <td style="text-align:left;"> 1998 </td>
    <td style="text-align:left;"> 1990-1999 </td>
-   <td style="text-align:left;"> USA </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> USA </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> Feedback </td>
    <td style="text-align:left;"> Dissertation or thesis </td>
    <td style="text-align:left;"> Primary/elementary school </td>
@@ -577,14 +603,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 0.1650 </td>
    <td style="text-align:left;"> 0.2230 </td>
-   <td style="text-align:left;"> 0.6021 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 39717210 </td>
    <td style="text-align:left;"> Allor (2004) </td>
    <td style="text-align:left;"> 2004 </td>
    <td style="text-align:left;"> 2000-2010 </td>
-   <td style="text-align:left;"> NA </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> NA </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> One to one tuition </td>
    <td style="text-align:left;"> NA </td>
    <td style="text-align:left;"> NA </td>
@@ -598,14 +624,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Random </td>
    <td style="text-align:left;"> 0.5300 </td>
    <td style="text-align:left;"> 0.2400 </td>
-   <td style="text-align:left;"> 1.0004 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 37133863 </td>
    <td style="text-align:left;"> Allsopp (1995) </td>
    <td style="text-align:left;"> 1995 </td>
    <td style="text-align:left;"> 1990-1999 </td>
-   <td style="text-align:left;"> USA </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> USA </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> Peer tutoring </td>
    <td style="text-align:left;"> Dissertation or thesis </td>
    <td style="text-align:left;"> Middle school </td>
@@ -619,14 +645,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Random </td>
    <td style="text-align:left;"> 0.1596 </td>
    <td style="text-align:left;"> 0.1241 </td>
-   <td style="text-align:left;"> 0.4027 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 38111471 </td>
    <td style="text-align:left;"> Ammon (1971) </td>
    <td style="text-align:left;"> 1971 </td>
    <td style="text-align:left;"> 1970-1979 </td>
-   <td style="text-align:left;"> USA </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> USA </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> Oral language interventions </td>
    <td style="text-align:left;"> Journal article </td>
    <td style="text-align:left;"> Primary/elementary school </td>
@@ -640,14 +666,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Random </td>
    <td style="text-align:left;"> 0.0000 </td>
    <td style="text-align:left;"> 0.2949 </td>
-   <td style="text-align:left;"> 0.5780 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 38111425 </td>
    <td style="text-align:left;"> Anders (1984) </td>
    <td style="text-align:left;"> 1984 </td>
    <td style="text-align:left;"> 1980-1989 </td>
-   <td style="text-align:left;"> USA </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> USA </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> Oral language interventions </td>
    <td style="text-align:left;"> Conference paper </td>
    <td style="text-align:left;"> Secondary/High school </td>
@@ -661,14 +687,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Random </td>
    <td style="text-align:left;"> 1.6616 </td>
    <td style="text-align:left;"> 0.2971 </td>
-   <td style="text-align:left;"> 2.2439 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 37092749 </td>
    <td style="text-align:left;"> Anderson (1973) </td>
    <td style="text-align:left;"> 1973 </td>
    <td style="text-align:left;"> 1970-1979 </td>
-   <td style="text-align:left;"> USA </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> USA </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> Feedback </td>
    <td style="text-align:left;"> Dissertation or thesis </td>
    <td style="text-align:left;"> Middle school </td>
@@ -682,14 +708,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 1.1547 </td>
    <td style="text-align:left;"> 0.2310 </td>
-   <td style="text-align:left;"> 1.6074 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 38111637 </td>
    <td style="text-align:left;"> Aram (2004) OL </td>
    <td style="text-align:left;"> 2004 </td>
    <td style="text-align:left;"> 2000-2010 </td>
-   <td style="text-align:left;"> Israel </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> Israel </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> Oral language interventions </td>
    <td style="text-align:left;"> Journal article </td>
    <td style="text-align:left;"> Nursery school/pre-school </td>
@@ -703,14 +729,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 0.3624 </td>
    <td style="text-align:left;"> 0.2673 </td>
-   <td style="text-align:left;"> 0.8862 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 38111536 </td>
    <td style="text-align:left;"> Aram (2006) </td>
    <td style="text-align:left;"> 2006 </td>
    <td style="text-align:left;"> 2000-2010 </td>
-   <td style="text-align:left;"> Israel </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> Israel </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> Oral language interventions </td>
    <td style="text-align:left;"> Journal article </td>
    <td style="text-align:left;"> Nursery school/pre-school </td>
@@ -724,14 +750,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 0.0396 </td>
    <td style="text-align:left;"> 0.2310 </td>
-   <td style="text-align:left;"> 0.4923 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 37093532 </td>
    <td style="text-align:left;"> Arblaster (1991) </td>
    <td style="text-align:left;"> 1991 </td>
    <td style="text-align:left;"> 1990-1999 </td>
-   <td style="text-align:left;"> UK </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> UK </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> Peer tutoring </td>
    <td style="text-align:left;"> Journal article </td>
    <td style="text-align:left;"> NA </td>
@@ -745,14 +771,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 1.6870 </td>
    <td style="text-align:left;"> 0.4016 </td>
-   <td style="text-align:left;"> 2.4741 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 37092572 </td>
    <td style="text-align:left;"> Arter (1994) </td>
    <td style="text-align:left;"> 1994 </td>
    <td style="text-align:left;"> 1990-1999 </td>
-   <td style="text-align:left;"> USA </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> USA </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> Feedback </td>
    <td style="text-align:left;"> Conference paper </td>
    <td style="text-align:left;"> Primary/elementary school </td>
@@ -766,14 +792,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Random </td>
    <td style="text-align:left;"> 0.3000 </td>
    <td style="text-align:left;"> 0.1800 </td>
-   <td style="text-align:left;"> 0.6528 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 37093533 </td>
    <td style="text-align:left;"> Atherley (1989) </td>
    <td style="text-align:left;"> 1989 </td>
    <td style="text-align:left;"> 1980-1989 </td>
-   <td style="text-align:left;"> England </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> England </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> Peer tutoring </td>
    <td style="text-align:left;"> Journal article </td>
    <td style="text-align:left;"> Primary/elementary school </td>
@@ -787,14 +813,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 0.6814 </td>
    <td style="text-align:left;"> 0.3356 </td>
-   <td style="text-align:left;"> 1.3391 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 37061105 </td>
    <td style="text-align:left;"> Aumiller (1963) </td>
    <td style="text-align:left;"> 1963 </td>
    <td style="text-align:left;"> 1960-1969 </td>
-   <td style="text-align:left;"> USA </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> USA </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> Feedback </td>
    <td style="text-align:left;"> Dissertation or thesis </td>
    <td style="text-align:left;"> Primary/elementary school </td>
@@ -808,14 +834,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Random </td>
    <td style="text-align:left;"> -0.0058 </td>
    <td style="text-align:left;"> 0.1451 </td>
-   <td style="text-align:left;"> 0.2786 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 37092622 </td>
    <td style="text-align:left;"> Baechie (1990) </td>
    <td style="text-align:left;"> 1990 </td>
    <td style="text-align:left;"> 1990-1999 </td>
-   <td style="text-align:left;"> USA </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> USA </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> Feedback </td>
    <td style="text-align:left;"> Journal article </td>
    <td style="text-align:left;"> Middle school </td>
@@ -829,14 +855,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 0.6548 </td>
    <td style="text-align:left;"> 0.2855 </td>
-   <td style="text-align:left;"> 1.2143 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 39717230 </td>
    <td style="text-align:left;"> Baker (2000) </td>
    <td style="text-align:left;"> 2000 </td>
    <td style="text-align:left;"> 2000-2010 </td>
-   <td style="text-align:left;"> NA </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> NA </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> One to one tuition </td>
    <td style="text-align:left;"> NA </td>
    <td style="text-align:left;"> NA </td>
@@ -850,14 +876,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Random </td>
    <td style="text-align:left;"> 0.4043 </td>
    <td style="text-align:left;"> 0.2206 </td>
-   <td style="text-align:left;"> 0.8367 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 37133865 </td>
    <td style="text-align:left;"> Baker (2005) </td>
    <td style="text-align:left;"> 2005 </td>
    <td style="text-align:left;"> 2000-2010 </td>
-   <td style="text-align:left;"> USA </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> USA </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> Peer tutoring </td>
    <td style="text-align:left;"> Dissertation or thesis </td>
    <td style="text-align:left;"> Primary/elementary school </td>
@@ -871,14 +897,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 1.0958 </td>
    <td style="text-align:left;"> 0.3434 </td>
-   <td style="text-align:left;"> 1.7688 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 38111556 </td>
    <td style="text-align:left;"> Banks (1987) </td>
    <td style="text-align:left;"> 1987 </td>
    <td style="text-align:left;"> 1980-1989 </td>
-   <td style="text-align:left;"> USA </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> USA </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> Oral language interventions </td>
    <td style="text-align:left;"> Dissertation or thesis </td>
    <td style="text-align:left;"> Primary/elementary school </td>
@@ -892,14 +918,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 0.5767 </td>
    <td style="text-align:left;"> 0.1298 </td>
-   <td style="text-align:left;"> 0.8312 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 37093467 </td>
    <td style="text-align:left;"> Bar-Eli (1982) </td>
    <td style="text-align:left;"> 1982 </td>
    <td style="text-align:left;"> 1980-1989 </td>
-   <td style="text-align:left;"> Israel </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> Israel </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> Peer tutoring </td>
    <td style="text-align:left;"> Journal article </td>
    <td style="text-align:left;"> Primary/elementary school </td>
@@ -913,14 +939,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Random </td>
    <td style="text-align:left;"> 1.0033 </td>
    <td style="text-align:left;"> 0.3874 </td>
-   <td style="text-align:left;"> 1.7627 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 38111473 </td>
    <td style="text-align:left;"> Beck (2007) </td>
    <td style="text-align:left;"> 2007 </td>
    <td style="text-align:left;"> 2000-2010 </td>
-   <td style="text-align:left;"> USA </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> USA </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> Oral language interventions </td>
    <td style="text-align:left;"> Journal article </td>
    <td style="text-align:left;"> Primary/elementary school </td>
@@ -934,14 +960,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 1.1537 </td>
    <td style="text-align:left;"> 0.3206 </td>
-   <td style="text-align:left;"> 1.7821 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 37671594 </td>
    <td style="text-align:left;"> Bennett (2013) </td>
    <td style="text-align:left;"> 2013 </td>
    <td style="text-align:left;"> 2010-2019 </td>
-   <td style="text-align:left;"> England </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> England </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> Teaching assistants </td>
    <td style="text-align:left;"> Journal article </td>
    <td style="text-align:left;"> Secondary/High school </td>
@@ -955,14 +981,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Random </td>
    <td style="text-align:left;"> 0.0032 </td>
    <td style="text-align:left;"> 0.4369 </td>
-   <td style="text-align:left;"> 0.8596 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 37092573 </td>
    <td style="text-align:left;"> Benson (1979) 1_1 </td>
    <td style="text-align:left;"> 1979 </td>
    <td style="text-align:left;"> 1970-1979 </td>
-   <td style="text-align:left;"> USA </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> USA </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> Feedback </td>
    <td style="text-align:left;"> Dissertation or thesis </td>
    <td style="text-align:left;"> Middle school </td>
@@ -976,14 +1002,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 0.2200 </td>
    <td style="text-align:left;"> 0.1200 </td>
-   <td style="text-align:left;"> 0.4552 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 40294885 </td>
    <td style="text-align:left;"> Benson (1979) 1_2 </td>
    <td style="text-align:left;"> 1979 </td>
    <td style="text-align:left;"> 1970-1979 </td>
-   <td style="text-align:left;"> USA </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> USA </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> Feedback </td>
    <td style="text-align:left;"> Dissertation or thesis </td>
    <td style="text-align:left;"> Middle school </td>
@@ -997,14 +1023,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Non-random </td>
    <td style="text-align:left;"> 0.2115 </td>
    <td style="text-align:left;"> 0.1455 </td>
-   <td style="text-align:left;"> 0.4967 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 38111329 </td>
    <td style="text-align:left;"> Bereiter (1985) </td>
    <td style="text-align:left;"> 1985 </td>
    <td style="text-align:left;"> 1980-1989 </td>
-   <td style="text-align:left;"> USA </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> USA </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> Oral language interventions </td>
    <td style="text-align:left;"> Journal article </td>
    <td style="text-align:left;"> NA </td>
@@ -1018,14 +1044,14 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Random </td>
    <td style="text-align:left;"> 0.5271 </td>
    <td style="text-align:left;"> 0.3665 </td>
-   <td style="text-align:left;"> 1.2454 </td>
   </tr>
   <tr>
+   <td style="text-align:left;"> 37092626 </td>
    <td style="text-align:left;"> Bethge (1982) </td>
    <td style="text-align:left;"> 1982 </td>
    <td style="text-align:left;"> 1980-1989 </td>
-   <td style="text-align:left;"> Germany </td>
-   <td style="text-align:left;width: 30mm; "> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
+   <td style="text-align:left;width: 30mm; "> Germany </td>
+   <td style="text-align:left;"> <span style=" font-weight: bold;    color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: rgba(37, 131, 142, 1) !important;">Primary outcome</span> </td>
    <td style="text-align:left;"> Feedback </td>
    <td style="text-align:left;"> Journal article </td>
    <td style="text-align:left;"> Primary/elementary school </td>
@@ -1039,7 +1065,6 @@ primary_outcome[1:25,1:19] %>%
    <td style="text-align:left;"> Random </td>
    <td style="text-align:left;"> 0.8552 </td>
    <td style="text-align:left;"> 0.3027 </td>
-   <td style="text-align:left;"> 1.4485 </td>
   </tr>
 </tbody>
 </table>
@@ -1909,6 +1934,24 @@ alt_fp
 ```
 
 ![](Master_figs/unnamed-chunk-14-1.png)<!-- -->
+## Barplots
+
+```r
+p <- primary_outcome %>%
+  filter(!is.na(Randomisation)) %>%
+  group_by(Randomisation) %>%
+  summarize(mean = mean(SMD),
+            sd=sd(SMD),
+            n=n(),
+            se=sd(SMD)/sqrt(n))
+
+plot <- ggplot(p, aes(Randomisation, mean)) + 
+  geom_col() +
+  geom_errorbar(aes(ymin=mean-sd, ymax=mean+sd), width=0.2)
+plot
+```
+
+![](Master_figs/unnamed-chunk-15-1.png)<!-- -->
 
 ## Jittered dotplots
 **list reusable layers to use on all plots (constants)**
@@ -1939,7 +1982,7 @@ Randomisation <- filter(primary_outcome, !is.na(Randomisation)) %>%
 Randomisation
 ```
 
-![](Master_figs/unnamed-chunk-16-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-17-1.png)<!-- -->
 
 **SMD by Decade, grouped by Study Design**
 
@@ -1953,7 +1996,7 @@ StudyDesign <- filter(primary_outcome, !is.na(StudyDesign)) %>%
 StudyDesign
 ```
 
-![](Master_figs/unnamed-chunk-17-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-18-1.png)<!-- -->
 **SMD by Decade, grouped by Strand**
 
 ```r
@@ -1966,7 +2009,7 @@ strand <- filter(primary_outcome, !is.na(Strand)) %>%
 strand
 ```
 
-![](Master_figs/unnamed-chunk-18-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-19-1.png)<!-- -->
 
 **SMD by Decade, grouped by Intervention**
 
@@ -1979,7 +2022,7 @@ intervention <- filter(primary_outcome, !is.na(Intervention)) %>%
 intervention
 ```
 
-![](Master_figs/unnamed-chunk-19-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-20-1.png)<!-- -->
 
 **SMD by Decade, grouped by Country**
 
@@ -1992,7 +2035,7 @@ country <- filter(primary_outcome, !is.na(Country)) %>%
 country
 ```
 
-![](Master_figs/unnamed-chunk-20-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-21-1.png)<!-- -->
 
 **SMD by Decade, grouped by Educational Setting**
 
@@ -2005,7 +2048,7 @@ edu_setting <- filter(primary_outcome, !is.na(EducationalSetting)) %>%
 edu_setting
 ```
 
-![](Master_figs/unnamed-chunk-21-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-22-1.png)<!-- -->
 
 **SMD by Decade, grouped by PublicationType**
 
@@ -2018,7 +2061,7 @@ pub_type <- filter(primary_outcome, !is.na(PublicationType)) %>%
 pub_type
 ```
 
-![](Master_figs/unnamed-chunk-22-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-23-1.png)<!-- -->
 
 **SMD by Randomisation**
 
@@ -2031,7 +2074,7 @@ random <- filter(primary_outcome, !is.na(Randomisation)) %>%
 random
 ```
 
-![](Master_figs/unnamed-chunk-23-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-24-1.png)<!-- -->
 
 **Plot all Primary Outcome studies as SMD/SESMD scatter plots grouped by intervention, educational setting, strand, and country**
 
@@ -2072,7 +2115,7 @@ smd_intervention <- ggplot(data=subset(primary_outcome, !is.na(Intervention)), a
 smd_intervention
 ```
 
-![](Master_figs/unnamed-chunk-25-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-26-1.png)<!-- -->
 
 **SMD by SESMD grouped by Educational Setting - all Primary outcome studies**
 
@@ -2085,7 +2128,7 @@ smd_edusetting <- ggplot(data=subset(primary_outcome, !is.na(EducationalSetting)
 smd_edusetting
 ```
 
-![](Master_figs/unnamed-chunk-26-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-27-1.png)<!-- -->
 
 **SMD by SESMD grouped by Strand - all Primary outcome studies**
 
@@ -2098,7 +2141,7 @@ smd_strand <- ggplot(data=subset(primary_outcome, !is.na(Strand)), aes(SMD, SESM
 smd_strand
 ```
 
-![](Master_figs/unnamed-chunk-27-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-28-1.png)<!-- -->
 
 **SMD by SESMD grouped by Country - all Primary outcome studies**
 
@@ -2111,7 +2154,7 @@ smd_country <- ggplot(data=subset(primary_outcome, !is.na(Country)), aes(SMD, SE
 smd_country
 ```
 
-![](Master_figs/unnamed-chunk-28-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-29-1.png)<!-- -->
 
 **SMD by SESMD grouped by Publication Type - all Primary outcome studies**
 
@@ -2124,7 +2167,7 @@ smd_pubtype <- ggplot(data=subset(primary_outcome, !is.na(PublicationType)), aes
 smd_pubtype
 ```
 
-![](Master_figs/unnamed-chunk-29-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-30-1.png)<!-- -->
 
 **SMD by SESMD grouped by Randomisation - all Primary outcome studies**
 
@@ -2137,7 +2180,7 @@ random <- ggplot(data=subset(primary_outcome, !is.na(Randomisation)), aes(SMD, S
 random
 ```
 
-![](Master_figs/unnamed-chunk-30-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-31-1.png)<!-- -->
 
 **SMD by Decade and Country (density plots)**
 
@@ -2177,7 +2220,7 @@ design <- primary_outcome %>%
 grid.arrange(decade, country, random, design, ncol=1)
 ```
 
-![](Master_figs/unnamed-chunk-31-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-32-1.png)<!-- -->
 
 **Categorywise bar char of educational setting by decade**
 
@@ -2191,6 +2234,6 @@ edu_decade <- primary_outcome %>%
 edu_decade
 ```
 
-![](Master_figs/unnamed-chunk-32-1.png)<!-- -->
+![](Master_figs/unnamed-chunk-33-1.png)<!-- -->
 
 
