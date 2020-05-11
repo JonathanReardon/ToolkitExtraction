@@ -1,0 +1,172 @@
+---
+title: 'Master data extraction.Rmd'
+author: "Jonathan Reardon"
+output:
+  html_document:
+    keep_md: true
+    #df_print: paged
+  #pdf_document:
+    #keep_md: true
+editor_options:
+  chunk_output_type: inline
+---
+
+**Import R libraries, save figures to "Master_figs/"**
+```{r setup, message=FALSE}
+knitr::opts_chunk$set(echo = T,
+                      fig.path = "Master_figs/")
+library(reticulate)
+library(ggplot2)
+library(dplyr)
+library(reshape2)
+library(purrr)
+library(gridExtra)
+library(cowplot)
+library(kableExtra)
+library(forestplot)
+library(metafor)
+use_python("/usr/local/bin/python3")
+rm(list = ls())
+```
+**Import Python packages and (json) dataset**
+```{python}
+# import necessary libraries
+import json
+from collections import Counter
+from pprint import pprint
+import numpy as np
+from matplotlib import pyplot as plt
+import pandas as pd
+plt.style.use('ggplot')
+
+# import dataset (uncomment to select dataset of choice)
+#with open('/home/jon/json/ToolkitExtraction/data/batch2.json') as f:
+#with open('/home/jon/json/ToolkitExtraction/data/Batch1.json') as f:
+with open('/home/jon/json/ToolkitExtraction/data/May11th_2020.json') as f:
+    data=json.load(f)
+```
+**Flatten dataset into lists containing all attribute names and Ids to easily get top-level (CodeSets) information**
+```{python}
+def extract_values(obj, key):
+    """Pull all values of specified key from nested JSON."""
+    arr = []
+
+    def extract(obj, arr, key):
+        """Recursively search for values of key in JSON tree."""
+        if isinstance(obj, dict):
+            for k, v in obj.items():
+                if isinstance(v, (dict, list)):
+                    extract(v, arr, key)
+                elif k == key:
+                    arr.append(v)
+        elif isinstance(obj, list):
+            for item in obj:
+                extract(item, arr, key)
+        return arr
+
+    results = extract(obj, arr, key)
+    return results
+
+x = extract_values(data,'AttributeName')
+y = extract_values(data,'AttributeId')
+
+df=[]
+for xs, ys in zip(x, y):
+    df.append([xs, ys])
+```
+## CodeSets extraction
+
+These functions extract attribute names and ID's (e.g. strand, educational setting) and return Python dictionaries containing attribute ID's as 'keys' and attribute names as 'values'. The 'Codesets' section at the top of the file does not contain any data, only variable information.
+
+**Example dictionaries**  
+strands&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= {5023544: 'Arts participation', 5023545: 'Aspiration interventions', .. }  
+edu_setting&nbsp;&nbsp;&nbsp;= {5215410: 'Nursery school/pre-school', 5215411: 'Primary/elementary school', 5215412, .. }
+
+```{python}
+# new strand 
+def get_strand_info():
+    strands={}
+    for counter, item in enumerate(df):
+        if item[0] == "Toolkit strand(s) (select at least one Toolkit strand)":
+            for i in range(1,34):
+                strands.update( {df[counter+i][1]:df[counter+i][0]} )
+    return strands
+strands = get_strand_info()
+strands
+```
+
+```{python}
+def get_strands():
+  exclude=np.nan
+  finds=[]
+    
+  section_count=0
+  codes_section_count=0
+  outcomes_section_count=0
+  outcome_codes_section=0
+  # iterate over each section within each study of 'references'
+  for section in range(len(data["References"])):
+      section_count+=1
+      if "Codes" in data["References"][section]:
+          codes_section_count+=1
+          find=0
+          if "Outcomes" in data["References"][section]:
+              outcomes_section_count+=1
+              if "OutcomeCodes" in data["References"][section]["Outcomes"][0]:
+                  outcome_codes_section+=1
+                  for study in range(len(data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"])):
+                      strandfind=np.nan
+                      strandlabel=np.nan
+                      for key,value in strands.items():
+                          if key == data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"][study]["AttributeId"]:
+                              strandfind=value
+                              strandlabel=key
+                  finds.append([strandfind, strandlabel])
+              else:
+                  finds.append(["no outcomecodes section"])
+          else:
+              finds.append(["no outcomes section"])
+      else:
+          finds.append(["no codes section"])
+        
+  print("overall section count:", section_count)
+  print("codes section count:", codes_section_count)
+  print("outcomes section count", outcomes_section_count)
+  print("outcomes codes section count", outcome_codes_section)
+    
+  return finds
+
+all = get_strands() 
+print("length of dict", len(all))
+
+new=[]
+for i in all:
+    new.append(i[0])
+    
+pprint(new)
+#print("overall length", len(new))
+
+#unique_list = set(new)
+#print("unique items", unique_list)
+    
+peer_tut_count = new.count("Toolkit: Peer Tutoring")
+feedback_count = new.count("Toolkit: Feedback")
+summer_schools_count = new.count("Toolkit: Summer schools")
+extending_school_time_count = new.count("Toolkit: Extending school time")
+ta_count = new.count("Toolkit: Teaching assistants")
+sgt_count = new.count("Toolkit: Small Group Tuition")
+one_to_one_count = new.count("Toolkit: One to one tuition")
+parental_eng = new.count("Toolkit: Parental engagement")
+nan = new.count("nan")
+
+#print(peer_tut_count) #110
+#print(feedback_count) #116
+#print(summer_schools_count) #52
+#print(extending_school_time_count) #73
+#print(ta_count) # 62
+#print(sgt_count) # 31
+#print(one_to_one_count) # none
+#print(parental_eng) # none
+#print(nan)
+
+```
