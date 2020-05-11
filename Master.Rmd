@@ -40,8 +40,9 @@ import pandas as pd
 plt.style.use('ggplot')
 
 # import dataset (uncomment to select dataset of choice)
-with open('/home/jon/json/ToolkitExtraction/data/batch2.json') as f:
+#with open('/home/jon/json/ToolkitExtraction/data/batch2.json') as f:
 #with open('/home/jon/json/ToolkitExtraction/data/Batch1.json') as f:
+with open('/home/jon/json/ToolkitExtraction/data/May11th_2020.json') as f:
     data=json.load(f)
 ```
 **Flatten dataset into lists containing all attribute names and Ids to easily get top-level (CodeSets) information**
@@ -81,6 +82,16 @@ These functions extract attribute names and ID's (e.g. strand, educational setti
 strands&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= {5023544: 'Arts participation', 5023545: 'Aspiration interventions', .. }  
 edu_setting&nbsp;&nbsp;&nbsp;= {5215410: 'Nursery school/pre-school', 5215411: 'Primary/elementary school', 5215412, .. }
 ```{python}
+
+def get_intervention_group_size():
+    study_design={}
+    for counter, item in enumerate(df):
+        if item[0] == "What is the sample size for the intervention group?":
+            for i in range(1,2):
+                study_design.update( {df[counter+i][1]:df[counter+i][0]} )
+    return study_design
+intervention_n = get_intervention_group_size()
+
 # STUDY DESIGN
 def get_study_design_info():
     study_design={}
@@ -92,14 +103,25 @@ def get_study_design_info():
 study_design = get_study_design_info()
 
 # STRAND
+#def get_strand_info():
+    #strands={}
+    #for counter, item in enumerate(df):
+        #if item[0] == "Arts participation":
+            #for i in range(1,33):
+                #strands.update( {df[counter+i][1]:df[counter+i][0]} )
+    #return strands
+#strands = get_strand_info()
+
+# new strand 
 def get_strand_info():
     strands={}
     for counter, item in enumerate(df):
-        if item[0] == "Arts participation":
-            for i in range(1,33):
+        if item[0] == "Toolkit strand(s) (select at least one Toolkit strand)":
+            for i in range(1,34):
                 strands.update( {df[counter+i][1]:df[counter+i][0]} )
     return strands
 strands = get_strand_info()
+strands
 
 # PUBLICATION TYPE
 def get_pub_type_info():
@@ -182,6 +204,78 @@ def get_student_age_info():
 student_age = get_student_age_info()
 ```
 
+```{python}
+def get_strands():
+  exclude=np.nan
+  finds=[]
+    
+  section_count=0
+  codes_section_count=0
+  outcomes_section_count=0
+  outcome_codes_section=0
+  # iterate over each section within each study of 'references'
+  for section in range(len(data["References"])):
+      section_count+=1
+      if "Codes" in data["References"][section]:
+          codes_section_count+=1
+          find=0
+          if "Outcomes" in data["References"][section]:
+              outcomes_section_count+=1
+              if "OutcomeCodes" in data["References"][section]["Outcomes"][0]:
+                  outcome_codes_section+=1
+                  for study in range(len(data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"])):
+                      for key,value in strands.items():
+                          if key == data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"][study]["AttributeId"]:
+                              strandfind=value
+                              strandlabel=key
+                              find=1
+                          elif find==0:
+                              strandfind=str(exclude)
+                              strandlabel=str(exclude)
+                  finds.append([strandfind, strandlabel])
+        
+  print("overall section count:", section_count)
+  print("codes section count:", codes_section_count)
+  print("outcomes section count", outcomes_section_count)
+  print("outcomes codes section count", outcome_codes_section)
+    
+  return finds
+
+all = get_strands() 
+print("length of dict", len(all))
+
+new=[]
+for i in all:
+    new.append(i[0])
+    
+pprint(new)
+print("overall length", len(new))
+
+unique_list = set(new)
+print("unique items", unique_list)
+    
+peer_tut_count = new.count("Toolkit: Peer Tutoring")
+feedback_count = new.count("Toolkit: Feedback")
+summer_schools_count = new.count("Toolkit: Summer schools")
+extending_school_time_count = new.count("Toolkit: Extending school time")
+ta_count = new.count("Toolkit: Teaching assistants")
+sgt_count = new.count("Toolkit: Small Group Tuition")
+one_to_one_count = new.count("Toolkit: One to one tuition")
+parental_eng = new.count("Toolkit: Parental engagement")
+nan = new.count("nan")
+
+print(peer_tut_count) #110
+print(feedback_count) #116
+print(summer_schools_count) #52
+print(extending_school_time_count) #73
+print(ta_count) # 62
+print(sgt_count) # 31
+print(one_to_one_count) # none
+print(parental_eng) # none
+print(nan)
+
+```
+
 ## Main data extraction
 ```{python}
 def get_all():
@@ -198,6 +292,7 @@ def get_all():
           extracted+=1
           studentagefind=[]
           studentagelabel=[]
+                              
           for study in range(len(data["References"][section]["Codes"])):
           
               # get student age data
@@ -281,13 +376,14 @@ def get_all():
                       label=exclude
                   
               # get strand data (feedback, peer tutoring etc.)
-              for key,value in strands.items():
-                  if key == data["References"][section]["Codes"][study]["AttributeId"]:
-                      strandfind=value
-                      strandlabel=key
-                  elif find==0:
-                      strandfind=exclude
-                      strandlabel=exclude
+              #strandfind=[]
+              #for key,value in strands.items():
+                  #if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                      #strandfind=value
+                      #strandlabel=key
+                  #elif find==0:
+                      #strandfind=exclude
+                      #strandlabel=exclude
                   
               # get outcome data if an "Outcomes" section exists
               if "Outcomes" in data["References"][section]:
@@ -298,6 +394,19 @@ def get_all():
                   SESMD=(data["References"][section]["Outcomes"][0]["SESMD"])
                   CIupperSMD=(data["References"][section]["Outcomes"][0]["CIUpperSMD"])
                   CIlowerSMD=(data["References"][section]["Outcomes"][0]["CILowerSMD"])
+                  
+                  if "OutcomeCodes" in data["References"][section]["Outcomes"][0]:
+                      for study in range(len(data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"])):
+                          for key,value in strands.items():
+                              if key == data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"][study]["AttributeId"]:
+                                  strandfind=value
+                                  strandlabel=key
+                              elif find==0:
+                                  strandfind=str(exclude)
+                                  strandlabel=str(exclude)
+                  else:
+                      strandfind=np.nan
+                      strandlabel=np.nan
               else:
                   nooutcomes+=1
                   outcometext=exclude
@@ -334,7 +443,7 @@ def get_all():
           null+=1
       
       # convert data list ('finds') to Pandas dataframe
-      df = pd.DataFrame(finds, columns=['ItemId', 'Author', 'EducationalSetting', 'Strand', 
+      df = pd.DataFrame(finds, columns=['ItemId', 'Author', 'EducationalSetting', 'Strand',
                                        'Intervention', 'Outcome', 'Year', 'Country', 'PublicationType', 'StudentAge', 
                                        'StudentGender', 'StudyDesign', 'LevelofAssignment', 'ParticipantAssignment','StudyRealism', 'SMD',
                                        'SESMD', 'CIupper', 'CIlower'])
@@ -352,7 +461,7 @@ def get_all():
   return df
   
 master_df = get_all()
-master_df['ItemId']
+master_df.groupby('Strand').count()
 ```
 
 **Function to check "Year" range, group by decade, and insert into new 'Decade' column. Reorder columns and subset all Primary (outcome) studies**
@@ -390,18 +499,24 @@ master_df["Decade"] = master_df.apply(decade_row, axis=1)
 master_df["Randomisation"] = master_df.apply(random_row, axis=1)
 
 # reorder columns
-master_df = master_df[["ItemId", "Author", "Year", "Decade", "Country", "Outcome", "Strand", "PublicationType", 
+master_df = master_df[["ItemId", "Author", "Year", "Strand", "Decade", "Country", "Outcome", "PublicationType", 
                        "EducationalSetting", "Intervention", "StudentAge", "StudentGender",
                        "StudyRealism", "LevelofAssignment", "StudyDesign", "ParticipantAssignment", "Randomisation", "SMD", "SESMD", "CIupper", "CIlower"]]
 
 # subset all Primary Outcomes studies
-primary = master_df[master_df["Outcome"] == "Primary outcome"]
+#primary = master_df[master_df["Outcome"] == "Primary outcome"]
+master_df
 ```
 
 **Data cleaning: replace all non-useful values with NA & convert columns to factors. Display Primary outcome dataset (25 rows here)**
 ```{r, message=FALSE, warning=FALSE, fig.width=10,fig.height=7}
+
+# display all studies (primary and secondary for error checking etc.)
+primary_outcome <- data.frame(py$master_df)
+View(primary_outcome)
+
 # Pass all Primary outcome studies to R dataframe (from Python)
-primary_outcome <- data.frame(py$primary)
+#primary_outcome <- data.frame(py$primary)
 
 # Clean data (insert NA for missing values and remove 'no info' cells)
 primary_outcome$Intervention <- as.character(primary_outcome$Intervention)
@@ -476,7 +591,7 @@ View(primary_outcome)
 rownames(primary_outcome) <- NULL
 
 # write df to csv
-#write.csv(primary_outcome, "data.csv", row.names=FALSE)
+write.csv(primary_outcome, "data_with_itemids.csv", row.names=FALSE)
 
 # display data with kable and inspect subsetted columns (highlighted)
 primary_outcome[1:25,1:19] %>%
