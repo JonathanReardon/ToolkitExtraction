@@ -91,13 +91,16 @@ def get_strand_info():
             for i in range(1,34):
                 strands.update( {df[counter+i][1]:df[counter+i][0]} )
     return strands
-strands = get_strand_info()
-strands
+strand_codes = get_strand_info()
+
+for k,v in strand_codes.items():
+    print(k,v)
 ```
 
 ```{python}
+
 def get_strands():
-  exclude=np.nan
+  exclude="-"
   finds=[]
     
   section_count=0
@@ -106,48 +109,30 @@ def get_strands():
   outcome_codes_section=0
   # iterate over each section within each study of 'references'
   for section in range(len(data["References"])):
-      section_count+=1
       if "Codes" in data["References"][section]:
-          codes_section_count+=1
-          find=0
           if "Outcomes" in data["References"][section]:
-              outcomes_section_count+=1
               if "OutcomeCodes" in data["References"][section]["Outcomes"][0]:
-                  outcome_codes_section+=1
                   for study in range(len(data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"])):
-                      strandfind=np.nan
-                      strandlabel=np.nan
-                      for key,value in strands.items():
+                      for key,value in strand_codes.items():
                           if key == data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"][study]["AttributeId"]:
                               strandfind=value
                               strandlabel=key
                   finds.append([strandfind, strandlabel])
               else:
-                  finds.append(["no outcomecodes section"])
+                  finds.append([exclude])
           else:
-              finds.append(["no outcomes section"])
+              finds.append([exclude])
       else:
-          finds.append(["no codes section"])
+          finds.append([exclude])
         
-  print("overall section count:", section_count)
-  print("codes section count:", codes_section_count)
-  print("outcomes section count", outcomes_section_count)
-  print("outcomes codes section count", outcome_codes_section)
     
   return finds
 
-all = get_strands() 
-print("length of dict", len(all))
+strand_info = get_strands() 
 
 new=[]
-for i in all:
-    new.append(i[0])
-    
-pprint(new)
-#print("overall length", len(new))
-
-#unique_list = set(new)
-#print("unique items", unique_list)
+for obj in strand_info:
+    new.append(obj[0])
     
 peer_tut_count = new.count("Toolkit: Peer Tutoring")
 feedback_count = new.count("Toolkit: Feedback")
@@ -157,16 +142,61 @@ ta_count = new.count("Toolkit: Teaching assistants")
 sgt_count = new.count("Toolkit: Small Group Tuition")
 one_to_one_count = new.count("Toolkit: One to one tuition")
 parental_eng = new.count("Toolkit: Parental engagement")
-nan = new.count("nan")
+nan = new.count("-")
 
-#print(peer_tut_count) #110
-#print(feedback_count) #116
-#print(summer_schools_count) #52
-#print(extending_school_time_count) #73
-#print(ta_count) # 62
-#print(sgt_count) # 31
-#print(one_to_one_count) # none
-#print(parental_eng) # none
-#print(nan)
+print("peer tut count:", peer_tut_count) #110
+print("feedback count:", feedback_count) #116
+print("summer schools count:", summer_schools_count) #52
+print("extending school time count:", extending_school_time_count) #73
+print("ta count:", ta_count) # 62
+print("sgt count:", sgt_count) # 31
+print("one to one count:", one_to_one_count) # none
+print("parental eng count:", parental_eng) # none
+print("nan:", nan)
+```
 
+```{python}
+titles=[]
+for section in range(len(data["References"])):
+    if "ShortTitle" in data["References"][section]:
+        titles.append(data["References"][section]["ShortTitle"])
+print(len(titles))
+```
+
+```{python}
+
+codes_check=[]
+outcomes_check=[]
+outcomecodes_check=[]
+
+for section in range(len(data["References"])):
+    Codes="No"
+    Outcomes="No"
+    OutcomeCodes="No"
+    if "Codes" in data["References"][section]:
+        Codes="Yes"
+        if "Outcomes" in data["References"][section]:
+            Outcomes="Yes"
+            if "OutcomeCodes" in data["References"][section]["Outcomes"][0]:
+                OutcomeCodes="Yes"
+          
+    codes_check.append(Codes)
+    outcomes_check.append(Outcomes)
+    outcomecodes_check.append(OutcomeCodes)
+```
+
+```{python}
+
+df = pd.DataFrame(list(zip(titles, new, codes_check, outcomes_check, outcomecodes_check)), 
+               columns =['author', 'strand', 'Codes section present', 'Outcomes section present', 'OutcomeCodes section present']) 
+df
+```
+
+```{r}
+
+# display all studies (primary and secondary for error checking etc.)
+all <- data.frame(py$df)
+View(all)
+
+write.csv(all, "May11th_2020_summary.csv", row.names=FALSE)
 ```
