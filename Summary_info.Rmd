@@ -83,7 +83,7 @@ strands&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= {5023544: '
 edu_setting&nbsp;&nbsp;&nbsp;= {5215410: 'Nursery school/pre-school', 5215411: 'Primary/elementary school', 5215412, .. }
 
 ```{python}
-# new strand 
+# STRAND
 def get_strand_info():
     strands={}
     for counter, item in enumerate(df):
@@ -93,7 +93,37 @@ def get_strand_info():
     return strands
 strand_codes = get_strand_info()
 
-for k,v in strand_codes.items():
+# STUDY DESIGN
+def get_study_design_info():
+    study_design={}
+    for counter, item in enumerate(df):
+        if item[0] == "What was the study design?":
+            for i in range(1,10):
+                study_design.update( {df[counter+i][1]:df[counter+i][0]} )
+    return study_design
+study_design = get_study_design_info()
+
+# EDUCATIONAL SETTING
+def get_edu_setting_info():
+    edu_setting={}
+    for counter, item in enumerate(df):
+        if item[0] == "What is the educational setting (Select ALL that apply)":
+            for i in range(1,12):
+                edu_setting.update( {df[counter+i][1]:df[counter+i][0]} )   
+    return edu_setting
+edu_setting = get_edu_setting_info()
+
+# COUNTRIES
+def get_countries_info():
+    countries={}
+    for counter, item in enumerate(df):
+        if item[0] == "In which country/countries was the study carried out? (Select ALL that apply)":
+            for i in range(1,188):
+                countries.update( {df[counter+i][1]:df[counter+i][0]} ) 
+    return countries
+countries = get_countries_info()
+
+for k,v in countries.items():
     print(k,v)
 ```
 
@@ -156,11 +186,66 @@ print("nan:", nan)
 ```
 
 ```{python}
+exclude="-"
+studydesign=[]
+for section in range(len(data["References"])):
+    if "Codes" in data["References"][section]:
+        for study in range(len(data["References"][section]["Codes"])):
+            for key, value in study_design.items():
+                if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                    studydesignfind=value
+                    studydesignlabel=key
+        studydesign.append([studydesignfind])
+    else:
+        studydesign.append([exclude])
+
+exclude="-"
+edusetting=[]
+for section in range(len(data["References"])):
+    if "Codes" in data["References"][section]:
+        for study in range(len(data["References"][section]["Codes"])):
+            for key,value in edu_setting.items():
+                if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                    edusettingfind=value
+                    edusettingvalue=key
+        edusetting.append([edusettingfind])
+    else:
+        edusetting.append([exclude])
+
+exclude="-"
+country=[]
+for section in range(len(data["References"])):
+    if "Codes" in data["References"][section]:
+        for study in range(len(data["References"][section]["Codes"])):
+            for key,value in countries.items():
+                if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                    countryfind=value
+                    countryvalue=key
+        country.append([countryfind])
+    else:
+        country.append([exclude])
+pprint(len(country))
+
+
+```
+
+```{python}
 titles=[]
 for section in range(len(data["References"])):
     if "ShortTitle" in data["References"][section]:
         titles.append(data["References"][section]["ShortTitle"])
 print(len(titles))
+```
+
+```{python}
+exclude="-"
+year=[]
+for section in range(len(data["References"])):
+    if "Year" in data["References"][section]:
+        year.append(int(data["References"][section]["Year"]))
+    else:
+        year.append(exclude)
+pprint(len(year))
 ```
 
 ```{python}
@@ -186,9 +271,65 @@ for section in range(len(data["References"])):
 ```
 
 ```{python}
+itemids=[]
+exclude="-"
+for section in range(len(data["References"])):
+  if "ItemId" in  data["References"][section]:
+      itemids.append(data["References"][section]["ItemId"])
+  else:
+      itemid=exclude
+print(len(itemids))
 
-df = pd.DataFrame(list(zip(titles, new, codes_check, outcomes_check, outcomecodes_check)), 
-               columns =['author', 'strand', 'Codes section present', 'Outcomes section present', 'OutcomeCodes section present']) 
+```
+
+```{python}
+exclude="-"
+outcometext=[]
+interventiontext=[]
+SMD=[]
+SESMD=[]
+CIupperSMD=[]
+CIlowerSMD=[]
+for section in range(len(data["References"])):
+  if "ItemId" in  data["References"][section]:
+      if "Outcomes" in data["References"][section]:
+          outcometext.append(data["References"][section]["Outcomes"][0]["OutcomeText"])
+          interventiontext.append(data["References"][section]["Outcomes"][0]["InterventionText"])
+          SMD.append(data["References"][section]["Outcomes"][0]["SMD"])
+          SESMD.append(data["References"][section]["Outcomes"][0]["SESMD"])
+          CIupperSMD.append(data["References"][section]["Outcomes"][0]["CIUpperSMD"])
+          CIlowerSMD.append(data["References"][section]["Outcomes"][0]["CILowerSMD"])
+                  
+      else:
+          outcometext.append(exclude)
+          interventiontext.append(exclude)
+          SMD.append(exclude)
+          SESMD.append(exclude)
+          CIupperSMD.append(exclude)
+          CIlowerSMD.append(exclude)
+  else:
+      outcometext.append(exclude)
+      interventiontext.append(exclude)
+      SMD.append(exclude)
+      SESMD.append(exclude)
+      CIupperSMD.append(exclude)
+      CIlowerSMD.append(exclude)
+      
+print(len(outcometext))
+print(len(interventiontext))
+print(len(SMD))
+print(len(SESMD))
+print(len(CIupperSMD))
+print(len(CIlowerSMD))
+
+```
+
+```{python}
+
+df = pd.DataFrame(list(zip(itemids, titles, year, new, country, studydesign, edusetting, outcometext, interventiontext,
+                           SMD, SESMD, CIupperSMD, CIlowerSMD, codes_check, outcomes_check, outcomecodes_check)), 
+               columns =['Item Id', 'Author', 'Year', 'Strand', 'Country', 'Study Design', 'Educational Setting', 'Outcome', 'Intervention', 
+                        'SMD', 'SESMD', 'CIupperSMD', 'CIlowerSMD', 'Codes section present', 'Outcomes section present', 'OutcomeCodes section present']) 
 df
 ```
 
@@ -198,5 +339,5 @@ df
 all <- data.frame(py$df)
 View(all)
 
-write.csv(all, "May11th_2020_summary.csv", row.names=FALSE)
+#write.csv(all, "May11th_2020_summary_withItemIds.csv", row.names=FALSE)
 ```
