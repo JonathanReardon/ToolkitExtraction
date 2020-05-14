@@ -1,0 +1,389 @@
+---
+title: 'Strand Specific Effect Size Extraction.Rmd'
+author: "Jonathan Reardon"
+output:
+  html_document:
+    keep_md: true
+    df_print: paged
+  #pdf_document:
+    #keep_md: true
+editor_options:
+  chunk_output_type: inline
+---
+
+```{r setup, message=FALSE}
+knitr::opts_chunk$set(echo = T,
+                      fig.path = "StrandSpecificEffectSizeExtraction_figs/")
+library(reticulate)
+library(ggplot2)
+library(dplyr)
+library(reshape2)
+use_python("/usr/local/bin/python3")
+```
+
+**Get data with Python**
+```{python}
+import json
+from collections import Counter
+from pprint import pprint
+from matplotlib import pyplot as plt
+import pandas as pd
+plt.style.use('ggplot')
+
+# import dataset
+with open('/home/jon/json/Batch1.json') as f:
+    data=json.load(f)
+    
+def get_edu_info():
+    edu_setting=[]
+    for counter, value in enumerate(data["CodeSets"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"]):
+        setting_code=data["CodeSets"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][counter]["AttributeId"]
+        #setting_name=mydata["CodeSets"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][2]["Attributes"]["AttributesList"][counter]["AttributeName"]
+        edu_setting.append(setting_code)
+    return edu_setting[1]
+    print(edu_setting)
+
+edu = get_edu_info()
+    
+###################################################
+### GET STRAND LABELS AND KEYS FROM TOP OUTER LAYER
+###################################################
+
+def get_strand_info():
+    ''' 
+    a function that returns
+    a dict containing strand labels
+    and corresponding attribute ids
+    '''
+    strands={}
+    for counter, element in enumerate(data["CodeSets"][0]["Attributes"]["AttributesList"]):
+        attribute_name=(data["CodeSets"][0]["Attributes"]["AttributesList"][counter]["AttributeName"])
+        attribute_id=(data["CodeSets"][0]["Attributes"]["AttributesList"][counter]["AttributeId"])
+        strands.update( {attribute_id:attribute_name} )
+    return strands
+    
+######################################
+### DISPLAY STRAND SUMMARY INFORMATION 
+######################################
+    
+def get_strand_summary():
+    '''
+    A function that produces a basic
+    summary of strand study counts
+    and a graph to display them
+    '''
+    global counts, strand_title
+    strand_overview=[]
+    for element in range(len(data["References"])):
+        for key, value in strands.items():
+            for section in range(len(data["References"][element]["Codes"])):
+                if key == data["References"][element]["Codes"][section]["AttributeId"]:
+                    a=(data["References"][element]["ItemId"])
+                    b=(data["References"][element]["Title"])
+                    strand_overview.append([value, key, a, b])
+
+    strand_title=[]
+    for element in strand_overview:
+        strand_title.append(element[0])
+
+    counts = Counter(strand_title) 
+    pprint(counts)
+
+#######################################
+### GET THE ID FOR OUR STRAND OF CHOICE 
+#######################################
+
+def get_strand_value(strand_label):
+    ''' 
+    A function that takes in a 
+    strand name and returns
+    the strand ID
+    '''
+    for key, value in strands.items():
+        if value == strand_label:
+            return key, value
+
+######################################################
+###  GET EFFECT SIZE INFO FROM STRAND SPECIFIC STUDIES
+######################################################
+
+def get_data(strand_key, strand_value, outcome_choice):
+    '''
+    A function that accepts a strand id and a variable of
+    interest and returns a list of that id and the variable
+    values.
+    '''
+    outcome_studies=[] 
+
+    # iterate over each section of 'references'
+    for section in range(len(data["References"])):
+        # iterate over each study within each section of 'references'
+        for study in range(len(data["References"][section]["Codes"])):
+            # check each study to see if strand id is present
+            if strand_id[0] == data["References"][section]["Codes"][study]["AttributeId"]:
+                if "Outcomes" in data["References"][section]:
+                      if data["References"][section]["Outcomes"][0]["OutcomeText"] == outcome_choice:
+                          outcome_id=((data["References"][section]["Outcomes"][0]["OutcomeId"]))
+                          outcome_type=(data["References"][section]["Outcomes"][0]["ShortTitle"])
+                          outcome_text=(data["References"][section]["Outcomes"][0]["OutcomeText"])
+                          SMD=(data["References"][section]["Outcomes"][0]["SMD"])
+                          SESMD=(data["References"][section]["Outcomes"][0]["SESMD"])
+                          CIupperSMD=(data["References"][section]["Outcomes"][0]["CIUpperSMD"])
+                          CIlowerSMD=(data["References"][section]["Outcomes"][0]["CILowerSMD"])
+                          year=(data["References"][section]["Year"])
+                          intervention=(data["References"][section]["Outcomes"][0]["InterventionText"])
+                          controltext=(data["References"][section]["Outcomes"][0]["ControlText"])
+                          outcome_studies.append([strand_key, strand_value, outcome_id, outcome_text, 
+                                                  outcome_type, year, intervention, controltext, SMD, SESMD, CIupperSMD,
+                                                  CIlowerSMD])
+              
+    # display number of studies found within selected strand
+    print('Number of studies within strand {}: {}'.format(strand_value, len(outcome_studies)), "\n")
+    
+    pd.set_option('display.max_rows', 15)
+    pd.set_option('display.max_columns', 15)
+    
+    # convert data list to pandas dataframe for viewing
+    df_primary = pd.DataFrame(outcome_studies, columns=['AttributeId', 'Strand', 'OutcomeId', 'OutcomeType', 
+                                                        'ShortTitle', 'Year', 'Intervention', 'Control', 'SMD', 'SESMD',
+                                                        'CIupper', 'CIlower'])
+    
+    # round effect sizes to two decimal points
+    df_primary.loc[:, "SMD"] = df_primary["SMD"].astype(float).round(4)
+    df_primary.loc[:, "SESMD"] = df_primary["SESMD"].astype(float).round(4)
+    df_primary.loc[:, "CIupper"] = df_primary["CIupper"].astype(float).round(4)
+    df_primary.loc[:, "CIlower"] = df_primary["CIlower"].astype(float).round(4)
+    
+    return df_primary
+
+strands = get_strand_info()
+get_strand_summary()
+```
+```{python}
+strand_id = get_strand_value("Oral language interventions") 
+oral_lang = get_data(strand_id[0], strand_id[1], "Primary outcome")
+
+oral_lang.head(50)
+```
+**Pass 'oral language' strand pandas dataframe to R (as R dataframe) and make forest plot**
+```{r, message=FALSE, fig.width=8,fig.height=12}
+oral_lang_df <- data.frame(py$oral_lang) # convert pandas dataframe (python) to R dataframe
+
+ggplot(oral_lang_df, aes(y=ShortTitle, x=SMD, xmin=CIlower, xmax=CIupper))+
+  geom_point(color='black', shape=15) +
+  geom_errorbarh(height=.7, linetype=1) +
+  scale_x_continuous(limits=c(-3,3), name='Standardized Mean Difference (95% CI)') +
+  ylab('Reference') +
+  geom_vline(xintercept=0, color='black', linetype='dashed') +
+  theme_classic()
+```
+```{r, fig.width=11,fig.height=5}
+# prepare data for dotplot
+oral_lang_df$Intervention <- as.character(oral_lang_df$Intervention)
+oral_lang_df$Intervention[oral_lang_df$Intervention==""] <- NA
+oral_lang_df$Intervention <- as.factor(oral_lang_df$Intervention)
+oral_lang_mean_SMD <- mean(oral_lang_df$SMD, na.rm=TRUE)
+oral_lang_mean_SESMD <- mean(oral_lang_df$SESMD, na.rm=TRUE)
+
+View(oral_lang_df) # uncomment to view data in data viewer
+
+ggplot(data=subset(oral_lang_df, !is.na(Intervention)), aes(SMD, SESMD, color=Intervention)) + 
+    geom_point(alpha=1, na.rm=TRUE, size=3) +
+    theme_grey() +
+    geom_vline(xintercept=oral_lang_mean_SMD, linetype="dotted", color="black", size=1) +
+    theme(legend.title = element_text(color = "black", size = 10),
+          legend.text = element_text(color = "black", size = 8)) +
+    theme(legend.position="right") +
+    guides(fill=guide_legend(nrow=5, byrow=TRUE)) +
+    theme(legend.title=element_blank()) +
+    annotate(geom="text", x=oral_lang_mean_SMD+.15, y=-.1, label=round(oral_lang_mean_SMD, 2), color="black") +
+    ylim(-0.2, 1.75) +
+    ggtitle("SMD by SESMD broken down by Intervention, Oral Language strand, Primary outcome")
+```
+
+**Get 'Feedback' strand data (effect sizes and confidence intervals) for Primary outcome studies**
+```{python}
+strand_id = get_strand_value("Feedback") 
+feedback = get_data(strand_id[0], strand_id[1], "Primary outcome")
+
+feedback.head(10)
+```
+**Pass 'feedback' strand pandas dataframe to R (as R dataframe) and make forest plot**
+```{r, message=FALSE, fig.width=8,fig.height=12}
+feedback_df <- data.frame(py$feedback) # convert pandas dataframe (python) to R dataframe
+
+ggplot(feedback_df, aes(y=ShortTitle, x=SMD, xmin=CIlower, xmax=CIupper))+
+  geom_point(color='black', shape=15) +
+  geom_errorbarh(height=.7, linetype=1) +
+  scale_x_continuous(limits=c(-3,3), name='Standardized Mean Difference (95% CI)') +
+  ylab('Reference') +
+  geom_vline(xintercept=0, color='black', linetype='dashed') +
+  theme_classic()
+```
+
+```{r, fig.width=11,fig.height=5}
+# prepare data for dotplot
+feedback_df$Intervention <- as.character(feedback_df$Intervention)
+feedback_df$Intervention[feedback_df$Intervention==""] <- NA
+feedback_df$Intervention <- as.factor(feedback_df$Intervention)
+feedback_mean_SMD <- mean(feedback_df$SMD, na.rm=TRUE)
+feedback_mean_SESMD <- mean(feedback_df$SESMD, na.rm=TRUE)
+
+# View(feedback_df) # uncomment to view data in dataviewer
+
+ggplot(data=subset(feedback_df, !is.na(Intervention)), aes(SMD, SESMD, color=Intervention)) + 
+    geom_point(alpha=1, na.rm=TRUE, size=3) +
+    theme_grey() +
+    geom_vline(xintercept=feedback_mean_SMD, linetype="dotted", color="black", size=1) +
+    theme(legend.title = element_text(color = "black", size = 10),
+          legend.text = element_text(color = "black", size = 8)) +
+    theme(legend.position="right") +
+    guides(fill=guide_legend(nrow=5, byrow=TRUE)) +
+    theme(legend.title=element_blank()) +
+    annotate(geom="text", x=feedback_mean_SMD+.15, y=-.1, label=round(feedback_mean_SMD, 2), color="black") +
+    ylim(-0.2, 1.75) +
+    ggtitle("SMD by SESMD broken down by Intervention, Feedback strand only")
+```
+
+**Get 'Peer tutoring' strand data (effect sizes and confidence intervals) for Primary outcome studies**
+```{python}
+strand_id = get_strand_value("Peer tutoring") 
+peertutor = get_data(strand_id[0], strand_id[1], "Primary outcome")
+
+peertutor.head(10)
+```
+**Pass 'peer tutoring' strand pandas dataframe to R (as R dataframe) and make forest plot**
+```{r, message=FALSE, fig.width=8,fig.height=12}
+peer_tutoring_df <- data.frame(py$peertutor) # convert pandas dataframe (python) to R dataframe
+
+ggplot(feedback_df, aes(y=ShortTitle, x=SMD, xmin=CIlower, xmax=CIupper))+
+  geom_point(color='black', shape=15) +
+  geom_errorbarh(height=.7, linetype=1) +
+  scale_x_continuous(limits=c(-3,3), name='Standardized Mean Difference (95% CI)') +
+  ylab('Reference') +
+  geom_vline(xintercept=0, color='black', linetype='dashed') +
+  theme_classic()
+```
+```{r, fig.width=11,fig.height=5}
+# prepare data for dotplot
+peer_tutoring_df$Intervention <- as.character(peer_tutoring_df$Intervention)
+peer_tutoring_df$Intervention[feedback_df$Intervention==""] <- NA
+peer_tutoring_df$Intervention <- as.factor(peer_tutoring_df$Intervention)
+peer_tutoring_df_SMD <- mean(peer_tutoring_df$SMD, na.rm=TRUE)
+peer_tutoring_df_SESMD <- mean(peer_tutoring_df$SESMD, na.rm=TRUE)
+
+# View(feedback_df) # uncomment to view data in dataviewer
+
+ggplot(data=subset(peer_tutoring_df, !is.na(Intervention)), aes(SMD, SESMD, color=Intervention)) + 
+    geom_point(alpha=1, na.rm=TRUE, size=3) +
+    theme_grey() +
+    geom_vline(xintercept=peer_tutoring_df_SMD, linetype="dotted", color="black", size=1) +
+    theme(legend.title = element_text(color = "black", size = 10),
+          legend.text = element_text(color = "black", size = 8)) +
+    theme(legend.position="right") +
+    guides(fill=guide_legend(nrow=5, byrow=TRUE)) +
+    theme(legend.title=element_blank()) +
+    annotate(geom="text", x=peer_tutoring_df_SMD+.15, y=-.1, label=round(peer_tutoring_df_SMD, 2), color="black") +
+    ylim(-0.2, 1.75) +
+    ggtitle("SMD by SESMD broken down by Intervention, Peer tutoring strand only")
+```
+
+```{python}
+strand_id = get_strand_value("Teaching assistants") 
+teachingassist = get_data(strand_id[0], strand_id[1], "Primary outcome")
+
+teachingassist.head(10)
+```
+**Pass 'teaching assistants' strand pandas dataframe to R (as R dataframe) and make forest plot**
+```{r, message=FALSE, fig.width=8,fig.height=8}
+teaching_assistants_df <- data.frame(py$teachingassist)
+
+ggplot(teaching_assistants_df, aes(y=ShortTitle, x=SMD, xmin=CIlower, xmax=CIupper))+
+  geom_point(color='black', shape=15) +
+  geom_errorbarh(height=.4, linetype=1) +
+  scale_x_continuous(limits=c(-3,3), name='Standardized Mean Difference (95% CI)') +
+  ylab('Reference') +
+  geom_vline(xintercept=0, color='black', linetype='dashed') +
+  theme_classic()
+```
+```{r, fig.width=11,fig.height=5}
+# prepare data for dotplot
+teaching_assistants_df$Intervention <- as.character(teaching_assistants_df$Intervention)
+teaching_assistants_df$Intervention[teaching_assistants_df$Intervention==""] <- NA
+teaching_assistants_df$Intervention <- as.factor(teaching_assistants_df$Intervention)
+teaching_assistants_df_SMD <- mean(teaching_assistants_df$SMD, na.rm=TRUE)
+teaching_assistants_df_SESMD <- mean(teaching_assistants_df$SESMD, na.rm=TRUE)
+
+# View(feedback_df) # uncomment to view data in dataviewer
+
+ggplot(data=subset(teaching_assistants_df, !is.na(Intervention)), aes(SMD, SESMD, color=Intervention)) + 
+    geom_point(alpha=1, na.rm=TRUE, size=3) +
+    theme_grey() +
+    geom_vline(xintercept=teaching_assistants_df_SMD, linetype="dotted", color="black", size=1) +
+    theme(legend.title = element_text(color = "black", size = 10),
+          legend.text = element_text(color = "black", size = 8)) +
+    theme(legend.position="right") +
+    guides(fill=guide_legend(nrow=5, byrow=TRUE)) +
+    theme(legend.title=element_blank()) +
+    annotate(geom="text", x=peer_tutoring_df_SMD+.15, y=-.1, label=round(teaching_assistants_df_SMD, 2), color="black") +
+    ylim(-0.2, 1.75) +
+    ggtitle("SMD by SESMD broken down by Intervention, Teaching assistants strand only")
+```
+
+**Call 'get data' function several times (for different strands) and combine into one 'master' dataframe**
+```{python}
+strand_id = get_strand_value("Oral language interventions") 
+oral_lang = get_data(strand_id[0], strand_id[1], "Primary outcome")
+
+strand_id = get_strand_value("Feedback") 
+feedback = get_data(strand_id[0], strand_id[1], "Primary outcome")
+
+strand_id = get_strand_value("Peer tutoring") 
+peer_tut = get_data(strand_id[0], strand_id[1], "Primary outcome")
+
+strand_id = get_strand_value("Teaching assistants") 
+teaching_assist = get_data(strand_id[0], strand_id[1], "Primary outcome")
+
+strand_id = get_strand_value("Small group tuition") 
+small_group = get_data(strand_id[0], strand_id[1], "Primary outcome")
+
+strand_id = get_strand_value("One to one tuition") 
+one_to_one = get_data(strand_id[0], strand_id[1], "Primary outcome")
+
+master_df = pd.concat([oral_lang, feedback, peer_tut, teaching_assist, small_group, one_to_one])
+
+master_df = master_df.sort_values(by=['Year'])
+master_df
+```
+Pass the 'master' dataframe from Python to R
+```{r, fig.width=12,fig.height=5}
+master_df <- data.frame(py$master_df)
+master_df$Intervention[master_df$Intervention==""] <- NA
+
+#View(master_df)
+
+filter(master_df, !is.na(Intervention)) %>%
+  ggplot(aes(Year, SESMD, color=Strand)) + geom_point(na.rm=TRUE) +
+      theme_grey() +
+      theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+      ylim(-0.25, 2.5)
+           
+#filter(master_df, !is.na(Intervention)) %>%
+  #ggplot(aes(fill=Intervention, y=SMD, x=Strand)) +
+  #geom_bar(position="dodge", stat="identity", color="black", na.rm=TRUE) +
+  #ggtitle("SMD by Strand, broken down by Intervention")
+```
+
+```{r, fig.width=12,fig.height=5}
+filter(master_df, !is.na(Intervention)) %>%
+  ggplot(aes(y=SMD, x=Strand, size=Intervention, color=Intervention)) +
+  geom_jitter(shape=16, position=position_jitter(.2), size=2, shape=21)
+```
+
+```{r, fig.width=12,fig.height=5}
+filter(master_df, !is.na(Intervention)) %>%
+  ggplot(aes(fill=Intervention, y=SMD, x=Strand)) +
+  geom_dotplot(binaxis='y', stackdir='center', dotsize=.6, binwidth=.2, na.rm=TRUE) +
+  ggtitle("SMD by Strand, broken down by Intervention")
+```
+
