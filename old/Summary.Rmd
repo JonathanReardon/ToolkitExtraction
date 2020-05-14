@@ -88,23 +88,31 @@ def get_data():
     values.
     '''
     outcome_studies=[] 
+    edu_setting=[]
 
     # iterate over each section of 'references'
     for section in range(len(data["References"])):
         if "Codes" in data["References"][section]:
           for study in range(len(data["References"][section]["Codes"])):
-              # check each study to see if strand id is present
               for item, value in strands.items():
                   if item == data["References"][section]["Codes"][study]["AttributeId"]:
                     shorttitle=(data["References"][section]["ShortTitle"])
                     year=(data["References"][section]["Year"])
                     studyID=(data["References"][section]["ItemId"])
                     outcome_studies.append([shorttitle, year, studyID, value])
-              
-  
+                    
+    for section in range(len(data["References"])):
+        if "Codes" in data["References"][section]:
+          for study in range(len(data["References"][section]["Codes"])):
+            for item, value in edu.items():
+              if item == data["References"][section]["Codes"][study]["AttributeId"]:
+                  edu_setting.append(value)
+
     # convert data list to pandas dataframe for viewing
     df_primary = pd.DataFrame(outcome_studies, columns=['Author', 'Year', 'StudyID', 'Strand'])
     
+    print(edu_setting)
+    print(len(edu_setting))
     return df_primary
 
 ```
