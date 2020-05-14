@@ -1,5 +1,5 @@
 ---
-title: 'Master data extraction.Rmd'
+title: 'Summary_Info.Rmd'
 author: "Jonathan Reardon"
 output:
   html_document:
@@ -42,7 +42,8 @@ plt.style.use('ggplot')
 # import dataset (uncomment to select dataset of choice)
 #with open('/home/jon/json/ToolkitExtraction/data/batch2.json') as f:
 #with open('/home/jon/json/ToolkitExtraction/data/Batch1.json') as f:
-with open('/home/jon/json/ToolkitExtraction/data/May11th_2020.json') as f:
+#with open('/home/jon/json/ToolkitExtraction/data/May11th_2020.json') as f:
+with open('/home/jon/json/ToolkitExtraction/data/May 12th_2020.json') as f:
     data=json.load(f)
 ```
 **Flatten dataset into lists containing all attribute names and Ids to easily get top-level (CodeSets) information**
@@ -50,7 +51,6 @@ with open('/home/jon/json/ToolkitExtraction/data/May11th_2020.json') as f:
 def extract_values(obj, key):
     """Pull all values of specified key from nested JSON."""
     arr = []
-
     def extract(obj, arr, key):
         """Recursively search for values of key in JSON tree."""
         if isinstance(obj, dict):
@@ -83,12 +83,54 @@ strands&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= {5023544: '
 edu_setting&nbsp;&nbsp;&nbsp;= {5215410: 'Nursery school/pre-school', 5215411: 'Primary/elementary school', 5215412, .. }
 
 ```{python}
+
+### CONSTANTS ###
+exclude="NA"
+# Variable counts
+strand_options=34
+design_options=10
+edu_setting_options=12
+country_options=188
+pub_Type_options=6
+age_options=18
+gender_options=5
+
+# STUDENT GENDER
+def get_student_gender_info():
+    student_gender={}
+    for counter, item in enumerate(df):
+        if item[0] == "What is the gender of the students?":
+            for i in range(1,gender_options):
+                student_gender.update( {df[counter+i][1]:df[counter+i][0]} ) 
+    return student_gender
+student_gender = get_student_gender_info()
+
+# STUDENT AGE
+def get_student_age_info():
+    student_age={}
+    for counter, item in enumerate(df):
+        if item[0] == "What is the age of the students? (Select ALL that apply)":
+            for i in range(1,age_options):
+                student_age.update( {df[counter+i][1]:df[counter+i][0]} ) 
+    return student_age
+student_age = get_student_age_info()
+
+# PUBLICATION TYPE
+def get_pub_type_info():
+    pub_type={}
+    for counter, item in enumerate(df):
+        if item[0] == "Section 1 What is the publication type?":
+            for i in range(1,pub_Type_options):
+                pub_type.update( {df[counter+i][1]:df[counter+i][0]} )
+    return pub_type
+pub_type = get_pub_type_info()
+
 # STRAND
 def get_strand_info():
     strands={}
     for counter, item in enumerate(df):
         if item[0] == "Toolkit strand(s) (select at least one Toolkit strand)":
-            for i in range(1,34):
+            for i in range(1,strand_options):
                 strands.update( {df[counter+i][1]:df[counter+i][0]} )
     return strands
 strand_codes = get_strand_info()
@@ -98,7 +140,7 @@ def get_study_design_info():
     study_design={}
     for counter, item in enumerate(df):
         if item[0] == "What was the study design?":
-            for i in range(1,10):
+            for i in range(1,design_options):
                 study_design.update( {df[counter+i][1]:df[counter+i][0]} )
     return study_design
 study_design = get_study_design_info()
@@ -108,7 +150,7 @@ def get_edu_setting_info():
     edu_setting={}
     for counter, item in enumerate(df):
         if item[0] == "What is the educational setting (Select ALL that apply)":
-            for i in range(1,12):
+            for i in range(1,edu_setting_options):
                 edu_setting.update( {df[counter+i][1]:df[counter+i][0]} )   
     return edu_setting
 edu_setting = get_edu_setting_info()
@@ -118,26 +160,21 @@ def get_countries_info():
     countries={}
     for counter, item in enumerate(df):
         if item[0] == "In which country/countries was the study carried out? (Select ALL that apply)":
-            for i in range(1,188):
+            for i in range(1,country_options):
                 countries.update( {df[counter+i][1]:df[counter+i][0]} ) 
     return countries
 countries = get_countries_info()
 
-for k,v in countries.items():
+for k,v in student_age.items():
     print(k,v)
+
 ```
 
 ```{python}
 
 def get_strands():
-  exclude="-"
   finds=[]
     
-  section_count=0
-  codes_section_count=0
-  outcomes_section_count=0
-  outcome_codes_section=0
-  # iterate over each section within each study of 'references'
   for section in range(len(data["References"])):
       if "Codes" in data["References"][section]:
           if "Outcomes" in data["References"][section]:
@@ -155,7 +192,6 @@ def get_strands():
       else:
           finds.append([exclude])
         
-    
   return finds
 
 strand_info = get_strands() 
@@ -164,69 +200,93 @@ new=[]
 for obj in strand_info:
     new.append(obj[0])
     
-peer_tut_count = new.count("Toolkit: Peer Tutoring")
-feedback_count = new.count("Toolkit: Feedback")
-summer_schools_count = new.count("Toolkit: Summer schools")
-extending_school_time_count = new.count("Toolkit: Extending school time")
-ta_count = new.count("Toolkit: Teaching assistants")
-sgt_count = new.count("Toolkit: Small Group Tuition")
-one_to_one_count = new.count("Toolkit: One to one tuition")
-parental_eng = new.count("Toolkit: Parental engagement")
-nan = new.count("-")
-
-print("peer tut count:", peer_tut_count) #110
-print("feedback count:", feedback_count) #116
-print("summer schools count:", summer_schools_count) #52
-print("extending school time count:", extending_school_time_count) #73
-print("ta count:", ta_count) # 62
-print("sgt count:", sgt_count) # 31
-print("one to one count:", one_to_one_count) # none
-print("parental eng count:", parental_eng) # none
-print("nan:", nan)
+def count_summary():
+    lst=[]
+    for k,v in strand_codes.items():
+        lst.append(v)
+    for obj in lst:
+        if new.count(obj) > 0:
+            print(obj, new.count(obj))
+        
+count_summary()
 ```
 
 ```{python}
-exclude="-"
-studydesign=[]
+exclude="NA"
+
+studentgender=[]
 for section in range(len(data["References"])):
     if "Codes" in data["References"][section]:
+        genderfind, gendervalue = exclude, exclude
         for study in range(len(data["References"][section]["Codes"])):
-            for key, value in study_design.items():
+            for key,value in student_gender.items():
                 if key == data["References"][section]["Codes"][study]["AttributeId"]:
-                    studydesignfind=value
-                    studydesignlabel=key
-        studydesign.append([studydesignfind])
+                    genderfind, gendervalue = value, key
+        studentgender.append([agefind])
     else:
-        studydesign.append([exclude])
+        studentgender.append([exclude])
 
-exclude="-"
+studentage=[]
+for section in range(len(data["References"])):
+    if "Codes" in data["References"][section]:
+        agefind = exclude
+        agevalue = exclude
+        for study in range(len(data["References"][section]["Codes"])):
+            for key,value in student_age.items():
+                if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                    agefind, agegvalue = value, key
+        studentage.append([agefind])
+    else:
+        studentage.append([exclude])
+
 edusetting=[]
 for section in range(len(data["References"])):
     if "Codes" in data["References"][section]:
+        edusettingfind, edusettingvalue = exclude, exclude
         for study in range(len(data["References"][section]["Codes"])):
             for key,value in edu_setting.items():
                 if key == data["References"][section]["Codes"][study]["AttributeId"]:
-                    edusettingfind=value
-                    edusettingvalue=key
+                    edusettingfind, edusettingvalue = value, key
         edusetting.append([edusettingfind])
     else:
         edusetting.append([exclude])
 
-exclude="-"
 country=[]
 for section in range(len(data["References"])):
     if "Codes" in data["References"][section]:
+        countryfind, countryvalue = exclude, exclude
         for study in range(len(data["References"][section]["Codes"])):
             for key,value in countries.items():
                 if key == data["References"][section]["Codes"][study]["AttributeId"]:
-                    countryfind=value
-                    countryvalue=key
+                    countryfind, countryvalue = value, key
         country.append([countryfind])
     else:
         country.append([exclude])
-pprint(len(country))
-
-
+      
+design=[]
+for section in range(len(data["References"])):
+    if "Codes" in data["References"][section]:
+        designfind, designlabel= exclude, exclude
+        for study in range(len(data["References"][section]["Codes"])):
+            for key, value in study_design.items():
+                if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                    designfind, designlabel = value, key
+        design.append(designfind)
+    else:
+        design.append(exclude)
+        
+pub=[]
+for section in range(len(data["References"])):
+    if "Codes" in data["References"][section]:
+        pubfind, publabel= exclude, exclude
+        for study in range(len(data["References"][section]["Codes"])):
+            for key, value in pub_type.items():
+                if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                    pubfind, publabel = value, key
+        pub.append(pubfind)
+    else:
+        pub.append(exclude)
+        
 ```
 
 ```{python}
@@ -238,7 +298,6 @@ print(len(titles))
 ```
 
 ```{python}
-exclude="-"
 year=[]
 for section in range(len(data["References"])):
     if "Year" in data["References"][section]:
@@ -272,7 +331,6 @@ for section in range(len(data["References"])):
 
 ```{python}
 itemids=[]
-exclude="-"
 for section in range(len(data["References"])):
   if "ItemId" in  data["References"][section]:
       itemids.append(data["References"][section]["ItemId"])
@@ -283,61 +341,84 @@ print(len(itemids))
 ```
 
 ```{python}
-exclude="-"
 outcometext=[]
 interventiontext=[]
 SMD=[]
 SESMD=[]
 CIupperSMD=[]
 CIlowerSMD=[]
+
 for section in range(len(data["References"])):
-  if "ItemId" in  data["References"][section]:
-      if "Outcomes" in data["References"][section]:
-          outcometext.append(data["References"][section]["Outcomes"][0]["OutcomeText"])
-          interventiontext.append(data["References"][section]["Outcomes"][0]["InterventionText"])
-          SMD.append(data["References"][section]["Outcomes"][0]["SMD"])
-          SESMD.append(data["References"][section]["Outcomes"][0]["SESMD"])
-          CIupperSMD.append(data["References"][section]["Outcomes"][0]["CIUpperSMD"])
-          CIlowerSMD.append(data["References"][section]["Outcomes"][0]["CILowerSMD"])
+    if "Outcomes" in data["References"][section]:
+        outcometext.append(data["References"][section]["Outcomes"][0]["OutcomeText"])
+        interventiontext.append(data["References"][section]["Outcomes"][0]["InterventionText"])
+        SMD.append(data["References"][section]["Outcomes"][0]["SMD"])
+        SESMD.append(data["References"][section]["Outcomes"][0]["SESMD"])
+        CIupperSMD.append(data["References"][section]["Outcomes"][0]["CIUpperSMD"])
+        CIlowerSMD.append(data["References"][section]["Outcomes"][0]["CILowerSMD"])
                   
-      else:
-          outcometext.append(exclude)
-          interventiontext.append(exclude)
-          SMD.append(exclude)
-          SESMD.append(exclude)
-          CIupperSMD.append(exclude)
-          CIlowerSMD.append(exclude)
-  else:
-      outcometext.append(exclude)
-      interventiontext.append(exclude)
-      SMD.append(exclude)
-      SESMD.append(exclude)
-      CIupperSMD.append(exclude)
-      CIlowerSMD.append(exclude)
-      
-print(len(outcometext))
-print(len(interventiontext))
-print(len(SMD))
-print(len(SESMD))
-print(len(CIupperSMD))
-print(len(CIlowerSMD))
+    else:
+        outcometext.append(exclude)
+        interventiontext.append(exclude)
+        SMD.append(exclude)
+        SESMD.append(exclude)
+        CIupperSMD.append(exclude)
+        CIlowerSMD.append(exclude)
 
 ```
 
 ```{python}
 
-df = pd.DataFrame(list(zip(itemids, titles, year, new, country, studydesign, edusetting, outcometext, interventiontext,
-                           SMD, SESMD, CIupperSMD, CIlowerSMD, codes_check, outcomes_check, outcomecodes_check)), 
-               columns =['Item Id', 'Author', 'Year', 'Strand', 'Country', 'Study Design', 'Educational Setting', 'Outcome', 'Intervention', 
-                        'SMD', 'SESMD', 'CIupperSMD', 'CIlowerSMD', 'Codes section present', 'Outcomes section present', 'OutcomeCodes section present']) 
-df
+df = pd.DataFrame(list(zip(itemids, titles, year, new, country, edusetting, pub, design, outcometext, interventiontext,
+                           studentage, studentgender, SMD, SESMD, CIupperSMD, CIlowerSMD, codes_check, outcomes_check, outcomecodes_check)), 
+               columns =['Item Id', 'Author', 'Year', 'Strand', 'Country', 'Educational Setting', 'Publication Type', 'Study Design', 'Outcome', 'Intervention', 'Student Age', 
+                        'Student Gender', 'SMD', 'SESMD', 'CIupperSMD', 'CIlowerSMD', 'Codes section present', 'Outcomes section present', 'OutcomeCodes section present']) 
+
+df["Educational Setting"] = df["Educational Setting"].apply(", ".join)
+df["Country"] = df["Country"].apply(", ".join)
+df["Strand"] = df["Strand"].str.replace("Toolkit: ", "")
+df["Student Age"] = df["Student Age"].apply(", ".join)
+df["Intervention"] = df["Intervention"].str.replace(" ", "NA")
+
+df["Country"]
 ```
 
 ```{r}
 
 # display all studies (primary and secondary for error checking etc.)
 all <- data.frame(py$df)
-View(all)
+all$Country
 
-#write.csv(all, "May11th_2020_summary_withItemIds.csv", row.names=FALSE)
+all$SMD <- as.character(all$SMD)
+all$SMD[all$SMD=="NA"] <- NA
+all$SMD <- as.numeric(all$SMD)
+
+all$SESMD <- as.character(all$SESMD)
+all$SESMD[all$SESMD=="NA"] <- NA
+all$SESMD <- as.numeric(all$SESMD)
+
+all$CIupperSMD <- as.character(all$CIupperSMD)
+all$CIupperSMD[all$CIupperSMD=="NA"] <- NA
+all$CIupperSMD <- as.numeric(all$CIupperSMD)
+
+all$CIlowerSMD <- as.character(all$CIlowerSMD)
+all$CIlowerSMD[all$CIlowerSMD=="NA"] <- NA
+all$CIlowerSMD <- as.numeric(all$CIlowerSMD)
+
+all$Intervention <- as.character(all$Intervention)
+all$Intervention[all$Intervention=="NA"] <- NA
+all$Intervention[all$Intervention==""] <- NA
+all$Intervention <- as.factor(all$Intervention)
+
+all$Outcome <- as.character(all$Outcome)
+all$Outcome[all$Outcome=="NA"] <- NA
+all$Outcome <- as.factor(all$Outcome)
+
+all$SMD = round(all$SMD, 4)
+all$SESMD = round(all$SMD, 4)
+all$CIupperSMD = round(all$SMD, 4)
+all$CIlowerSMD = round(all$SMD, 4)
+
+View(all)
+#write.csv(all, "test.csv", row.names=FALSE)
 ```
