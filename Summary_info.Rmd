@@ -94,6 +94,38 @@ country_options=188
 pub_Type_options=6
 age_options=18
 gender_options=5
+realism_options=4
+participant_assignment_options=8
+
+# LEVEL OF ASSIGNMENT
+def get_level_of_assignment_info():
+    level_of_assignment={}
+    for counter, item in enumerate(df):
+        if item[0] == "What was the level of assignment?":
+            for i in range(1,7):
+                level_of_assignment.update( {df[counter+i][1]:df[counter+i][0]} ) 
+    return level_of_assignment
+level_of_assignment = get_level_of_assignment_info()
+
+# PARTICIPANT ASSIGNMENT
+def get_participant_assignment_info():
+    participant_assignment={}
+    for counter, item in enumerate(df):
+        if item[0] == "How were participants assigned?":
+            for i in range(1,participant_assignment_options):
+                participant_assignment.update( {df[counter+i][1]:df[counter+i][0]} )
+    return participant_assignment
+participant_assignment = get_participant_assignment_info()
+
+# STUDY REALISM
+def get_study_realism_info():
+    study_realism={}
+    for counter, item in enumerate(df):
+        if item[0] == "How realistic was the study?":
+            for i in range(1,realism_options):
+                study_realism.update( {df[counter+i][1]:df[counter+i][0]} ) 
+    return study_realism
+study_realism = get_study_realism_info()
 
 # STUDENT GENDER
 def get_student_gender_info():
@@ -214,6 +246,43 @@ count_summary()
 ```{python}
 exclude="NA"
 
+levelofassignment=[]
+for section in range(len(data["References"])):
+    if "Codes" in data["References"][section]:
+        levelassignfind, levelassignvalue = exclude, exclude
+        for study in range(len(data["References"][section]["Codes"])):
+            for key,value in level_of_assignment.items():
+                if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                    levelassignfind, levelassignvalue = value, key
+        levelofassignment.append([levelassignfind])
+    else:
+        levelofassignment.append([exclude])
+
+partassignment=[]
+for section in range(len(data["References"])):
+    if "Codes" in data["References"][section]:
+        partassignfind, partassignvalue = exclude, exclude
+        for study in range(len(data["References"][section]["Codes"])):
+            for key,value in participant_assignment.items():
+                if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                    partassignfind, partassignvalue = value, key
+        partassignment.append([partassignfind])
+    else:
+        partassignment.append([exclude])
+
+studyrealism=[]
+for section in range(len(data["References"])):
+    if "Codes" in data["References"][section]:
+        realismfind, realismvalue = exclude, exclude
+        for study in range(len(data["References"][section]["Codes"])):
+            for key,value in study_realism.items():
+                if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                    realismfind, realismvalue = value, key
+        studyrealism.append([realismfind])
+    else:
+        studyrealism.append([exclude])
+        
+
 studentgender=[]
 for section in range(len(data["References"])):
     if "Codes" in data["References"][section]:
@@ -222,22 +291,9 @@ for section in range(len(data["References"])):
             for key,value in student_gender.items():
                 if key == data["References"][section]["Codes"][study]["AttributeId"]:
                     genderfind, gendervalue = value, key
-        studentgender.append([agefind])
+        studentgender.append([genderfind])
     else:
         studentgender.append([exclude])
-
-studentage=[]
-for section in range(len(data["References"])):
-    if "Codes" in data["References"][section]:
-        agefind = exclude
-        agevalue = exclude
-        for study in range(len(data["References"][section]["Codes"])):
-            for key,value in student_age.items():
-                if key == data["References"][section]["Codes"][study]["AttributeId"]:
-                    agefind, agegvalue = value, key
-        studentage.append([agefind])
-    else:
-        studentage.append([exclude])
 
 edusetting=[]
 for section in range(len(data["References"])):
@@ -287,6 +343,26 @@ for section in range(len(data["References"])):
     else:
         pub.append(exclude)
         
+        
+for k,v in student_age.items():
+    print(k,v)
+
+age=[]
+for section in range(len(data["References"])):
+    if "Codes" in data["References"][section]:
+        agefind, agelabel= exclude, exclude
+        for study in range(len(data["References"][section]["Codes"])):
+            for key, value in student_age.items():
+                if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                    agefind, agelabel = value, key
+        age.append(agefind)
+    else:
+        age.append(exclude)
+        
+age
+                    
+
+
 ```
 
 ```{python}
@@ -369,25 +445,62 @@ for section in range(len(data["References"])):
 
 ```{python}
 
-df = pd.DataFrame(list(zip(itemids, titles, year, new, country, edusetting, pub, design, outcometext, interventiontext,
+df = pd.DataFrame(list(zip(itemids, titles, year, new, country, edusetting, pub, design, outcometext, interventiontext, studyrealism, partassignment, levelofassignment,
                            studentage, studentgender, SMD, SESMD, CIupperSMD, CIlowerSMD, codes_check, outcomes_check, outcomecodes_check)), 
-               columns =['Item Id', 'Author', 'Year', 'Strand', 'Country', 'Educational Setting', 'Publication Type', 'Study Design', 'Outcome', 'Intervention', 'Student Age', 
-                        'Student Gender', 'SMD', 'SESMD', 'CIupperSMD', 'CIlowerSMD', 'Codes section present', 'Outcomes section present', 'OutcomeCodes section present']) 
+               columns =['ItemId', 'Author', 'Year', 'Strand', 'Country', 'EducationalSetting', 'PublicationType', 'StudyDesign', 'Outcome', 'Intervention', 'StudyRealism', 
+                         'ParticipantAssignment', 'LevelofAssignment',  'StudentAge', 'StudentGender', 'SMD', 'SESMD', 'CIupperSMD', 
+                         'CIlowerSMD', 'Codes section present', 'Outcomes section present', 'OutcomeCodes section present']) 
 
-df["Educational Setting"] = df["Educational Setting"].apply(", ".join)
+df["StudyRealism"] = df["StudyRealism"].apply(", ".join)
+df["LevelofAssignment"] = df["LevelofAssignment"].apply(", ".join)
+df["ParticipantAssignment"] = df["ParticipantAssignment"].apply(", ".join)
+df["EducationalSetting"] = df["EducationalSetting"].apply(", ".join)
 df["Country"] = df["Country"].apply(", ".join)
 df["Strand"] = df["Strand"].str.replace("Toolkit: ", "")
-df["Student Age"] = df["Student Age"].apply(", ".join)
-df["Intervention"] = df["Intervention"].str.replace(" ", "NA")
+#df["StudentAge"] = df["StudentAge"].apply(", ".join)
 
-df["Country"]
+# add decade column
+def decade_row(row):
+  if row["Year"] >= 1960 and row["Year"] <= 1969:
+    decade="1960-1969"
+  elif row["Year"] >= 1970 and row["Year"] <= 1979:
+    decade="1970-1979"
+  elif row["Year"] >= 1980 and row["Year"] <= 1989:
+    decade="1980-1989"
+  elif row["Year"] >= 1990 and row["Year"] <= 1999:
+    decade="1990-1999"
+  elif row["Year"] >= 2000 and row["Year"] <= 2009:
+    decade="2000-2010"
+  elif row["Year"] >= 2010 and row["Year"] <= 2019:
+    decade="2010-2019"
+  elif row["Year"] >= 2019 and row["Year"] <= 2029:
+    decade="2020-2029"
+  return decade
+
+def random_row(row):
+  if row["StudyDesign"] == "Prospective QED" or row["StudyDesign"]=="Retrospective QED  " or row["StudyDesign"] == "Interrupted time series QED" or row["StudyDesign"] =="RegressionDiscontinuity - not randomised":
+    outcome="Non-random"
+  elif row["StudyDesign"]=="Individual RCT" or row["StudyDesign"]=="Cluster RCT" or row["StudyDesign"]=="Multisite RCT" or row["StudyDesign"]=="Regression Discontinuity - not randomised":
+    outcome="Random"
+  else:
+    outcome="NA"
+  return outcome
+
+df["Decade"] = df.apply(decade_row, axis=1)
+df["Randomisation"] = df.apply(random_row, axis=1)
+
+# reorder columns
+df = df[["ItemId", "Author", "Year", "Decade", "Strand", "Country", "Outcome", "PublicationType", 
+         "EducationalSetting", "Intervention", "StudentAge", "StudentGender",
+         "StudyRealism", "LevelofAssignment", "StudyDesign", "ParticipantAssignment", "Randomisation", "SMD", "SESMD", "CIupperSMD", "CIlowerSMD",
+         'Codes section present', 'Outcomes section present', 'OutcomeCodes section present']]
+df["StudentAge"]
 ```
 
 ```{r}
 
 # display all studies (primary and secondary for error checking etc.)
 all <- data.frame(py$df)
-all$Country
 
 all$SMD <- as.character(all$SMD)
 all$SMD[all$SMD=="NA"] <- NA
@@ -400,6 +513,26 @@ all$SESMD <- as.numeric(all$SESMD)
 all$CIupperSMD <- as.character(all$CIupperSMD)
 all$CIupperSMD[all$CIupperSMD=="NA"] <- NA
 all$CIupperSMD <- as.numeric(all$CIupperSMD)
+
+all$StudyRealism <- as.character(all$StudyRealism)
+all$StudyRealism[all$StudyRealism=="NA"] <- NA
+all$StudyRealism <- as.factor(all$StudyRealism)
+
+all$ParticipantAssignment <- as.character(all$ParticipantAssignment)
+all$ParticipantAssignment[all$ParticipantAssignment=="NA"] <- NA
+all$ParticipantAssignment <- as.factor(all$ParticipantAssignment)
+
+all$LevelofAssignment <- as.character(all$LevelofAssignment)
+all$LevelofAssignment[all$LevelofAssignment=="NA"] <- NA
+all$LevelofAssignment <- as.factor(all$LevelofAssignment)
+
+all$Decade <- as.character(all$Decade)
+all$Decade[all$Decade==""] <- NA
+all$Decade <- as.factor(all$Decade)
+
+all$Randomisation <- as.character(all$Randomisation)
+all$Randomisation[all$Randomisation==""] <- NA
+all$Randomisation <- as.factor(all$Randomisation)
 
 all$CIlowerSMD <- as.character(all$CIlowerSMD)
 all$CIlowerSMD[all$CIlowerSMD=="NA"] <- NA
