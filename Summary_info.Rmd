@@ -197,8 +197,10 @@ def get_countries_info():
     return countries
 countries = get_countries_info()
 
-for k,v in student_age.items():
+for k,v in level_of_assignment.items():
     print(k,v)
+    
+len(level_of_assignment)
 
 ```
 
@@ -215,48 +217,30 @@ def get_strands():
                       for key,value in strand_codes.items():
                           if key == data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"][study]["AttributeId"]:
                               strandfind=value
-                              strandlabel=key
-                  finds.append([strandfind, strandlabel])
+                  finds.append(strandfind)
               else:
-                  finds.append([exclude])
+                  finds.append(exclude)
           else:
-              finds.append([exclude])
+              finds.append(exclude)
       else:
-          finds.append([exclude])
-        
-  return finds
-
-strand_info = get_strands() 
-
-new=[]
-for obj in strand_info:
-    new.append(obj[0])
-    
-def count_summary():
+          finds.append(exclude)
+          
+  def count_summary():
     lst=[]
     for k,v in strand_codes.items():
         lst.append(v)
     for obj in lst:
-        if new.count(obj) > 0:
-            print(obj, new.count(obj))
+        if strand_info.count(obj) > 0:
+            print(obj, strand_info.count(obj))
+  count_summary()
         
-count_summary()
+  return finds
+
+strand_info = get_strands() 
 ```
 
 ```{python}
 exclude="NA"
-
-levelofassignment=[]
-for section in range(len(data["References"])):
-    if "Codes" in data["References"][section]:
-        levelassignfind, levelassignvalue = exclude, exclude
-        for study in range(len(data["References"][section]["Codes"])):
-            for key,value in level_of_assignment.items():
-                if key == data["References"][section]["Codes"][study]["AttributeId"]:
-                    levelassignfind, levelassignvalue = value, key
-        levelofassignment.append([levelassignfind])
-    else:
-        levelofassignment.append([exclude])
 
 partassignment=[]
 for section in range(len(data["References"])):
@@ -343,26 +327,53 @@ for section in range(len(data["References"])):
     else:
         pub.append(exclude)
         
-        
-for k,v in student_age.items():
-    print(k,v)
-
 age=[]
 for section in range(len(data["References"])):
+    find=0
     if "Codes" in data["References"][section]:
-        agefind, agelabel= exclude, exclude
+        studentagefind, studentagelabel = [], []
         for study in range(len(data["References"][section]["Codes"])):
             for key, value in student_age.items():
                 if key == data["References"][section]["Codes"][study]["AttributeId"]:
-                    agefind, agelabel = value, key
-        age.append(agefind)
-    else:
-        age.append(exclude)
+                    studentagefind.append(value)
+                    studentagelabel.append(key)
+                elif find==0:
+                    pass
+        age.append(studentagefind)
         
-age
-                    
+```
 
+```{python}
+levelofassignment=[]
 
+a=0
+b=0
+
+assigncomment=[]
+for section in range(len(data["References"])):
+    if "Codes" in data["References"][section]:
+        levelassignfind, levelassignvalue = exclude, exclude
+        per_study=[]
+        for study in range(len(data["References"][section]["Codes"])):
+            for key,value in level_of_assignment.items():
+                if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                    levelassignfind, levelassignvalue = value, key
+                    if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
+                        for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
+                             per_study.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+
+        assigncomment.append(per_study)
+        levelofassignment.append([levelassignfind])
+    else:
+        levelofassignment.append([exclude])
+        
+        
+print(levelofassignment[0:10])
+        
+print(len(assigncomment))
+for i in assigncomment:
+    print(i, '\n')
+        
 ```
 
 ```{python}
@@ -445,10 +456,10 @@ for section in range(len(data["References"])):
 
 ```{python}
 
-df = pd.DataFrame(list(zip(itemids, titles, year, new, country, edusetting, pub, design, outcometext, interventiontext, studyrealism, partassignment, levelofassignment,
-                           studentage, studentgender, SMD, SESMD, CIupperSMD, CIlowerSMD, codes_check, outcomes_check, outcomecodes_check)), 
+df = pd.DataFrame(list(zip(itemids, titles, year, new, country, edusetting, pub, design, outcometext, interventiontext, studyrealism, partassignment, levelofassignment, assigncomment, 
+                           age, studentgender, SMD, SESMD, CIupperSMD, CIlowerSMD, codes_check, outcomes_check, outcomecodes_check)), 
                columns =['ItemId', 'Author', 'Year', 'Strand', 'Country', 'EducationalSetting', 'PublicationType', 'StudyDesign', 'Outcome', 'Intervention', 'StudyRealism', 
-                         'ParticipantAssignment', 'LevelofAssignment',  'StudentAge', 'StudentGender', 'SMD', 'SESMD', 'CIupperSMD', 
+                         'ParticipantAssignment', 'LevelofAssignment', 'levelofAssignmentComments', 'StudentAge', 'StudentGender', 'SMD', 'SESMD', 'CIupperSMD', 
                          'CIlowerSMD', 'Codes section present', 'Outcomes section present', 'OutcomeCodes section present']) 
 
 df["StudyRealism"] = df["StudyRealism"].apply(", ".join)
@@ -517,6 +528,10 @@ all$CIupperSMD <- as.numeric(all$CIupperSMD)
 all$StudyRealism <- as.character(all$StudyRealism)
 all$StudyRealism[all$StudyRealism=="NA"] <- NA
 all$StudyRealism <- as.factor(all$StudyRealism)
+
+all$StudentAge <- as.character(all$StudentAge)
+all$StudentAge[all$StudentAge=="list()"] <- NA
+all$StudentAge <- as.factor(all$StudentAge)
 
 all$ParticipantAssignment <- as.character(all$ParticipantAssignment)
 all$ParticipantAssignment[all$ParticipantAssignment=="NA"] <- NA
