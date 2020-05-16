@@ -236,7 +236,7 @@ levelofassignment=[]
 assigncomment=[]
 for section in range(len(data["References"])):
     if "Codes" in data["References"][section]:
-        levelassignfind, levelassignvalue = exclude, exclude
+        levelassignfind, levelassignvalue = [], []
         perstudy=[]
         for study in range(len(data["References"][section]["Codes"])):
             for key,value in level_of_assignment.items():
@@ -249,14 +249,14 @@ for section in range(len(data["References"])):
                             for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
                                 perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
         if len(perstudy) ==0:
-            perstudy="NA"  
+            perstudy=exclude 
         assigncomment.append(perstudy)
         if len(levelassignfind)==0:
-            levelassignfind="NA"
+            levelassignfind=exclude
         levelofassignment.append([levelassignfind])
     else:
-        levelofassignment.append("NA")
-        levelofassigncomments.append("NA")
+        levelofassignment.append(exclude)
+        levelofassigncomments.append(exclude)
 ```
 
 ```{python}
@@ -264,7 +264,7 @@ design=[]
 designcomment=[]
 for section in range(len(data["References"])):
     if "Codes" in data["References"][section]:
-        designfind, designlabel= exclude, exclude
+        designfind, designlabel= [], []
         perstudy=[]
         for study in range(len(data["References"][section]["Codes"])):
             for key, value in study_design.items():
@@ -277,14 +277,14 @@ for section in range(len(data["References"])):
                             for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
                                 perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
         if len(perstudy) ==0:
-            perstudy="NA"  
+            perstudy=exclude 
         designcomment.append(perstudy)
         if len(designfind)==0:
-            designfind="NA"
+            designfind=exclude
         design.append(designfind)
     else:
-        design.append("NA")
-        designcomment.append("NA")
+        design.append(exclude)
+        designcomment.append(exclude)
 ```
 
 ```{python}
@@ -292,7 +292,7 @@ studyrealism=[]
 studyrealismcomment=[]
 for section in range(len(data["References"])):
     if "Codes" in data["References"][section]:
-        realismfind, realismvalue = exclude, exclude
+        realismfind, realismvalue = [], []
         perstudy=[]
         for study in range(len(data["References"][section]["Codes"])):
             for key,value in study_realism.items():
@@ -305,14 +305,14 @@ for section in range(len(data["References"])):
                             for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
                                 perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
         if len(perstudy) ==0:
-            perstudy="NA"   
+            perstudy=exclude 
         studyrealismcomment.append(perstudy)
         if len(realismfind)==0:
-            realismfind="NA"
+            realismfind=exclude
         studyrealism.append(realismfind)
     else:
-        studyrealism.append("NA")
-        studyrealismcomment.append("NA")
+        studyrealism.append(exclude)
+        studyrealismcomment.append(exclude)
 ```
 
 ```{python}
@@ -320,7 +320,7 @@ studentgender=[]
 studentgendercomment=[]
 for section in range(len(data["References"])):
     if "Codes" in data["References"][section]:
-        genderfind, gendervalue = exclude, exclude
+        genderfind, gendervalue = [], []
         perstudy=[]
         for study in range(len(data["References"][section]["Codes"])):
             for key,value in student_gender.items():
@@ -333,14 +333,14 @@ for section in range(len(data["References"])):
                             for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
                                 perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
         if len(perstudy) ==0:
-            perstudy="NA"       
+            perstudy=exclude       
         studentgendercomment.append(perstudy)
         if len(genderfind)==0:
-            genderfind="NA"
+            genderfind=exclude
         studentgender.append([genderfind])
     else:
-        studentgender.append("NA")
-        studentgendercomment.append("NA")
+        studentgender.append(exclude)
+        studentgendercomment.append(exclude)
 ```
 
 ```{python}
@@ -362,14 +362,14 @@ for section in range(len(data["References"])):
                             for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
                                 perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
         if len(perstudy)==0:
-            perstudy="NA"
+            perstudy=exclude
         agecomment.append(perstudy)
         if len(studentagefind)==0:
-            studentagefind="NA"
+            studentagefind=exclude
         age.append(studentagefind)
     else:
-        age.append("NA")
-        agecomment.append("NA")
+        age.append(exclude)
+        agecomment.append(exclude)
 ```
 
 ```{python}
@@ -390,14 +390,14 @@ for section in range(len(data["References"])):
                             for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
                                 perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
         if len(perstudy) ==0:
-            perstudy="NA"
+            perstudy=exclude
         pubcomment.append(perstudy)
         if len(pubfind)==0:
-            pubfind="NA"
+            pubfind=exclude
         pub.append(pubfind)
     else:
-        pub.append("NA")
-        pubcomment.append("NA")
+        pub.append(exclude)
+        pubcomment.append(exclude)
 ```
 
 ```{python}
@@ -419,14 +419,14 @@ for section in range(len(data["References"])):
                             for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
                                 perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
         if len(perstudy)==0:
-            perstudy="NA"
+            perstudy=exclude
         partassigncomment.append(perstudy)
         if len(partassignfind)==0:
-            partassignfind="NA"
+            partassignfind=exclude
         partassignment.append([partassignfind])
     else:
-        partassignment.append("NA")
-        partassigncomment.append("NA")
+        partassignment.append(exclude)
+        partassigncomment.append(exclude)
 ```
 
 ```{python}
@@ -448,14 +448,14 @@ for section in range(len(data["References"])):
                             for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
                                 perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
         if len(perstudy)==0:
-            perstudy="NA"
+            perstudy=exclude
         edusettingcomment.append(perstudy)
         if len(edusettingfind)==0:
-            edusettingfind="NA"
+            edusettingfind=exclude
         edusetting.append([edusettingfind])
     else:
-        edusetting.append("NA")
-        edusettingcomment.append("NA")
+        edusetting.append(exclude)
+        edusettingcomment.append(exclude)
 ```
 
 ```{python}
@@ -477,14 +477,14 @@ for section in range(len(data["References"])):
                             for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
                                 perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
         if len(perstudy)==0:
-            perstudy="NA"
+            perstudy=exclude
         countrycomment.append(perstudy)
         if len(countryfind)==0:
-            countryfind="NA"
+            countryfind=exclude
         country.append(countryfind)
     else:
-        country.append("NA")
-        countrycomment.append("NA")
+        country.append(exclude)
+        countrycomment.append(exclude)
 ```
 
 ```{python}
