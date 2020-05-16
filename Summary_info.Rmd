@@ -25,6 +25,7 @@ library(cowplot)
 library(kableExtra)
 library(forestplot)
 library(metafor)
+library(stringr)
 use_python("/usr/local/bin/python3")
 rm(list = ls())
 ```
@@ -42,8 +43,8 @@ plt.style.use('ggplot')
 # import dataset (uncomment to select dataset of choice)
 #with open('/home/jon/json/ToolkitExtraction/data/batch2.json') as f:
 #with open('/home/jon/json/ToolkitExtraction/data/Batch1.json') as f:
-#with open('/home/jon/json/ToolkitExtraction/data/May11th_2020.json') as f:
-with open('/home/jon/json/ToolkitExtraction/data/May 12th_2020.json') as f:
+with open('/home/jon/json/ToolkitExtraction/data/May11th_2020.json') as f:
+#with open('/home/jon/json/ToolkitExtraction/data/May 12th_2020.json') as f:
     data=json.load(f)
 ```
 **Flatten dataset into lists containing all attribute names and Ids to easily get top-level (CodeSets) information**
@@ -84,7 +85,7 @@ edu_setting&nbsp;&nbsp;&nbsp;= {5215410: 'Nursery school/pre-school', 5215411: '
 
 ```{python}
 ### CONSTANTS ###
-exclude="NA"
+exclude=np.nan
 # Variable counts
 strand_options=34
 design_options=10
@@ -250,13 +251,13 @@ for section in range(len(data["References"])):
                                 perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
         if len(perstudy) ==0:
             perstudy=exclude 
-        assigncomment.append(perstudy)
+        levelofassignment.append(perstudy)
         if len(levelassignfind)==0:
             levelassignfind=exclude
-        levelofassignment.append([levelassignfind])
+        assigncomment.append([levelassignfind])
     else:
         levelofassignment.append(exclude)
-        levelofassigncomments.append(exclude)
+        assigncomment.append(exclude)
 ```
 
 ```{python}
@@ -401,7 +402,6 @@ for section in range(len(data["References"])):
 ```
 
 ```{python}
-
 partassignment=[]
 partassigncomment=[]
 for section in range(len(data["References"])):
@@ -430,12 +430,11 @@ for section in range(len(data["References"])):
 ```
 
 ```{python}
-
 edusetting=[]
 edusettingcomment=[]
 for section in range(len(data["References"])):
     if "Codes" in data["References"][section]:
-        edusettingfind, edusettingvalue = exclude, exclude
+        edusettingfind, edusettingvalue = [], []
         perstudy=[]
         for study in range(len(data["References"][section]["Codes"])):
             for key,value in edu_setting.items():
@@ -459,12 +458,11 @@ for section in range(len(data["References"])):
 ```
 
 ```{python}
-
 country=[]
 countrycomment=[]
 for section in range(len(data["References"])):
     if "Codes" in data["References"][section]:
-        countryfind, countryvalue = exclude, exclude
+        countryfind, countryvalue = [], []
         perstudy=[]
         for study in range(len(data["References"][section]["Codes"])):
             for key,value in countries.items():
@@ -502,6 +500,7 @@ for section in range(len(data["References"])):
     else:
         year.append(exclude)
 ```
+
 ```{python}
 
 codes_check=[]
@@ -532,6 +531,7 @@ for section in range(len(data["References"])):
   else:
       itemid=exclude
 ```
+
 ```{python}
 outcometext=[]
 interventiontext=[]
@@ -569,10 +569,10 @@ df = pd.DataFrame(list(zip(itemids, titles, year, strand_info, country, countryc
                          'LevelofAssignment', 'LevelofAssignmentComments', 'StudentAge', 'StudentAgeComments', 'StudentGender', 'StudentGenderComments', 'SMD', 'SESMD', 'CIupperSMD', 
                          'CIlowerSMD', 'Codes section present', 'Outcomes section present', 'OutcomeCodes section present']) 
 
-df["LevelofAssignment"] = df["LevelofAssignment"].apply(", ".join)
-df["ParticipantAssignment"] = df["ParticipantAssignment"].apply(", ".join)
-df["EducationalSetting"] = df["EducationalSetting"].apply(", ".join)
-df["Strand"] = df["Strand"].str.replace("Toolkit: ", "")
+#df["LevelofAssignment"] = df["LevelofAssignment"].apply(", ".join)
+#df["ParticipantAssignment"] = df["ParticipantAssignment"].apply(", ".join)
+#df["EducationalSetting"] = df["EducationalSetting"].apply(", ".join)
+#df["Strand"] = df["Strand"].str.replace("Toolkit: ", "")
 
 # add decade column
 def decade_row(row):
@@ -598,7 +598,7 @@ def random_row(row):
   elif row["StudyDesign"]=="Individual RCT" or row["StudyDesign"]=="Cluster RCT" or row["StudyDesign"]=="Multisite RCT" or row["StudyDesign"]=="Regression Discontinuity - not randomised":
     outcome="Random"
   else:
-    outcome="NA"
+    outcome=exclude
   return outcome
 
 df["Decade"] = df.apply(decade_row, axis=1)
@@ -610,66 +610,29 @@ df = df[["ItemId", "Author", "Year", "Decade", "Strand", "Country", "CountryComm
          "StudyRealism", "StudyRealismComments", "LevelofAssignment", "LevelofAssignmentComments", "StudyDesign",
          "StudyDesignComments", "ParticipantAssignment", "ParticipantAssignmentComments", "Randomisation", "SMD", "SESMD", "CIupperSMD", "CIlowerSMD",
          'Codes section present', 'Outcomes section present', 'OutcomeCodes section present']]
-df["StudentAge"][0:10]
-df.to_csv("test.csv", index=False)
+         
+df["SMD"] = df["SMD"].astype(float)
+df["SESMD"] = df["SESMD"].astype(float)
+df["CIupperSMD"] = df["CIupperSMD"].astype(float)
+df["CIlowerSMD"] = df["CIlowerSMD"].astype(float)
+
+df["SMD"] = df["SMD"].round(4)
+df["SESMD"] = df["SESMD"].round(4)
+df["CIupperSMD"] = df["CIupperSMD"].round(4)
+df["CIlowerSMD"] = df["CIlowerSMD"].round(4)
+
+df["SMD"]
+#df.to_csv("test.csv", index=False)
 ```
 
 ```{r}
 all <- data.frame(py$df)
 
-all$SMD <- as.character(all$SMD)
-all$SMD[all$SMD=="NA"] <- NA
-all$SMD <- as.numeric(all$SMD)
-
-all$SESMD <- as.character(all$SESMD)
-all$SESMD[all$SESMD=="NA"] <- NA
-all$SESMD <- as.numeric(all$SESMD)
-
-all$CIupperSMD <- as.character(all$CIupperSMD)
-all$CIupperSMD[all$CIupperSMD=="NA"] <- NA
-all$CIupperSMD <- as.numeric(all$CIupperSMD)
-
-all$StudyRealism <- as.character(all$StudyRealism)
-all$StudyRealism <- as.factor(all$StudyRealism)
-
-#all$StudentAge <- as.character(all$StudentAge)
-#all$StudentAge[all$StudentAge=="list()"] <- NA
-#all$StudentAge <- as.factor(all$StudentAge)
-
-all$ParticipantAssignment <- as.character(all$ParticipantAssignment)
-all$ParticipantAssignment <- as.factor(all$ParticipantAssignment)
-
-all$LevelofAssignment <- as.character(all$LevelofAssignment)
-all$LevelofAssignment <- as.factor(all$LevelofAssignment)
-
-all$Decade <- as.character(all$Decade)
-all$Decade[all$Decade==""] <- NA
-all$Decade <- as.factor(all$Decade)
-
-all$Randomisation <- as.character(all$Randomisation)
-all$Randomisation[all$Randomisation==""] <- NA
-all$Randomisation <- as.factor(all$Randomisation)
-
-all$CIlowerSMD <- as.character(all$CIlowerSMD)
-all$CIlowerSMD[all$CIlowerSMD=="NA"] <- NA
-all$CIlowerSMD <- as.numeric(all$CIlowerSMD)
-
-all$Intervention <- as.character(all$Intervention)
-all$Intervention[all$Intervention=="NA"] <- NA
-all$Intervention[all$Intervention==""] <- NA
-all$Intervention <- as.factor(all$Intervention)
-
-all$Outcome <- as.character(all$Outcome)
-all$Outcome[all$Outcome=="NA"] <- NA
-all$Outcome <- as.factor(all$Outcome)
-
-all$SMD = round(all$SMD, 4)
-all$SESMD = round(all$SMD, 4)
-all$CIupperSMD = round(all$SMD, 4)
-all$CIlowerSMD = round(all$SMD, 4)
+# convert all columns to character to save .csv (some were lists)
+all <- all %>%
+       mutate_all(as.character) %>%
+       mutate_all(funs(str_replace_all(., "NaN", "NA")))
 
 View(all)
-df_new = data.frame(lapply(all, as.character), stringsAsFactors=FALSE)
-
-write.csv(df_new, "May12thExtraction_with_comments.csv", row.names=FALSE)
+#write.csv(all, "May12thExtraction_with_comments.csv", row.names=FALSE)
 ```
