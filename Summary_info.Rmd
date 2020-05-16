@@ -243,15 +243,18 @@ for section in range(len(data["References"])):
             for key,value in level_of_assignment.items():
                 if key == data["References"][section]["Codes"][study]["AttributeId"]:
                     levelassignfind, levelassignvalue = value, key
-                    perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
+                    if data["References"][section]["Codes"][study]["AdditionalText"]:
+                        perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
                     if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
-                        for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
-                             perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+                        if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
+                            for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
+                                perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+        if len(perstudy) ==0:
+            perstudy="NA"  
         assigncomment.append(perstudy)
         levelofassignment.append([levelassignfind])
     else:
         levelofassignment.append([exclude])
-        
 ```
 
 ```{python}
@@ -265,10 +268,14 @@ for section in range(len(data["References"])):
             for key, value in study_design.items():
                 if key == data["References"][section]["Codes"][study]["AttributeId"]:
                     designfind, designlabel = value, key
-                    perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
+                    if data["References"][section]["Codes"][study]["AdditionalText"]:
+                        perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
                     if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
-                        for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
-                            perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+                        if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
+                            for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
+                                perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+        if len(perstudy) ==0:
+            perstudy="NA"  
         designcomment.append(perstudy)
         design.append(designfind)
     else:
@@ -286,15 +293,18 @@ for section in range(len(data["References"])):
             for key,value in study_realism.items():
                 if key == data["References"][section]["Codes"][study]["AttributeId"]:
                     realismfind, realismvalue = value, key
-                    perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
+                    if data["References"][section]["Codes"][study]["AdditionalText"]:
+                        perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
                     if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
-                        for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
-                            perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+                        if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
+                            for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
+                                perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+        if len(perstudy) ==0:
+            perstudy="NA"   
         studyrealismcomment.append(perstudy)
         studyrealism.append(realismfind)
     else:
         studyrealism.append([exclude])
-
 ```
 
 ```{python}
@@ -308,19 +318,21 @@ for section in range(len(data["References"])):
             for key,value in student_gender.items():
                 if key == data["References"][section]["Codes"][study]["AttributeId"]:
                     genderfind, gendervalue = value, key
-                    perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
+                    if data["References"][section]["Codes"][study]["AdditionalText"]:
+                        perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
                     if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
-                        for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
-                            perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+                        if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
+                            for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
+                                perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+        if len(perstudy) ==0:
+            perstudy="NA"       
         studentgendercomments.append(perstudy)
         studentgender.append([genderfind])
     else:
         studentgender.append([exclude])
-
 ```
 
 ```{python}
-
 age=[]
 agecomments=[]
 for section in range(len(data["References"])):
@@ -345,9 +357,6 @@ for section in range(len(data["References"])):
             perstudy="NA"
         agecomments.append(perstudy)
         age.append(studentagefind)
-
-
-pprint(agecomments)
 ```
 
 ```{python}
