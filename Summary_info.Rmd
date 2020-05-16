@@ -233,7 +233,6 @@ strand_info = get_strands()
 
 ```{python}
 levelofassignment=[]
-
 assigncomment=[]
 for section in range(len(data["References"])):
     if "Codes" in data["References"][section]:
@@ -252,9 +251,12 @@ for section in range(len(data["References"])):
         if len(perstudy) ==0:
             perstudy="NA"  
         assigncomment.append(perstudy)
+        if len(levelassignfind)==0:
+            levelassignfind="NA"
         levelofassignment.append([levelassignfind])
     else:
-        levelofassignment.append([exclude])
+        levelofassignment.append("NA")
+        levelofassigncomments.append("NA")
 ```
 
 ```{python}
@@ -277,9 +279,12 @@ for section in range(len(data["References"])):
         if len(perstudy) ==0:
             perstudy="NA"  
         designcomment.append(perstudy)
+        if len(designfind)==0:
+            designfind="NA"
         design.append(designfind)
     else:
-        design.append(exclude)
+        design.append("NA")
+        designcomment.append("NA")
 ```
 
 ```{python}
@@ -302,14 +307,17 @@ for section in range(len(data["References"])):
         if len(perstudy) ==0:
             perstudy="NA"   
         studyrealismcomment.append(perstudy)
+        if len(realismfind)==0:
+            realismfind="NA"
         studyrealism.append(realismfind)
     else:
-        studyrealism.append([exclude])
+        studyrealism.append("NA")
+        studyrealismcomment.append("NA")
 ```
 
 ```{python}
 studentgender=[]
-studentgendercomments=[]
+studentgendercomment=[]
 for section in range(len(data["References"])):
     if "Codes" in data["References"][section]:
         genderfind, gendervalue = exclude, exclude
@@ -326,17 +334,19 @@ for section in range(len(data["References"])):
                                 perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
         if len(perstudy) ==0:
             perstudy="NA"       
-        studentgendercomments.append(perstudy)
+        studentgendercomment.append(perstudy)
+        if len(genderfind)==0:
+            genderfind="NA"
         studentgender.append([genderfind])
     else:
-        studentgender.append([exclude])
+        studentgender.append("NA")
+        studentgendercomment.append("NA")
 ```
 
 ```{python}
 age=[]
-agecomments=[]
+agecomment=[]
 for section in range(len(data["References"])):
-    find=0
     if "Codes" in data["References"][section]:
         studentagefind, studentagelabel = [], []
         perstudy=[]
@@ -351,63 +361,78 @@ for section in range(len(data["References"])):
                         if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
                             for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
                                 perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
-                elif find==0:
-                    pass
-        if len(perstudy) ==0:
+        if len(perstudy)==0:
             perstudy="NA"
-        agecomments.append(perstudy)
+        agecomment.append(perstudy)
+        if len(studentagefind)==0:
+            studentagefind="NA"
         age.append(studentagefind)
+    else:
+        age.append("NA")
+        agecomment.append("NA")
 ```
 
 ```{python}
-
 pub=[]
-pubcomments=[]
+pubcomment=[]
 for section in range(len(data["References"])):
     if "Codes" in data["References"][section]:
-        pubfind, publabel= exclude, exclude
+        pubfind, publabel= [], []
         perstudy=[]
         for study in range(len(data["References"][section]["Codes"])):
             for key, value in pub_type.items():
                 if key == data["References"][section]["Codes"][study]["AttributeId"]:
                     pubfind, publabel = value, key
-                    perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
+                    if data["References"][section]["Codes"][study]["AdditionalText"]:
+                        perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
                     if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
-                        for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
-                            perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
-        pubcomments.append(perstudy)
+                        if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
+                            for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
+                                perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+        if len(perstudy) ==0:
+            perstudy="NA"
+        pubcomment.append(perstudy)
+        if len(pubfind)==0:
+            pubfind="NA"
         pub.append(pubfind)
     else:
-        pub.append(exclude)
+        pub.append("NA")
+        pubcomment.append("NA")
 ```
 
 ```{python}
 
 partassignment=[]
-partassigncomments=[]
+partassigncomment=[]
 for section in range(len(data["References"])):
     if "Codes" in data["References"][section]:
-        partassignfind, partassignvalue = exclude, exclude
+        partassignfind, partassignvalue = [], []
         perstudy=[]
         for study in range(len(data["References"][section]["Codes"])):
             for key,value in participant_assignment.items():
                 if key == data["References"][section]["Codes"][study]["AttributeId"]:
                     partassignfind, partassignvalue = value, key
-                    perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
+                    if data["References"][section]["Codes"][study]["AdditionalText"]:
+                        perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
                     if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
-                        for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
-                            perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
-        partassigncomments.append(perstudy)
+                        if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
+                            for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
+                                perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+        if len(perstudy)==0:
+            perstudy="NA"
+        partassigncomment.append(perstudy)
+        if len(partassignfind)==0:
+            partassignfind="NA"
         partassignment.append([partassignfind])
     else:
-        partassignment.append([exclude])
-
+        partassignment.append("NA")
+        partassigncomment.append("NA")
 ```
 
 ```{python}
 
 edusetting=[]
-edusettingcomments=[]
+edusettingcomment=[]
 for section in range(len(data["References"])):
     if "Codes" in data["References"][section]:
         edusettingfind, edusettingvalue = exclude, exclude
@@ -416,21 +441,27 @@ for section in range(len(data["References"])):
             for key,value in edu_setting.items():
                 if key == data["References"][section]["Codes"][study]["AttributeId"]:
                     edusettingfind, edusettingvalue = value, key
-                    perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
+                    if data["References"][section]["Codes"][study]["AdditionalText"]:
+                        perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
                     if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
-                        for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
-                            perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
-        edusettingcomments.append(perstudy)
+                        if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
+                            for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
+                                perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+        if len(perstudy)==0:
+            perstudy="NA"
+        edusettingcomment.append(perstudy)
+        if len(edusettingfind)==0:
+            edusettingfind="NA"
         edusetting.append([edusettingfind])
     else:
-        edusetting.append([exclude])
-
+        edusetting.append("NA")
+        edusettingcomment.append("NA")
 ```
 
 ```{python}
 
 country=[]
-countrycomments=[]
+countrycomment=[]
 for section in range(len(data["References"])):
     if "Codes" in data["References"][section]:
         countryfind, countryvalue = exclude, exclude
@@ -439,15 +470,21 @@ for section in range(len(data["References"])):
             for key,value in countries.items():
                 if key == data["References"][section]["Codes"][study]["AttributeId"]:
                     countryfind, countryvalue = value, key
-                    perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
+                    if data["References"][section]["Codes"][study]["AdditionalText"]:
+                        perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
                     if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
-                        for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
-                            perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
-        countrycomments.append(perstudy)
-        country.append([countryfind])
+                        if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
+                            for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
+                                perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+        if len(perstudy)==0:
+            perstudy="NA"
+        countrycomment.append(perstudy)
+        if len(countryfind)==0:
+            countryfind="NA"
+        country.append(countryfind)
     else:
-        country.append([exclude])
-
+        country.append("NA")
+        countrycomment.append("NA")
 ```
 
 ```{python}
@@ -523,9 +560,9 @@ for section in range(len(data["References"])):
 
 ```{python}
 
-df = pd.DataFrame(list(zip(itemids, titles, year, strand_info, country, countrycomments, edusetting, edusettingcomments, pub, pubcomments, design, 
-                           designcomment, outcometext, interventiontext, studyrealism, studyrealismcomment, partassignment, partassigncomments,
-                           levelofassignment, assigncomment, age, agecomments, studentgender, studentgendercomments, SMD, SESMD, CIupperSMD,
+df = pd.DataFrame(list(zip(itemids, titles, year, strand_info, country, countrycomment, edusetting, edusettingcomment, pub, pubcomment, design, 
+                           designcomment, outcometext, interventiontext, studyrealism, studyrealismcomment, partassignment, partassigncomment,
+                           levelofassignment, assigncomment, age, agecomment, studentgender, studentgendercomment, SMD, SESMD, CIupperSMD,
                            CIlowerSMD, codes_check, outcomes_check, outcomecodes_check)), 
                columns =['ItemId', 'Author', 'Year', 'Strand', 'Country', 'CountryComments', 'EducationalSetting', 'EducationalSettingComments', 'PublicationType', 'PublicationTypeComments',
                          'StudyDesign', 'StudyDesignComments','Outcome', 'Intervention', 'StudyRealism', 'StudyRealismComments', 'ParticipantAssignment', 'ParticipantAssignmentComments',
@@ -535,7 +572,6 @@ df = pd.DataFrame(list(zip(itemids, titles, year, strand_info, country, countryc
 df["LevelofAssignment"] = df["LevelofAssignment"].apply(", ".join)
 df["ParticipantAssignment"] = df["ParticipantAssignment"].apply(", ".join)
 df["EducationalSetting"] = df["EducationalSetting"].apply(", ".join)
-df["Country"] = df["Country"].apply(", ".join)
 df["Strand"] = df["Strand"].str.replace("Toolkit: ", "")
 
 # add decade column
@@ -574,7 +610,8 @@ df = df[["ItemId", "Author", "Year", "Decade", "Strand", "Country", "CountryComm
          "StudyRealism", "StudyRealismComments", "LevelofAssignment", "LevelofAssignmentComments", "StudyDesign",
          "StudyDesignComments", "ParticipantAssignment", "ParticipantAssignmentComments", "Randomisation", "SMD", "SESMD", "CIupperSMD", "CIlowerSMD",
          'Codes section present', 'Outcomes section present', 'OutcomeCodes section present']]
-df["StudentAgeComments"]
+df["StudentAge"][0:10]
+df.to_csv("test.csv", index=False)
 ```
 
 ```{r}
@@ -593,73 +630,16 @@ all$CIupperSMD[all$CIupperSMD=="NA"] <- NA
 all$CIupperSMD <- as.numeric(all$CIupperSMD)
 
 all$StudyRealism <- as.character(all$StudyRealism)
-all$StudyRealism[all$StudyRealism=="NA"] <- NA
 all$StudyRealism <- as.factor(all$StudyRealism)
 
-all$StudentAge <- as.character(all$StudentAge)
-all$StudentAge[all$StudentAge=="list()"] <- NA
-all$StudentAge <- as.factor(all$StudentAge)
-
-all$StudentGenderComments <- as.character(all$StudentGenderComments)
-all$StudentGenderComments[all$StudentGenderComments=="list()"] <- NA
-all$StudentGenderComments[all$StudentGenderComments==""] <- NA
-all$StudentGenderComments <- as.factor(all$StudentGenderComments)
+#all$StudentAge <- as.character(all$StudentAge)
+#all$StudentAge[all$StudentAge=="list()"] <- NA
+#all$StudentAge <- as.factor(all$StudentAge)
 
 all$ParticipantAssignment <- as.character(all$ParticipantAssignment)
-all$ParticipantAssignment[all$ParticipantAssignment=="NA"] <- NA
 all$ParticipantAssignment <- as.factor(all$ParticipantAssignment)
 
-all$ParticipantAssignmentComments <- as.character(all$ParticipantAssignmentComments)
-all$ParticipantAssignmentComments[all$ParticipantAssignmentComments=="list()"] <- NA
-all$ParticipantAssignmentComments[all$ParticipantAssignmentComments==""] <- NA
-all$ParticipantAssignmentComments <- as.factor(all$ParticipantAssignmentComments)
-
-all$EducationalSettingComments <- as.character(all$EducationalSettingComments)
-all$EducationalSettingComments[all$EducationalSettingComments=="list()"] <- NA
-all$EducationalSettingComments[all$EducationalSettingComments==""] <- NA
-all$EducationalSettingComments[all$EducationalSettingComments=='c("", "")'] <- NA
-all$EducationalSettingComments[all$EducationalSettingComments=='c("", "", "")'] <- NA
-all$EducationalSettingComments <- as.factor(all$EducationalSettingComments)
-
-all$CountryComments <- as.character(all$CountryComments)
-all$CountryComments[all$CountryComments=="list()"] <- NA
-all$CountryComments[all$CountryComments==""] <- NA
-all$CountryComments[all$CountryComments=='c("", "")'] <- NA
-all$CountryComments[all$CountryComments=='c("", "", "")'] <- NA
-all$CountryComments <- as.factor(all$CountryComments)
-
-all$PublicationTypeComments <- as.character(all$PublicationTypeComments)
-all$PublicationTypeComments[all$PublicationTypeComments=="list()"] <- NA
-all$PublicationTypeComments[all$PublicationTypeComments==""] <- NA
-all$PublicationTypeComments[all$PublicationTypeComments=='c("", "")'] <- NA
-all$PublicationTypeComments <- as.factor(all$PublicationTypeComments)
-
-all$StudentAgeComments <- as.character(all$StudentAgeComments)
-all$StudentAgeComments[all$StudentAgeComments=="list()"] <- NA
-all$StudentAgeComments[all$StudentAgeComments=='c("", "")'] <- NA
-all$StudentAgeComments[all$StudentAgeComments=='c("", "", "")'] <- NA
-all$StudentAgeComments[all$StudentAgeComments=='c("", "", "", "")'] <- NA
-all$StudentAgeComments[all$StudentAgeComments=='c("", "", "", "", "")'] <- NA
-all$StudentAgeComments[all$StudentAgeComments=='c("", "", "", "", "", "")'] <- NA
-all$StudentAgeComments <- as.factor(all$StudentAgeComments)
-
-all$StudyDesignComments <- as.character(all$StudyDesignComments)
-all$StudyDesignComments[all$StudyDesignComments=="list()"] <- NA
-all$StudyDesignComments[all$StudyDesignComments==""] <- NA
-all$StudyDesignComments <- as.factor(all$StudyDesignComments)
-
-all$StudyRealismComments <- as.character(all$StudyRealismComments)
-all$StudyRealismComments[all$StudyRealismComments=="list()"] <- NA
-all$StudyRealismComments[all$StudyRealismComments==""] <- NA
-all$StudyRealismComments <- as.factor(all$StudyRealismComments)
-
-all$LevelofAssignmentComments <- as.character(all$LevelofAssignmentComments)
-all$LevelofAssignmentComments[all$LevelofAssignmentComments=="list()"] <- NA
-all$LevelofAssignmentComments[all$LevelofAssignmentComments==""] <- NA
-all$LevelofAssignmentComments <- as.factor(all$LevelofAssignmentComments)
-
 all$LevelofAssignment <- as.character(all$LevelofAssignment)
-all$LevelofAssignment[all$LevelofAssignment=="NA"] <- NA
 all$LevelofAssignment <- as.factor(all$LevelofAssignment)
 
 all$Decade <- as.character(all$Decade)
