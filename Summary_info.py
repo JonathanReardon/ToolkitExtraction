@@ -86,8 +86,32 @@ def get_data():
         all.append(holder)
     return all
 
-data = get_data()
+""" data = get_data()
 for lst in data:
-    print(len(lst))
+    print(len(lst)) """
+
+# section checker
+def section_checker():
+    global codes_check, outcomes_check, outcomescodes_check
+    codes_check=[]
+    outcomes_check=[]
+    outcomecodes_check=[]
+    for section in range(len(data["References"])):
+        Codes="No"
+        Outcomes="No"
+        OutcomeCodes="No"
+        if "Codes" in data["References"][section]:
+            Codes="Yes"
+            if "Outcomes" in data["References"][section]:
+                Outcomes="Yes"
+                if "OutcomeCodes" in data["References"][section]["Outcomes"][0]:
+                    OutcomeCodes="Yes"
+            
+        codes_check.append(Codes)
+        outcomes_check.append(Outcomes)
+        outcomecodes_check.append(OutcomeCodes)
+
+section_checker()
+
 
 
