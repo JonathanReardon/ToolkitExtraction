@@ -50,7 +50,8 @@ dict = {"What was the level of assignment?": 7,
         "Is comparability taken into account in the analysis?": 4,
         "Is attrition or drop out reported?": 4,
         "Are the variables used for comparability reported?": 4,
-        "If yes, which variables are used for comparability?": 6}
+        "If yes, which variables are used for comparability?": 6,
+        "What type of organisation was responsible for providing the intervention?": 7}
 
 def get_info():
     fullset=[]
@@ -64,7 +65,7 @@ def get_info():
     return fullset
 
 all = get_info()
-pprint(all[14])
+pprint(all[15])
 
 level_assignment_codes=all[0]
 participant_assignment_codes=all[1]
@@ -81,6 +82,7 @@ comparability=all[11]
 attrition_reported=all[12]
 comparability_var_report=all[13]
 comparability_vars=all[14]
+intervention_org=all[15]
 
 codelist = [level_assignment_codes, participant_assignment_codes,
             study_realism_codes, student_gender_codes,
@@ -88,7 +90,7 @@ codelist = [level_assignment_codes, participant_assignment_codes,
             country_codes, baseline_group_diff, 
             study_design, comparability,
             attrition_reported, comparability_var_report, 
-            comparability_vars]
+            comparability_vars, intervention_org]
 
 # data extraction for variables with one output
 def get_data():
@@ -103,7 +105,6 @@ def get_data():
                     for key, value in codelist[var].items():
                         if key == data["References"][section]["Codes"][study]["AttributeId"]:
                             holderfind, holdervalue = value, key
-
                 if len(holderfind) == 0:
                     holderfind = exclude
                 holder.append(holderfind)
@@ -235,12 +236,12 @@ get_stats()
 
 df = pd.DataFrame(list(zip(itemids, titles, year, strand_info, data_extraction[0], data_extraction[1], data_extraction[2], data_extraction[3], 
                            data_extraction[4], data_extraction[5], data_extraction[6], data_extraction[7], data_extraction[8], data_extraction[10], 
-                           data_extraction[9], data_extraction[11], data_extraction[12], age, 
+                           data_extraction[9], data_extraction[11], data_extraction[12], data_extraction[13], age, 
                            outcometext, interventiontext, SMD, SESMD, CIupperSMD, CIlowerSMD,
                            codes_check, outcomes_check, outcomecodes_check)), 
                   columns=['ItemID', 'Author', 'Year', 'Strand', 'LevelofAssignment', 'ParticipantAssignment', 'StudyRealism', 'StudentGender', 
                            'PublicationType', 'EducationalSetting', 'Country', 'BaselineGroupDifferences', 'StudyDesign', 'AttritionReported', 
-                           'Comparability', 'ComparabilityVarReport', 'ComarabilityVariables', 'StudentAge', 
+                           'Comparability', 'ComparabilityVarReport', 'ComarabilityVariables', 'InterventionOrganisation', 'StudentAge', 
                            'Outcome', 'Intervention', 'SMD', 'SESMD', 'CIupper', 'CIlower',
                            'CodesPresent', 'OutcomesPresent', 'OutcomeCodesPresent'])
 pprint(df)
