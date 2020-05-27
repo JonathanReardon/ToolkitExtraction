@@ -44,7 +44,13 @@ dict = {"What was the level of assignment?": 7,
         "What is the educational setting (Select ALL that apply)": 12,
         "In which country/countries was the study carried out? (Select ALL that apply)": 188,
         "What is the age of the students? (Select ALL that apply)": 18,
-        "Toolkit strand(s) (select at least one Toolkit strand)": 34}
+        "Toolkit strand(s) (select at least one Toolkit strand)": 34,
+        "Does the study report any group differences at baseline? ": 3,
+        "What was the study design?": 10,
+        "Is comparability taken into account in the analysis?": 4,
+        "Is attrition or drop out reported?": 4,
+        "Are the variables used for comparability reported?": 4,
+        "If yes, which variables are used for comparability?": 6}
 
 def get_info():
     fullset=[]
@@ -58,6 +64,7 @@ def get_info():
     return fullset
 
 all = get_info()
+pprint(all[14])
 
 level_assignment_codes=all[0]
 participant_assignment_codes=all[1]
@@ -68,10 +75,20 @@ edu_setting_codes=all[5]
 country_codes=all[6]
 student_age=all[7]
 strand_codes=all[8]
+baseline_group_diff=all[9]
+study_design=all[10]
+comparability=all[11]
+attrition_reported=all[12]
+comparability_var_report=all[13]
+comparability_vars=all[14]
 
 codelist = [level_assignment_codes, participant_assignment_codes,
             study_realism_codes, student_gender_codes,
-            pub_type_codes, edu_setting_codes, country_codes]
+            pub_type_codes, edu_setting_codes, 
+            country_codes, baseline_group_diff, 
+            study_design, comparability,
+            attrition_reported, comparability_var_report, 
+            comparability_vars]
 
 # data extraction for variables with one output
 def get_data():
@@ -167,24 +184,24 @@ def section_checker():
 section_checker()
 
 # get basic info from first outer layer 
-itemids=[]
-titles=[]
-year=[]
-for section in range(len(data["References"])):
-    if "ItemId" in data["References"][section]:
-        itemids.append(data["References"][section]["ItemId"])
-    else:
-        itemids.append(exclude)
-    if "ShortTitle" in data["References"][section]:
-        titles.append(data["References"][section]["ShortTitle"])
-    else:
-        titles.append(exclude)
-    if "Year" in data["References"][section]:
-        year.append(int(data["References"][section]["Year"]))
-    else:
-        year.append(exclude)
-
-
+def get_basic_info():
+    global itemids, titles, year
+    itemids, titles, year = [], [], []
+    exclude="NA"
+    for section in range(len(data["References"])):
+        if "ItemId" in data["References"][section]:
+            itemids.append(data["References"][section]["ItemId"])
+        else:
+            itemids.append(exclude)
+        if "ShortTitle" in data["References"][section]:
+            titles.append(data["References"][section]["ShortTitle"])
+        else:
+            titles.append(exclude)
+        if "Year" in data["References"][section]:
+            year.append(int(data["References"][section]["Year"]))
+        else:
+            year.append(exclude)
+get_basic_info()
 
 # get stats info from 'Outcomes' section
 def get_stats():
@@ -217,14 +234,15 @@ get_stats()
 
 
 df = pd.DataFrame(list(zip(itemids, titles, year, strand_info, data_extraction[0], data_extraction[1], data_extraction[2], data_extraction[3], 
-                           data_extraction[4], data_extraction[5], data_extraction[6], age, 
+                           data_extraction[4], data_extraction[5], data_extraction[6], data_extraction[7], data_extraction[8], data_extraction[10], 
+                           data_extraction[9], data_extraction[11], data_extraction[12], age, 
                            outcometext, interventiontext, SMD, SESMD, CIupperSMD, CIlowerSMD,
                            codes_check, outcomes_check, outcomecodes_check)), 
-                  columns=['ItemID', 'Author', 'Year', 'Strand', 'LevelofAssignment','ParticipantAssignment','StudyRealism','StudentGender', 
-                           'PublicationType', 'EducationalSetting', 'Country', 'StudentAge', 
+                  columns=['ItemID', 'Author', 'Year', 'Strand', 'LevelofAssignment', 'ParticipantAssignment', 'StudyRealism', 'StudentGender', 
+                           'PublicationType', 'EducationalSetting', 'Country', 'BaselineGroupDifferences', 'StudyDesign', 'AttritionReported', 
+                           'Comparability', 'ComparabilityVarReport', 'ComarabilityVariables', 'StudentAge', 
                            'Outcome', 'Intervention', 'SMD', 'SESMD', 'CIupper', 'CIlower',
-                           'CodesPresent', 'OutcomesPresent',
-                           'OutcomeCodesPresent'])
+                           'CodesPresent', 'OutcomesPresent', 'OutcomeCodesPresent'])
 pprint(df)
 
-#df.to_csv("test.csv", index=False)
+df.to_csv("test.csv", index=False)
