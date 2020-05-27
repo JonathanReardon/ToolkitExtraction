@@ -43,7 +43,8 @@ dict = {"What was the level of assignment?": 7,
         "Section 1 What is the publication type?": 6,
         "What is the educational setting (Select ALL that apply)": 12,
         "In which country/countries was the study carried out? (Select ALL that apply)": 188,
-        "What is the age of the students? (Select ALL that apply)": 18}
+        "What is the age of the students? (Select ALL that apply)": 18,
+        "Toolkit strand(s) (select at least one Toolkit strand)": 34}
 
 def get_info():
     fullset=[]
@@ -66,6 +67,7 @@ pub_type_codes=all[4]
 edu_setting_codes=all[5]
 country_codes=all[6]
 student_age=all[7]
+strand_codes=all[8]
 
 codelist = [level_assignment_codes, participant_assignment_codes,
             study_realism_codes, student_gender_codes,
@@ -117,6 +119,30 @@ def get_age():
     return holder
 age = get_age()
 
+# get strand data
+def get_strands():
+  finds=[]
+  exclude="NA"
+  for section in range(len(data["References"])):
+      if "Codes" in data["References"][section]:
+          if "Outcomes" in data["References"][section]:
+              if "OutcomeCodes" in data["References"][section]["Outcomes"][0]:
+                  for study in range(len(data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"])):
+                      for key,value in strand_codes.items():
+                          if key == data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"][study]["AttributeId"]:
+                              strandfind=value
+                  finds.append(strandfind)
+              else:
+                  finds.append(exclude)
+          else:
+              finds.append(exclude)
+      else:
+          finds.append(exclude)
+        
+  return finds
+
+strand_info = get_strands() 
+
 # section checker
 def section_checker():
     global codes_check, outcomes_check, outcomecodes_check
@@ -143,6 +169,7 @@ section_checker()
 # get basic info from first outer layer 
 itemids=[]
 titles=[]
+year=[]
 for section in range(len(data["References"])):
     if "ItemId" in data["References"][section]:
         itemids.append(data["References"][section]["ItemId"])
@@ -152,6 +179,12 @@ for section in range(len(data["References"])):
         titles.append(data["References"][section]["ShortTitle"])
     else:
         titles.append(exclude)
+    if "Year" in data["References"][section]:
+        year.append(int(data["References"][section]["Year"]))
+    else:
+        year.append(exclude)
+
+
 
 # get stats info from 'Outcomes' section
 def get_stats():
@@ -183,15 +216,15 @@ def get_stats():
 get_stats()
 
 
-df = pd.DataFrame(list(zip(itemids, titles, data_extraction[0], data_extraction[1], data_extraction[2], data_extraction[3], 
+df = pd.DataFrame(list(zip(itemids, titles, year, strand_info, data_extraction[0], data_extraction[1], data_extraction[2], data_extraction[3], 
                            data_extraction[4], data_extraction[5], data_extraction[6], age, 
                            outcometext, interventiontext, SMD, SESMD, CIupperSMD, CIlowerSMD,
                            codes_check, outcomes_check, outcomecodes_check)), 
-                  columns=['ItemID', 'Author', 'LevelofAssignment','ParticipantAssignment','StudyRealism','StudentGender', 
+                  columns=['ItemID', 'Author', 'Year', 'Strand', 'LevelofAssignment','ParticipantAssignment','StudyRealism','StudentGender', 
                            'PublicationType', 'EducationalSetting', 'Country', 'StudentAge', 
                            'Outcome', 'Intervention', 'SMD', 'SESMD', 'CIupper', 'CIlower',
                            'CodesPresent', 'OutcomesPresent',
                            'OutcomeCodesPresent'])
 pprint(df)
 
-df.to_csv("test.csv", index=False)
+#df.to_csv("test.csv", index=False)
