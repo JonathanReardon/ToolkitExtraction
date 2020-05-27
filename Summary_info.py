@@ -4,10 +4,9 @@ from pprint import pprint
 import numpy as np
 from matplotlib import pyplot as plt
 import pandas as pd
-plt.style.use('ggplot')
 
 # import dataset (uncomment to select dataset of choice)
-with open('/home/jon/json/ToolkitExtraction/data/May 12th_2020.json') as f:
+with open('/home/jon/json/ToolkitExtraction/data/May12th_2020.json') as f:
     data=json.load(f)
 
 def extract_values(obj, key):
@@ -43,7 +42,8 @@ dict = {"What was the level of assignment?": 7,
         "What is the gender of the students?": 5,
         "Section 1 What is the publication type?": 6,
         "What is the educational setting (Select ALL that apply)": 12,
-        "In which country/countries was the study carried out? (Select ALL that apply)": 188}
+        "In which country/countries was the study carried out? (Select ALL that apply)": 188,
+        "What is the age of the students? (Select ALL that apply)": 18}
 
 def get_info():
     fullset=[]
@@ -65,11 +65,13 @@ student_gender_codes=all[3]
 pub_type_codes=all[4]
 edu_setting_codes=all[5]
 country_codes=all[6]
+student_age=all[7]
 
 codelist = [level_assignment_codes, participant_assignment_codes,
             study_realism_codes, student_gender_codes,
             pub_type_codes, edu_setting_codes, country_codes]
 
+# data extraction for variables with one output
 def get_data():
     all=[]
     exclude="NA"
@@ -82,17 +84,42 @@ def get_data():
                     for key, value in codelist[var].items():
                         if key == data["References"][section]["Codes"][study]["AttributeId"]:
                             holderfind, holdervalue = value, key
+
+                if len(holderfind) == 0:
+                    holderfind = exclude
                 holder.append(holderfind)
+            else:
+                holder.append("No 'Codes' Section")
         all.append(holder)
     return all
 
-""" data = get_data()
-for lst in data:
-    print(len(lst)) """
+data_extraction = get_data()
+
+# data extraction for variables with multiple outputs (e.g. age)
+def get_age():
+    all=[]
+    exclude="NA"
+    holder=[]
+    for section in range(len(data["References"])):
+        if "Codes" in data["References"][section]:
+            holderfind, holdervalue = [], []
+            for study in range(len(data["References"][section]["Codes"])):
+                for key, value in student_age.items():
+                    if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                        holderfind.append(value)
+            if len(holderfind) == 0:
+                holderfind = exclude
+            holder.append(holderfind)
+        else:
+            holder.append(exclude)
+
+    #all.append(holder)
+    return holder
+age = get_age()
 
 # section checker
 def section_checker():
-    global codes_check, outcomes_check, outcomescodes_check
+    global codes_check, outcomes_check, outcomecodes_check
     codes_check=[]
     outcomes_check=[]
     outcomecodes_check=[]
@@ -113,5 +140,58 @@ def section_checker():
 
 section_checker()
 
+# get basic info from first outer layer 
+itemids=[]
+titles=[]
+for section in range(len(data["References"])):
+    if "ItemId" in data["References"][section]:
+        itemids.append(data["References"][section]["ItemId"])
+    else:
+        itemids.append(exclude)
+    if "ShortTitle" in data["References"][section]:
+        titles.append(data["References"][section]["ShortTitle"])
+    else:
+        titles.append(exclude)
+
+# get stats info from 'Outcomes' section
+def get_stats():
+    global outcometext, interventiontext, SMD, SESMD, CIupperSMD, CIlowerSMD
+    outcometext=[]
+    interventiontext=[]
+    SMD=[]
+    SESMD=[]
+    CIupperSMD=[]
+    CIlowerSMD=[]
+    exclude="NA"
+
+    for section in range(len(data["References"])):
+        if "Outcomes" in data["References"][section]:
+            outcometext.append(data["References"][section]["Outcomes"][0]["OutcomeText"])
+            interventiontext.append(data["References"][section]["Outcomes"][0]["InterventionText"])
+            SMD.append(data["References"][section]["Outcomes"][0]["SMD"])
+            SESMD.append(data["References"][section]["Outcomes"][0]["SESMD"])
+            CIupperSMD.append(data["References"][section]["Outcomes"][0]["CIUpperSMD"])
+            CIlowerSMD.append(data["References"][section]["Outcomes"][0]["CILowerSMD"])
+                    
+        else:
+            outcometext.append(exclude)
+            interventiontext.append(exclude)
+            SMD.append(exclude)
+            SESMD.append(exclude)
+            CIupperSMD.append(exclude)
+            CIlowerSMD.append(exclude)
+get_stats()
 
 
+df = pd.DataFrame(list(zip(itemids, titles, data_extraction[0], data_extraction[1], data_extraction[2], data_extraction[3], 
+                           data_extraction[4], data_extraction[5], data_extraction[6], age, 
+                           outcometext, interventiontext, SMD, SESMD, CIupperSMD, CIlowerSMD,
+                           codes_check, outcomes_check, outcomecodes_check)), 
+                  columns=['ItemID', 'Author', 'LevelofAssignment','ParticipantAssignment','StudyRealism','StudentGender', 
+                           'PublicationType', 'EducationalSetting', 'Country', 'StudentAge', 
+                           'Outcome', 'Intervention', 'SMD', 'SESMD', 'CIupper', 'CIlower',
+                           'CodesPresent', 'OutcomesPresent',
+                           'OutcomeCodesPresent'])
+pprint(df)
+
+df.to_csv("test.csv", index=False)
