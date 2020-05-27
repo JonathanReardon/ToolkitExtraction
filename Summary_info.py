@@ -70,7 +70,6 @@ def get_info():
     return fullset
 
 all = get_info()
-pprint(all[20])
 
 level_assignment_codes=all[0]
 participant_assignment_codes=all[1]
@@ -103,6 +102,9 @@ codelist = [level_assignment_codes, participant_assignment_codes,
             comparability_vars, intervention_org,
             intervention_training]
 
+codelist_multi_option = [student_age, intervention_focus, intervention_teaching_approach,
+                         intervention_time, intervention_teaching_responsibility]
+
 # data extraction for variables with one output
 def get_data():
     all=[]
@@ -127,112 +129,25 @@ def get_data():
 data_extraction = get_data()
 
 # data extraction for variables with multiple outputs (e.g. age)
-def get_age():
+def get_multi_data():
     all=[]
     exclude="NA"
-    holder=[]
-    for section in range(len(data["References"])):
-        if "Codes" in data["References"][section]:
-            holderfind, holdervalue = [], []
-            for study in range(len(data["References"][section]["Codes"])):
-                for key, value in student_age.items():
-                    if key == data["References"][section]["Codes"][study]["AttributeId"]:
-                        holderfind.append(value)
-            if len(holderfind) == 0:
-                holderfind = exclude
-            holder.append(holderfind)
-        else:
-            holder.append(exclude)
+    for var in range(len(codelist_multi_option)):
+        holder=[]
+        for section in range(len(data["References"])):
+            if "Codes" in data["References"][section]:
+                holderfind, holdervalue = [], []
+                for study in range(len(data["References"][section]["Codes"])):
+                    for key, value in codelist_multi_option[var].items():
+                        if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                            holderfind.append(value)
+                if len(holderfind)==0:
+                    holderfind=exclude
+                holder.append(holderfind)
 
-    #all.append(holder)
-    return holder
-age = get_age()
-
-# data extraction for variables with multiple outputs (e.g. age)
-def get_intervention_focus():
-    all=[]
-    exclude="NA"
-    holder=[]
-    for section in range(len(data["References"])):
-        if "Codes" in data["References"][section]:
-            holderfind, holdervalue = [], []
-            for study in range(len(data["References"][section]["Codes"])):
-                for key, value in intervention_focus.items():
-                    if key == data["References"][section]["Codes"][study]["AttributeId"]:
-                        holderfind.append(value)
-            if len(holderfind) == 0:
-                holderfind = exclude
-            holder.append(holderfind)
-        else:
-            holder.append(exclude)
-
-    #all.append(holder)
-    return holder
-intervention_focus = get_intervention_focus()
-
-# data extraction for variables with multiple outputs (e.g. age)
-def get_intervention_teaching_approach():
-    all=[]
-    exclude="NA"
-    holder=[]
-    for section in range(len(data["References"])):
-        if "Codes" in data["References"][section]:
-            holderfind, holdervalue = [], []
-            for study in range(len(data["References"][section]["Codes"])):
-                for key, value in intervention_teaching_approach.items():
-                    if key == data["References"][section]["Codes"][study]["AttributeId"]:
-                        holderfind.append(value)
-            if len(holderfind) == 0:
-                holderfind = exclude
-            holder.append(holderfind)
-        else:
-            holder.append(exclude)
-
-    #all.append(holder)
-    return holder
-intervention_teaching_approach = get_intervention_teaching_approach()
-
-def get_intervention_time():
-    all=[]
-    exclude="NA"
-    holder=[]
-    for section in range(len(data["References"])):
-        if "Codes" in data["References"][section]:
-            holderfind, holdervalue = [], []
-            for study in range(len(data["References"][section]["Codes"])):
-                for key, value in intervention_time.items():
-                    if key == data["References"][section]["Codes"][study]["AttributeId"]:
-                        holderfind.append(value)
-            if len(holderfind) == 0:
-                holderfind = exclude
-            holder.append(holderfind)
-        else:
-            holder.append(exclude)
-
-    #all.append(holder)
-    return holder
-intervention_time = get_intervention_time()
-
-def get_intervention_teaching_responsibility():
-    all=[]
-    exclude="NA"
-    holder=[]
-    for section in range(len(data["References"])):
-        if "Codes" in data["References"][section]:
-            holderfind, holdervalue = [], []
-            for study in range(len(data["References"][section]["Codes"])):
-                for key, value in intervention_teaching_responsibility.items():
-                    if key == data["References"][section]["Codes"][study]["AttributeId"]:
-                        holderfind.append(value)
-            if len(holderfind) == 0:
-                holderfind = exclude
-            holder.append(holderfind)
-        else:
-            holder.append(exclude)
-
-    #all.append(holder)
-    return holder
-intervention_teaching_responsibility = get_intervention_teaching_responsibility()
+        all.append(holder)
+    return all
+multi_data_extraction = get_multi_data()
 
 # get strand data
 def get_strands():
@@ -332,8 +247,8 @@ get_stats()
 
 df = pd.DataFrame(list(zip(itemids, titles, year, strand_info, data_extraction[0], data_extraction[1], data_extraction[2], data_extraction[3], 
                            data_extraction[4], data_extraction[5], data_extraction[6], data_extraction[7], data_extraction[8], data_extraction[10], 
-                           data_extraction[9], data_extraction[11], data_extraction[12], interventiontext, data_extraction[13], data_extraction[14], intervention_focus,
-                           intervention_teaching_approach, intervention_time, intervention_teaching_responsibility, age, 
+                           data_extraction[9], data_extraction[11], data_extraction[12], interventiontext, data_extraction[13], data_extraction[14], multi_data_extraction[1],
+                           multi_data_extraction[2], multi_data_extraction[3], multi_data_extraction[4], multi_data_extraction[0], 
                            outcometext, SMD, SESMD, CIupperSMD, CIlowerSMD,
                            codes_check, outcomes_check, outcomecodes_check)), 
                   columns=['ItemID', 'Author', 'Year', 'Strand', 'LevelofAssignment', 'ParticipantAssignment', 'StudyRealism', 'StudentGender', 
