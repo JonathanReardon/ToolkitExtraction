@@ -105,6 +105,33 @@ codelist = [level_assignment_codes, participant_assignment_codes,
 codelist_multi_option = [student_age, intervention_focus, intervention_teaching_approach,
                          intervention_time, intervention_teaching_responsibility]
 
+# extract user inputted comments for each var
+def var_comments():
+    all_comments=[]
+    exclude="NA"
+    for var in range(len(all)):
+        comment=[]
+        for section in range(len(data["References"])):
+            if "Codes" in data["References"][section]:
+                perstudy=[]
+                for study in range(len(data["References"][section]["Codes"])):
+                    for key, value in all[var].items():
+                        if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                            if data["References"][section]["Codes"][study]["AdditionalText"]:
+                                perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
+                            if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
+                                if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
+                                    for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
+                                        perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+                if len(perstudy) ==0:
+                    perstudy=exclude 
+                comment.append(perstudy)
+            else:
+                comment.append(exclude)
+        all_comments.append(comment)
+    return all_comments
+comments = var_comments()
+
 # data extraction for variables with one output
 def get_data():
     all=[]
@@ -259,4 +286,4 @@ df = pd.DataFrame(list(zip(itemids, titles, year, strand_info, data_extraction[0
                            'CodesPresent', 'OutcomesPresent', 'OutcomeCodesPresent'])
 pprint(df)
 
-df.to_csv("test.csv", index=False)
+#df.to_csv("test.csv", index=False)
