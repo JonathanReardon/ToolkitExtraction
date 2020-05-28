@@ -83,7 +83,8 @@ multi_output  = get_info(multi_option)
 
 # extract user inputted comments for each var
 def var_comments(codes):
-    all_comments=[]
+    all_comments = []
+    comments, text = [], []
     for var in range(len(codes)):
         user_comments_holder, highlight_text_holder = [], []
         for section in range(len(data["References"])):
@@ -94,24 +95,29 @@ def var_comments(codes):
                         if key == data["References"][section]["Codes"][study]["AttributeId"]:
                             if data["References"][section]["Codes"][study]["AdditionalText"]:
                                 user_comments.append(data["References"][section]["Codes"][study]["AdditionalText"])
-                            #if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
-                                #if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
-                                    #for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
-                                        #highlighted_text.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
-                #if len(user_comments)==0:
-                    #user_comments=exclude 
-                #if len(highlighted_text)==0:
-                    #highlighted_text=exclude
+                            if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
+                                if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
+                                    for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
+                                        highlighted_text.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+                if len(user_comments)==0:
+                    user_comments=exclude 
+                if len(highlighted_text)==0:
+                    highlighted_text=exclude
                 user_comments_holder.append(user_comments)
+                highlight_text_holder.append(highlighted_text)
             else:
                 user_comments_holder.append(exclude)
+                highlight_text_holder.append(exclude)
 
-        all_comments.append(user_comments_holder)
+        comments.append(user_comments_holder)
+        text.append(highlight_text_holder)
+    all_comments.append(comments)
+    all_comments.append(text)
     return all_comments
 
 single_output_comments = var_comments(single_output)
-pprint(single_output_comments)
-print(len(single_output_comments))
+pprint(single_output_comments[1][0])
+print(len(single_output_comments[1][0]))
 
 # data extraction for variables with one output
 def get_data(data_codes):
