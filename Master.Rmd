@@ -395,18 +395,6 @@ def get_all():
                   CIupperSMD=(data["References"][section]["Outcomes"][0]["CIUpperSMD"])
                   CIlowerSMD=(data["References"][section]["Outcomes"][0]["CILowerSMD"])
                   
-                  if "OutcomeCodes" in data["References"][section]["Outcomes"][0]:
-                      for study in range(len(data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"])):
-                          for key,value in strands.items():
-                              if key == data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"][study]["AttributeId"]:
-                                  strandfind=value
-                                  strandlabel=key
-                              elif find==0:
-                                  strandfind=str(exclude)
-                                  strandlabel=str(exclude)
-                  else:
-                      strandfind=np.nan
-                      strandlabel=np.nan
               else:
                   nooutcomes+=1
                   outcometext=exclude
@@ -461,7 +449,7 @@ def get_all():
   return df
   
 master_df = get_all()
-master_df.groupby('Strand').count()
+master_df["Strand"]
 ```
 
 **Function to check "Year" range, group by decade, and insert into new 'Decade' column. Reorder columns and subset all Primary (outcome) studies**

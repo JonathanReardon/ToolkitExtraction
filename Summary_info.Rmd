@@ -43,7 +43,7 @@ plt.style.use('ggplot')
 # import dataset (uncomment to select dataset of choice)
 #with open('/home/jon/json/ToolkitExtraction/data/batch2.json') as f:
 #with open('/home/jon/json/ToolkitExtraction/data/Batch1.json') as f:
-with open('/home/jon/json/ToolkitExtraction/data/May11th_2020.json') as f:
+  with open('/home/jon/json/ToolkitExtraction/data/May11th_2020.json') as f:
 #with open('/home/jon/json/ToolkitExtraction/data/May 12th_2020.json') as f:
     data=json.load(f)
 ```
@@ -201,7 +201,6 @@ countries = get_countries_info()
 ```{python}
 def get_strands():
   finds=[]
-    
   for section in range(len(data["References"])):
       if "Codes" in data["References"][section]:
           if "Outcomes" in data["References"][section]:
@@ -237,12 +236,10 @@ levelofassignment=[]
 assigncomment=[]
 for section in range(len(data["References"])):
     if "Codes" in data["References"][section]:
-        levelassignfind, levelassignvalue = [], []
         perstudy=[]
         for study in range(len(data["References"][section]["Codes"])):
             for key,value in level_of_assignment.items():
                 if key == data["References"][section]["Codes"][study]["AttributeId"]:
-                    levelassignfind, levelassignvalue = value, key
                     if data["References"][section]["Codes"][study]["AdditionalText"]:
                         perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
                     if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
@@ -261,16 +258,13 @@ for section in range(len(data["References"])):
 ```
 
 ```{python}
-design=[]
 designcomment=[]
 for section in range(len(data["References"])):
     if "Codes" in data["References"][section]:
-        designfind, designlabel= [], []
         perstudy=[]
         for study in range(len(data["References"][section]["Codes"])):
             for key, value in study_design.items():
                 if key == data["References"][section]["Codes"][study]["AttributeId"]:
-                    designfind, designlabel = value, key
                     if data["References"][section]["Codes"][study]["AdditionalText"]:
                         perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
                     if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
@@ -280,11 +274,7 @@ for section in range(len(data["References"])):
         if len(perstudy) ==0:
             perstudy=exclude 
         designcomment.append(perstudy)
-        if len(designfind)==0:
-            designfind=exclude
-        design.append(designfind)
     else:
-        design.append(exclude)
         designcomment.append(exclude)
 ```
 
@@ -346,31 +336,21 @@ for section in range(len(data["References"])):
 
 ```{python}
 age=[]
-agecomment=[]
 for section in range(len(data["References"])):
     if "Codes" in data["References"][section]:
         studentagefind, studentagelabel = [], []
-        perstudy=[]
         for study in range(len(data["References"][section]["Codes"])):
             for key, value in student_age.items():
                 if key == data["References"][section]["Codes"][study]["AttributeId"]:
                     studentagefind.append(value)
                     studentagelabel.append(key)
-                    if data["References"][section]["Codes"][study]["AdditionalText"]:
-                        perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
-                    if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
-                        if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
-                            for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
-                                perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
-        if len(perstudy)==0:
-            perstudy=exclude
-        agecomment.append(perstudy)
+
         if len(studentagefind)==0:
             studentagefind=exclude
         age.append(studentagefind)
     else:
         age.append(exclude)
-        agecomment.append(exclude)
+age[0]
 ```
 
 ```{python}
@@ -502,7 +482,6 @@ for section in range(len(data["References"])):
 ```
 
 ```{python}
-
 codes_check=[]
 outcomes_check=[]
 outcomecodes_check=[]
@@ -526,10 +505,11 @@ for section in range(len(data["References"])):
 ```{python}
 itemids=[]
 for section in range(len(data["References"])):
-  if "ItemId" in  data["References"][section]:
+  if "ItemId" in data["References"][section]:
       itemids.append(data["References"][section]["ItemId"])
   else:
-      itemid=exclude
+      itemids.append(exclude)
+pprint(len(itemids))
 ```
 
 ```{python}

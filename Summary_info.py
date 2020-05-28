@@ -4,8 +4,11 @@ from pprint import pprint
 import numpy as np
 import pandas as pd
 
+# input data file name (.csv) with full path
+datafile = '/home/jon/json/ToolkitExtraction/data/May12th_2020.json'
+
 # import dataset (uncomment to select dataset of choice)
-with open('/home/jon/json/ToolkitExtraction/data/May12th_2020.json') as f:
+with open(datafile) as f:
     data=json.load(f)
 
 # for missing or unavailable data
@@ -27,7 +30,6 @@ def extract_values(obj, key):
             for item in obj:
                 extract(item, arr, key)
         return arr
-
     results = extract(obj, arr, key)
     return results
 
@@ -83,29 +85,33 @@ multi_output  = get_info(multi_option)
 def var_comments(codes):
     all_comments=[]
     for var in range(len(codes)):
-        comment=[]
+        user_comments_holder, highlight_text_holder = [], []
         for section in range(len(data["References"])):
             if "Codes" in data["References"][section]:
-                perstudy=[]
+                user_comments, highlighted_text =  [], []
                 for study in range(len(data["References"][section]["Codes"])):
                     for key, value in codes[var].items():
                         if key == data["References"][section]["Codes"][study]["AttributeId"]:
                             if data["References"][section]["Codes"][study]["AdditionalText"]:
-                                perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
-                            if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
-                                if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
-                                    for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
-                                        perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
-                if len(perstudy) ==0:
-                    perstudy=exclude 
-                comment.append(perstudy)
+                                user_comments.append(data["References"][section]["Codes"][study]["AdditionalText"])
+                            #if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
+                                #if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
+                                    #for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
+                                        #highlighted_text.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+                #if len(user_comments)==0:
+                    #user_comments=exclude 
+                #if len(highlighted_text)==0:
+                    #highlighted_text=exclude
+                user_comments_holder.append(user_comments)
             else:
-                comment.append(exclude)
-        all_comments.append(comment)
+                user_comments_holder.append(exclude)
+
+        all_comments.append(user_comments_holder)
     return all_comments
 
 single_output_comments = var_comments(single_output)
-multi_output_comments  = var_comments(multi_output)
+pprint(single_output_comments)
+print(len(single_output_comments))
 
 # data extraction for variables with one output
 def get_data(data_codes):
@@ -237,8 +243,8 @@ def get_stats():
             CIlowerSMD.append(exclude)
 get_stats()
 
-# dataframe that includes user comments (additional text etc.) 
-data_frame_standard = pd.DataFrame(list(zip(itemids, titles, year, strand_data,
+# dataframe excluding comments/highlighted text
+""" data_frame_standard = pd.DataFrame(list(zip(itemids, titles, year, strand_data,
                                             outcometext, 
                                             data_single[3], data_single[6], data_single[0], data_single[1],
                                             data_single[8], data_single[4], data_single[2], data_single[6],
@@ -257,8 +263,7 @@ data_frame_standard = pd.DataFrame(list(zip(itemids, titles, year, strand_data,
                                             'InterventionOrg', 'InterventionTrainingProvided',
                                             'InterventionFocus', 'InterventionTeachingApproach', 'InterventionTime', 'WhoDeliveredTeaching',
                                             'SMD', 'SESMD', 'CIupper', 'CIlower',
-                                            'CodesSectionPresent', 'OutcomesSectionPresent', 'OutcomeCodesSectionPresent', 
-                                            ])
+                                            'CodesSectionPresent', 'OutcomesSectionPresent', 'OutcomeCodesSectionPresent'])
 
 # round statistical output to 4 decimal places
 data_frame_standard["SMD"]     = data_frame_standard["SMD"].astype(float)
@@ -272,5 +277,5 @@ data_frame_standard["CIupper"] = data_frame_standard["CIupper"].round(4)
 data_frame_standard["CIlower"] = data_frame_standard["CIlower"].round(4)
 
 # save standard dataframe to .csv
-data_frame_standard.to_csv("test.csv", index=False, na_rep="NA")
+data_frame_standard.to_csv("test.csv", index=False, na_rep="NA") """
 
