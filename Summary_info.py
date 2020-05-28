@@ -9,6 +9,7 @@ import pandas as pd
 with open('/home/jon/json/ToolkitExtraction/data/May12th_2020.json') as f:
     data=json.load(f)
 
+# flatten json into list of lists
 def extract_values(obj, key):
     """Pull all values of specified key from nested JSON."""
     arr = []
@@ -68,7 +69,6 @@ def get_info():
                     holder.update( {df[counter+i][1]:df[counter+i][0]} )
                 fullset.append(holder)
     return fullset
-
 all = get_info()
 
 level_assignment_codes=all[0]
@@ -152,7 +152,6 @@ def get_data():
                 holder.append("No 'Codes' Section")
         all.append(holder)
     return all
-
 data_extraction = get_data()
 
 # data extraction for variables with multiple outputs (e.g. age)
@@ -197,7 +196,6 @@ def get_strands():
           finds.append(exclude)
         
   return finds
-
 strand_info = get_strands() 
 
 # section checker
@@ -220,7 +218,6 @@ def section_checker():
         codes_check.append(Codes)
         outcomes_check.append(Outcomes)
         outcomecodes_check.append(OutcomeCodes)
-
 section_checker()
 
 # get basic info from first outer layer 
@@ -272,18 +269,34 @@ def get_stats():
             CIlowerSMD.append(exclude)
 get_stats()
 
-df = pd.DataFrame(list(zip(itemids, titles, year, strand_info, data_extraction[0], data_extraction[1], data_extraction[2], data_extraction[3], 
-                           data_extraction[4], data_extraction[5], data_extraction[6], data_extraction[7], data_extraction[8], data_extraction[10], 
-                           data_extraction[9], data_extraction[11], data_extraction[12], interventiontext, data_extraction[13], data_extraction[14], multi_data_extraction[1],
-                           multi_data_extraction[2], multi_data_extraction[3], multi_data_extraction[4], multi_data_extraction[0], 
-                           outcometext, SMD, SESMD, CIupperSMD, CIlowerSMD,
-                           codes_check, outcomes_check, outcomecodes_check)), 
-                  columns=['ItemID', 'Author', 'Year', 'Strand', 'LevelofAssignment', 'ParticipantAssignment', 'StudyRealism', 'StudentGender', 
-                           'PublicationType', 'EducationalSetting', 'Country', 'BaselineGroupDifferences', 'StudyDesign', 'AttritionReported', 
-                           'Comparability', 'ComparabilityVarReport', 'ComarabilityVariables', 'Intervention', 'InterventionOrganisation', 'InterventionTraining', 
-                           'InterventionFocus', 'InterventionTeachingApproach', 'InterventionTime', 'InterventionTeachingResponsibility','StudentAge', 
-                           'Outcome', 'SMD', 'SESMD', 'CIupper', 'CIlower',
-                           'CodesPresent', 'OutcomesPresent', 'OutcomeCodesPresent'])
+df = pd.DataFrame(list(zip(itemids, titles, year, strand_info, 
+                           comments[8], data_extraction[0], comments[0], data_extraction[1], 
+                           comments[1], data_extraction[2], comments[2], data_extraction[3], 
+                           comments[3], data_extraction[4], comments[4], data_extraction[5], 
+                           comments[5], data_extraction[6], comments[6], data_extraction[7],
+                           comments[9], data_extraction[8], comments[10], data_extraction[10], 
+                           comments[12], data_extraction[9], comments[11], data_extraction[11], 
+                           comments[13], data_extraction[12], comments[14], interventiontext, 
+                           data_extraction[13], comments[15], data_extraction[14], comments[16], 
+                           multi_data_extraction[1], comments[17], multi_data_extraction[2], comments[18], 
+                           multi_data_extraction[3], comments[19], multi_data_extraction[4], comments[20],
+                           multi_data_extraction[0], comments[7], outcometext, SMD, 
+                           SESMD, CIupperSMD, CIlowerSMD, codes_check, 
+                           outcomes_check, outcomecodes_check)), 
+                  columns=['ItemID', 'Author', 'Year', 'Strand', 
+                           'StrandComments', 'LevelofAssignment', 'LevelofAssignmentComments', 'ParticipantAssignment', 
+                           'ParticipantAssignmentComments', 'StudyRealism', 'StudyRealismComments', 'StudentGender', 
+                           'StudentGenderComments', 'PublicationType', 'PublicationTypeComments', 'EducationalSetting', 
+                           'EducationalSettingComments', 'Country', 'CountryComments', 'BaselineGroupDifferences',
+                           'BaselineGroupDifferencesComments', 'StudyDesign', 'StudyDesignComments', 'AttritionReported', 
+                           'AttritionReportedComments', 'Comparability', 'ComparabilityComments', 'ComparabilityVarReport', 
+                           'ComparabilityVarReportComments', 'ComarabilityVariables', 'ComparabilityVariablesComments', 'Intervention', 
+                           'InterventionOrganisation', 'InterventionOrganisationComments', 'InterventionTraining', 'InterventionTrainingComments',
+                           'InterventionFocus', 'InterventionFocusComments', 'InterventionTeachingApproach', 'InterventionTeachingApproachComments', 
+                           'InterventionTime', 'InterventionTimeComments', 'InterventionTeachingResponsibility', 'InterventionTeachingResponsibilityComments',
+                           'StudentAge', 'StudentAgeComments','Outcome', 'SMD', 
+                           'SESMD', 'CIupper', 'CIlower', 'CodesPresent', 
+                           'OutcomesPresent', 'OutcomeCodesPresent'])
 pprint(df)
 
-#df.to_csv("test.csv", index=False)
+df.to_csv("test.csv", index=False)
