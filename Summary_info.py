@@ -39,6 +39,8 @@ for xs, ys in zip(x, y):
     df.append([xs, ys])
 
 # Variable option counts
+strand_option = {"Toolkit strand(s) (select at least one Toolkit strand)": 34}
+
 single_option = {"What was the level of assignment?": 7, 
                  "How were participants assigned?": 8,
                  "How realistic was the study?": 4, 
@@ -55,7 +57,6 @@ single_option = {"What was the level of assignment?": 7,
                  "Was training for the intervention provided?": 4} 
 
 multi_option = {"What is the age of the students? (Select ALL that apply)": 18,
-                "Toolkit strand(s) (select at least one Toolkit strand)": 34,
                 "Is attrition or drop out reported?": 4,
                 "Who is the focus of the intervention? (Select ALL that apply)": 9,
                 "What is the intervention teaching approach? (Select ALL that apply)": 7,
@@ -74,11 +75,12 @@ def get_info(question_dict):
                 fullset.append(holder)
     return fullset
 
+strand_output = get_info(strand_option)
 single_output = get_info(single_option)
 multi_output  = get_info(multi_option)
 
 # extract user inputted comments for each var
-""" def var_comments(codes):
+def var_comments(codes):
     all_comments=[]
     for var in range(len(codes)):
         comment=[]
@@ -102,8 +104,8 @@ multi_output  = get_info(multi_option)
         all_comments.append(comment)
     return all_comments
 
-single_output_data = var_comments(single_output)
-multi_output_data  = var_comments(multi_output) """
+single_output_comments = var_comments(single_output)
+multi_output_comments  = var_comments(multi_output)
 
 # data extraction for variables with one output
 def get_data(data_codes):
@@ -124,7 +126,7 @@ def get_data(data_codes):
                 holder.append("No 'Codes' Section")
         all.append(holder)
     return all
-single_output_data_extraction = get_data(single_output)
+data_single = get_data(single_output)
 
 # data extraction for variables with multiple outputs (e.g. age)
 def get_multi_data(data_codes):
@@ -143,32 +145,32 @@ def get_multi_data(data_codes):
                 holder.append(holderfind)
         all.append(holder)
     return all
-multi_output_data_extraction = get_multi_data(multi_output)
+data_multi = get_multi_data(multi_output)
 
 # get strand data
-""" def get_strands():
+def get_strands(strand_codes):
   finds=[]
-  for section in range(len(data["References"])):
-      if "Codes" in data["References"][section]:
-          if "Outcomes" in data["References"][section]:
-              if "OutcomeCodes" in data["References"][section]["Outcomes"][0]:
-                  for study in range(len(data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"])):
-                      for key,value in multi_option[1].items():
-                          if key == data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"][study]["AttributeId"]:
-                              strandfind=value
-                  finds.append(strandfind)
-              else:
-                  finds.append(exclude)
-          else:
-              finds.append(exclude)
-      else:
-          finds.append(exclude)
-        
+  for var in range(len(strand_codes)):
+    for section in range(len(data["References"])):
+        if "Codes" in data["References"][section]:
+            if "Outcomes" in data["References"][section]:
+                if "OutcomeCodes" in data["References"][section]["Outcomes"][0]:
+                    for study in range(len(data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"])):
+                        for key,value in strand_codes[var].items():
+                                if key == data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"][study]["AttributeId"]:
+                                    strandfind=value
+                    finds.append(strandfind)
+                else:
+                    finds.append(exclude)
+            else:
+                finds.append(exclude)
+        else:
+            finds.append(exclude)
   return finds
-strand_info = get_strands()  """
+strand_data = get_strands(strand_output) 
 
 # section checker
-""" def section_checker():
+def section_checker():
     global codes_check, outcomes_check, outcomecodes_check
     codes_check=[]
     outcomes_check=[]
@@ -187,10 +189,10 @@ strand_info = get_strands()  """
         codes_check.append(Codes)
         outcomes_check.append(Outcomes)
         outcomecodes_check.append(OutcomeCodes)
-section_checker() """
+section_checker()
 
 # get basic info from first outer layer 
-""" def get_basic_info():
+def get_basic_info():
     global itemids, titles, year
     itemids, titles, year = [], [], []
     for section in range(len(data["References"])):
@@ -206,10 +208,10 @@ section_checker() """
             year.append(int(data["References"][section]["Year"]))
         else:
             year.append(exclude)
-get_basic_info() """
+get_basic_info()
 
 # get stats info from 'Outcomes' section
-""" def get_stats():
+def get_stats():
     global outcometext, interventiontext, SMD, SESMD, CIupperSMD, CIlowerSMD
     outcometext=[]
     interventiontext=[]
@@ -232,82 +234,43 @@ get_basic_info() """
             SMD.append(exclude)
             SESMD.append(exclude)
             CIupperSMD.append(exclude)
-            CIlowerSMD.append(exclude) """
-""" get_stats() """
-
-data = pd.DataFrame(list(zip(single_output_data_extraction[1])))
-pprint(data)
-
-# data only (no comments / additional text etc.)
-""" data_only = pd.DataFrame(list(zip(itemids, titles, year, strand_info, 
-                                 data_extraction[0], data_extraction[1], data_extraction[2], data_extraction[3], 
-                                 data_extraction[4], data_extraction[5], data_extraction[6], data_extraction[7],
-                                 data_extraction[8], data_extraction[10], data_extraction[9], data_extraction[11], 
-                                 data_extraction[12], interventiontext, data_extraction[13], data_extraction[14], 
-                                 multi_data_extraction[1], multi_data_extraction[2], multi_data_extraction[3],  multi_data_extraction[4],
-                                 multi_data_extraction[0], outcometext, SMD, SESMD, 
-                                 CIupperSMD, CIlowerSMD, codes_check, outcomes_check, 
-                                 outcomecodes_check)), 
-                        columns=['ItemID', 'Author', 'Year', 'Strand', 
-                                'LevelofAssignment', 'ParticipantAssignment', 'StudyRealism', 'StudentGender', 
-                                'PublicationType', 'EducationalSetting', 'Country',  'BaselineGroupDifferences',
-                                'StudyDesign',  'AttritionReported', 'Comparability',  'ComparabilityVarReport', 
-                                'ComarabilityVariables',  'Intervention', 'InterventionOrganisation',  'InterventionTraining', 
-                                'InterventionFocus',  'InterventionTeachingApproach',  'InterventionTime',  'InterventionTeachingResponsibility', 
-                                'StudentAge', 'Outcome', 'SMD', 'SESMD', 
-                                'CIupper', 'CIlower', 'CodesPresent', 'OutcomesPresent', 
-                                'OutcomeCodesPresent']) """
+            CIlowerSMD.append(exclude)
+get_stats()
 
 # dataframe that includes user comments (additional text etc.) 
-""" data_verbose = pd.DataFrame(list(zip(itemids, titles, year, strand_info, 
-                                    comments[8], data_extraction[0], comments[0], data_extraction[1], 
-                                    comments[1], data_extraction[2], comments[2], data_extraction[3], 
-                                    comments[3], data_extraction[4], comments[4], data_extraction[5], 
-                                    comments[5], data_extraction[6], comments[6], data_extraction[7],
-                                    comments[9], data_extraction[8], comments[10], data_extraction[10], 
-                                    comments[12], data_extraction[9], comments[11], data_extraction[11], 
-                                    comments[13], data_extraction[12], comments[14], interventiontext, 
-                                    data_extraction[13], comments[15], data_extraction[14], comments[16], 
-                                    multi_data_extraction[1], comments[17], multi_data_extraction[2], comments[18], 
-                                    multi_data_extraction[3], comments[19], multi_data_extraction[4], comments[20],
-                                    multi_data_extraction[0], comments[7], outcometext, SMD, 
-                                    SESMD, CIupperSMD, CIlowerSMD, codes_check, 
-                                    outcomes_check, outcomecodes_check)), 
-                            columns=['ItemID', 'Author', 'Year', 'Strand', 
-                                    'StrandComments', 'LevelofAssignment', 'LevelofAssignmentComments', 'ParticipantAssignment', 
-                                    'ParticipantAssignmentComments', 'StudyRealism', 'StudyRealismComments', 'StudentGender', 
-                                    'StudentGenderComments', 'PublicationType', 'PublicationTypeComments', 'EducationalSetting', 
-                                    'EducationalSettingComments', 'Country', 'CountryComments', 'BaselineGroupDifferences',
-                                    'BaselineGroupDifferencesComments', 'StudyDesign', 'StudyDesignComments', 'AttritionReported', 
-                                    'AttritionReportedComments', 'Comparability', 'ComparabilityComments', 'ComparabilityVarReport', 
-                                    'ComparabilityVarReportComments', 'ComarabilityVariables', 'ComparabilityVariablesComments', 'Intervention', 
-                                    'InterventionOrganisation', 'InterventionOrganisationComments', 'InterventionTraining', 'InterventionTrainingComments',
-                                    'InterventionFocus', 'InterventionFocusComments', 'InterventionTeachingApproach', 'InterventionTeachingApproachComments', 
-                                    'InterventionTime', 'InterventionTimeComments', 'InterventionTeachingResponsibility', 'InterventionTeachingResponsibilityComments',
-                                    'StudentAge', 'StudentAgeComments','Outcome', 'SMD', 
-                                    'SESMD', 'CIupper', 'CIlower', 'CodesPresent', 
-                                    'OutcomesPresent', 'OutcomeCodesPresent']) """
+data_frame_standard = pd.DataFrame(list(zip(itemids, titles, year, strand_data,
+                                            outcometext, 
+                                            data_single[3], data_single[6], data_single[0], data_single[1],
+                                            data_single[8], data_single[4], data_single[2], data_single[6],
+                                            data_multi[1], data_multi[0], data_single[7], data_single[9],
+                                            data_single[10], data_single[11], interventiontext,
+                                            data_single[12], data_single[13],
+                                            data_multi[2], data_multi[3], data_multi[4], data_multi[5],
+                                            SMD, SESMD, CIupperSMD, CIlowerSMD,
+                                            codes_check, outcomes_check, outcomecodes_check)), 
+                                    columns=['ItemID', 'Author', 'Year', 'Strand',
+                                             'Outcome',  
+                                            'StudentGender', 'Country', 'LevelofAssignment', 'ParticipantAssignment', 
+                                            'StudyDesign', 'PublicationType', 'StudyRealism', 'EducationalSetting', 
+                                            'Attrition/DropoutReported', 'StudentAge', 'BaselineGroupDiff', 'Comparability',
+                                            'ComparabilityVarReported', 'ComparabilityVariables', 'Intervention',
+                                            'InterventionOrg', 'InterventionTrainingProvided',
+                                            'InterventionFocus', 'InterventionTeachingApproach', 'InterventionTime', 'WhoDeliveredTeaching',
+                                            'SMD', 'SESMD', 'CIupper', 'CIlower',
+                                            'CodesSectionPresent', 'OutcomesSectionPresent', 'OutcomeCodesSectionPresent', 
+                                            ])
 
 # round statistical output to 4 decimal places
-""" data_only["SMD"]     = data_only["SMD"].astype(float)
-data_only["SESMD"]   = data_only["SESMD"].astype(float)
-data_only["CIupper"] = data_only["CIupper"].astype(float)
-data_only["CIlower"] = data_only["CIlower"].astype(float)
+data_frame_standard["SMD"]     = data_frame_standard["SMD"].astype(float)
+data_frame_standard["SESMD"]   = data_frame_standard["SESMD"].astype(float)
+data_frame_standard["CIupper"] = data_frame_standard["CIupper"].astype(float)
+data_frame_standard["CIlower"] = data_frame_standard["CIlower"].astype(float)
 
-data_only["SMD"]     = data_only["SMD"].round(4)
-data_only["SESMD"]   = data_only["SESMD"].round(4)
-data_only["CIupper"] = data_only["CIupper"].round(4)
-data_only["CIlower"] = data_only["CIlower"].round(4)
+data_frame_standard["SMD"]     = data_frame_standard["SMD"].round(4)
+data_frame_standard["SESMD"]   = data_frame_standard["SESMD"].round(4)
+data_frame_standard["CIupper"] = data_frame_standard["CIupper"].round(4)
+data_frame_standard["CIlower"] = data_frame_standard["CIlower"].round(4)
 
-data_verbose["SMD"]     = data_verbose["SMD"].astype(float)
-data_verbose["SESMD"]   = data_verbose["SESMD"].astype(float)
-data_verbose["CIupper"] = data_verbose["CIupper"].astype(float)
-data_verbose["CIlower"] = data_verbose["CIlower"].astype(float)
+# save standard dataframe to .csv
+data_frame_standard.to_csv("test.csv", index=False, na_rep="NA")
 
-data_verbose["SMD"]     = data_verbose["SMD"].round(4)
-data_verbose["SESMD"]   = data_verbose["SESMD"].round(4)
-data_verbose["CIupper"] = data_verbose["CIupper"].round(4)
-data_verbose["CIlower"] = data_verbose["CIlower"].round(4)
-
-data_only.to_csv("data.csv", index=False)
-data_verbose.to_csv("data_with_comments.csv", index=False) """
