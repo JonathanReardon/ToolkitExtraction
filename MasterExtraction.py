@@ -56,8 +56,7 @@ single_option = {"What was the level of assignment?": 7,
                  "Are the variables used for comparability reported?": 4,
                  "If yes, which variables are used for comparability?": 6,
                  "What type of organisation was responsible for providing the intervention?": 7,
-                 "Was training for the intervention provided?": 4,
-                 "What is the total number of schools involved?": 2} 
+                 "Was training for the intervention provided?": 4} 
 
 multi_option = {"What is the age of the students? (Select ALL that apply)": 18,
                 "Is attrition or drop out reported?": 4,
@@ -67,7 +66,6 @@ multi_option = {"What is the age of the students? (Select ALL that apply)": 18,
                 "Who was responsible for the teaching at the point of delivery? (Select ALL that apply)": 11,
                 "What is the educational setting (Select ALL that apply)": 12}
 
-
 def get_info(question_dict):
     fullset=[]
     for question, option_count in question_dict.items():
@@ -75,10 +73,7 @@ def get_info(question_dict):
             if item[0] == question:
                 holder={}
                 for i in range(1,option_count):
-                    if option_count == 2:
-                        holder.update( {df[counter][1]:df[counter][0]} )
-                    else:
-                        holder.update( {df[counter+i][1]:df[counter+i][0]} )
+                    holder.update( {df[counter+i][1]:df[counter+i][0]} )
                 fullset.append(holder)
     return fullset
 
@@ -134,10 +129,7 @@ def get_data(data_codes):
                 for study in range(len(data["References"][section]["Codes"])):
                     for key, value in data_codes[var].items():
                         if key == data["References"][section]["Codes"][study]["AttributeId"]:
-                            if len(data_codes[var]) == 1:
-                                holderfind = data["References"][section]["Codes"][study]["AdditionalText"]
-                            else:
-                                holderfind, holdervalue = value, key
+                            holderfind, holdervalue = value, key
                 if len(holderfind) == 0:
                     holderfind = exclude
                 holder.append(holderfind)
@@ -171,7 +163,7 @@ def get_strands(strand_codes):
   finds=[]
   for var in range(len(strand_codes)):
     for section in range(len(data["References"])):
-        if "Codes" in data["References"][section]:
+        if "Codes" in data["References"][section]["Codes"]:
             if "Outcomes" in data["References"][section]:
                 if "OutcomeCodes" in data["References"][section]["Outcomes"][0]:
                     for study in range(len(data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"])):
@@ -215,19 +207,19 @@ def get_basic_info():
     global itemids, titles, year, abstract
     itemids, titles, year, abstract = [], [], [], []
     for section in range(len(data["References"])):
-        if "ItemId" in data["References"][section]:
+        if data["References"][section]["ItemId"]:
             itemids.append(data["References"][section]["ItemId"])
         else:
             itemids.append(exclude)
-        if "ShortTitle" in data["References"][section]:
+        if data["References"][section]["ShortTitle"]:
             titles.append(data["References"][section]["ShortTitle"])
         else:
             titles.append(exclude)
-        if "Year" in data["References"][section]:
+        if data["References"][section]["Year"]:
             year.append(int(data["References"][section]["Year"]))
         else:
             year.append(exclude)
-        if "Abstract" in data["References"][section]:
+        if data["References"][section]["Abstract"]:
             abstract.append(data["References"][section]["Abstract"])
         else:
             abstract.append(exclude)
@@ -334,7 +326,7 @@ data_frame_standard = pd.DataFrame(list(zip(itemids, titles, year, strand_data, 
                                             data_multi[1],   data_multi[2],    data_multi[3],   data_multi[4],   data_multi[5], 
                                             data_multi[6], 
                                             SMD, SESMD, CIupperSMD, CIlowerSMD,
-                                            codes_check, outcomes_check, outcomecodes_check, data_single[14])), 
+                                            codes_check, outcomes_check, outcomecodes_check)), 
                                     columns=['ItemID', 'Author', 'Year', 'Strand','Outcome', 'Abstract','Intervention',
                                              'LevelofAssignment', 'ParticipantAssignment', 'StudyRealism', 'StudentGender', 'PublicationType',          
                                              'EducationalSetting', 'Country','GroupBaselineDifferences', 'StudyDesign', 'Comparability',               
@@ -342,7 +334,7 @@ data_frame_standard = pd.DataFrame(list(zip(itemids, titles, year, strand_data, 
                                              'Attrition/DropOutReported', 'FocusofIntervention', 'InterventionTeachingApproach', 'InterventionTime', 'WhoDeliveredTeaching',        
                                              'EducationalSetting',         
                                              'SMD', 'SESMD', 'CIupper','CIlower',
-                                             'CodesSectionPresent', 'OutcomesSectionPresent', 'OutcomeCodesSectionPresent', 'NumerofSchools'])
+                                             'CodesSectionPresent', 'OutcomesSectionPresent', 'OutcomeCodesSectionPresent'])
 
 # convert all numerical data to float [verbose extraction]
 """ data_frame_verbose["SMD"]     = data_frame_verbose["SMD"].astype(float)
