@@ -1,0 +1,618 @@
+---
+title: 'Summary_Info.Rmd'
+author: "Jonathan Reardon"
+output:
+  html_document:
+    keep_md: true
+    #df_print: paged
+  #pdf_document:
+    #keep_md: true
+editor_options:
+  chunk_output_type: inline
+---
+
+**Import R libraries, save figures to "Master_figs/"**
+```{r setup, message=FALSE}
+knitr::opts_chunk$set(echo = T,
+                      fig.path = "Master_figs/")
+library(reticulate)
+library(ggplot2)
+library(dplyr)
+library(reshape2)
+library(purrr)
+library(gridExtra)
+library(cowplot)
+library(kableExtra)
+library(forestplot)
+library(metafor)
+library(stringr)
+use_python("/usr/local/bin/python3")
+rm(list = ls())
+```
+**Import Python packages and (json) dataset**
+```{python}
+# import necessary libraries
+import json
+from collections import Counter
+from pprint import pprint
+import numpy as np
+from matplotlib import pyplot as plt
+import pandas as pd
+plt.style.use('ggplot')
+
+# import dataset (uncomment to select dataset of choice)
+#with open('/home/jon/json/ToolkitExtraction/data/batch2.json') as f:
+#with open('/home/jon/json/ToolkitExtraction/data/Batch1.json') as f:
+  with open('/home/jon/json/ToolkitExtraction/data/May11th_2020.json') as f:
+#with open('/home/jon/json/ToolkitExtraction/data/May 12th_2020.json') as f:
+    data=json.load(f)
+```
+**Flatten dataset into lists containing all attribute names and Ids to easily get top-level (CodeSets) information**
+```{python}
+def extract_values(obj, key):
+    """Pull all values of specified key from nested JSON."""
+    arr = []
+    def extract(obj, arr, key):
+        """Recursively search for values of key in JSON tree."""
+        if isinstance(obj, dict):
+            for k, v in obj.items():
+                if isinstance(v, (dict, list)):
+                    extract(v, arr, key)
+                elif k == key:
+                    arr.append(v)
+        elif isinstance(obj, list):
+            for item in obj:
+                extract(item, arr, key)
+        return arr
+
+    results = extract(obj, arr, key)
+    return results
+
+x = extract_values(data,'AttributeName')
+y = extract_values(data,'AttributeId')
+
+df=[]
+for xs, ys in zip(x, y):
+    df.append([xs, ys])
+```
+## CodeSets extraction
+
+These functions extract attribute names and ID's (e.g. strand, educational setting) and return Python dictionaries containing attribute ID's as 'keys' and attribute names as 'values'. The 'Codesets' section at the top of the file does not contain any data, only variable information.
+
+**Example dictionaries**  
+strands&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= {5023544: 'Arts participation', 5023545: 'Aspiration interventions', .. }  
+edu_setting&nbsp;&nbsp;&nbsp;= {5215410: 'Nursery school/pre-school', 5215411: 'Primary/elementary school', 5215412, .. }
+
+```{python}
+### CONSTANTS ###
+exclude=np.nan
+# Variable counts
+strand_options=34
+design_options=10
+edu_setting_options=12
+country_options=188
+pub_Type_options=6
+age_options=18
+gender_options=5
+realism_options=4
+participant_assignment_options=8
+
+# LEVEL OF ASSIGNMENT
+def get_level_of_assignment_info():
+    level_of_assignment={}
+    for counter, item in enumerate(df):
+        if item[0] == "What was the level of assignment?":
+            for i in range(1,7):
+                level_of_assignment.update( {df[counter+i][1]:df[counter+i][0]} ) 
+    return level_of_assignment
+level_of_assignment = get_level_of_assignment_info()
+
+# PARTICIPANT ASSIGNMENT
+def get_participant_assignment_info():
+    participant_assignment={}
+    for counter, item in enumerate(df):
+        if item[0] == "How were participants assigned?":
+            for i in range(1,participant_assignment_options):
+                participant_assignment.update( {df[counter+i][1]:df[counter+i][0]} )
+    return participant_assignment
+participant_assignment = get_participant_assignment_info()
+
+# STUDY REALISM
+def get_study_realism_info():
+    study_realism={}
+    for counter, item in enumerate(df):
+        if item[0] == "How realistic was the study?":
+            for i in range(1,realism_options):
+                study_realism.update( {df[counter+i][1]:df[counter+i][0]} ) 
+    return study_realism
+study_realism = get_study_realism_info()
+
+# STUDENT GENDER
+def get_student_gender_info():
+    student_gender={}
+    for counter, item in enumerate(df):
+        if item[0] == "What is the gender of the students?":
+            for i in range(1,gender_options):
+                student_gender.update( {df[counter+i][1]:df[counter+i][0]} ) 
+    return student_gender
+student_gender = get_student_gender_info()
+
+# STUDENT AGE
+def get_student_age_info():
+    student_age={}
+    for counter, item in enumerate(df):
+        if item[0] == "What is the age of the students? (Select ALL that apply)":
+            for i in range(1,age_options):
+                student_age.update( {df[counter+i][1]:df[counter+i][0]} ) 
+    return student_age
+student_age = get_student_age_info()
+
+# PUBLICATION TYPE
+def get_pub_type_info():
+    pub_type={}
+    for counter, item in enumerate(df):
+        if item[0] == "Section 1 What is the publication type?":
+            for i in range(1,pub_Type_options):
+                pub_type.update( {df[counter+i][1]:df[counter+i][0]} )
+    return pub_type
+pub_type = get_pub_type_info()
+
+# STRAND
+def get_strand_info():
+    strands={}
+    for counter, item in enumerate(df):
+        if item[0] == "Toolkit strand(s) (select at least one Toolkit strand)":
+            for i in range(1,strand_options):
+                strands.update( {df[counter+i][1]:df[counter+i][0]} )
+    return strands
+strand_codes = get_strand_info()
+
+# STUDY DESIGN
+def get_study_design_info():
+    study_design={}
+    for counter, item in enumerate(df):
+        if item[0] == "What was the study design?":
+            for i in range(1,design_options):
+                study_design.update( {df[counter+i][1]:df[counter+i][0]} )
+    return study_design
+study_design = get_study_design_info()
+
+# EDUCATIONAL SETTING
+def get_edu_setting_info():
+    edu_setting={}
+    for counter, item in enumerate(df):
+        if item[0] == "What is the educational setting (Select ALL that apply)":
+            for i in range(1,edu_setting_options):
+                edu_setting.update( {df[counter+i][1]:df[counter+i][0]} )   
+    return edu_setting
+edu_setting = get_edu_setting_info()
+
+# COUNTRIES
+def get_countries_info():
+    countries={}
+    for counter, item in enumerate(df):
+        if item[0] == "In which country/countries was the study carried out? (Select ALL that apply)":
+            for i in range(1,country_options):
+                countries.update( {df[counter+i][1]:df[counter+i][0]} ) 
+    return countries
+countries = get_countries_info()
+```
+
+```{python}
+def get_strands():
+  finds=[]
+  for section in range(len(data["References"])):
+      if "Codes" in data["References"][section]:
+          if "Outcomes" in data["References"][section]:
+              if "OutcomeCodes" in data["References"][section]["Outcomes"][0]:
+                  for study in range(len(data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"])):
+                      for key,value in strand_codes.items():
+                          if key == data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"][study]["AttributeId"]:
+                              strandfind=value
+                  finds.append(strandfind)
+              else:
+                  finds.append(exclude)
+          else:
+              finds.append(exclude)
+      else:
+          finds.append(exclude)
+        
+  return finds
+
+strand_info = get_strands() 
+
+#lst=[]
+#for k,v in strand_codes.items():
+    #lst.append(v)
+    #for obj in lst:
+        #if strand_info.count(obj) > 0:
+            #print(obj, strand_info.count(obj))
+         
+  #count_summary()
+```
+
+```{python}
+levelofassignment=[]
+assigncomment=[]
+for section in range(len(data["References"])):
+    if "Codes" in data["References"][section]:
+        perstudy=[]
+        for study in range(len(data["References"][section]["Codes"])):
+            for key,value in level_of_assignment.items():
+                if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                    if data["References"][section]["Codes"][study]["AdditionalText"]:
+                        perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
+                    if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
+                        if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
+                            for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
+                                perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+        if len(perstudy) ==0:
+            perstudy=exclude 
+        levelofassignment.append(perstudy)
+        if len(levelassignfind)==0:
+            levelassignfind=exclude
+        assigncomment.append([levelassignfind])
+    else:
+        levelofassignment.append(exclude)
+        assigncomment.append(exclude)
+```
+
+```{python}
+designcomment=[]
+for section in range(len(data["References"])):
+    if "Codes" in data["References"][section]:
+        perstudy=[]
+        for study in range(len(data["References"][section]["Codes"])):
+            for key, value in study_design.items():
+                if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                    if data["References"][section]["Codes"][study]["AdditionalText"]:
+                        perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
+                    if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
+                        if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
+                            for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
+                                perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+        if len(perstudy) ==0:
+            perstudy=exclude 
+        designcomment.append(perstudy)
+    else:
+        designcomment.append(exclude)
+```
+
+```{python}
+studyrealism=[]
+studyrealismcomment=[]
+for section in range(len(data["References"])):
+    if "Codes" in data["References"][section]:
+        realismfind, realismvalue = [], []
+        perstudy=[]
+        for study in range(len(data["References"][section]["Codes"])):
+            for key,value in study_realism.items():
+                if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                    realismfind, realismvalue = value, key
+                    if data["References"][section]["Codes"][study]["AdditionalText"]:
+                        perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
+                    if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
+                        if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
+                            for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
+                                perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+        if len(perstudy) ==0:
+            perstudy=exclude 
+        studyrealismcomment.append(perstudy)
+        if len(realismfind)==0:
+            realismfind=exclude
+        studyrealism.append(realismfind)
+    else:
+        studyrealism.append(exclude)
+        studyrealismcomment.append(exclude)
+```
+
+```{python}
+studentgender=[]
+studentgendercomment=[]
+for section in range(len(data["References"])):
+    if "Codes" in data["References"][section]:
+        genderfind, gendervalue = [], []
+        perstudy=[]
+        for study in range(len(data["References"][section]["Codes"])):
+            for key,value in student_gender.items():
+                if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                    genderfind, gendervalue = value, key
+                    if data["References"][section]["Codes"][study]["AdditionalText"]:
+                        perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
+                    if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
+                        if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
+                            for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
+                                perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+        if len(perstudy) ==0:
+            perstudy=exclude       
+        studentgendercomment.append(perstudy)
+        if len(genderfind)==0:
+            genderfind=exclude
+        studentgender.append([genderfind])
+    else:
+        studentgender.append(exclude)
+        studentgendercomment.append(exclude)
+```
+
+```{python}
+age=[]
+for section in range(len(data["References"])):
+    if "Codes" in data["References"][section]:
+        studentagefind, studentagelabel = [], []
+        for study in range(len(data["References"][section]["Codes"])):
+            for key, value in student_age.items():
+                if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                    studentagefind.append(value)
+                    studentagelabel.append(key)
+
+        if len(studentagefind)==0:
+            studentagefind=exclude
+        age.append(studentagefind)
+    else:
+        age.append(exclude)
+age[0]
+```
+
+```{python}
+pub=[]
+pubcomment=[]
+for section in range(len(data["References"])):
+    if "Codes" in data["References"][section]:
+        pubfind, publabel= [], []
+        perstudy=[]
+        for study in range(len(data["References"][section]["Codes"])):
+            for key, value in pub_type.items():
+                if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                    pubfind, publabel = value, key
+                    if data["References"][section]["Codes"][study]["AdditionalText"]:
+                        perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
+                    if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
+                        if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
+                            for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
+                                perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+        if len(perstudy) ==0:
+            perstudy=exclude
+        pubcomment.append(perstudy)
+        if len(pubfind)==0:
+            pubfind=exclude
+        pub.append(pubfind)
+    else:
+        pub.append(exclude)
+        pubcomment.append(exclude)
+```
+
+```{python}
+partassignment=[]
+partassigncomment=[]
+for section in range(len(data["References"])):
+    if "Codes" in data["References"][section]:
+        partassignfind, partassignvalue = [], []
+        perstudy=[]
+        for study in range(len(data["References"][section]["Codes"])):
+            for key,value in participant_assignment.items():
+                if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                    partassignfind, partassignvalue = value, key
+                    if data["References"][section]["Codes"][study]["AdditionalText"]:
+                        perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
+                    if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
+                        if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
+                            for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
+                                perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+        if len(perstudy)==0:
+            perstudy=exclude
+        partassigncomment.append(perstudy)
+        if len(partassignfind)==0:
+            partassignfind=exclude
+        partassignment.append([partassignfind])
+    else:
+        partassignment.append(exclude)
+        partassigncomment.append(exclude)
+```
+
+```{python}
+edusetting=[]
+edusettingcomment=[]
+for section in range(len(data["References"])):
+    if "Codes" in data["References"][section]:
+        edusettingfind, edusettingvalue = [], []
+        perstudy=[]
+        for study in range(len(data["References"][section]["Codes"])):
+            for key,value in edu_setting.items():
+                if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                    edusettingfind, edusettingvalue = value, key
+                    if data["References"][section]["Codes"][study]["AdditionalText"]:
+                        perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
+                    if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
+                        if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
+                            for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
+                                perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+        if len(perstudy)==0:
+            perstudy=exclude
+        edusettingcomment.append(perstudy)
+        if len(edusettingfind)==0:
+            edusettingfind=exclude
+        edusetting.append([edusettingfind])
+    else:
+        edusetting.append(exclude)
+        edusettingcomment.append(exclude)
+```
+
+```{python}
+country=[]
+countrycomment=[]
+for section in range(len(data["References"])):
+    if "Codes" in data["References"][section]:
+        countryfind, countryvalue = [], []
+        perstudy=[]
+        for study in range(len(data["References"][section]["Codes"])):
+            for key,value in countries.items():
+                if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                    countryfind, countryvalue = value, key
+                    if data["References"][section]["Codes"][study]["AdditionalText"]:
+                        perstudy.append(data["References"][section]["Codes"][study]["AdditionalText"])
+                    if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
+                        if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
+                            for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
+                                perstudy.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+        if len(perstudy)==0:
+            perstudy=exclude
+        countrycomment.append(perstudy)
+        if len(countryfind)==0:
+            countryfind=exclude
+        country.append(countryfind)
+    else:
+        country.append(exclude)
+        countrycomment.append(exclude)
+```
+
+```{python}
+titles=[]
+for section in range(len(data["References"])):
+    if "ShortTitle" in data["References"][section]:
+        titles.append(data["References"][section]["ShortTitle"])
+```
+
+```{python}
+year=[]
+for section in range(len(data["References"])):
+    if "Year" in data["References"][section]:
+        year.append(int(data["References"][section]["Year"]))
+    else:
+        year.append(exclude)
+```
+
+```{python}
+codes_check=[]
+outcomes_check=[]
+outcomecodes_check=[]
+
+for section in range(len(data["References"])):
+    Codes="No"
+    Outcomes="No"
+    OutcomeCodes="No"
+    if "Codes" in data["References"][section]:
+        Codes="Yes"
+        if "Outcomes" in data["References"][section]:
+            Outcomes="Yes"
+            if "OutcomeCodes" in data["References"][section]["Outcomes"][0]:
+                OutcomeCodes="Yes"
+          
+    codes_check.append(Codes)
+    outcomes_check.append(Outcomes)
+    outcomecodes_check.append(OutcomeCodes)
+```
+
+```{python}
+itemids=[]
+for section in range(len(data["References"])):
+  if "ItemId" in data["References"][section]:
+      itemids.append(data["References"][section]["ItemId"])
+  else:
+      itemids.append(exclude)
+pprint(len(itemids))
+```
+
+```{python}
+outcometext=[]
+interventiontext=[]
+SMD=[]
+SESMD=[]
+CIupperSMD=[]
+CIlowerSMD=[]
+
+for section in range(len(data["References"])):
+    if "Outcomes" in data["References"][section]:
+        outcometext.append(data["References"][section]["Outcomes"][0]["OutcomeText"])
+        interventiontext.append(data["References"][section]["Outcomes"][0]["InterventionText"])
+        SMD.append(data["References"][section]["Outcomes"][0]["SMD"])
+        SESMD.append(data["References"][section]["Outcomes"][0]["SESMD"])
+        CIupperSMD.append(data["References"][section]["Outcomes"][0]["CIUpperSMD"])
+        CIlowerSMD.append(data["References"][section]["Outcomes"][0]["CILowerSMD"])
+                  
+    else:
+        outcometext.append(exclude)
+        interventiontext.append(exclude)
+        SMD.append(exclude)
+        SESMD.append(exclude)
+        CIupperSMD.append(exclude)
+        CIlowerSMD.append(exclude)
+```
+
+```{python}
+
+df = pd.DataFrame(list(zip(itemids, titles, year, strand_info, country, countrycomment, edusetting, edusettingcomment, pub, pubcomment, design, 
+                           designcomment, outcometext, interventiontext, studyrealism, studyrealismcomment, partassignment, partassigncomment,
+                           levelofassignment, assigncomment, age, agecomment, studentgender, studentgendercomment, SMD, SESMD, CIupperSMD,
+                           CIlowerSMD, codes_check, outcomes_check, outcomecodes_check)), 
+               columns =['ItemId', 'Author', 'Year', 'Strand', 'Country', 'CountryComments', 'EducationalSetting', 'EducationalSettingComments', 'PublicationType', 'PublicationTypeComments',
+                         'StudyDesign', 'StudyDesignComments','Outcome', 'Intervention', 'StudyRealism', 'StudyRealismComments', 'ParticipantAssignment', 'ParticipantAssignmentComments',
+                         'LevelofAssignment', 'LevelofAssignmentComments', 'StudentAge', 'StudentAgeComments', 'StudentGender', 'StudentGenderComments', 'SMD', 'SESMD', 'CIupperSMD', 
+                         'CIlowerSMD', 'Codes section present', 'Outcomes section present', 'OutcomeCodes section present']) 
+
+#df["LevelofAssignment"] = df["LevelofAssignment"].apply(", ".join)
+#df["ParticipantAssignment"] = df["ParticipantAssignment"].apply(", ".join)
+#df["EducationalSetting"] = df["EducationalSetting"].apply(", ".join)
+#df["Strand"] = df["Strand"].str.replace("Toolkit: ", "")
+
+# add decade column
+def decade_row(row):
+  if row["Year"] >= 1960 and row["Year"] <= 1969:
+    decade="1960-1969"
+  elif row["Year"] >= 1970 and row["Year"] <= 1979:
+    decade="1970-1979"
+  elif row["Year"] >= 1980 and row["Year"] <= 1989:
+    decade="1980-1989"
+  elif row["Year"] >= 1990 and row["Year"] <= 1999:
+    decade="1990-1999"
+  elif row["Year"] >= 2000 and row["Year"] <= 2009:
+    decade="2000-2010"
+  elif row["Year"] >= 2010 and row["Year"] <= 2019:
+    decade="2010-2019"
+  elif row["Year"] >= 2019 and row["Year"] <= 2029:
+    decade="2020-2029"
+  return decade
+
+def random_row(row):
+  if row["StudyDesign"] == "Prospective QED" or row["StudyDesign"]=="Retrospective QED  " or row["StudyDesign"] == "Interrupted time series QED" or row["StudyDesign"] =="RegressionDiscontinuity - not randomised":
+    outcome="Non-random"
+  elif row["StudyDesign"]=="Individual RCT" or row["StudyDesign"]=="Cluster RCT" or row["StudyDesign"]=="Multisite RCT" or row["StudyDesign"]=="Regression Discontinuity - not randomised":
+    outcome="Random"
+  else:
+    outcome=exclude
+  return outcome
+
+df["Decade"] = df.apply(decade_row, axis=1)
+df["Randomisation"] = df.apply(random_row, axis=1)
+
+# reorder columns
+df = df[["ItemId", "Author", "Year", "Decade", "Strand", "Country", "CountryComments", "Outcome", "PublicationType", "PublicationTypeComments",
+         "EducationalSetting", "EducationalSettingComments", "Intervention", "StudentAge", "StudentAgeComments", "StudentGender", "StudentGenderComments",
+         "StudyRealism", "StudyRealismComments", "LevelofAssignment", "LevelofAssignmentComments", "StudyDesign",
+         "StudyDesignComments", "ParticipantAssignment", "ParticipantAssignmentComments", "Randomisation", "SMD", "SESMD", "CIupperSMD", "CIlowerSMD",
+         'Codes section present', 'Outcomes section present', 'OutcomeCodes section present']]
+         
+df["SMD"] = df["SMD"].astype(float)
+df["SESMD"] = df["SESMD"].astype(float)
+df["CIupperSMD"] = df["CIupperSMD"].astype(float)
+df["CIlowerSMD"] = df["CIlowerSMD"].astype(float)
+
+df["SMD"] = df["SMD"].round(4)
+df["SESMD"] = df["SESMD"].round(4)
+df["CIupperSMD"] = df["CIupperSMD"].round(4)
+df["CIlowerSMD"] = df["CIlowerSMD"].round(4)
+
+df["SMD"]
+#df.to_csv("test.csv", index=False)
+```
+
+```{r}
+all <- data.frame(py$df)
+
+# convert all columns to character to save .csv (some were lists)
+all <- all %>%
+       mutate_all(as.character) %>%
+       mutate_all(funs(str_replace_all(., "NaN", "NA")))
+
+View(all)
+#write.csv(all, "May12thExtraction_with_comments.csv", row.names=FALSE)
+```
