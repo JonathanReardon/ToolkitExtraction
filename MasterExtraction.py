@@ -56,7 +56,8 @@ single_option = {"What was the level of assignment?": 7,
                  "Are the variables used for comparability reported?": 4,
                  "If yes, which variables are used for comparability?": 6,
                  "What type of organisation was responsible for providing the intervention?": 7,
-                 "Was training for the intervention provided?": 4} 
+                 "Was training for the intervention provided?": 4,
+                 "What is the total number of schools involved?": 2} 
 
 multi_option = {"What is the age of the students? (Select ALL that apply)": 18,
                 "Is attrition or drop out reported?": 4,
@@ -74,7 +75,10 @@ def get_info(question_dict):
             if item[0] == question:
                 holder={}
                 for i in range(1,option_count):
-                    holder.update( {df[counter+i][1]:df[counter+i][0]} )
+                    if option_count == 2:
+                        holder.update( {df[counter][1]:df[counter][0]} )
+                    else:
+                        holder.update( {df[counter+i][1]:df[counter+i][0]} )
                 fullset.append(holder)
     return fullset
 
@@ -130,7 +134,10 @@ def get_data(data_codes):
                 for study in range(len(data["References"][section]["Codes"])):
                     for key, value in data_codes[var].items():
                         if key == data["References"][section]["Codes"][study]["AttributeId"]:
-                            holderfind, holdervalue = value, key
+                            if len(data_codes[var]) == 1:
+                                holderfind = data["References"][section]["Codes"][study]["AdditionalText"]
+                            else:
+                                holderfind, holdervalue = value, key
                 if len(holderfind) == 0:
                     holderfind = exclude
                 holder.append(holderfind)
@@ -205,8 +212,8 @@ section_checker()
 
 # get basic info from first outer layer 
 def get_basic_info():
-    global itemids, titles, year
-    itemids, titles, year = [], [], []
+    global itemids, titles, year, abstract
+    itemids, titles, year, abstract = [], [], [], []
     for section in range(len(data["References"])):
         if "ItemId" in data["References"][section]:
             itemids.append(data["References"][section]["ItemId"])
@@ -220,17 +227,16 @@ def get_basic_info():
             year.append(int(data["References"][section]["Year"]))
         else:
             year.append(exclude)
+        if "Abstract" in data["References"][section]:
+            abstract.append(data["References"][section]["Abstract"])
+        else:
+            abstract.append(exclude)
 get_basic_info()
 
 # get stats info from 'Outcomes' section
 def get_stats():
     global outcometext, interventiontext, SMD, SESMD, CIupperSMD, CIlowerSMD
-    outcometext=[]
-    interventiontext=[]
-    SMD=[]
-    SESMD=[]
-    CIupperSMD=[]
-    CIlowerSMD=[]
+    outcometext, interventiontext, SMD, SESMD, CIupperSMD, CIlowerSMD = [], [], [], [], [], []
     for section in range(len(data["References"])):
         if "Outcomes" in data["References"][section]:
             outcometext.append(data["References"][section]["Outcomes"][0]["OutcomeText"])
@@ -250,7 +256,7 @@ def get_stats():
 get_stats()
 
 # create full dataframe (all data extracted [verbose])
-data_frame_verbose = pd.DataFrame(list(zip(itemids, 
+""" data_frame_verbose = pd.DataFrame(list(zip(itemids, 
                                             titles, 
                                             year, 
                                             strand_data,
@@ -318,28 +324,28 @@ data_frame_verbose = pd.DataFrame(list(zip(itemids,
                                              'CIlower',
                                              'CodesSectionPresent', 
                                              'OutcomesSectionPresent', 
-                                             'OutcomeCodesSectionPresent'])
+                                             'OutcomeCodesSectionPresent']) """
 
 # create full dataframe (all data extracted [verbose])
-data_frame_standard = pd.DataFrame(list(zip(itemids, titles, year, strand_data, outcometext, interventiontext,
+data_frame_standard = pd.DataFrame(list(zip(itemids, titles, year, strand_data, outcometext, abstract, interventiontext,
                                             data_single[0],  data_single[1],   data_single[2],  data_single[3],  data_single[4], 
                                             data_single[5],  data_single[6],   data_single[7],  data_single[8],  data_single[9],  
                                             data_single[10], data_single[11],  data_single[12], data_single[13], data_multi[0],
                                             data_multi[1],   data_multi[2],    data_multi[3],   data_multi[4],   data_multi[5], 
                                             data_multi[6], 
                                             SMD, SESMD, CIupperSMD, CIlowerSMD,
-                                            codes_check, outcomes_check, outcomecodes_check)), 
-                                    columns=['ItemID', 'Author', 'Year', 'Strand','Outcome', 'Intervention',
+                                            codes_check, outcomes_check, outcomecodes_check, data_single[14])), 
+                                    columns=['ItemID', 'Author', 'Year', 'Strand','Outcome', 'Abstract','Intervention',
                                              'LevelofAssignment', 'ParticipantAssignment', 'StudyRealism', 'StudentGender', 'PublicationType',          
                                              'EducationalSetting', 'Country','GroupBaselineDifferences', 'StudyDesign', 'Comparability',               
                                              'CompVariablesReported', 'ComparabilityVariables', 'InterventionOrg', 'InterventionTrainingProvided','StudentAge',                
                                              'Attrition/DropOutReported', 'FocusofIntervention', 'InterventionTeachingApproach', 'InterventionTime', 'WhoDeliveredTeaching',        
                                              'EducationalSetting',         
                                              'SMD', 'SESMD', 'CIupper','CIlower',
-                                             'CodesSectionPresent', 'OutcomesSectionPresent', 'OutcomeCodesSectionPresent'])
+                                             'CodesSectionPresent', 'OutcomesSectionPresent', 'OutcomeCodesSectionPresent', 'NumerofSchools'])
 
 # convert all numerical data to float [verbose extraction]
-data_frame_verbose["SMD"]     = data_frame_verbose["SMD"].astype(float)
+""" data_frame_verbose["SMD"]     = data_frame_verbose["SMD"].astype(float)
 data_frame_verbose["SESMD"]   = data_frame_verbose["SESMD"].astype(float)
 data_frame_verbose["CIupper"] = data_frame_verbose["CIupper"].astype(float)
 data_frame_verbose["CIlower"] = data_frame_verbose["CIlower"].astype(float)
@@ -348,7 +354,7 @@ data_frame_verbose["CIlower"] = data_frame_verbose["CIlower"].astype(float)
 data_frame_verbose["SMD"]     = data_frame_verbose["SMD"].round(4)
 data_frame_verbose["SESMD"]   = data_frame_verbose["SESMD"].round(4)
 data_frame_verbose["CIupper"] = data_frame_verbose["CIupper"].round(4)
-data_frame_verbose["CIlower"] = data_frame_verbose["CIlower"].round(4)
+data_frame_verbose["CIlower"] = data_frame_verbose["CIlower"].round(4) """
 
 # convert all numerical data to float [standard extraction]
 data_frame_standard["SMD"]     = data_frame_standard["SMD"].astype(float)
@@ -363,7 +369,7 @@ data_frame_standard["CIupper"] = data_frame_standard["CIupper"].round(4)
 data_frame_standard["CIlower"] = data_frame_standard["CIlower"].round(4)
 
 # save verbose data (to .csv)
-data_frame_verbose.to_csv("Sample_Output/May12th_verbose.csv", index=False, na_rep="NA")
-
+""" data_frame_verbose.to_csv("Sample_Output/May12th_verbose.csv", index=False, na_rep="NA")
+ """
 # save standard data (to .csv)
-data_frame_standard.to_csv("Sample_Output/May12th_standard.csv", index=False, na_rep="NA")
+data_frame_standard.to_csv("test.csv", index=False, na_rep="NA")
