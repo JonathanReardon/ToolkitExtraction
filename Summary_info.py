@@ -63,7 +63,8 @@ multi_option = {"What is the age of the students? (Select ALL that apply)": 18,
                 "Who is the focus of the intervention? (Select ALL that apply)": 9,
                 "What is the intervention teaching approach? (Select ALL that apply)": 7,
                 "When did the intervention take place?  (Select ALL that apply)": 7,
-                "Who was responsible for the teaching at the point of delivery? (Select ALL that apply)": 11}
+                "Who was responsible for the teaching at the point of delivery? (Select ALL that apply)": 11,
+                "What is the educational setting (Select ALL that apply)": 12}
 
 
 def get_info(question_dict):
@@ -115,9 +116,8 @@ def var_comments(codes):
     all_comments.append(text)
     return all_comments
 
-single_output_comments = var_comments(single_output)
-pprint(single_output_comments[1][0])
-print(len(single_output_comments[1][0]))
+single_output_text = var_comments(single_output)
+multi_output_text  = var_comments(multi_output)
 
 # data extraction for variables with one output
 def get_data(data_codes):
@@ -249,27 +249,72 @@ def get_stats():
             CIlowerSMD.append(exclude)
 get_stats()
 
-# dataframe excluding comments/highlighted text
-""" data_frame_standard = pd.DataFrame(list(zip(itemids, titles, year, strand_data,
-                                            outcometext, 
-                                            data_single[3], data_single[6], data_single[0], data_single[1],
-                                            data_single[8], data_single[4], data_single[2], data_single[6],
-                                            data_multi[1], data_multi[0], data_single[7], data_single[9],
-                                            data_single[10], data_single[11], interventiontext,
-                                            data_single[12], data_single[13],
-                                            data_multi[2], data_multi[3], data_multi[4], data_multi[5],
-                                            SMD, SESMD, CIupperSMD, CIlowerSMD,
-                                            codes_check, outcomes_check, outcomecodes_check)), 
-                                    columns=['ItemID', 'Author', 'Year', 'Strand',
-                                             'Outcome',  
-                                            'StudentGender', 'Country', 'LevelofAssignment', 'ParticipantAssignment', 
-                                            'StudyDesign', 'PublicationType', 'StudyRealism', 'EducationalSetting', 
-                                            'Attrition/DropoutReported', 'StudentAge', 'BaselineGroupDiff', 'Comparability',
-                                            'ComparabilityVarReported', 'ComparabilityVariables', 'Intervention',
-                                            'InterventionOrg', 'InterventionTrainingProvided',
-                                            'InterventionFocus', 'InterventionTeachingApproach', 'InterventionTime', 'WhoDeliveredTeaching',
-                                            'SMD', 'SESMD', 'CIupper', 'CIlower',
-                                            'CodesSectionPresent', 'OutcomesSectionPresent', 'OutcomeCodesSectionPresent'])
+data_frame_standard = pd.DataFrame(list(zip(itemids, 
+                                            titles, 
+                                            year, 
+                                            strand_data,
+                                            outcometext,
+                                            data_single[0],  single_output_text[0][0], single_output_text[1][0],
+                                            data_single[1],  single_output_text[0][1], single_output_text[1][1],
+                                            data_single[2],  single_output_text[0][2], single_output_text[1][2],
+                                            data_single[3],  single_output_text[0][3], single_output_text[1][3],
+                                            data_single[4],  single_output_text[0][4], single_output_text[1][4],
+                                            data_single[5],  single_output_text[0][5], single_output_text[1][5],
+                                            data_single[6],  single_output_text[0][6], single_output_text[1][6],
+                                            data_single[7],  single_output_text[0][7], single_output_text[1][7],
+                                            data_single[8],  single_output_text[0][8], single_output_text[1][8],
+                                            data_single[9],  single_output_text[0][9], single_output_text[1][9],
+                                            data_single[10],  single_output_text[0][10], single_output_text[1][10],
+                                            data_single[11],  single_output_text[0][11], single_output_text[1][11],
+                                            data_single[12],  single_output_text[0][12], single_output_text[1][12],
+                                            data_single[13],  single_output_text[0][13], single_output_text[1][13],
+                                            data_multi[0], multi_output_text[0][0], multi_output_text[1][0],
+                                            data_multi[1], multi_output_text[0][1], multi_output_text[1][1],
+                                            data_multi[2], multi_output_text[0][2], multi_output_text[1][2],
+                                            data_multi[3], multi_output_text[0][3], multi_output_text[1][3],
+                                            data_multi[4], multi_output_text[0][4], multi_output_text[1][4],
+                                            data_multi[5], multi_output_text[0][5], multi_output_text[1][5],
+                                            data_multi[6], multi_output_text[0][6], multi_output_text[1][6],
+                                            SMD, 
+                                            SESMD, 
+                                            CIupperSMD, 
+                                            CIlowerSMD,
+                                            codes_check, 
+                                            outcomes_check, 
+                                            outcomecodes_check)), 
+                                    columns=['ItemID', 
+                                             'Author', 
+                                             'Year', 
+                                             'Strand',
+                                             'Outcome', 
+                                             'LevelofAssignment', 'LevelofAssignmentComments', 'LevelofAssignmentHighlightedText',
+                                             'ParticipantAssignment', 'ParticipantAssignmentComents', 'ParticipantAssignmentHighlightedText',
+                                             'StudyRealism', 'StudyRealismComments', 'StudyRealismHighlightedText',
+                                             'StudentGender', 'StudentGenderComments', 'StudentGenderHighlightedText',
+                                             'PublicationType', 'PublicationTypeComments', 'PublicationTypeHighlightedText',
+                                             'EducationalSetting','EducationalSettingComments', 'EducationalSettingHighlightedText',
+                                             'Country', 'CountryComments', 'CountryHighlightedText',
+                                             'GroupBaselineDifferences', 'GroupBaselineDifferencesComments', 'GroupBaselineDifferencesHighlightedText',
+                                             'StudyDesign', 'StudyDesignComments', 'StudyDesignHighlightedText',
+                                             'Comparability', 'ComparabilityComments', 'ComparabilityHighlightedText',
+                                             'CompVariablesReported', 'CompVariablesReportedComments', 'CompVariablesReportedHighlightedText',
+                                             'ComparabilityVariables', 'ComparabilityVariablesComments', 'ComparabilityVariablesHighlightedText',
+                                             'InterventionOrg', 'InterventionOrgComments', 'InterventionOrgHighlightedText',
+                                             'InterventionTrainingProvided', 'InterventionTrainingProvidedComments', 'InterventionTrainingProvidedHighlightedText',
+                                             'StudentAge', 'StudentAgeComments', 'StudentAgeHighlightedText',
+                                             'Attrition/DropOutReported', 'Attrition/DropOutReportedComments', 'Attrition/DropOutReportedHighlightedText', 
+                                             'FocusofIntervention', 'FocusofInterventionComments', 'FocusofInterventionHighlightedText',
+                                             'InterventionTeachingApproach', 'InterventionTeachingApproachComments', 'InterventionTeachingApproachHighlightedText',
+                                             'InterventionTime', 'InterventionTimeComments', 'InterventionTimeHighlightedText',
+                                             'WhoDeliveredTeaching', 'WhoDeliveredTeachingComments', 'WhoDeliveredTeachingHighlightedText',
+                                             'EducationalSetting', 'EducationalSettingComments', 'EducationalSettingHighlightedText',
+                                            'SMD', 
+                                            'SESMD', 
+                                            'CIupper', 
+                                            'CIlower',
+                                            'CodesSectionPresent', 
+                                            'OutcomesSectionPresent', 
+                                            'OutcomeCodesSectionPresent'])
 
 # round statistical output to 4 decimal places
 data_frame_standard["SMD"]     = data_frame_standard["SMD"].astype(float)
@@ -282,6 +327,4 @@ data_frame_standard["SESMD"]   = data_frame_standard["SESMD"].round(4)
 data_frame_standard["CIupper"] = data_frame_standard["CIupper"].round(4)
 data_frame_standard["CIlower"] = data_frame_standard["CIlower"].round(4)
 
-# save standard dataframe to .csv
-data_frame_standard.to_csv("test.csv", index=False, na_rep="NA") """
-
+data_frame_standard.to_csv("test.csv", index=False, na_rep="NA")
