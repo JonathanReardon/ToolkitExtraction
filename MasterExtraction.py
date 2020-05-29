@@ -349,10 +349,10 @@ data_frame_verbose["CIupper"] = data_frame_verbose["CIupper"].round(4)
 data_frame_verbose["CIlower"] = data_frame_verbose["CIlower"].round(4)
 
 # convert all numerical data to float [standard extraction]
-data_frame_standard["SMD"]     = data_frame_verbose["SMD"].astype(float)
-data_frame_standard["SESMD"]   = data_frame_verbose["SESMD"].astype(float)
-data_frame_standard["CIupper"] = data_frame_verbose["CIupper"].astype(float)
-data_frame_standard["CIlower"] = data_frame_verbose["CIlower"].astype(float)
+data_frame_standard["SMD"]     = data_frame_standard["SMD"].astype(float)
+data_frame_standard["SESMD"]   = data_frame_standard["SESMD"].astype(float)
+data_frame_standard["CIupper"] = data_frame_standard["CIupper"].astype(float)
+data_frame_standard["CIlower"] = data_frame_standard["CIlower"].astype(float)
 
 # round statistical output to 4 decimal places [standard extraction]
 data_frame_standard["SMD"]     = data_frame_standard["SMD"].round(4)
