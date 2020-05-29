@@ -249,7 +249,8 @@ def get_stats():
             CIlowerSMD.append(exclude)
 get_stats()
 
-data_frame_standard = pd.DataFrame(list(zip(itemids, 
+# create full dataframe (all data extracted [verbose])
+data_frame_verbose = pd.DataFrame(list(zip(itemids, 
                                             titles, 
                                             year, 
                                             strand_data,
@@ -287,44 +288,80 @@ data_frame_standard = pd.DataFrame(list(zip(itemids,
                                              'Year', 
                                              'Strand',
                                              'Outcome', 
-                                             'LevelofAssignment', 'LevelofAssignmentComments', 'LevelofAssignmentHighlightedText',
-                                             'ParticipantAssignment', 'ParticipantAssignmentComents', 'ParticipantAssignmentHighlightedText',
-                                             'StudyRealism', 'StudyRealismComments', 'StudyRealismHighlightedText',
-                                             'StudentGender', 'StudentGenderComments', 'StudentGenderHighlightedText',
-                                             'PublicationType', 'PublicationTypeComments', 'PublicationTypeHighlightedText',
-                                             'EducationalSetting','EducationalSettingComments', 'EducationalSettingHighlightedText',
-                                             'Country', 'CountryComments', 'CountryHighlightedText',
-                                             'GroupBaselineDifferences', 'GroupBaselineDifferencesComments', 'GroupBaselineDifferencesHighlightedText',
-                                             'StudyDesign', 'StudyDesignComments', 'StudyDesignHighlightedText',
-                                             'Comparability', 'ComparabilityComments', 'ComparabilityHighlightedText',
-                                             'CompVariablesReported', 'CompVariablesReportedComments', 'CompVariablesReportedHighlightedText',
-                                             'ComparabilityVariables', 'ComparabilityVariablesComments', 'ComparabilityVariablesHighlightedText',
-                                             'InterventionOrg', 'InterventionOrgComments', 'InterventionOrgHighlightedText',
+                                             # VARIABLE                       USER COMMENTS                           HIGHLIGHTED TEXT
+                                             'LevelofAssignment',            'LevelofAssignmentComments',            'LevelofAssignmentHighlightedText',
+                                             'ParticipantAssignment',        'ParticipantAssignmentComents',         'ParticipantAssignmentHighlightedText',
+                                             'StudyRealism',                 'StudyRealismComments',                 'StudyRealismHighlightedText',
+                                             'StudentGender',                'StudentGenderComments',                'StudentGenderHighlightedText',
+                                             'PublicationType',              'PublicationTypeComments',              'PublicationTypeHighlightedText',
+                                             'EducationalSetting',           'EducationalSettingComments',           'EducationalSettingHighlightedText',
+                                             'Country',                      'CountryComments',                      'CountryHighlightedText',
+                                             'GroupBaselineDifferences',     'GroupBaselineDifferencesComments',     'GroupBaselineDifferencesHighlightedText',
+                                             'StudyDesign',                  'StudyDesignComments',                  'StudyDesignHighlightedText',
+                                             'Comparability',                'ComparabilityComments',                'ComparabilityHighlightedText',
+                                             'CompVariablesReported',        'CompVariablesReportedComments',        'CompVariablesReportedHighlightedText',
+                                             'ComparabilityVariables',       'ComparabilityVariablesComments',       'ComparabilityVariablesHighlightedText',
+                                             'InterventionOrg',              'InterventionOrgComments',              'InterventionOrgHighlightedText',
                                              'InterventionTrainingProvided', 'InterventionTrainingProvidedComments', 'InterventionTrainingProvidedHighlightedText',
-                                             'StudentAge', 'StudentAgeComments', 'StudentAgeHighlightedText',
-                                             'Attrition/DropOutReported', 'Attrition/DropOutReportedComments', 'Attrition/DropOutReportedHighlightedText', 
-                                             'FocusofIntervention', 'FocusofInterventionComments', 'FocusofInterventionHighlightedText',
+                                             'StudentAge',                   'StudentAgeComments',                   'StudentAgeHighlightedText',
+                                             'Attrition/DropOutReported',    'Attrition/DropOutReportedComments',    'Attrition/DropOutReportedHighlightedText', 
+                                             'FocusofIntervention',          'FocusofInterventionComments',          'FocusofInterventionHighlightedText',
                                              'InterventionTeachingApproach', 'InterventionTeachingApproachComments', 'InterventionTeachingApproachHighlightedText',
-                                             'InterventionTime', 'InterventionTimeComments', 'InterventionTimeHighlightedText',
-                                             'WhoDeliveredTeaching', 'WhoDeliveredTeachingComments', 'WhoDeliveredTeachingHighlightedText',
-                                             'EducationalSetting', 'EducationalSettingComments', 'EducationalSettingHighlightedText',
-                                            'SMD', 
-                                            'SESMD', 
-                                            'CIupper', 
-                                            'CIlower',
-                                            'CodesSectionPresent', 
-                                            'OutcomesSectionPresent', 
-                                            'OutcomeCodesSectionPresent'])
+                                             'InterventionTime',             'InterventionTimeComments',             'InterventionTimeHighlightedText',
+                                             'WhoDeliveredTeaching',         'WhoDeliveredTeachingComments',         'WhoDeliveredTeachingHighlightedText',
+                                             'EducationalSetting',           'EducationalSettingComments',           'EducationalSettingHighlightedText',
+                                             'SMD', 
+                                             'SESMD', 
+                                             'CIupper', 
+                                             'CIlower',
+                                             'CodesSectionPresent', 
+                                             'OutcomesSectionPresent', 
+                                             'OutcomeCodesSectionPresent'])
 
-# round statistical output to 4 decimal places
-data_frame_standard["SMD"]     = data_frame_standard["SMD"].astype(float)
-data_frame_standard["SESMD"]   = data_frame_standard["SESMD"].astype(float)
-data_frame_standard["CIupper"] = data_frame_standard["CIupper"].astype(float)
-data_frame_standard["CIlower"] = data_frame_standard["CIlower"].astype(float)
+# create full dataframe (all data extracted [verbose])
+data_frame_standard = pd.DataFrame(list(zip(itemids, titles, year, strand_data, outcometext,
+                                            data_single[0],  data_single[1],   data_single[2],  data_single[3],  data_single[4], 
+                                            data_single[5],  data_single[6],   data_single[7],  data_single[8],  data_single[9],  
+                                            data_single[10], data_single[11],  data_single[12], data_single[13], data_multi[0],
+                                            data_multi[1],   data_multi[2],    data_multi[3],   data_multi[4],   data_multi[5], 
+                                            data_multi[6], 
+                                            SMD, SESMD, CIupperSMD, CIlowerSMD,
+                                            codes_check, outcomes_check, outcomecodes_check)), 
+                                    columns=['ItemID', 'Author', 'Year', 'Strand','Outcome', 
+                                             'LevelofAssignment', 'ParticipantAssignment', 'StudyRealism', 'StudentGender', 'PublicationType',          
+                                             'EducationalSetting', 'Country','GroupBaselineDifferences', 'StudyDesign', 'Comparability',               
+                                             'CompVariablesReported', 'ComparabilityVariables', 'InterventionOrg', 'InterventionTrainingProvided','StudentAge',                
+                                             'Attrition/DropOutReported', 'FocusofIntervention', 'InterventionTeachingApproach', 'InterventionTime', 'WhoDeliveredTeaching',        
+                                             'EducationalSetting',         
+                                             'SMD', 'SESMD', 'CIupper','CIlower',
+                                             'CodesSectionPresent', 'OutcomesSectionPresent', 'OutcomeCodesSectionPresent'])
 
+# convert all numerical data to float [verbose extraction]
+data_frame_verbose["SMD"]     = data_frame_verbose["SMD"].astype(float)
+data_frame_verbose["SESMD"]   = data_frame_verbose["SESMD"].astype(float)
+data_frame_verbose["CIupper"] = data_frame_verbose["CIupper"].astype(float)
+data_frame_verbose["CIlower"] = data_frame_verbose["CIlower"].astype(float)
+
+# round statistical output to 4 decimal places [verbose extraction]
+data_frame_verbose["SMD"]     = data_frame_verbose["SMD"].round(4)
+data_frame_verbose["SESMD"]   = data_frame_verbose["SESMD"].round(4)
+data_frame_verbose["CIupper"] = data_frame_verbose["CIupper"].round(4)
+data_frame_verbose["CIlower"] = data_frame_verbose["CIlower"].round(4)
+
+# convert all numerical data to float [standard extraction]
+data_frame_standard["SMD"]     = data_frame_verbose["SMD"].astype(float)
+data_frame_standard["SESMD"]   = data_frame_verbose["SESMD"].astype(float)
+data_frame_standard["CIupper"] = data_frame_verbose["CIupper"].astype(float)
+data_frame_standard["CIlower"] = data_frame_verbose["CIlower"].astype(float)
+
+# round statistical output to 4 decimal places [standard extraction]
 data_frame_standard["SMD"]     = data_frame_standard["SMD"].round(4)
 data_frame_standard["SESMD"]   = data_frame_standard["SESMD"].round(4)
 data_frame_standard["CIupper"] = data_frame_standard["CIupper"].round(4)
 data_frame_standard["CIlower"] = data_frame_standard["CIlower"].round(4)
 
-data_frame_standard.to_csv("test.csv", index=False, na_rep="NA")
+# save verbose data (to .csv)
+data_frame_verbose.to_csv("May12th_verbose.csv", index=False, na_rep="NA")
+
+# save standard data (to .csv)
+data_frame_standard.to_csv("May12th_standard.csv", index=False, na_rep="NA")
