@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 
 # input data file name (.csv) with full path
-datafile = '/home/jon/json/ToolkitExtraction/data/May12th_2020.json'
+datafile = '/home/jon/json/ToolkitExtraction/Data/May12th_2020.json'
 
 # import dataset (uncomment to select dataset of choice)
 with open(datafile) as f:
@@ -255,6 +255,7 @@ data_frame_verbose = pd.DataFrame(list(zip(itemids,
                                             year, 
                                             strand_data,
                                             outcometext,
+                                            interventiontext,
                                             data_single[0],  single_output_text[0][0], single_output_text[1][0],
                                             data_single[1],  single_output_text[0][1], single_output_text[1][1],
                                             data_single[2],  single_output_text[0][2], single_output_text[1][2],
@@ -288,6 +289,7 @@ data_frame_verbose = pd.DataFrame(list(zip(itemids,
                                              'Year', 
                                              'Strand',
                                              'Outcome', 
+                                             'Intervention',
                                              # VARIABLE                       USER COMMENTS                           HIGHLIGHTED TEXT
                                              'LevelofAssignment',            'LevelofAssignmentComments',            'LevelofAssignmentHighlightedText',
                                              'ParticipantAssignment',        'ParticipantAssignmentComents',         'ParticipantAssignmentHighlightedText',
@@ -319,7 +321,7 @@ data_frame_verbose = pd.DataFrame(list(zip(itemids,
                                              'OutcomeCodesSectionPresent'])
 
 # create full dataframe (all data extracted [verbose])
-data_frame_standard = pd.DataFrame(list(zip(itemids, titles, year, strand_data, outcometext,
+data_frame_standard = pd.DataFrame(list(zip(itemids, titles, year, strand_data, outcometext, interventiontext,
                                             data_single[0],  data_single[1],   data_single[2],  data_single[3],  data_single[4], 
                                             data_single[5],  data_single[6],   data_single[7],  data_single[8],  data_single[9],  
                                             data_single[10], data_single[11],  data_single[12], data_single[13], data_multi[0],
@@ -327,7 +329,7 @@ data_frame_standard = pd.DataFrame(list(zip(itemids, titles, year, strand_data, 
                                             data_multi[6], 
                                             SMD, SESMD, CIupperSMD, CIlowerSMD,
                                             codes_check, outcomes_check, outcomecodes_check)), 
-                                    columns=['ItemID', 'Author', 'Year', 'Strand','Outcome', 
+                                    columns=['ItemID', 'Author', 'Year', 'Strand','Outcome', 'Intervention',
                                              'LevelofAssignment', 'ParticipantAssignment', 'StudyRealism', 'StudentGender', 'PublicationType',          
                                              'EducationalSetting', 'Country','GroupBaselineDifferences', 'StudyDesign', 'Comparability',               
                                              'CompVariablesReported', 'ComparabilityVariables', 'InterventionOrg', 'InterventionTrainingProvided','StudentAge',                
@@ -361,7 +363,7 @@ data_frame_standard["CIupper"] = data_frame_standard["CIupper"].round(4)
 data_frame_standard["CIlower"] = data_frame_standard["CIlower"].round(4)
 
 # save verbose data (to .csv)
-data_frame_verbose.to_csv("May12th_verbose.csv", index=False, na_rep="NA")
+data_frame_verbose.to_csv("Sample_Output/May12th_verbose.csv", index=False, na_rep="NA")
 
 # save standard data (to .csv)
-data_frame_standard.to_csv("May12th_standard.csv", index=False, na_rep="NA")
+data_frame_standard.to_csv("Sample_Output/May12th_standard.csv", index=False, na_rep="NA")
