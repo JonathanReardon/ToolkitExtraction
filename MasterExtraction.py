@@ -416,40 +416,31 @@ multi_output =    [{# In which country/countries was the study carried out? (Sel
 
 # extract user inputted comments for each var
 def var_comments(codes):
-    all_comments = []
-    comments, text = [], []
+    all_comments, comments = [], []
     for var in range(len(codes)):
-        user_comments_holder, highlight_text_holder = [], []
         for section in range(len(data["References"])):
             if "Codes" in data["References"][section]:
                 user_comments, highlighted_text =  [], []
                 for study in range(len(data["References"][section]["Codes"])):
                     for key, value in codes[var].items():
                         if key == data["References"][section]["Codes"][study]["AttributeId"]:
-                            if data["References"][section]["Codes"][study]["AdditionalText"]:
-                                user_comments.append(data["References"][section]["Codes"][study]["AdditionalText"])
-                            if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
-                                if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
-                                    for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
-                                        highlighted_text.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
+                            if "AdditionalText" in data["References"][section]["Codes"][study]:
+                                user_comments = data["References"][section]["Codes"][study]["AdditionalText"]
+                            #if "ItemAttributeFullTextDetails" in data["References"][section]["Codes"][study]:
+                                #if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
+                                    #for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
+                                        #highlighted_text.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
                 if len(user_comments)==0:
-                    user_comments=exclude 
-                if len(highlighted_text)==0:
-                    highlighted_text=exclude
-                user_comments_holder.append(user_comments)
-                highlight_text_holder.append(highlighted_text)
+                    user_comments=exclude
+                comments.append([user_comments])
             else:
-                user_comments_holder.append(exclude)
-                highlight_text_holder.append(exclude)
+                comments.append(exclude)
+        all_comments.append(comments)
+        comments=[]
 
-        comments.append(user_comments_holder)
-        text.append(highlight_text_holder)
-    all_comments.append(comments)
-    all_comments.append(text)
     return all_comments
 
 single_output_text = var_comments(single_output)
-multi_output_text  = var_comments(multi_output)
 
 # data extraction for variables with one output
 def get_data(data_codes):
@@ -581,11 +572,8 @@ def get_stats():
             CIlowerSMD.append(exclude)
 get_stats()
 
-
-data_frame_standard = pd.DataFrame(list(zip(itemids, strand_data, single_output_text[0], single_output_text[0])))
-pprint(data_frame_standard)
-
-data_frame_standard.to_csv("test.csv", index=False, na_rep="NA")
+data_frame_standard = pd.DataFrame(list(zip(itemids, single_output_text[3])))
+data_frame_standard.to_csv("test.csv", index=False)
 
 # convert all numerical data to float [verbose extraction]
 """ data_frame_verbose["SMD"]     = data_frame_verbose["SMD"].astype(float)
