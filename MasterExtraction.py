@@ -581,96 +581,8 @@ def get_stats():
             CIlowerSMD.append(exclude)
 get_stats()
 
-# create full dataframe (all data extracted [verbose])
-""" data_frame_verbose = pd.DataFrame(list(zip(itemids, 
-                                            titles, 
-                                            year, 
-                                            strand_data,
-                                            outcometext,
-                                            interventiontext,
-                                            data_single[0],  single_output_text[0][0], single_output_text[1][0],
-                                            data_single[1],  single_output_text[0][1], single_output_text[1][1],
-                                            data_single[2],  single_output_text[0][2], single_output_text[1][2],
-                                            data_single[3],  single_output_text[0][3], single_output_text[1][3],
-                                            data_single[4],  single_output_text[0][4], single_output_text[1][4],
-                                            data_single[5],  single_output_text[0][5], single_output_text[1][5],
-                                            data_single[6],  single_output_text[0][6], single_output_text[1][6],
-                                            data_single[7],  single_output_text[0][7], single_output_text[1][7],
-                                            data_single[8],  single_output_text[0][8], single_output_text[1][8],
-                                            data_single[9],  single_output_text[0][9], single_output_text[1][9],
-                                            data_single[10],  single_output_text[0][10], single_output_text[1][10],
-                                            data_single[11],  single_output_text[0][11], single_output_text[1][11],
-                                            data_single[12],  single_output_text[0][12], single_output_text[1][12],
-                                            data_single[13],  single_output_text[0][13], single_output_text[1][13],
-                                            data_multi[0], multi_output_text[0][0], multi_output_text[1][0],
-                                            data_multi[1], multi_output_text[0][1], multi_output_text[1][1],
-                                            data_multi[2], multi_output_text[0][2], multi_output_text[1][2],
-                                            data_multi[3], multi_output_text[0][3], multi_output_text[1][3],
-                                            data_multi[4], multi_output_text[0][4], multi_output_text[1][4],
-                                            data_multi[5], multi_output_text[0][5], multi_output_text[1][5],
-                                            data_multi[6], multi_output_text[0][6], multi_output_text[1][6],
-                                            SMD, 
-                                            SESMD, 
-                                            CIupperSMD, 
-                                            CIlowerSMD,
-                                            codes_check, 
-                                            outcomes_check, 
-                                            outcomecodes_check)), 
-                                    columns=['ItemID', 
-                                             'Author', 
-                                             'Year', 
-                                             'Strand',
-                                             'Outcome', 
-                                             'Intervention',
-                                             # VARIABLE                       USER COMMENTS                           HIGHLIGHTED TEXT
-                                             'LevelofAssignment',            'LevelofAssignmentComments',            'LevelofAssignmentHighlightedText',
-                                             'ParticipantAssignment',        'ParticipantAssignmentComents',         'ParticipantAssignmentHighlightedText',
-                                             'StudyRealism',                 'StudyRealismComments',                 'StudyRealismHighlightedText',
-                                             'StudentGender',                'StudentGenderComments',                'StudentGenderHighlightedText',
-                                             'PublicationType',              'PublicationTypeComments',              'PublicationTypeHighlightedText',
-                                             'EducationalSetting',           'EducationalSettingComments',           'EducationalSettingHighlightedText',
-                                             'Country',                      'CountryComments',                      'CountryHighlightedText',
-                                             'GroupBaselineDifferences',     'GroupBaselineDifferencesComments',     'GroupBaselineDifferencesHighlightedText',
-                                             'StudyDesign',                  'StudyDesignComments',                  'StudyDesignHighlightedText',
-                                             'Comparability',                'ComparabilityComments',                'ComparabilityHighlightedText',
-                                             'CompVariablesReported',        'CompVariablesReportedComments',        'CompVariablesReportedHighlightedText',
-                                             'ComparabilityVariables',       'ComparabilityVariablesComments',       'ComparabilityVariablesHighlightedText',
-                                             'InterventionOrg',              'InterventionOrgComments',              'InterventionOrgHighlightedText',
-                                             'InterventionTrainingProvided', 'InterventionTrainingProvidedComments', 'InterventionTrainingProvidedHighlightedText',
-                                             'StudentAge',                   'StudentAgeComments',                   'StudentAgeHighlightedText',
-                                             'Attrition/DropOutReported',    'Attrition/DropOutReportedComments',    'Attrition/DropOutReportedHighlightedText', 
-                                             'FocusofIntervention',          'FocusofInterventionComments',          'FocusofInterventionHighlightedText',
-                                             'InterventionTeachingApproach', 'InterventionTeachingApproachComments', 'InterventionTeachingApproachHighlightedText',
-                                             'InterventionTime',             'InterventionTimeComments',             'InterventionTimeHighlightedText',
-                                             'WhoDeliveredTeaching',         'WhoDeliveredTeachingComments',         'WhoDeliveredTeachingHighlightedText',
-                                             'EducationalSetting',           'EducationalSettingComments',           'EducationalSettingHighlightedText',
-                                             'SMD', 
-                                             'SESMD', 
-                                             'CIupper', 
-                                             'CIlower',
-                                             'CodesSectionPresent', 
-                                             'OutcomesSectionPresent', 
-                                             'OutcomeCodesSectionPresent']) """
 
-# create full dataframe (all data extracted [verbose])
-""" data_frame_standard = pd.DataFrame(list(zip(itemids, titles, year, strand_data, outcometext, abstract, interventiontext,
-                                            data_single[0],  data_single[1],   data_single[2],  data_single[3],  data_single[4], 
-                                            data_single[5],  data_single[6],   data_single[7],  data_single[8],  data_single[9],  
-                                            data_single[10], data_single[11],  data_single[12], data_single[13], data_multi[0],
-                                            data_multi[1],   data_multi[2],    data_multi[3],   data_multi[4],   data_multi[5], 
-                                            data_multi[6], 
-                                            SMD, SESMD, CIupperSMD, CIlowerSMD,
-                                            codes_check, outcomes_check, outcomecodes_check)), 
-                                    columns=['ItemID', 'Author', 'Year', 'Strand','Outcome', 'Abstract','Intervention',
-                                             'LevelofAssignment', 'ParticipantAssignment', 'StudyRealism', 'StudentGender', 'PublicationType',          
-                                             'EducationalSetting', 'Country','GroupBaselineDifferences', 'StudyDesign', 'Comparability',               
-                                             'CompVariablesReported', 'ComparabilityVariables', 'InterventionOrg', 'InterventionTrainingProvided','StudentAge',                
-                                             'Attrition/DropOutReported', 'FocusofIntervention', 'InterventionTeachingApproach', 'InterventionTime', 'WhoDeliveredTeaching',        
-                                             'EducationalSetting',         
-                                             'SMD', 'SESMD', 'CIupper','CIlower',
-                                             'CodesSectionPresent', 'OutcomesSectionPresent', 'OutcomeCodesSectionPresent']) """
-
-data_frame_standard = pd.DataFrame(list(zip(itemids, strand_data, data_single[0], data_multi[0], data_multi[1])))
+data_frame_standard = pd.DataFrame(list(zip(itemids, strand_data, single_output_text[0], single_output_text[0])))
 pprint(data_frame_standard)
 
 data_frame_standard.to_csv("test.csv", index=False, na_rep="NA")
@@ -698,9 +610,3 @@ data_frame_standard["SMD"]     = data_frame_standard["SMD"].round(4)
 data_frame_standard["SESMD"]   = data_frame_standard["SESMD"].round(4)
 data_frame_standard["CIupper"] = data_frame_standard["CIupper"].round(4)
 data_frame_standard["CIlower"] = data_frame_standard["CIlower"].round(4) """
-
-# save verbose data (to .csv)
-""" data_frame_verbose.to_csv("Sample_Output/May12th_verbose.csv", index=False, na_rep="NA")
- """
-# save standard data (to .csv)
-""" data_frame_standard.to_csv("test.csv", index=False, na_rep="NA") """
