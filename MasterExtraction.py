@@ -14,32 +14,6 @@ with open(datafile) as f:
 # for missing or unavailable data
 exclude=np.nan
 
-# flatten json into list of lists
-def extract_values(obj, key):
-    """Pull all values of specified key from nested JSON."""
-    arr = []
-    def extract(obj, arr, key):
-        """Recursively search for values of key in JSON tree."""
-        if isinstance(obj, dict):
-            for k, v in obj.items():
-                if isinstance(v, (dict, list)):
-                    extract(v, arr, key)
-                elif k == key:
-                    arr.append(v)
-        elif isinstance(obj, list):
-            for item in obj:
-                extract(item, arr, key)
-        return arr
-    results = extract(obj, arr, key)
-    return results
-
-x = extract_values(data,'AttributeName')
-y = extract_values(data,'AttributeId')
-
-df=[]
-for xs, ys in zip(x, y):
-    df.append([xs, ys])
-
 # Variable option counts
 """ strand_option = {"Toolkit strand(s) (select at least one Toolkit strand)": 34}
 
@@ -531,16 +505,14 @@ def get_strands(strand_codes):
                                     strandfind=value
                         finds.append(strandfind)
                     else:
-                        strandfind=exclude
+                        finds.append(exclude)
                 else:
-                    strandfind=exclude
+                    finds.append(exclude)
             else:
-                strandfind=exclude
+                finds.append(exclude)
     return finds
 
 strand_data = get_strands(strand_output) 
-pprint(strand_data)
-print(len(strand_data))
 
 # section checker
 def section_checker():
@@ -697,11 +669,11 @@ get_stats()
                                              'EducationalSetting',         
                                              'SMD', 'SESMD', 'CIupper','CIlower',
                                              'CodesSectionPresent', 'OutcomesSectionPresent', 'OutcomeCodesSectionPresent']) """
-""" 
-data_frame_standard = pd.DataFrame(list(zip(data_single[0], data_multi[0], data_multi[1])))
+
+data_frame_standard = pd.DataFrame(list(zip(itemids, strand_data, data_single[0], data_multi[0], data_multi[1])))
 pprint(data_frame_standard)
 
-data_frame_standard.to_csv("test.csv", index=False, na_rep="NA") """
+data_frame_standard.to_csv("test.csv", index=False, na_rep="NA")
 
 # convert all numerical data to float [verbose extraction]
 """ data_frame_verbose["SMD"]     = data_frame_verbose["SMD"].astype(float)
