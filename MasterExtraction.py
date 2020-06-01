@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 
 # input data file name (.csv) with full path
-datafile = '/home/jon/json/ToolkitExtraction/Data/Batch1.json'
+datafile = '/home/jon/json/ToolkitExtraction/Data/May12th_2020.json'
 
 # import dataset (uncomment to select dataset of choice)
 with open(datafile) as f:
@@ -99,8 +99,7 @@ strand_output =   [{#Toolkit strand(s) (select at least one Toolkit strand)
                     5407071: 'Toolkit: Social and emotional learning',
                     5407072: 'Toolkit: Sports participation',
                     5407073: 'Toolkit: Summer schools',
-                    5407074: 'Toolkit: Teaching assistants'
-                }]
+                    5407074: 'Toolkit: Teaching assistants'}]
 
 single_output =   [{# What was the level of assignment?
                     5215244: 'Individual',
@@ -375,7 +374,7 @@ multi_output =    [{# In which country/countries was the study carried out? (Sel
                     5215638: 'Turkey',
                     5215639: 'Turkmenistan',
                     5215640: 'United Arab Emirates',
-                    5215641: 'Uruguay'}
+                    5215641: 'Uruguay'},
                     {# What is the age of the students? (Select ALL that apply)
                     5215433: '3',
                     5215434: '4',
@@ -520,25 +519,28 @@ data_multi = get_multi_data(multi_output)
 
 # get strand data
 def get_strands(strand_codes):
-  finds=[]
-  for var in range(len(strand_codes)):
-    for section in range(len(data["References"])):
-        if "Codes" in data["References"][section]["Codes"]:
-            if "Outcomes" in data["References"][section]:
-                if "OutcomeCodes" in data["References"][section]["Outcomes"][0]:
-                    for study in range(len(data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"])):
-                        for key,value in strand_codes[var].items():
+    finds=[]
+    for var in range(len(strand_codes)):
+        for section in range(len(data["References"])):
+            if "Codes" in data["References"][section]:
+                if "Outcomes" in data["References"][section]:
+                    if "OutcomeCodes" in data["References"][section]["Outcomes"][0]:
+                        for study in range(len(data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"])):
+                            for key,value in strand_codes[var].items():
                                 if key == data["References"][section]["Outcomes"][0]["OutcomeCodes"]["OutcomeItemAttributesList"][study]["AttributeId"]:
                                     strandfind=value
-                    finds.append(strandfind)
+                        finds.append(strandfind)
+                    else:
+                        strandfind=exclude
                 else:
-                    finds.append(exclude)
+                    strandfind=exclude
             else:
-                finds.append(exclude)
-        else:
-            finds.append(exclude)
-  return finds
+                strandfind=exclude
+    return finds
+
 strand_data = get_strands(strand_output) 
+pprint(strand_data)
+print(len(strand_data))
 
 # section checker
 def section_checker():
@@ -679,7 +681,7 @@ get_stats()
                                              'OutcomeCodesSectionPresent']) """
 
 # create full dataframe (all data extracted [verbose])
-data_frame_standard = pd.DataFrame(list(zip(itemids, titles, year, strand_data, outcometext, abstract, interventiontext,
+""" data_frame_standard = pd.DataFrame(list(zip(itemids, titles, year, strand_data, outcometext, abstract, interventiontext,
                                             data_single[0],  data_single[1],   data_single[2],  data_single[3],  data_single[4], 
                                             data_single[5],  data_single[6],   data_single[7],  data_single[8],  data_single[9],  
                                             data_single[10], data_single[11],  data_single[12], data_single[13], data_multi[0],
@@ -694,7 +696,12 @@ data_frame_standard = pd.DataFrame(list(zip(itemids, titles, year, strand_data, 
                                              'Attrition/DropOutReported', 'FocusofIntervention', 'InterventionTeachingApproach', 'InterventionTime', 'WhoDeliveredTeaching',        
                                              'EducationalSetting',         
                                              'SMD', 'SESMD', 'CIupper','CIlower',
-                                             'CodesSectionPresent', 'OutcomesSectionPresent', 'OutcomeCodesSectionPresent'])
+                                             'CodesSectionPresent', 'OutcomesSectionPresent', 'OutcomeCodesSectionPresent']) """
+""" 
+data_frame_standard = pd.DataFrame(list(zip(data_single[0], data_multi[0], data_multi[1])))
+pprint(data_frame_standard)
+
+data_frame_standard.to_csv("test.csv", index=False, na_rep="NA") """
 
 # convert all numerical data to float [verbose extraction]
 """ data_frame_verbose["SMD"]     = data_frame_verbose["SMD"].astype(float)
@@ -709,7 +716,7 @@ data_frame_verbose["CIupper"] = data_frame_verbose["CIupper"].round(4)
 data_frame_verbose["CIlower"] = data_frame_verbose["CIlower"].round(4) """
 
 # convert all numerical data to float [standard extraction]
-data_frame_standard["SMD"]     = data_frame_standard["SMD"].astype(float)
+""" data_frame_standard["SMD"]     = data_frame_standard["SMD"].astype(float)
 data_frame_standard["SESMD"]   = data_frame_standard["SESMD"].astype(float)
 data_frame_standard["CIupper"] = data_frame_standard["CIupper"].astype(float)
 data_frame_standard["CIlower"] = data_frame_standard["CIlower"].astype(float)
@@ -718,7 +725,7 @@ data_frame_standard["CIlower"] = data_frame_standard["CIlower"].astype(float)
 data_frame_standard["SMD"]     = data_frame_standard["SMD"].round(4)
 data_frame_standard["SESMD"]   = data_frame_standard["SESMD"].round(4)
 data_frame_standard["CIupper"] = data_frame_standard["CIupper"].round(4)
-data_frame_standard["CIlower"] = data_frame_standard["CIlower"].round(4)
+data_frame_standard["CIlower"] = data_frame_standard["CIlower"].round(4) """
 
 # save verbose data (to .csv)
 """ data_frame_verbose.to_csv("Sample_Output/May12th_verbose.csv", index=False, na_rep="NA")
