@@ -197,10 +197,10 @@ get_stats()
 # select data with which to make dataframe
 def low_FSM_verbose():
     df = pd.DataFrame({'StudyID': itemids, 'Strand': strand_data, 
-                    'lowSESFSMstudents': single_output_comments[-4], 'lowSESFSMstudentsHighlightedText': single_output_highlighted_text[-4],
-                    'lowSESFSM%': single_output_comments[-3], 'lowSESFSM%HighlightedText': single_output_highlighted_text[-3],
-                    'lowSESFSMfurtherinfo': single_output_comments[-2], 'lowSESFSMfurtherinfoHighlightedText': single_output_highlighted_text[-2],
-                    'NoSESFSMinformation': single_output_comments[-1], 'NoSESFSMinformationHighlightedText': single_output_highlighted_text[-1]})
+                       'lowSESFSMstudents': single_output_comments[-4], 'lowSESFSMstudentsHighlightedText': single_output_highlighted_text[-4],
+                       'lowSESFSM%': single_output_comments[-3], 'lowSESFSM%HighlightedText': single_output_highlighted_text[-3],
+                       'lowSESFSMfurtherinfo': single_output_comments[-2], 'lowSESFSMfurtherinfoHighlightedText': single_output_highlighted_text[-2],
+                       'NoSESFSMinformation': single_output_comments[-1], 'NoSESFSMinformationHighlightedText': single_output_highlighted_text[-1]})
     # remove toolkit label from strand
     df['Strand'] = df['Strand'].str.replace('Toolkit: ', '')
     # remove escape sequences from strings
@@ -209,7 +209,39 @@ def low_FSM_verbose():
     # save dataframe to .csv
     df.to_csv("LowSESFSM_verbose.csv", index=False)
 
-low_FSM_verbose()
+# select data with which to make dataframe
+def number_of_classes_verbose():
+    df = pd.DataFrame({'StudyID': itemids, 'Strand': strand_data, 
+                       'NumberofClasses': single_output_comments[-10], 'NumberofClassesHighlightedText': single_output_highlighted_text[-10],
+                       'TotalNumberofClasses': single_output_comments[-7], 'TotalNumberofClassesHighlightedText': single_output_highlighted_text[-7]})
+    # remove toolkit label from strand
+    df['Strand'] = df['Strand'].str.replace('Toolkit: ', '')
+    # remove escape sequences from strings
+    df.replace('\r',' ', regex=True, inplace=True)
+    df.replace('\n',' ', regex=True, inplace=True)
+    # save dataframe to .csv
+    df.to_csv("NumberofClasses.csv", index=False)
+
+def test_type_verbose():
+    df = pd.DataFrame({'StudyID': itemids, 'Strand': strand_data, 
+                       'TypeofTest': single_output_comments[-6], 'TypeofTestHighlightedText': single_output_highlighted_text[-6],
+                       'StandardisedTest': single_output_comments[-5], 'StandardisedTestHighlightedText': single_output_highlighted_text[-5],
+                       'ResearcherDevelopedTest': single_output_comments[-4], 'ResearcherDevelopedTestHighlightedTest': single_output_highlighted_text[-4],
+                       'SchoolDevelopedTest': single_output_comments[-3], 'SchoolDevelopedTestHighlightedTest': single_output_highlighted_text[-3],
+                       'NationalTestorExam': single_output_comments[-2], 'NationalTestorExamHighlightedTest': single_output_highlighted_text[-2],
+                       'InternationalTests': single_output_comments[-1], 'InternationalTestsHighlightedTest': single_output_highlighted_text[-1]})
+    # remove toolkit label from strand
+    df['Strand'] = df['Strand'].str.replace('Toolkit: ', '')
+    # remove escape sequences from strings
+    df.replace('\r',' ', regex=True, inplace=True)
+    df.replace('\n',' ', regex=True, inplace=True)
+    # save dataframe to .csv
+    df.to_csv("TestType_verbose.csv", index=False)
+
+
+# low_FSM_verbose()
+# number_of_classes_verbose()
+test_type_verbose()
 
 # convert all numerical data to float [verbose extraction]
 """ data_frame_verbose["SMD"]     = data_frame_verbose["SMD"].astype(float)
