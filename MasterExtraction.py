@@ -14,7 +14,7 @@ with open(datafile) as f:
     data=json.load(f)
 
 # for missing or unavailable data
-exclude=np.nan
+exclude="NA"
 
 # extract user inputted comments for each var
 def var_comments(codes):
@@ -28,9 +28,10 @@ def var_comments(codes):
                         if key == data["References"][section]["Codes"][study]["AttributeId"]:
                             if "AdditionalText" in data["References"][section]["Codes"][study]:
                                 user_comments = data["References"][section]["Codes"][study]["AdditionalText"]
-                if len(user_comments)==0:
-                    user_comments=exclude
-                comments.append([user_comments])
+                if not user_comments:
+                    comments.append(exclude)
+                else:
+                    comments.append(user_comments)
             else:
                 comments.append(exclude)
         all_comments.append(comments)
@@ -41,11 +42,11 @@ single_output_comments = var_comments(single_output)
 
 # extract highlighted text for each var
 def var_highlighted_text(codes):
-    highlighted_text = []
+    all_comments, highlighted_text = [], []
     for var in range(len(codes)):
         for section in range(len(data["References"])):
             if "Codes" in data["References"][section]:
-                user_highlighted_text =  []
+                user_highlighted_text = []
                 for study in range(len(data["References"][section]["Codes"])):
                     for key, value in codes[var].items():
                         if key == data["References"][section]["Codes"][study]["AttributeId"]:
@@ -53,17 +54,17 @@ def var_highlighted_text(codes):
                                 if data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"]:
                                     for i in range(len(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"])):
                                         user_highlighted_text.append(data["References"][section]["Codes"][study]["ItemAttributeFullTextDetails"][i]["Text"])
-                if len(user_highlighted_text)==0:
-                    user_highlighted_text=exclude
-                highlighted_text.append([user_highlighted_text])
+                if not user_highlighted_text:
+                    highlighted_text.append(exclude)
+                else:
+                    highlighted_text.append(user_highlighted_text)
             else:
                 highlighted_text.append(exclude)
-    return highlighted_text
+        all_comments.append(highlighted_text)
+        highlighted_text=[]
+    return all_comments
 
 single_output_highlighted_text = var_highlighted_text(single_output)
-
-data_frame_standard = pd.DataFrame(list(zip(single_output_comments[3], single_output_comments[4])))
-data_frame_standard.to_csv("test.csv", index=False)
 
 # data extraction for variables with one output
 def get_data(data_codes):
@@ -144,7 +145,6 @@ def section_checker():
                 Outcomes="Yes"
                 if "OutcomeCodes" in data["References"][section]["Outcomes"][0]:
                     OutcomeCodes="Yes"
-            
         codes_check.append(Codes)
         outcomes_check.append(Outcomes)
         outcomecodes_check.append(OutcomeCodes)
@@ -184,8 +184,7 @@ def get_stats():
             SMD.append(data["References"][section]["Outcomes"][0]["SMD"])
             SESMD.append(data["References"][section]["Outcomes"][0]["SESMD"])
             CIupperSMD.append(data["References"][section]["Outcomes"][0]["CIUpperSMD"])
-            CIlowerSMD.append(data["References"][section]["Outcomes"][0]["CILowerSMD"])
-                    
+            CIlowerSMD.append(data["References"][section]["Outcomes"][0]["CILowerSMD"])   
         else:
             outcometext.append(exclude)
             interventiontext.append(exclude)
@@ -194,6 +193,23 @@ def get_stats():
             CIupperSMD.append(exclude)
             CIlowerSMD.append(exclude)
 get_stats()
+
+# select data with which to make dataframe
+def low_FSM_verbose():
+    df = pd.DataFrame({'StudyID': itemids, 'Strand': strand_data, 
+                    'lowSESFSMstudents': single_output_comments[-4], 'lowSESFSMstudentsHighlightedText': single_output_highlighted_text[-4],
+                    'lowSESFSM%': single_output_comments[-3], 'lowSESFSM%HighlightedText': single_output_highlighted_text[-3],
+                    'lowSESFSMfurtherinfo': single_output_comments[-2], 'lowSESFSMfurtherinfoHighlightedText': single_output_highlighted_text[-2],
+                    'NoSESFSMinformation': single_output_comments[-1], 'NoSESFSMinformationHighlightedText': single_output_highlighted_text[-1]})
+    # remove toolkit label from strand
+    df['Strand'] = df['Strand'].str.replace('Toolkit: ', '')
+    # remove escape sequences from strings
+    df.replace('\r',' ', regex=True, inplace=True)
+    df.replace('\n',' ', regex=True, inplace=True)
+    # save dataframe to .csv
+    df.to_csv("LowSESFSM_verbose.csv", index=False)
+
+low_FSM_verbose()
 
 # convert all numerical data to float [verbose extraction]
 """ data_frame_verbose["SMD"]     = data_frame_verbose["SMD"].astype(float)
