@@ -146,7 +146,19 @@ single_output =   [{# What was the level of assignment?
                     {# Further information about FSM or SES in the study sample.
                     5376694: ''},
                     {# No SES/FSM information provided
-                    5366637: ''}]
+                    5366637: ''},
+                    {# What kind of tests were used? (Select ALL that apply)
+                    5215536: ''},
+                    {# Standardised test (Please specify)
+                    5215537: ''},
+                    {# Researcher developed test (Please add details)
+                    5215538: ''},
+                    {# School-developed test (Please add details)
+                    5215539: ''},
+                    {# National test or examination (Please specify)
+                    5215540: ''},
+                    {# International tests (Please specify)
+                    5215541: ''}]
 
 multi_output =    [{# In which country/countries was the study carried out? (Select ALL that apply)
                     5215276: 'USA',
