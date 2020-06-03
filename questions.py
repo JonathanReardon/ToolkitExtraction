@@ -138,7 +138,15 @@ single_output =   [{# What was the level of assignment?
                     {# Not provided/ unclear / not applicable
                     5407114: ''},
                     {# What is the overall sample analysed?
-                    5215428: ''}]
+                    5215428: ''},
+                    {# What is the proportion of low SES/FSM students in the sample?
+                    5215454: ''},
+                    {# FSM or low SES student percentage
+                    5376693: ''},
+                    {# Further information about FSM or SES in the study sample.
+                    5376694: ''},
+                    {# No SES/FSM information provided
+                    5366637: ''}]
 
 multi_output =    [{# In which country/countries was the study carried out? (Select ALL that apply)
                     5215276: 'USA',
