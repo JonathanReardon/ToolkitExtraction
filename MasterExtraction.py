@@ -212,7 +212,7 @@ def low_FSM_verbose():
 # select data with which to make dataframe
 def number_of_classes_verbose():
     df = pd.DataFrame({'StudyID': itemids, 'Strand': strand_data, 
-                       'NumberofClasses': single_output_comments[-10], 'NumberofClassesHighlightedText': single_output_highlighted_text[-10],
+                       'NumberofClasses':  single_output_comments[-10], 'NumberofClassesHighlightedText': single_output_highlighted_text[-10],
                        'TotalNumberofClasses': single_output_comments[-7], 'TotalNumberofClassesHighlightedText': single_output_highlighted_text[-7]})
     # remove toolkit label from strand
     df['Strand'] = df['Strand'].str.replace('Toolkit: ', '')
@@ -239,12 +239,24 @@ def test_type_verbose():
     df.to_csv("TestType_verbose.csv", index=False)
 
 
-# low_FSM_verbose()
-# number_of_classes_verbose()
-test_type_verbose()
+def curriculum_subj_verbose():
+    df = pd.DataFrame({'StudyID': itemids, 'Strand': strand_data, 
+                    'CurriculumSubjectsTested': data_multi[-1],
+                    'CurriculumSubjectsTestedComments': single_output_comments[-1],
+                    'CurriculumSubjectsTestedCommentsHT': single_output_highlighted_text[-1]})
 
-# convert all numerical data to float [verbose extraction]
-""" data_frame_verbose["SMD"]     = data_frame_verbose["SMD"].astype(float)
+    df['Strand'] = df['Strand'].str.replace('Toolkit: ', '')
+
+    df.replace('\r',' ', regex=True, inplace=True)
+    df.replace('\n',' ', regex=True, inplace=True)
+
+    df.to_csv("CurriculumSubjectsTested_verbose.csv", index=False)
+
+curriculum_subj_verbose()
+
+
+""" # convert all numerical data to float [verbose extraction]
+data_frame_verbose["SMD"]     = data_frame_verbose["SMD"].astype(float)
 data_frame_verbose["SESMD"]   = data_frame_verbose["SESMD"].astype(float)
 data_frame_verbose["CIupper"] = data_frame_verbose["CIupper"].astype(float)
 data_frame_verbose["CIlower"] = data_frame_verbose["CIlower"].astype(float)
@@ -253,10 +265,10 @@ data_frame_verbose["CIlower"] = data_frame_verbose["CIlower"].astype(float)
 data_frame_verbose["SMD"]     = data_frame_verbose["SMD"].round(4)
 data_frame_verbose["SESMD"]   = data_frame_verbose["SESMD"].round(4)
 data_frame_verbose["CIupper"] = data_frame_verbose["CIupper"].round(4)
-data_frame_verbose["CIlower"] = data_frame_verbose["CIlower"].round(4) """
+data_frame_verbose["CIlower"] = data_frame_verbose["CIlower"].round(4)
 
 # convert all numerical data to float [standard extraction]
-""" data_frame_standard["SMD"]     = data_frame_standard["SMD"].astype(float)
+data_frame_standard["SMD"]     = data_frame_standard["SMD"].astype(float)
 data_frame_standard["SESMD"]   = data_frame_standard["SESMD"].astype(float)
 data_frame_standard["CIupper"] = data_frame_standard["CIupper"].astype(float)
 data_frame_standard["CIlower"] = data_frame_standard["CIlower"].astype(float)
