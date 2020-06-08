@@ -158,7 +158,28 @@ single_output =   [{# What was the level of assignment?
                     {# National test or examination (Please specify)
                     5215540: ''},
                     {# International tests (Please specify)
-                    5215541: ''}]
+                    5215541: ''},
+                    {# Section 6 What kind of primary outcomes are reported?)
+                    5215535: ''},
+                    ################################################################
+                    # STUDY OUTCOMES
+                    ################################################################
+                    {# Curriculum subjects tested (Select ALL that apply)
+                    5215542: ''},
+                    {# Curriculum Subjects
+                    5215543: 'Literacy (first language',
+                    5215544: 'Reading comprehension',
+                    5215567: 'Decoding/phonics',
+                    5215568: 'Spelling',
+                    5215545: 'Reading other',
+                    5215546: 'Speaking and listening/Oral language',
+                    5215547: 'Writing',
+                    5215548: 'Mathematics',
+                    5215549: 'Science',
+                    5215550: 'Social studies',
+                    5215569: 'Arts',
+                    5215570: 'Languages',
+                    5215551: 'Other curriculum test'}]
 
 multi_output =    [{# In which country/countries was the study carried out? (Select ALL that apply)
                     5215276: 'USA',
@@ -411,4 +432,18 @@ multi_output =    [{# In which country/countries was the study carried out? (Sel
                     5215417: 'Other educational setting (please specify)',
                     5215418: 'Outdoor adventure setting',
                     5215566: 'Further education/junior or community college',
-                    5513033: 'No information provided'}]
+                    5513033: 'No information provided'},
+                    {# Curriculum Subjects
+                    5215543: 'Literacy (first language',
+                    5215544: 'Reading comprehension',
+                    5215567: 'Decoding/phonics',
+                    5215568: 'Spelling',
+                    5215545: 'Reading other',
+                    5215546: 'Speaking and listening/Oral language',
+                    5215547: 'Writing',
+                    5215548: 'Mathematics',
+                    5215549: 'Science',
+                    5215550: 'Social studies',
+                    5215569: 'Arts',
+                    5215570: 'Languages',
+                    5215551: 'Other curriculum test'}]
