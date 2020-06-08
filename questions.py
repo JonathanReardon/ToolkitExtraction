@@ -434,7 +434,7 @@ multi_output =    [{# In which country/countries was the study carried out? (Sel
                     5215566: 'Further education/junior or community college',
                     5513033: 'No information provided'},
                     {# Curriculum Subjects
-                    5215543: 'Literacy (first language',
+                    5215543: 'Literacy (first language)',
                     5215544: 'Reading comprehension',
                     5215567: 'Decoding/phonics',
                     5215568: 'Spelling',
