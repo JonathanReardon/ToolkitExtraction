@@ -159,13 +159,13 @@ df = df[['ItemID', 'Author',
 
 df = df.applymap(lambda x: round(x, 4) if isinstance(x, (int, float)) else x)
 
-idx = (df["Outcome_1"] != 'Primary outcome')
+idx = ((df["Outcome_1"] != 'Primary outcome') & (df["Outcome_2"] == 'Primary outcome'))
 
 df.loc[idx,['SMD_1', 'SMD_2']] = df.loc[idx,['SMD_2', 'SMD_1']].values
 df.loc[idx,['SESMD_1', 'SESMD_2']] = df.loc[idx,['SESMD_2', 'SESMD_1']].values
 df.loc[idx,['CIupperSMD_1', 'CIupperSMD_2']] = df.loc[idx,['CIupperSMD_2', 'CIupperSMD_1']].values
 df.loc[idx,['CIlowerSMD_1', 'CIlowerSMD_2']] = df.loc[idx,['CIlowerSMD_2', 'CIlowerSMD_1']].values
-df.loc[idx,['Outcome_1', 'Outcome_2']] = df.loc[idx,['Outcome_2', 'Outcome_2']].values
+df.loc[idx,['Outcome_1', 'Outcome_2']] = df.loc[idx,['Outcome_2', 'Outcome_1']].values
 
 df.to_csv("EffectSizeDetails_SWAPPED.csv", index=False)
 
