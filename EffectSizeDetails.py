@@ -2,11 +2,14 @@ import json
 from collections import Counter
 from pprint import pprint
 import pandas as pd
-
-from questions import *
+import numpy as np
+import os
 
 # input data file name (.csv) with full path
-datafile = '/home/jon/json/ToolkitExtraction/Data/May12th_2020.json'
+""" datafile = '/home/jon/json/ToolkitExtraction/Data/May12th_2020.json' """
+
+script_dir = os.path.dirname(__file__)
+datafile = os.path.join(script_dir, "May12th_2020.json")
 
 # import dataset (uncomment to select dataset of choice)
 with open(datafile) as f:
@@ -143,17 +146,26 @@ df.columns = ['ItemID', 'Author',
               'Outcome_1', 'Outcome_2', 'Outcome_3', 'Outcome_4', 'Outcome_5', 'Outcome_6', 'Outcome_7', 'Outcome_8', 'Outcome_9', 'Outcome_10']
 
 df = df[['ItemID', 'Author', 
-         'SMD_1', 'SESMD_1', 'CIupperSMD_1', 'CIlowerSMD_1', 'Outcome_1', 
-         'SMD_2', 'SESMD_2', 'CIupperSMD_2', 'CIlowerSMD_2', 'Outcome_2', 
-         'SMD_3', 'SESMD_3', 'CIupperSMD_3', 'CIlowerSMD_3', 'Outcome_3', 
-         'SMD_4', 'SESMD_4', 'CIupperSMD_4', 'CIlowerSMD_4', 'Outcome_4', 
-         'SMD_5', 'SESMD_5', 'CIupperSMD_5', 'CIlowerSMD_5', 'Outcome_5', 
-         'SMD_6', 'SESMD_6', 'CIupperSMD_6', 'CIlowerSMD_6', 'Outcome_6', 
-         'SMD_7', 'SESMD_7', 'CIupperSMD_7', 'CIlowerSMD_7', 'Outcome_7', 
-         'SMD_8', 'SESMD_8', 'CIupperSMD_8', 'CIlowerSMD_8', 'Outcome_8', 
-         'SMD_9', 'SESMD_9', 'CIupperSMD_9', 'CIlowerSMD_9', 'Outcome_9', 
-         'SMD_10', 'SESMD_10', 'CIupperSMD_10', 'CIlowerSMD_10',  'Outcome_10']]
+         'Outcome_1', 'SMD_1', 'SESMD_1', 'CIupperSMD_1', 'CIlowerSMD_1', 
+         'Outcome_2', 'SMD_2', 'SESMD_2', 'CIupperSMD_2', 'CIlowerSMD_2', 
+         'Outcome_3', 'SMD_3', 'SESMD_3', 'CIupperSMD_3', 'CIlowerSMD_3', 
+         'Outcome_4', 'SMD_4', 'SESMD_4', 'CIupperSMD_4', 'CIlowerSMD_4', 
+         'Outcome_5', 'SMD_5', 'SESMD_5', 'CIupperSMD_5', 'CIlowerSMD_5', 
+         'Outcome_6', 'SMD_6', 'SESMD_6', 'CIupperSMD_6', 'CIlowerSMD_6', 
+         'Outcome_7', 'SMD_7', 'SESMD_7', 'CIupperSMD_7', 'CIlowerSMD_7', 
+         'Outcome_8', 'SMD_8', 'SESMD_8', 'CIupperSMD_8', 'CIlowerSMD_8', 
+         'Outcome_9', 'SMD_9', 'SESMD_9', 'CIupperSMD_9', 'CIlowerSMD_9', 
+         'Outcome_10', 'SMD_10', 'SESMD_10', 'CIupperSMD_10', 'CIlowerSMD_10']]
 
 df = df.applymap(lambda x: round(x, 4) if isinstance(x, (int, float)) else x)
-df.to_csv("EffectSizeDetails.csv", index=False)
+
+idx = (df["Outcome_1"] != 'Primary outcome')
+
+df.loc[idx,['SMD_1', 'SMD_2']] = df.loc[idx,['SMD_2', 'SMD_1']].values
+df.loc[idx,['SESMD_1', 'SESMD_2']] = df.loc[idx,['SESMD_2', 'SESMD_1']].values
+df.loc[idx,['CIupperSMD_1', 'CIupperSMD_2']] = df.loc[idx,['CIupperSMD_2', 'CIupperSMD_1']].values
+df.loc[idx,['CIlowerSMD_1', 'CIlowerSMD_2']] = df.loc[idx,['CIlowerSMD_2', 'CIlowerSMD_1']].values
+df.loc[idx,['Outcome_1', 'Outcome_2']] = df.loc[idx,['Outcome_2', 'Outcome_2']].values
+
+df.to_csv("EffectSizeDetails_SWAPPED.csv", index=False)
 
