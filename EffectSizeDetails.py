@@ -159,13 +159,45 @@ df = df[['ItemID', 'Author',
 
 df = df.applymap(lambda x: round(x, 4) if isinstance(x, (int, float)) else x)
 
-idx = ((df["Outcome_1"] != 'Primary outcome') & (df["Outcome_2"] == 'Primary outcome'))
+check_first = ((df["Outcome_1"] != 'Primary outcome') & (df["Outcome_2"] == 'Primary outcome'))
 
-df.loc[idx,['SMD_1', 'SMD_2']] = df.loc[idx,['SMD_2', 'SMD_1']].values
-df.loc[idx,['SESMD_1', 'SESMD_2']] = df.loc[idx,['SESMD_2', 'SESMD_1']].values
-df.loc[idx,['CIupperSMD_1', 'CIupperSMD_2']] = df.loc[idx,['CIupperSMD_2', 'CIupperSMD_1']].values
-df.loc[idx,['CIlowerSMD_1', 'CIlowerSMD_2']] = df.loc[idx,['CIlowerSMD_2', 'CIlowerSMD_1']].values
-df.loc[idx,['Outcome_1', 'Outcome_2']] = df.loc[idx,['Outcome_2', 'Outcome_1']].values
+df.loc[check_first,['SMD_1', 'SMD_2']] = df.loc[check_first,['SMD_2', 'SMD_1']].values
+df.loc[check_first,['SESMD_1', 'SESMD_2']] = df.loc[check_first,['SESMD_2', 'SESMD_1']].values
+df.loc[check_first,['CIupperSMD_1', 'CIupperSMD_2']] = df.loc[check_first,['CIupperSMD_2', 'CIupperSMD_1']].values
+df.loc[check_first,['CIlowerSMD_1', 'CIlowerSMD_2']] = df.loc[check_first,['CIlowerSMD_2', 'CIlowerSMD_1']].values
+df.loc[check_first,['Outcome_1', 'Outcome_2']] = df.loc[check_first,['Outcome_2', 'Outcome_1']].values
 
-df.to_csv("EffectSizeDetails_SWAPPED.csv", index=False)
+check_second = ((df["Outcome_1"] != 'Primary outcome') & (df["Outcome_3"] == 'Primary outcome'))
+
+df.loc[check_second,['SMD_1', 'SMD_3']] = df.loc[check_second,['SMD_3', 'SMD_1']].values
+df.loc[check_second,['SESMD_1', 'SESMD_3']] = df.loc[check_second,['SESMD_3', 'SESMD_1']].values
+df.loc[check_second,['CIupperSMD_1', 'CIupperSMD_3']] = df.loc[check_second,['CIupperSMD_3', 'CIupperSMD_1']].values
+df.loc[check_second,['CIlowerSMD_1', 'CIlowerSMD_3']] = df.loc[check_second,['CIlowerSMD_3', 'CIlowerSMD_1']].values
+df.loc[check_second,['Outcome_1', 'Outcome_3']] = df.loc[check_second,['Outcome_3', 'Outcome_1']].values
+
+check_third = ((df["Outcome_1"] != 'Primary outcome') & (df["Outcome_4"] == 'Primary outcome'))
+
+df.loc[check_third,['SMD_1', 'SMD_4']] = df.loc[check_third,['SMD_4', 'SMD_1']].values
+df.loc[check_third,['SESMD_1', 'SESMD_4']] = df.loc[check_third,['SESMD_4', 'SESMD_1']].values
+df.loc[check_third,['CIupperSMD_1', 'CIupperSMD_4']] = df.loc[check_third,['CIupperSMD_4', 'CIupperSMD_1']].values
+df.loc[check_third,['CIlowerSMD_1', 'CIlowerSMD_4']] = df.loc[check_third,['CIlowerSMD_4', 'CIlowerSMD_1']].values
+df.loc[check_third,['Outcome_1', 'Outcome_4']] = df.loc[check_third,['Outcome_4', 'Outcome_1']].values
+
+check_four = ((df["Outcome_1"] != 'Primary outcome') & (df["Outcome_5"] == 'Primary outcome'))
+
+df.loc[check_four,['SMD_1', 'SMD_5']] = df.loc[check_four,['SMD_5', 'SMD_1']].values
+df.loc[check_four,['SESMD_1', 'SESMD_5']] = df.loc[check_four,['SESMD_5', 'SESMD_1']].values
+df.loc[check_four,['CIupperSMD_1', 'CIupperSMD_5']] = df.loc[check_four,['CIupperSMD_5', 'CIupperSMD_1']].values
+df.loc[check_four,['CIlowerSMD_1', 'CIlowerSMD_5']] = df.loc[check_four,['CIlowerSMD_5', 'CIlowerSMD_1']].values
+df.loc[check_four,['Outcome_1', 'Outcome_5']] = df.loc[check_four,['Outcome_5', 'Outcome_1']].values
+
+check_five= ((df["Outcome_1"] != 'Primary outcome') & (df["Outcome_6"] == 'Primary outcome'))
+
+df.loc[check_five,['SMD_1', 'SMD_6']] = df.loc[check_five,['SMD_6', 'SMD_1']].values
+df.loc[check_five,['SESMD_1', 'SESMD_6']] = df.loc[check_five,['SESMD_6', 'SESMD_1']].values
+df.loc[check_five,['CIupperSMD_1', 'CIupperSMD_6']] = df.loc[check_five,['CIupperSMD_6', 'CIupperSMD_1']].values
+df.loc[check_five,['CIlowerSMD_1', 'CIlowerSMD_6']] = df.loc[check_five,['CIlowerSMD_6', 'CIlowerSMD_1']].values
+df.loc[check_five,['Outcome_1', 'Outcome_6']] = df.loc[check_five,['Outcome_6', 'Outcome_1']].values
+
+df.to_csv("EffectSizeDetails.csv", index=False)
 
