@@ -121,83 +121,176 @@ def get_basic_info():
         else:
             itemids.append(exclude)
 
+def make_dataframe():
+    global df
+    smd_df     = pd.DataFrame(SMD)
+    sesmd_df   = pd.DataFrame(SESMD)
+    titles_df  = pd.DataFrame(titles)
+    itemids_Df = pd.DataFrame(itemids)
+    ciupper_df = pd.DataFrame(CIupperSMD)
+    cilower_df = pd.DataFrame(CIlowerSMD)
+    outcome_df = pd.DataFrame(Outcome)
+
+    df = pd.concat([itemids_Df, titles_df, smd_df, sesmd_df, ciupper_df, cilower_df, outcome_df], axis=1, sort=False)
+
+    df.columns = ['ItemID', 'Author', 
+                'SMD_1', 'SMD_2', 'SMD_3', 'SMD_4', 'SMD_5', 'SMD_6', 'SMD_7', 'SMD_8', 'SMD_9', 'SMD_10',
+                'SESMD_1', 'SESMD_2', 'SESMD_3', 'SESMD_4', 'SESMD_5', 'SESMD_6', 'SESMD_7', 'SESMD_8', 'SESMD_9', 'SESMD_10',
+                'CIupperSMD_1', 'CIupperSMD_2', 'CIupperSMD_3', 'CIupperSMD_4', 'CIupperSMD_5', 'CIupperSMD_6', 'CIupperSMD_7', 'CIupperSMD_8', 'CIupperSMD_9', 'CIupperSMD_10',
+                'CIlowerSMD_1', 'CIlowerSMD_2', 'CIlowerSMD_3', 'CIlowerSMD_4', 'CIlowerSMD_5', 'CIlowerSMD_6', 'CIlowerSMD_7', 'CIlowerSMD_8', 'CIlowerSMD_9', 'CIlowerSMD_10',
+                'Outcome_1', 'Outcome_2', 'Outcome_3', 'Outcome_4', 'Outcome_5', 'Outcome_6', 'Outcome_7', 'Outcome_8', 'Outcome_9', 'Outcome_10']
+
+    df = df[['ItemID', 'Author', 
+            'Outcome_1', 'SMD_1', 'SESMD_1', 'CIupperSMD_1', 'CIlowerSMD_1', 
+            'Outcome_2', 'SMD_2', 'SESMD_2', 'CIupperSMD_2', 'CIlowerSMD_2', 
+            'Outcome_3', 'SMD_3', 'SESMD_3', 'CIupperSMD_3', 'CIlowerSMD_3', 
+            'Outcome_4', 'SMD_4', 'SESMD_4', 'CIupperSMD_4', 'CIlowerSMD_4', 
+            'Outcome_5', 'SMD_5', 'SESMD_5', 'CIupperSMD_5', 'CIlowerSMD_5', 
+            'Outcome_6', 'SMD_6', 'SESMD_6', 'CIupperSMD_6', 'CIlowerSMD_6', 
+            'Outcome_7', 'SMD_7', 'SESMD_7', 'CIupperSMD_7', 'CIlowerSMD_7', 
+            'Outcome_8', 'SMD_8', 'SESMD_8', 'CIupperSMD_8', 'CIlowerSMD_8', 
+            'Outcome_9', 'SMD_9', 'SESMD_9', 'CIupperSMD_9', 'CIlowerSMD_9', 
+            'Outcome_10', 'SMD_10', 'SESMD_10', 'CIupperSMD_10', 'CIlowerSMD_10']]
+
+    df = df.applymap(lambda x: round(x, 4) if isinstance(x, (int, float)) else x)
+
+def move_primary():
+    # column data to swap (by row)
+    smd_col     = ['SMD_2', 'SMD_3', 'SMD_4', 'SMD_5', 'SMD_6', 'SMD_7', 'SMD_7', 'SMD_9', 'SMD_10']
+    sesmd_col   = ['SESMD_2', 'SESMD_3', 'SESMD_4', 'SESMD_5', 'SESMD_6', 'SESMD_7', 'SESMD_8', 'SESMD_9', 'SESMD_10']
+    cilower_col = ['CIlowerSMD_2', 'CIlowerSMD_3', 'CIlowerSMD_4', 'CIlowerSMD_5',
+                   'CIlowerSMD_6', 'CIlowerSMD_7', 'CIlowerSMD_8', 'CIlowerSMD_9', 'CIlowerSMD_10']
+    ciupper_col = ['CIupperSMD_2', 'CIupperSMD_3', 'CIupperSMD_4', 'CIupperSMD_5',
+                   'CIupperSMD_6', 'CIupperSMD_7', 'CIupperSMD_8', 'CIupperSMD_9', 'CIupperSMD_10']
+    outcome_col = ['Outcome_2', 'Outcome_3', 'Outcome_4', 'Outcome_5',
+                   'Outcome_6', 'Outcome_7', 'Outcome_8', 'Outcome_9', 'Outcome_10']
+
+    ######################
+    # FIRST COLUMN CHECK 
+    ######################
+
+    # set rules for checking first column against others
+    check_first    = ((df["Outcome_1"] != 'Primary outcome') & (df["Outcome_2"] == 'Primary outcome'))
+    check_second   = ((df["Outcome_1"] != 'Primary outcome') & (df["Outcome_3"] == 'Primary outcome'))
+    check_third    = ((df["Outcome_1"] != 'Primary outcome') & (df["Outcome_4"] == 'Primary outcome'))
+    check_fourth   = ((df["Outcome_1"] != 'Primary outcome') & (df["Outcome_5"] == 'Primary outcome'))
+    check_fifth    = ((df["Outcome_1"] != 'Primary outcome') & (df["Outcome_6"] == 'Primary outcome'))
+    check_sixth    = ((df["Outcome_1"] != 'Primary outcome') & (df["Outcome_7"] == 'Primary outcome'))
+    check_seventh  = ((df["Outcome_1"] != 'Primary outcome') & (df["Outcome_8"] == 'Primary outcome'))
+    check_eighth   = ((df["Outcome_1"] != 'Primary outcome') & (df["Outcome_9"] == 'Primary outcome'))
+    check_ninth    = ((df["Outcome_1"] != 'Primary outcome') & (df["Outcome_10"] == 'Primary outcome'))
+
+    rules = [check_first, check_second, check_third, check_fourth, check_fifth,
+             check_sixth, check_seventh, check_eighth, check_ninth]
+
+    # check against first column
+    for i in range(len(rules)):
+        df.loc[rules[i],['Outcome_1', outcome_col[i]]] = df.loc[rules[i],[outcome_col[i], 'Outcome_1']].values
+        df.loc[rules[i],['SMD_1', smd_col[i]]] = df.loc[rules[i],[smd_col[i], 'SMD_1']].values
+        df.loc[rules[i],['SESMD_1', ciupper_col[i]]] = df.loc[rules[i],[sesmd_col[i], 'SESMD_1']].values
+        df.loc[rules[i],['CIupperSMD_1', ciupper_col[i]]] = df.loc[rules[i],[ciupper_col[i], 'CIupperSMD_1']].values
+        df.loc[rules[i],['CIlowerSMD_1', cilower_col[i]]] = df.loc[rules[i],[cilower_col[i], 'CIlowerSMD_1']].values
+
+    ######################
+    # SECOND COLUMN CHECK 
+    ######################
+
+    # set rules for checking second column against others
+    check_first    = ((df["Outcome_2"] != 'Primary outcome') & (df["Outcome_3"] == 'Primary outcome'))
+    check_second   = ((df["Outcome_2"] != 'Primary outcome') & (df["Outcome_4"] == 'Primary outcome'))
+    check_third    = ((df["Outcome_2"] != 'Primary outcome') & (df["Outcome_5"] == 'Primary outcome'))
+    check_fourth   = ((df["Outcome_2"] != 'Primary outcome') & (df["Outcome_6"] == 'Primary outcome'))
+    check_fifth    = ((df["Outcome_2"] != 'Primary outcome') & (df["Outcome_7"] == 'Primary outcome'))
+    check_sixth    = ((df["Outcome_2"] != 'Primary outcome') & (df["Outcome_8"] == 'Primary outcome'))
+    check_seventh  = ((df["Outcome_2"] != 'Primary outcome') & (df["Outcome_9"] == 'Primary outcome'))
+    check_eighth   = ((df["Outcome_2"] != 'Primary outcome') & (df["Outcome_10"] == 'Primary outcome'))
+
+    rules = [check_first, check_second, check_third, check_fourth, check_fifth,
+                 check_sixth, check_seventh, check_eighth]
+
+    outcome_col.pop(0)
+    smd_col.pop(0)
+    sesmd_col.pop(0)
+    cilower_col.pop(0)
+    ciupper_col.pop(0)
+
+    # check against second column
+    for i in range(len(rules)):
+        df.loc[rules[i],['Outcome_2', outcome_col[i]]] = df.loc[rules[i],[outcome_col[i], 'Outcome_2']].values
+        df.loc[rules[i],['SMD_2', smd_col[i]]] = df.loc[rules[i],[smd_col[i], 'SMD_2']].values
+        df.loc[rules[i],['SESMD_2', ciupper_col[i]]] = df.loc[rules[i],[sesmd_col[i], 'SESMD_2']].values
+        df.loc[rules[i],['CIupperSMD_2', ciupper_col[i]]] = df.loc[rules[i],[ciupper_col[i], 'CIupperSMD_2']].values
+        df.loc[rules[i],['CIlowerSMD_2', cilower_col[i]]] = df.loc[rules[i],[cilower_col[i], 'CIlowerSMD_2']].values
+
+    ######################
+    # THIRD COLUMN CHECK 
+    ######################
+
+    # set rules for checking second column against others
+    check_first    = ((df["Outcome_3"] != 'Primary outcome') & (df["Outcome_4"] == 'Primary outcome'))
+    check_second   = ((df["Outcome_3"] != 'Primary outcome') & (df["Outcome_5"] == 'Primary outcome'))
+    check_third    = ((df["Outcome_3"] != 'Primary outcome') & (df["Outcome_6"] == 'Primary outcome'))
+    check_fourth   = ((df["Outcome_3"] != 'Primary outcome') & (df["Outcome_7"] == 'Primary outcome'))
+    check_fifth    = ((df["Outcome_3"] != 'Primary outcome') & (df["Outcome_8"] == 'Primary outcome'))
+    check_sixth    = ((df["Outcome_3"] != 'Primary outcome') & (df["Outcome_9"] == 'Primary outcome'))
+    check_seventh  = ((df["Outcome_3"] != 'Primary outcome') & (df["Outcome_10"] == 'Primary outcome'))
+
+    rules = [check_first, check_second, check_third, check_fourth, check_fifth,
+             check_sixth, check_seventh]
+
+    outcome_col.pop(0)
+    smd_col.pop(0)
+    sesmd_col.pop(0)
+    cilower_col.pop(0)
+    ciupper_col.pop(0)
+
+    # check against third column
+    for i in range(len(rules)):
+        df.loc[rules[i],['Outcome_3', outcome_col[i]]] = df.loc[rules[i],[outcome_col[i], 'Outcome_3']].values
+        df.loc[rules[i],['SMD_3', smd_col[i]]] = df.loc[rules[i],[smd_col[i], 'SMD_3']].values
+        df.loc[rules[i],['SESMD_3', sesmd_col[i]]] = df.loc[rules[i],[sesmd_col[i], 'SESMD_3']].values
+        df.loc[rules[i],['CIupperSMD_3', cilower_col[i]]] = df.loc[rules[i],[ciupper_col[i], 'CIupperSMD_3']].values
+        df.loc[rules[i],['CIlowerSMD_3', cilower_col[i]]] = df.loc[rules[i],[cilower_col[i], 'CIlowerSMD_3']].values
+
+    ######################
+    # FOURTH COLUMN CHECK 
+    ######################
+
+    # set rules for checking second column against others
+    check_first    = ((df["Outcome_4"] != 'Primary outcome') & (df["Outcome_5"] == 'Primary outcome'))
+    check_second   = ((df["Outcome_4"] != 'Primary outcome') & (df["Outcome_6"] == 'Primary outcome'))
+    check_third    = ((df["Outcome_4"] != 'Primary outcome') & (df["Outcome_7"] == 'Primary outcome'))
+    check_fourth   = ((df["Outcome_4"] != 'Primary outcome') & (df["Outcome_8"] == 'Primary outcome'))
+    check_fifth    = ((df["Outcome_4"] != 'Primary outcome') & (df["Outcome_9"] == 'Primary outcome'))
+    check_sixth    = ((df["Outcome_4"] != 'Primary outcome') & (df["Outcome_10"] == 'Primary outcome'))
+
+    rules = [check_first, check_second, check_third, check_fourth, check_fifth,
+             check_sixth]
+
+    outcome_col.pop(0)
+    smd_col.pop(0)
+    sesmd_col.pop(0)
+    cilower_col.pop(0)
+    ciupper_col.pop(0)
+
+    # check against fourth column
+    for i in range(len(rules)):
+        df.loc[rules[i],['Outcome_4', outcome_col[i]]] = df.loc[rules[i],[outcome_col[i], 'Outcome_4']].values
+        df.loc[rules[i],['SMD_4', smd_col[i]]] = df.loc[rules[i],[smd_col[i], 'SMD_4']].values
+        df.loc[rules[i],['SESMD_4', sesmd_col[i]]] = df.loc[rules[i],[sesmd_col[i], 'SESMD_4']].values
+        df.loc[rules[i],['CIupperSMD_4', cilower_col[i]]] = df.loc[rules[i],[ciupper_col[i], 'CIupperSMD_4']].values
+        df.loc[rules[i],['CIlowerSMD_4', cilower_col[i]]] = df.loc[rules[i],[cilower_col[i], 'CIlowerSMD_4']].values
+
+# call all functions
 get_basic_info()
 get_SMD()
 get_SESMD()
 get_CIupperSMD()
 get_CIlowerSMD()
 get_Outcome()
+make_dataframe()
+move_primary()
 
-smd     = pd.DataFrame(SMD)
-sesmd   = pd.DataFrame(SESMD)
-titles  = pd.DataFrame(titles)
-itemids = pd.DataFrame(itemids)
-ciupper = pd.DataFrame(CIupperSMD)
-cilower = pd.DataFrame(CIlowerSMD)
-outcome = pd.DataFrame(Outcome)
-
-df = pd.concat([itemids, titles, smd, sesmd, ciupper, cilower, outcome], axis=1, sort=False)
-
-df.columns = ['ItemID', 'Author', 
-              'SMD_1', 'SMD_2', 'SMD_3', 'SMD_4', 'SMD_5', 'SMD_6', 'SMD_7', 'SMD_8', 'SMD_9', 'SMD_10',
-              'SESMD_1', 'SESMD_2', 'SESMD_3', 'SESMD_4', 'SESMD_5', 'SESMD_6', 'SESMD_7', 'SESMD_8', 'SESMD_9', 'SESMD_10',
-              'CIupperSMD_1', 'CIupperSMD_2', 'CIupperSMD_3', 'CIupperSMD_4', 'CIupperSMD_5', 'CIupperSMD_6', 'CIupperSMD_7', 'CIupperSMD_8', 'CIupperSMD_9', 'CIupperSMD_10',
-              'CIlowerSMD_1', 'CIlowerSMD_2', 'CIlowerSMD_3', 'CIlowerSMD_4', 'CIlowerSMD_5', 'CIlowerSMD_6', 'CIlowerSMD_7', 'CIlowerSMD_8', 'CIlowerSMD_9', 'CIlowerSMD_10',
-              'Outcome_1', 'Outcome_2', 'Outcome_3', 'Outcome_4', 'Outcome_5', 'Outcome_6', 'Outcome_7', 'Outcome_8', 'Outcome_9', 'Outcome_10']
-
-df = df[['ItemID', 'Author', 
-         'Outcome_1', 'SMD_1', 'SESMD_1', 'CIupperSMD_1', 'CIlowerSMD_1', 
-         'Outcome_2', 'SMD_2', 'SESMD_2', 'CIupperSMD_2', 'CIlowerSMD_2', 
-         'Outcome_3', 'SMD_3', 'SESMD_3', 'CIupperSMD_3', 'CIlowerSMD_3', 
-         'Outcome_4', 'SMD_4', 'SESMD_4', 'CIupperSMD_4', 'CIlowerSMD_4', 
-         'Outcome_5', 'SMD_5', 'SESMD_5', 'CIupperSMD_5', 'CIlowerSMD_5', 
-         'Outcome_6', 'SMD_6', 'SESMD_6', 'CIupperSMD_6', 'CIlowerSMD_6', 
-         'Outcome_7', 'SMD_7', 'SESMD_7', 'CIupperSMD_7', 'CIlowerSMD_7', 
-         'Outcome_8', 'SMD_8', 'SESMD_8', 'CIupperSMD_8', 'CIlowerSMD_8', 
-         'Outcome_9', 'SMD_9', 'SESMD_9', 'CIupperSMD_9', 'CIlowerSMD_9', 
-         'Outcome_10', 'SMD_10', 'SESMD_10', 'CIupperSMD_10', 'CIlowerSMD_10']]
-
-df = df.applymap(lambda x: round(x, 4) if isinstance(x, (int, float)) else x)
-
-check_first = ((df["Outcome_1"] != 'Primary outcome') & (df["Outcome_2"] == 'Primary outcome'))
-
-df.loc[check_first,['SMD_1', 'SMD_2']] = df.loc[check_first,['SMD_2', 'SMD_1']].values
-df.loc[check_first,['SESMD_1', 'SESMD_2']] = df.loc[check_first,['SESMD_2', 'SESMD_1']].values
-df.loc[check_first,['CIupperSMD_1', 'CIupperSMD_2']] = df.loc[check_first,['CIupperSMD_2', 'CIupperSMD_1']].values
-df.loc[check_first,['CIlowerSMD_1', 'CIlowerSMD_2']] = df.loc[check_first,['CIlowerSMD_2', 'CIlowerSMD_1']].values
-df.loc[check_first,['Outcome_1', 'Outcome_2']] = df.loc[check_first,['Outcome_2', 'Outcome_1']].values
-
-check_second = ((df["Outcome_1"] != 'Primary outcome') & (df["Outcome_3"] == 'Primary outcome'))
-
-df.loc[check_second,['SMD_1', 'SMD_3']] = df.loc[check_second,['SMD_3', 'SMD_1']].values
-df.loc[check_second,['SESMD_1', 'SESMD_3']] = df.loc[check_second,['SESMD_3', 'SESMD_1']].values
-df.loc[check_second,['CIupperSMD_1', 'CIupperSMD_3']] = df.loc[check_second,['CIupperSMD_3', 'CIupperSMD_1']].values
-df.loc[check_second,['CIlowerSMD_1', 'CIlowerSMD_3']] = df.loc[check_second,['CIlowerSMD_3', 'CIlowerSMD_1']].values
-df.loc[check_second,['Outcome_1', 'Outcome_3']] = df.loc[check_second,['Outcome_3', 'Outcome_1']].values
-
-check_third = ((df["Outcome_1"] != 'Primary outcome') & (df["Outcome_4"] == 'Primary outcome'))
-
-df.loc[check_third,['SMD_1', 'SMD_4']] = df.loc[check_third,['SMD_4', 'SMD_1']].values
-df.loc[check_third,['SESMD_1', 'SESMD_4']] = df.loc[check_third,['SESMD_4', 'SESMD_1']].values
-df.loc[check_third,['CIupperSMD_1', 'CIupperSMD_4']] = df.loc[check_third,['CIupperSMD_4', 'CIupperSMD_1']].values
-df.loc[check_third,['CIlowerSMD_1', 'CIlowerSMD_4']] = df.loc[check_third,['CIlowerSMD_4', 'CIlowerSMD_1']].values
-df.loc[check_third,['Outcome_1', 'Outcome_4']] = df.loc[check_third,['Outcome_4', 'Outcome_1']].values
-
-check_four = ((df["Outcome_1"] != 'Primary outcome') & (df["Outcome_5"] == 'Primary outcome'))
-
-df.loc[check_four,['SMD_1', 'SMD_5']] = df.loc[check_four,['SMD_5', 'SMD_1']].values
-df.loc[check_four,['SESMD_1', 'SESMD_5']] = df.loc[check_four,['SESMD_5', 'SESMD_1']].values
-df.loc[check_four,['CIupperSMD_1', 'CIupperSMD_5']] = df.loc[check_four,['CIupperSMD_5', 'CIupperSMD_1']].values
-df.loc[check_four,['CIlowerSMD_1', 'CIlowerSMD_5']] = df.loc[check_four,['CIlowerSMD_5', 'CIlowerSMD_1']].values
-df.loc[check_four,['Outcome_1', 'Outcome_5']] = df.loc[check_four,['Outcome_5', 'Outcome_1']].values
-
-check_five= ((df["Outcome_1"] != 'Primary outcome') & (df["Outcome_6"] == 'Primary outcome'))
-
-df.loc[check_five,['SMD_1', 'SMD_6']] = df.loc[check_five,['SMD_6', 'SMD_1']].values
-df.loc[check_five,['SESMD_1', 'SESMD_6']] = df.loc[check_five,['SESMD_6', 'SESMD_1']].values
-df.loc[check_five,['CIupperSMD_1', 'CIupperSMD_6']] = df.loc[check_five,['CIupperSMD_6', 'CIupperSMD_1']].values
-df.loc[check_five,['CIlowerSMD_1', 'CIlowerSMD_6']] = df.loc[check_five,['CIlowerSMD_6', 'CIlowerSMD_1']].values
-df.loc[check_five,['Outcome_1', 'Outcome_6']] = df.loc[check_five,['Outcome_6', 'Outcome_1']].values
-
+# save dataframe to file (.csv)
 df.to_csv("EffectSizeDetails.csv", index=False)
 
