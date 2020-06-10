@@ -108,6 +108,24 @@ def get_Outcome():
                 outcomeholder.append(exclude)
             Outcome.append(outcomeholder)
 
+# get OutcomeID info from 'Outcomes' section for all studies and outcomes
+def get_OutcomeID():
+    global OutcomeID
+    OutcomeID = []
+    for section in range(len(data["References"])):
+        outcomeidholder = []
+        if "Outcomes" in data["References"][section]:
+            for subsection in range(10):
+                if subsection < len(data["References"][section]["Outcomes"]):
+                    outcomeidholder.append(data["References"][section]["Outcomes"][subsection]["OutcomeId"])
+                else:
+                    outcomeidholder.append(exclude)
+            OutcomeID.append(outcomeidholder)
+        else:
+            for i in range(10):
+                outcomeidholder.append(exclude)
+            OutcomeID.append(outcomeidholder)
+
 def get_basic_info():
     global titles, itemids
     titles, itemids = [], []
@@ -123,36 +141,41 @@ def get_basic_info():
 
 def make_dataframe():
     global df
-    smd_df     = pd.DataFrame(SMD)
-    sesmd_df   = pd.DataFrame(SESMD)
-    titles_df  = pd.DataFrame(titles)
-    itemids_Df = pd.DataFrame(itemids)
-    ciupper_df = pd.DataFrame(CIupperSMD)
-    cilower_df = pd.DataFrame(CIlowerSMD)
-    outcome_df = pd.DataFrame(Outcome)
+    smd_df        = pd.DataFrame(SMD)
+    sesmd_df      = pd.DataFrame(SESMD)
+    titles_df     = pd.DataFrame(titles)
+    itemids_Df    = pd.DataFrame(itemids)
+    ciupper_df    = pd.DataFrame(CIupperSMD)
+    cilower_df    = pd.DataFrame(CIlowerSMD)
+    outcome_df    = pd.DataFrame(Outcome)
+    outcomeid_df  = pd.DataFrame(OutcomeID)
 
-    df = pd.concat([itemids_Df, titles_df, smd_df, sesmd_df, ciupper_df, cilower_df, outcome_df], axis=1, sort=False)
+    df = pd.concat([itemids_Df, titles_df, smd_df, sesmd_df, ciupper_df, cilower_df, outcome_df, outcomeid_df], axis=1, sort=False)
 
     df.columns = ['ItemID', 'Author', 
                 'SMD_1', 'SMD_2', 'SMD_3', 'SMD_4', 'SMD_5', 'SMD_6', 'SMD_7', 'SMD_8', 'SMD_9', 'SMD_10',
                 'SESMD_1', 'SESMD_2', 'SESMD_3', 'SESMD_4', 'SESMD_5', 'SESMD_6', 'SESMD_7', 'SESMD_8', 'SESMD_9', 'SESMD_10',
                 'CIupperSMD_1', 'CIupperSMD_2', 'CIupperSMD_3', 'CIupperSMD_4', 'CIupperSMD_5', 'CIupperSMD_6', 'CIupperSMD_7', 'CIupperSMD_8', 'CIupperSMD_9', 'CIupperSMD_10',
                 'CIlowerSMD_1', 'CIlowerSMD_2', 'CIlowerSMD_3', 'CIlowerSMD_4', 'CIlowerSMD_5', 'CIlowerSMD_6', 'CIlowerSMD_7', 'CIlowerSMD_8', 'CIlowerSMD_9', 'CIlowerSMD_10',
-                'Outcome_1', 'Outcome_2', 'Outcome_3', 'Outcome_4', 'Outcome_5', 'Outcome_6', 'Outcome_7', 'Outcome_8', 'Outcome_9', 'Outcome_10']
+                'Outcome_1', 'Outcome_2', 'Outcome_3', 'Outcome_4', 'Outcome_5', 'Outcome_6', 'Outcome_7', 'Outcome_8', 'Outcome_9', 'Outcome_10',
+                'OutcomeID_1', 'OutcomeID_2', 'OutcomeID_3', 'OutcomeID_4', 'OutcomeID_5', 'OutcomeID_6', 'OutcomeID_7', 'OutcomeID_8', 'OutcomeID_9', 'OutcomeID_10']
 
     df = df[['ItemID', 'Author', 
-            'Outcome_1', 'SMD_1', 'SESMD_1', 'CIupperSMD_1', 'CIlowerSMD_1', 
-            'Outcome_2', 'SMD_2', 'SESMD_2', 'CIupperSMD_2', 'CIlowerSMD_2', 
-            'Outcome_3', 'SMD_3', 'SESMD_3', 'CIupperSMD_3', 'CIlowerSMD_3', 
-            'Outcome_4', 'SMD_4', 'SESMD_4', 'CIupperSMD_4', 'CIlowerSMD_4', 
-            'Outcome_5', 'SMD_5', 'SESMD_5', 'CIupperSMD_5', 'CIlowerSMD_5', 
-            'Outcome_6', 'SMD_6', 'SESMD_6', 'CIupperSMD_6', 'CIlowerSMD_6', 
-            'Outcome_7', 'SMD_7', 'SESMD_7', 'CIupperSMD_7', 'CIlowerSMD_7', 
-            'Outcome_8', 'SMD_8', 'SESMD_8', 'CIupperSMD_8', 'CIlowerSMD_8', 
-            'Outcome_9', 'SMD_9', 'SESMD_9', 'CIupperSMD_9', 'CIlowerSMD_9', 
-            'Outcome_10', 'SMD_10', 'SESMD_10', 'CIupperSMD_10', 'CIlowerSMD_10']]
+            'OutcomeID_1', 'Outcome_1', 'SMD_1', 'SESMD_1', 'CIupperSMD_1', 'CIlowerSMD_1', 
+            'OutcomeID_2', 'Outcome_2', 'SMD_2', 'SESMD_2', 'CIupperSMD_2', 'CIlowerSMD_2', 
+            'OutcomeID_3', 'Outcome_3', 'SMD_3', 'SESMD_3', 'CIupperSMD_3', 'CIlowerSMD_3', 
+            'OutcomeID_4', 'Outcome_4', 'SMD_4', 'SESMD_4', 'CIupperSMD_4', 'CIlowerSMD_4', 
+            'OutcomeID_5', 'Outcome_5', 'SMD_5', 'SESMD_5', 'CIupperSMD_5', 'CIlowerSMD_5', 
+            'OutcomeID_6', 'Outcome_6', 'SMD_6', 'SESMD_6', 'CIupperSMD_6', 'CIlowerSMD_6', 
+            'OutcomeID_7', 'Outcome_7', 'SMD_7', 'SESMD_7', 'CIupperSMD_7', 'CIlowerSMD_7', 
+            'OutcomeID_8', 'Outcome_8', 'SMD_8', 'SESMD_8', 'CIupperSMD_8', 'CIlowerSMD_8', 
+            'OutcomeID_9', 'Outcome_9', 'SMD_9', 'SESMD_9', 'CIupperSMD_9', 'CIlowerSMD_9', 
+            'OutcomeID_10', 'Outcome_10', 'SMD_10', 'SESMD_10', 'CIupperSMD_10', 'CIlowerSMD_10']]
 
     df = df.applymap(lambda x: round(x, 4) if isinstance(x, (int, float)) else x)
+    df.replace('NaN','NA', regex=True, inplace=True)
+    df.replace('','NA', regex=True, inplace=True)
+
 
 def move_primary():
     # column data to swap (by row)
@@ -164,6 +187,8 @@ def move_primary():
                    'CIupperSMD_6', 'CIupperSMD_7', 'CIupperSMD_8', 'CIupperSMD_9', 'CIupperSMD_10']
     outcome_col = ['Outcome_2', 'Outcome_3', 'Outcome_4', 'Outcome_5',
                    'Outcome_6', 'Outcome_7', 'Outcome_8', 'Outcome_9', 'Outcome_10']
+    outcomeid_col = ['OutcomeID_1', 'OutcomeID_2', 'OutcomeID_3', 'OutcomeID_4', 'OutcomeID_5', 
+                     'OutcomeID_6', 'OutcomeID_7', 'OutcomeID_8', 'OutcomeID_9', 'OutcomeID_10']
 
     ######################
     # FIRST COLUMN CHECK 
@@ -190,6 +215,7 @@ def move_primary():
         df.loc[rules[i],['SESMD_1', ciupper_col[i]]] = df.loc[rules[i],[sesmd_col[i], 'SESMD_1']].values
         df.loc[rules[i],['CIupperSMD_1', ciupper_col[i]]] = df.loc[rules[i],[ciupper_col[i], 'CIupperSMD_1']].values
         df.loc[rules[i],['CIlowerSMD_1', cilower_col[i]]] = df.loc[rules[i],[cilower_col[i], 'CIlowerSMD_1']].values
+        df.loc[rules[i],['OutcomeID_1', outcomeid_col[i]]] = df.loc[rules[i],[outcomeid_col[i], 'OutcomeID_1']].values
 
     ######################
     # SECOND COLUMN CHECK 
@@ -221,6 +247,7 @@ def move_primary():
         df.loc[rules[i],['SESMD_2', ciupper_col[i]]] = df.loc[rules[i],[sesmd_col[i], 'SESMD_2']].values
         df.loc[rules[i],['CIupperSMD_2', ciupper_col[i]]] = df.loc[rules[i],[ciupper_col[i], 'CIupperSMD_2']].values
         df.loc[rules[i],['CIlowerSMD_2', cilower_col[i]]] = df.loc[rules[i],[cilower_col[i], 'CIlowerSMD_2']].values
+        df.loc[rules[i],['OutcomeID_2', outcomeid_col[i]]] = df.loc[rules[i],[outcomeid_col[i], 'OutcomeID_2']].values
 
     ######################
     # THIRD COLUMN CHECK 
@@ -251,6 +278,7 @@ def move_primary():
         df.loc[rules[i],['SESMD_3', sesmd_col[i]]] = df.loc[rules[i],[sesmd_col[i], 'SESMD_3']].values
         df.loc[rules[i],['CIupperSMD_3', cilower_col[i]]] = df.loc[rules[i],[ciupper_col[i], 'CIupperSMD_3']].values
         df.loc[rules[i],['CIlowerSMD_3', cilower_col[i]]] = df.loc[rules[i],[cilower_col[i], 'CIlowerSMD_3']].values
+        df.loc[rules[i],['OutcomeID_3', outcomeid_col[i]]] = df.loc[rules[i],[outcomeid_col[i], 'OutcomeID_3']].values
 
     ######################
     # FOURTH COLUMN CHECK 
@@ -280,6 +308,7 @@ def move_primary():
         df.loc[rules[i],['SESMD_4', sesmd_col[i]]] = df.loc[rules[i],[sesmd_col[i], 'SESMD_4']].values
         df.loc[rules[i],['CIupperSMD_4', cilower_col[i]]] = df.loc[rules[i],[ciupper_col[i], 'CIupperSMD_4']].values
         df.loc[rules[i],['CIlowerSMD_4', cilower_col[i]]] = df.loc[rules[i],[cilower_col[i], 'CIlowerSMD_4']].values
+        df.loc[rules[i],['OutcomeID_4', outcomeid_col[i]]] = df.loc[rules[i],[outcomeid_col[i], 'OutcomeID_4']].values
 
 # call all functions
 get_basic_info()
@@ -288,6 +317,7 @@ get_SESMD()
 get_CIupperSMD()
 get_CIlowerSMD()
 get_Outcome()
+get_OutcomeID()
 make_dataframe()
 move_primary()
 
