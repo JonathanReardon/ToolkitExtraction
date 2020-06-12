@@ -22,24 +22,32 @@ def get_strands(strand_codes):
     strand = [] 
     for var in range(len(strand_codes)):
         # for study in range(len(data["References"])):
-        for study in range(2):
+        for study in range(len(data["References"])):
             if "Codes" in data["References"][study]:
                 if "Outcomes" in data["References"][study]:
                     outerholder = []
                     for item in range(len(data["References"][study]["Outcomes"])):
-                        innerholderholder=[]
                         if "OutcomeCodes" in data["References"][study]["Outcomes"][item]:
-                            for subsection in range(len(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"])):
-                                for key,value in strand_codes[var].items():
-                                    if key == data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeId"]:
-                                        innerholderholder.append(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"])
-
+                            innerholderholder = []
+                            for subsection in range(10):
+                                if subsection < len(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"]):
+                                    for key,value in strand_codes[var].items():
+                                        if key == data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeId"]:
+                                            innerholderholder.append(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"])
+                                else:
+                                    pass
                         outerholder.append(innerholderholder)
-        strand.append(outerholder)
+            strand.append(outerholder)
 
 get_strands(strand_output) 
 
 df = pd.DataFrame(strand)
+
+df = df.iloc[:, :-2]
+
+df.columns = ["ToolkitStrand_Outcome_1", "ToolkitStrand_Outcome_2", "ToolkitStrand_Outcome_3", "ToolkitStrand_Outcome_4",
+              "ToolkitStrand_Outcome_5", "ToolkitStrand_Outcome_6", "ToolkitStrand_Outcome_7", "ToolkitStrand_Outcome_8",
+              "ToolkitStrand_Outcome_9", "ToolkitStrand_Outcome_10"]
 
 pprint(df)
 
