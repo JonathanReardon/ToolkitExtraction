@@ -21,6 +21,28 @@ with open(datafile) as f:
 exclude="NA"
 
 # get toolkit strand data from Outcomes
+def get_testtype(testtype_codes):
+    global testtype
+    testtype = [] 
+    for var in range(len(testtype_codes)):
+        for study in range(len(data["References"])):
+            if "Codes" in data["References"][study]:
+                if "Outcomes" in data["References"][study]:
+                    outerholder = []
+                    for item in range(len(data["References"][study]["Outcomes"])):
+                        if "OutcomeCodes" in data["References"][study]["Outcomes"][item]:
+                            innerholderholder = []
+                            for subsection in range(10):
+                                if subsection < len(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"]):
+                                    for key,value in testtype_codes[var].items():
+                                        if key == data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeId"]:
+                                            innerholderholder.append(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"])
+                                else:
+                                    pass
+                        outerholder.append(innerholderholder)
+            testtype.append(outerholder)
+
+# get toolkit strand data from Outcomes
 def get_strands(strand_codes):
     global strand
     strand = [] 
@@ -223,6 +245,9 @@ def make_dataframe():
     # make strand dataframe
     strand_df      = pd.DataFrame(strand)
     strand_df      = strand_df.iloc[:, :-2] # look into why this produced 12 columns (though it works)
+    # make testtype dataframe
+    testtype_df    = pd.DataFrame(testtype)
+    testtype_df    = testtype_df.iloc[:, :-2]
     # make other dataframes
     title_df       = pd.DataFrame(title)
     smd_df         = pd.DataFrame(SMD)
@@ -236,11 +261,13 @@ def make_dataframe():
     intervtext_df  = pd.DataFrame(InterventionText)
     controltext_df = pd.DataFrame(ControlText)
 
-    df = pd.concat([itemids_df, author_df, title_df, strand_df, smd_df, sesmd_df, ciupper_df, cilower_df, outcome_df, outcomeid_df, intervtext_df, controltext_df], axis=1, sort=False)
+    df = pd.concat([itemids_df, author_df, title_df, testtype_df, strand_df, smd_df, sesmd_df, ciupper_df, cilower_df, outcome_df, outcomeid_df, intervtext_df, controltext_df], axis=1, sort=False)
 
     df.columns = ['StudyID', 'Author',
                  'OutcomeLabel_1',  'OutcomeLabel_2', 'OutcomeLabel_3', 'OutcomeLabel_4', 'OutcomeLabel_5', 
                  'OutcomeLabel_6', 'OutcomeLabel_7', 'OutcomeLabel_8', 'OutcomeLabel_9', 'OutcomeLabel_10',
+                 'TestType_Outcome_1', 'TestType_Outcome_2','TestType_Outcome_3','TestType_Outcome_4','TestType_Outcome_5',
+                 'TestType_Outcome_6','TestType_Outcome_7','TestType_Outcome_8','TestType_Outcome_9','TestType_Outcome_10',
                  'ToolkitStrand_Outcome_1', 'ToolkitStrand_Outcome_2', 'ToolkitStrand_Outcome_3', 'ToolkitStrand_Outcome_4', 'ToolkitStrand_Outcome_5', 
                  'ToolkitStrand_Outcome_6', 'ToolkitStrand_Outcome_7', 'ToolkitStrand_Outcome_8', 'ToolkitStrand_Outcome_9', 'ToolkitStrand_Outcome_10', 
                  'SMD_1', 'SMD_2', 'SMD_3', 'SMD_4', 'SMD_5', 'SMD_6', 'SMD_7', 'SMD_8', 'SMD_9', 'SMD_10',
@@ -253,16 +280,16 @@ def make_dataframe():
                  'ControlText_1', 'ControlText_2', 'ControlText_3', 'ControlText_4', 'ControlText_5', 'ControlText_6', 'ControlText_7', 'ControlText_8', 'ControlText_9', 'ControlText_10'] 
 
     df = df[['StudyID', 'Author', 
-            'OutcomeID_1', 'OutcomeLabel_1', 'ToolkitStrand_Outcome_1',  'InterventionText_1', 'ControlText_1', 'Outcome_1', 'SMD_1', 'SESMD_1', 'CIupperSMD_1', 'CIlowerSMD_1', 
-            'OutcomeID_2', 'OutcomeLabel_2', 'ToolkitStrand_Outcome_2',  'InterventionText_2', 'ControlText_2', 'Outcome_2', 'SMD_2', 'SESMD_2', 'CIupperSMD_2', 'CIlowerSMD_2', 
-            'OutcomeID_3', 'OutcomeLabel_3', 'ToolkitStrand_Outcome_3',  'InterventionText_3', 'ControlText_3', 'Outcome_3', 'SMD_3', 'SESMD_3', 'CIupperSMD_3', 'CIlowerSMD_3', 
-            'OutcomeID_4', 'OutcomeLabel_4', 'ToolkitStrand_Outcome_4',  'InterventionText_4', 'ControlText_4', 'Outcome_4', 'SMD_4', 'SESMD_4', 'CIupperSMD_4', 'CIlowerSMD_4', 
-            'OutcomeID_5', 'OutcomeLabel_5', 'ToolkitStrand_Outcome_5',  'InterventionText_5', 'ControlText_5', 'Outcome_5', 'SMD_5', 'SESMD_5', 'CIupperSMD_5', 'CIlowerSMD_5', 
-            'OutcomeID_6', 'OutcomeLabel_6', 'ToolkitStrand_Outcome_6',  'InterventionText_6', 'ControlText_6', 'Outcome_6', 'SMD_6', 'SESMD_6', 'CIupperSMD_6', 'CIlowerSMD_6', 
-            'OutcomeID_7', 'OutcomeLabel_7', 'ToolkitStrand_Outcome_7',  'InterventionText_7', 'ControlText_7', 'Outcome_7', 'SMD_7', 'SESMD_7', 'CIupperSMD_7', 'CIlowerSMD_7', 
-            'OutcomeID_8', 'OutcomeLabel_8', 'ToolkitStrand_Outcome_8',  'InterventionText_8', 'ControlText_8', 'Outcome_8', 'SMD_8', 'SESMD_8', 'CIupperSMD_8', 'CIlowerSMD_8', 
-            'OutcomeID_9', 'OutcomeLabel_9', 'ToolkitStrand_Outcome_9',  'InterventionText_9', 'ControlText_9', 'Outcome_9', 'SMD_9', 'SESMD_9', 'CIupperSMD_9', 'CIlowerSMD_9', 
-            'OutcomeID_10', 'OutcomeLabel_10', 'ToolkitStrand_Outcome_10',  'InterventionText_10', 'ControlText_10', 'Outcome_10', 'SMD_10', 'SESMD_10', 'CIupperSMD_10', 'CIlowerSMD_10']]
+            'OutcomeID_1', 'OutcomeLabel_1', 'TestType_Outcome_1', 'ToolkitStrand_Outcome_1',  'InterventionText_1', 'ControlText_1', 'Outcome_1', 'SMD_1', 'SESMD_1', 'CIupperSMD_1', 'CIlowerSMD_1', 
+            'OutcomeID_2', 'OutcomeLabel_2', 'TestType_Outcome_2', 'ToolkitStrand_Outcome_2',  'InterventionText_2', 'ControlText_2', 'Outcome_2', 'SMD_2', 'SESMD_2', 'CIupperSMD_2', 'CIlowerSMD_2', 
+            'OutcomeID_3', 'OutcomeLabel_3', 'TestType_Outcome_3', 'ToolkitStrand_Outcome_3',  'InterventionText_3', 'ControlText_3', 'Outcome_3', 'SMD_3', 'SESMD_3', 'CIupperSMD_3', 'CIlowerSMD_3', 
+            'OutcomeID_4', 'OutcomeLabel_4', 'TestType_Outcome_4', 'ToolkitStrand_Outcome_4',  'InterventionText_4', 'ControlText_4', 'Outcome_4', 'SMD_4', 'SESMD_4', 'CIupperSMD_4', 'CIlowerSMD_4', 
+            'OutcomeID_5', 'OutcomeLabel_5', 'TestType_Outcome_5', 'ToolkitStrand_Outcome_5',  'InterventionText_5', 'ControlText_5', 'Outcome_5', 'SMD_5', 'SESMD_5', 'CIupperSMD_5', 'CIlowerSMD_5', 
+            'OutcomeID_6', 'OutcomeLabel_6', 'TestType_Outcome_6', 'ToolkitStrand_Outcome_6',  'InterventionText_6', 'ControlText_6', 'Outcome_6', 'SMD_6', 'SESMD_6', 'CIupperSMD_6', 'CIlowerSMD_6', 
+            'OutcomeID_7', 'OutcomeLabel_7', 'TestType_Outcome_7', 'ToolkitStrand_Outcome_7',  'InterventionText_7', 'ControlText_7', 'Outcome_7', 'SMD_7', 'SESMD_7', 'CIupperSMD_7', 'CIlowerSMD_7', 
+            'OutcomeID_8', 'OutcomeLabel_8', 'TestType_Outcome_8', 'ToolkitStrand_Outcome_8',  'InterventionText_8', 'ControlText_8', 'Outcome_8', 'SMD_8', 'SESMD_8', 'CIupperSMD_8', 'CIlowerSMD_8', 
+            'OutcomeID_9', 'OutcomeLabel_9', 'TestType_Outcome_9', 'ToolkitStrand_Outcome_9',  'InterventionText_9', 'ControlText_9', 'Outcome_9', 'SMD_9', 'SESMD_9', 'CIupperSMD_9', 'CIlowerSMD_9', 
+            'OutcomeID_10', 'OutcomeLabel_10', 'TestType_Outcome_10', 'ToolkitStrand_Outcome_10',  'InterventionText_10', 'ControlText_10', 'Outcome_10', 'SMD_10', 'SESMD_10', 'CIupperSMD_10', 'CIlowerSMD_10']]
 
     df = df.applymap(lambda x: round(x, 4) if isinstance(x, (int, float)) else x)
     df.replace('NaN','NA', regex=True, inplace=True)
@@ -271,6 +298,8 @@ def make_dataframe():
 
 def move_primary():
     # column data to swap (by row)
+    testtype_col       = ['TestType_Outcome_1', 'TestType_Outcome_2', 'TestType_Outcome_3', 'TestType_Outcome_4', 'TestType_Outcome_5', 
+                          'TestType_Outcome_6', 'TestType_Outcome_7', 'TestType_Outcome_8', 'TestType_Outcome_9', 'TestType_Outcome_10']
     title_col          = ['OutcomeLabel_1', 'OutcomeLabel_2', 'OutcomeLabel_3', 'OutcomeLabel_4', 'OutcomeLabel_5', 
                          'OutcomeLabel_6', 'OutcomeLabel_7', 'OutcomeLabel_8', 'OutcomeLabel_9', 'OutcomeLabel_10']
     toolkitstrand_col = ['ToolkitStrand_Outcome_1', 'ToolkitStrand_Outcome_2', 'ToolkitStrand_Outcome_3', 
@@ -312,7 +341,8 @@ def move_primary():
 
     # check against first column
     for i in range(len(rules)):
-        df.loc[rules[i],['OutcomeLabel_1', title_col[i]]]                   = df.loc[rules[i],[title_col[i], 'OutcomeLabel_1']].values
+        df.loc[rules[i],['TestType_Outcome_1', testtype_col[i]]]           = df.loc[rules[i],[testtype_col[i], 'TestType_Outcome_1']].values
+        df.loc[rules[i],['OutcomeLabel_1', title_col[i]]]                  = df.loc[rules[i],[title_col[i], 'OutcomeLabel_1']].values
         df.loc[rules[i],['ToolkitStrand_Outcome_1', toolkitstrand_col[i]]] = df.loc[rules[i],[toolkitstrand_col[i], 'ToolkitStrand_Outcome_1']].values
         df.loc[rules[i],['Outcome_1', outcome_col[i]]]                     = df.loc[rules[i],[outcome_col[i], 'Outcome_1']].values
         df.loc[rules[i],['SMD_1', smd_col[i]]]                             = df.loc[rules[i],[smd_col[i], 'SMD_1']].values
@@ -340,6 +370,7 @@ def move_primary():
     rules = [check_first, check_second, check_third, check_fourth, check_fifth,
                  check_sixth, check_seventh, check_eighth]
 
+    testtype_col.pop(0)
     title_col.pop(0)
     toolkitstrand_col.pop(0)
     outcome_col.pop(0)
@@ -352,6 +383,7 @@ def move_primary():
 
     # check against second column
     for i in range(len(rules)):
+        df.loc[rules[i],['TestType_Outcome_2', testtype_col[i]]]           = df.loc[rules[i],[testtype_col[i], 'TestType_Outcome_2']].values
         df.loc[rules[i],['OutcomeLabel_2', title_col[i]]]                   = df.loc[rules[i],[title_col[i], 'OutcomeLabel_2']].values
         df.loc[rules[i],['ToolkitStrand_Outcome_2', toolkitstrand_col[i]]] = df.loc[rules[i],[toolkitstrand_col[i], 'ToolkitStrand_Outcome_2']].values
         df.loc[rules[i],['Outcome_2', outcome_col[i]]] = df.loc[rules[i],[outcome_col[i], 'Outcome_2']].values
@@ -379,6 +411,7 @@ def move_primary():
     rules = [check_first, check_second, check_third, check_fourth, check_fifth,
              check_sixth, check_seventh]
 
+    testtype_col.pop(0)
     title_col.pop(0)
     toolkitstrand_col.pop(0)
     outcome_col.pop(0)
@@ -391,6 +424,7 @@ def move_primary():
 
     # check against third column
     for i in range(len(rules)):
+        df.loc[rules[i],['TestType_Outcome_3', testtype_col[i]]]           = df.loc[rules[i],[testtype_col[i], 'TestType_Outcome_3']].values
         df.loc[rules[i],['OutcomeLabel_3', title_col[i]]]                   = df.loc[rules[i],[title_col[i], 'OutcomeLabel_3']].values
         df.loc[rules[i],['ToolkitStrand_Outcome_3', toolkitstrand_col[i]]] = df.loc[rules[i],[toolkitstrand_col[i], 'ToolkitStrand_Outcome_3']].values
         df.loc[rules[i],['Outcome_3', outcome_col[i]]] = df.loc[rules[i],[outcome_col[i], 'Outcome_3']].values
@@ -417,6 +451,7 @@ def move_primary():
     rules = [check_first, check_second, check_third, check_fourth, check_fifth,
              check_sixth]
 
+    testtype_col.pop(0)
     title_col.pop(0)
     toolkitstrand_col.pop(0)
     outcome_col.pop(0)
@@ -429,6 +464,7 @@ def move_primary():
 
     # check against fourth column
     for i in range(len(rules)):
+        df.loc[rules[i],['TestType_Outcome_4', testtype_col[i]]]           = df.loc[rules[i],[testtype_col[i], 'TestType_Outcome_4']].values
         df.loc[rules[i],['OutcomeLabel_4', title_col[i]]]                   = df.loc[rules[i],[title_col[i], 'OutcomeLabel_4']].values
         df.loc[rules[i],['ToolkitStrand_Outcome_4', toolkitstrand_col[i]]] = df.loc[rules[i],[toolkitstrand_col[i], 'ToolkitStrand_Outcome_4']].values
         df.loc[rules[i],['Outcome_4', outcome_col[i]]] = df.loc[rules[i],[outcome_col[i], 'Outcome_4']].values
@@ -441,6 +477,7 @@ def move_primary():
         df.loc[rules[i],['ControlText_4', controltext_col[i]]] = df.loc[rules[i],[controltext_col[i], 'ControlText_4']].values
 
 # call all functions
+get_testtype(test_type_output)
 get_strands(strand_output) 
 get_basic_info()
 get_title()
