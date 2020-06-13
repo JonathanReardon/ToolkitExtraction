@@ -20,48 +20,74 @@ with open(datafile) as f:
 # for missing or unavailable data
 exclude="NA"
 
-# get effect size type strand data from Outcomes
-def get_EStype(estype_codes):
+# data admin strand data (possible multiple outputs)
+def get_admin_strand(admin_strand_codes):
+    global admin_strand
+    admin_strand=[]
+    for var in range(len(admin_strand_codes)):
+        holder=[]
+        for section in range(len(data["References"])):
+            if "Codes" in data["References"][section]:
+                holderfind, holdervalue = [], []
+                for study in range(len(data["References"][section]["Codes"])):
+                    for key, value in admin_strand_codes[var].items():
+                        if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                            holderfind.append(value)
+                if len(holderfind)==0:
+                    holderfind=exclude
+                holder.append(holderfind)
+        admin_strand.append(holder)
+
+# get effect size type data from Outcomes
+def get_estype(estype_codes):
     global estype
     estype = [] 
     for var in range(len(estype_codes)):
         for study in range(len(data["References"])):
             if "Codes" in data["References"][study]:
+                outerholder = []
                 if "Outcomes" in data["References"][study]:
-                    outerholder = []
                     for item in range(len(data["References"][study]["Outcomes"])):
                         if "OutcomeCodes" in data["References"][study]["Outcomes"][item]:
                             innerholderholder = []
-                            for subsection in range(10):
+                            for subsection in range(12):
                                 if subsection < len(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"]):
                                     for key,value in estype_codes[var].items():
                                         if key == data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeId"]:
                                             innerholderholder.append(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"])
                                 else:
                                     pass
+                        else:
+                            innerholderholder.append(exclude)
                         outerholder.append(innerholderholder)
+                else:
+                    pass
             estype.append(outerholder)
 
-# get toolkit strand data from Outcomes
+# get test type data from Outcomes
 def get_testtype(testtype_codes):
     global testtype
     testtype = [] 
     for var in range(len(testtype_codes)):
         for study in range(len(data["References"])):
             if "Codes" in data["References"][study]:
+                outerholder = []
                 if "Outcomes" in data["References"][study]:
-                    outerholder = []
                     for item in range(len(data["References"][study]["Outcomes"])):
                         if "OutcomeCodes" in data["References"][study]["Outcomes"][item]:
                             innerholderholder = []
-                            for subsection in range(10):
+                            for subsection in range(12):
                                 if subsection < len(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"]):
                                     for key,value in testtype_codes[var].items():
                                         if key == data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeId"]:
                                             innerholderholder.append(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"])
                                 else:
                                     pass
+                        else:
+                            innerholderholder.append(exclude)
                         outerholder.append(innerholderholder)
+                else:
+                    pass
             testtype.append(outerholder)
 
 # get toolkit strand data from Outcomes
@@ -72,18 +98,20 @@ def get_strands(strand_codes):
         # for study in range(len(data["References"])):
         for study in range(len(data["References"])):
             if "Codes" in data["References"][study]:
+                outerholder = []
                 if "Outcomes" in data["References"][study]:
-                    outerholder = []
                     for item in range(len(data["References"][study]["Outcomes"])):
                         if "OutcomeCodes" in data["References"][study]["Outcomes"][item]:
                             innerholderholder = []
-                            for subsection in range(10):
+                            for subsection in range(12):
                                 if subsection < len(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"]):
                                     for key,value in strand_codes[var].items():
                                         if key == data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeId"]:
                                             innerholderholder.append(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"])
                                 else:
                                     pass
+                        else:
+                            innerholderholder.append(exclude)
                         outerholder.append(innerholderholder)
             strand.append(outerholder)
 
@@ -264,32 +292,35 @@ def get_basic_info():
 
 def make_dataframe():
     global df
+    # make admin strand data frame
+    admin_strand_df = pd.DataFrame(admin_strand)
+    admin_strand_df = admin_strand_df.T
     # make effect size type dataframe
-    estype_df      = pd.DataFrame(estype)
-    estype_df      = estype_df.iloc[:, :-2]
+    estype_df       = pd.DataFrame(estype)
+    estype_df       = estype_df.iloc[:, :-2]
     # make strand dataframe
-    strand_df      = pd.DataFrame(strand)
-    strand_df      = strand_df.iloc[:, :-2] # look into why this produced 12 columns (though it works)
+    strand_df       = pd.DataFrame(strand)
+    strand_df       = strand_df.iloc[:, :-2] # look into why this produced 12 columns (though it works)
     # make test type dataframe
-    testtype_df    = pd.DataFrame(testtype)
-    testtype_df    = testtype_df.iloc[:, :-2]
+    testtype_df     = pd.DataFrame(testtype)
+    testtype_df     = testtype_df.iloc[:, :-2]
     # make other dataframes
-    title_df       = pd.DataFrame(title)
-    smd_df         = pd.DataFrame(SMD)
-    sesmd_df       = pd.DataFrame(SESMD)
-    author_df      = pd.DataFrame(author)
-    itemids_df     = pd.DataFrame(itemids)
-    ciupper_df     = pd.DataFrame(CIupperSMD)
-    cilower_df     = pd.DataFrame(CIlowerSMD)
-    outcome_df     = pd.DataFrame(Outcome)
-    outcomeid_df   = pd.DataFrame(OutcomeID)
-    intervtext_df  = pd.DataFrame(InterventionText)
-    controltext_df = pd.DataFrame(ControlText)
+    title_df        = pd.DataFrame(title)
+    smd_df          = pd.DataFrame(SMD)
+    sesmd_df        = pd.DataFrame(SESMD)
+    author_df       = pd.DataFrame(author)
+    itemids_df      = pd.DataFrame(itemids)
+    ciupper_df      = pd.DataFrame(CIupperSMD)
+    cilower_df      = pd.DataFrame(CIlowerSMD)
+    outcome_df      = pd.DataFrame(Outcome)
+    outcomeid_df    = pd.DataFrame(OutcomeID)
+    intervtext_df   = pd.DataFrame(InterventionText)
+    controltext_df  = pd.DataFrame(ControlText)
 
-    df = pd.concat([itemids_df, author_df, title_df, testtype_df, estype_df, strand_df, smd_df, sesmd_df, ciupper_df, 
+    df = pd.concat([itemids_df, admin_strand_df, author_df, title_df, testtype_df, estype_df, strand_df, smd_df, sesmd_df, ciupper_df, 
                     cilower_df, outcome_df, outcomeid_df, intervtext_df, controltext_df], axis=1, sort=False)
 
-    df.columns = ['StudyID', 'Author',
+    df.columns = ['StudyID', 'Admin_Strand', 'Author',
                  'OutcomeLabel_1',  'OutcomeLabel_2', 'OutcomeLabel_3', 'OutcomeLabel_4', 'OutcomeLabel_5', 
                  'OutcomeLabel_6', 'OutcomeLabel_7', 'OutcomeLabel_8', 'OutcomeLabel_9', 'OutcomeLabel_10',
                  'EffectSizeType_Outcome_1', 'EffectSizeType_Outcome_2', 'EffectSizeType_Outcome_3', 'EffectSizeType_Outcome_4', 'EffectSizeType_Outcome_5', 
@@ -307,7 +338,7 @@ def make_dataframe():
                  'InterventionText_1', 'InterventionText_2', 'InterventionText_3', 'InterventionText_4', 'InterventionText_5', 'InterventionText_6', 'InterventionText_7', 'InterventionText_8', 'InterventionText_9', 'InterventionText_10',
                  'ControlText_1', 'ControlText_2', 'ControlText_3', 'ControlText_4', 'ControlText_5', 'ControlText_6', 'ControlText_7', 'ControlText_8', 'ControlText_9', 'ControlText_10'] 
 
-    df = df[['StudyID', 'Author', 
+    df = df[['StudyID', 'Admin_Strand', 'Author', 
             'OutcomeID_1', 'OutcomeLabel_1', 'TestType_Outcome_1', 'EffectSizeType_Outcome_1', 'ToolkitStrand_Outcome_1',  'InterventionText_1', 'ControlText_1', 'Outcome_1', 'SMD_1', 'SESMD_1', 'CIupperSMD_1', 'CIlowerSMD_1', 
             'OutcomeID_2', 'OutcomeLabel_2', 'TestType_Outcome_2', 'EffectSizeType_Outcome_2', 'ToolkitStrand_Outcome_2',  'InterventionText_2', 'ControlText_2', 'Outcome_2', 'SMD_2', 'SESMD_2', 'CIupperSMD_2', 'CIlowerSMD_2', 
             'OutcomeID_3', 'OutcomeLabel_3', 'TestType_Outcome_3', 'EffectSizeType_Outcome_3', 'ToolkitStrand_Outcome_3',  'InterventionText_3', 'ControlText_3', 'Outcome_3', 'SMD_3', 'SESMD_3', 'CIupperSMD_3', 'CIlowerSMD_3', 
@@ -515,7 +546,8 @@ def move_primary():
         df.loc[rules[i],['ControlText_4', controltext_col[i]]]               = df.loc[rules[i],[controltext_col[i], 'ControlText_4']].values
 
 # call all functions
-get_EStype(effect_size_type_output)
+get_admin_strand(admin_strand_output)
+get_estype(effect_size_type_output)
 get_testtype(test_type_output)
 get_strands(strand_output) 
 get_basic_info()
@@ -529,7 +561,7 @@ get_OutcomeID()
 get_InterventionText()
 get_ControlText()
 make_dataframe()
-move_primary()
+""" move_primary() """
 
 # save dataframe to file (.csv)
 df.to_csv("EffectSizeDetails.csv", index=False)
