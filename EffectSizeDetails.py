@@ -54,17 +54,18 @@ def get_estype(estype_codes):
                                 if subsection < len(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"]):
                                     for key,value in estype_codes[var].items():
                                         if key == data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeId"]:
-                                            innerholderholder.append(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"])
+                                            if data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"] != '':
+                                                innerholderholder.append(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"])
                                 else:
-                                    pass
+                                    innerholderholder=exclude
                         else:
-                            innerholderholder.append(exclude)
+                            innerholderholder=exclude
                         outerholder.append(innerholderholder)
                 else:
                     pass
             estype.append(outerholder)
 
-# get test type data from Outcomes
+# get testtype type data from Outcomes
 def get_testtype(testtype_codes):
     global testtype
     testtype = [] 
@@ -80,11 +81,12 @@ def get_testtype(testtype_codes):
                                 if subsection < len(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"]):
                                     for key,value in testtype_codes[var].items():
                                         if key == data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeId"]:
-                                            innerholderholder.append(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"])
+                                            if data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"] != '':
+                                                innerholderholder.append(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"])
                                 else:
-                                    pass
+                                    innerholderholder=exclude
                         else:
-                            innerholderholder.append(exclude)
+                            innerholderholder=exclude
                         outerholder.append(innerholderholder)
                 else:
                     pass
@@ -95,7 +97,6 @@ def get_strands(strand_codes):
     global strand
     strand = [] 
     for var in range(len(strand_codes)):
-        # for study in range(len(data["References"])):
         for study in range(len(data["References"])):
             if "Codes" in data["References"][study]:
                 outerholder = []
@@ -107,12 +108,15 @@ def get_strands(strand_codes):
                                 if subsection < len(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"]):
                                     for key,value in strand_codes[var].items():
                                         if key == data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeId"]:
-                                            innerholderholder.append(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"])
+                                            if data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"] != '':
+                                                innerholderholder.append(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"])
                                 else:
-                                    pass
+                                    innerholderholder=exclude
                         else:
-                            innerholderholder.append(exclude)
+                            innerholderholder=exclude
                         outerholder.append(innerholderholder)
+                else:
+                    pass
             strand.append(outerholder)
 
 # get SMD info from 'Outcomes' section for all studies and outcomes
@@ -317,7 +321,7 @@ def make_dataframe():
     intervtext_df   = pd.DataFrame(InterventionText)
     controltext_df  = pd.DataFrame(ControlText)
 
-    df = pd.concat([itemids_df, admin_strand_df, author_df, title_df, testtype_df, estype_df, strand_df, smd_df, sesmd_df, ciupper_df, 
+    df = pd.concat([itemids_df, admin_strand_df, author_df, title_df, estype_df, testtype_df, strand_df, smd_df, sesmd_df, ciupper_df, 
                     cilower_df, outcome_df, outcomeid_df, intervtext_df, controltext_df], axis=1, sort=False)
 
     df.columns = ['StudyID', 'Admin_Strand', 'Author',
@@ -353,7 +357,10 @@ def make_dataframe():
     df = df.applymap(lambda x: round(x, 4) if isinstance(x, (int, float)) else x)
     df.replace('NaN','NA', regex=True, inplace=True)
     df.replace('','NA', regex=True, inplace=True)
+    
+    df.mask(df.applymap(type).eq(list) & ~df.astype(bool))
 
+    df.fillna("NA", inplace=True)
 
 def move_primary():
     # column data to swap (by row)
@@ -561,8 +568,31 @@ get_OutcomeID()
 get_InterventionText()
 get_ControlText()
 make_dataframe()
-""" move_primary() """
+move_primary()
+
+df = df.applymap(lambda x: round(x, 4) if isinstance(x, (int, float)) else x)
+df.replace('NaN','NA', regex=True, inplace=True)
+df.replace('','NA', regex=True, inplace=True)
 
 # save dataframe to file (.csv)
 df.to_csv("EffectSizeDetails.csv", index=False)
+
+# strand comparisons dataframe
+strand_comparison = pd.read_csv("EffectSizeDetails.csv")
+strand_comparison = strand_comparison[['StudyID', 'Author', 'Admin_Strand',
+                                       'ToolkitStrand_Outcome_1', 'Outcome_1',
+                                       'ToolkitStrand_Outcome_2', 'Outcome_2',
+                                       'ToolkitStrand_Outcome_3', 'Outcome_3',
+                                       'ToolkitStrand_Outcome_4', 'Outcome_4',
+                                       'ToolkitStrand_Outcome_5', 'Outcome_5',
+                                       'ToolkitStrand_Outcome_6', 'Outcome_6',
+                                       'ToolkitStrand_Outcome_7', 'Outcome_7',
+                                       'ToolkitStrand_Outcome_8', 'Outcome_8',
+                                       'ToolkitStrand_Outcome_9', 'Outcome_9',
+                                       'ToolkitStrand_Outcome_10', 'Outcome_10']]
+
+strand_comparison.fillna("NA", inplace=True)
+
+# save dataframe to file (.csv)
+strand_comparison.to_csv("StrandComparison.csv", index=False)
 
