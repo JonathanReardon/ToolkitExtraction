@@ -38,6 +38,33 @@ def get_admin_strand(admin_strand_codes):
                 holder.append(holderfind)
         admin_strand.append(holder)
 
+# get sample data from Outcomes
+def get_sample(sample_codes):
+    global sample
+    sample = [] 
+    for var in range(len(sample_codes)):
+        for study in range(len(data["References"])):
+            if "Codes" in data["References"][study]:
+                outerholder = []
+                if "Outcomes" in data["References"][study]:
+                    for item in range(len(data["References"][study]["Outcomes"])):
+                        if "OutcomeCodes" in data["References"][study]["Outcomes"][item]:
+                            innerholderholder = []
+                            for subsection in range(12):
+                                if subsection < len(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"]):
+                                    for key,value in sample_codes[var].items():
+                                        if key == data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeId"]:
+                                            if data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"] != '':
+                                                innerholderholder.append(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"])
+                                else:
+                                    pass
+                        else:
+                            innerholderholder=exclude
+                        outerholder.append(innerholderholder)
+                else:
+                    pass
+            sample.append(outerholder)
+
 # get effect size type data from Outcomes
 def get_estype(estype_codes):
     global estype
@@ -57,7 +84,7 @@ def get_estype(estype_codes):
                                             if data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"] != '':
                                                 innerholderholder.append(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"])
                                 else:
-                                    innerholderholder=exclude
+                                    pass
                         else:
                             innerholderholder=exclude
                         outerholder.append(innerholderholder)
@@ -84,7 +111,7 @@ def get_testtype(testtype_codes):
                                             if data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"] != '':
                                                 innerholderholder.append(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"])
                                 else:
-                                    innerholderholder=exclude
+                                    pass
                         else:
                             innerholderholder=exclude
                         outerholder.append(innerholderholder)
@@ -111,7 +138,7 @@ def get_strands(strand_codes):
                                             if data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"] != '':
                                                 innerholderholder.append(data["References"][study]["Outcomes"][item]["OutcomeCodes"]["OutcomeItemAttributesList"][subsection]["AttributeName"])
                                 else:
-                                    innerholderholder=exclude
+                                    pass
                         else:
                             innerholderholder=exclude
                         outerholder.append(innerholderholder)
@@ -302,6 +329,9 @@ def make_dataframe():
     # make effect size type dataframe
     estype_df       = pd.DataFrame(estype)
     estype_df       = estype_df.iloc[:, :-2]
+    # make sample data frame
+    sample_df       = pd.DataFrame(sample)
+    sample_df       = sample_df.iloc[:, :-2]
     # make strand dataframe
     strand_df       = pd.DataFrame(strand)
     strand_df       = strand_df.iloc[:, :-2] # look into why this produced 12 columns (though it works)
@@ -321,12 +351,14 @@ def make_dataframe():
     intervtext_df   = pd.DataFrame(InterventionText)
     controltext_df  = pd.DataFrame(ControlText)
 
-    df = pd.concat([itemids_df, admin_strand_df, author_df, title_df, estype_df, testtype_df, strand_df, smd_df, sesmd_df, ciupper_df, 
+    df = pd.concat([itemids_df, admin_strand_df, author_df, title_df, sample_df, estype_df, testtype_df, strand_df, smd_df, sesmd_df, ciupper_df, 
                     cilower_df, outcome_df, outcomeid_df, intervtext_df, controltext_df], axis=1, sort=False)
 
     df.columns = ['StudyID', 'Admin_Strand', 'Author',
                  'OutcomeLabel_1',  'OutcomeLabel_2', 'OutcomeLabel_3', 'OutcomeLabel_4', 'OutcomeLabel_5', 
                  'OutcomeLabel_6', 'OutcomeLabel_7', 'OutcomeLabel_8', 'OutcomeLabel_9', 'OutcomeLabel_10',
+                 'Sample_Outcome_1', 'Sample_Outcome_2', 'Sample_Outcome_3', 'Sample_Outcome_4', 'Sample_Outcome_5', 
+                 'Sample_Outcome_6', 'Sample_Outcome_7', 'Sample_Outcome_8', 'Sample_Outcome_9', 'Sample_Outcome_10', 
                  'EffectSizeType_Outcome_1', 'EffectSizeType_Outcome_2', 'EffectSizeType_Outcome_3', 'EffectSizeType_Outcome_4', 'EffectSizeType_Outcome_5', 
                  'EffectSizeType_Outcome_6', 'EffectSizeType_Outcome_7', 'EffectSizeType_Outcome_8', 'EffectSizeType_Outcome_9', 'EffectSizeType_Outcome_10', 
                  'TestType_Outcome_1', 'TestType_Outcome_2','TestType_Outcome_3','TestType_Outcome_4','TestType_Outcome_5',
@@ -343,27 +375,26 @@ def make_dataframe():
                  'ControlText_1', 'ControlText_2', 'ControlText_3', 'ControlText_4', 'ControlText_5', 'ControlText_6', 'ControlText_7', 'ControlText_8', 'ControlText_9', 'ControlText_10'] 
 
     df = df[['StudyID', 'Admin_Strand', 'Author', 
-            'OutcomeID_1', 'OutcomeLabel_1', 'TestType_Outcome_1', 'EffectSizeType_Outcome_1', 'ToolkitStrand_Outcome_1',  'InterventionText_1', 'ControlText_1', 'Outcome_1', 'SMD_1', 'SESMD_1', 'CIupperSMD_1', 'CIlowerSMD_1', 
-            'OutcomeID_2', 'OutcomeLabel_2', 'TestType_Outcome_2', 'EffectSizeType_Outcome_2', 'ToolkitStrand_Outcome_2',  'InterventionText_2', 'ControlText_2', 'Outcome_2', 'SMD_2', 'SESMD_2', 'CIupperSMD_2', 'CIlowerSMD_2', 
-            'OutcomeID_3', 'OutcomeLabel_3', 'TestType_Outcome_3', 'EffectSizeType_Outcome_3', 'ToolkitStrand_Outcome_3',  'InterventionText_3', 'ControlText_3', 'Outcome_3', 'SMD_3', 'SESMD_3', 'CIupperSMD_3', 'CIlowerSMD_3', 
-            'OutcomeID_4', 'OutcomeLabel_4', 'TestType_Outcome_4', 'EffectSizeType_Outcome_4', 'ToolkitStrand_Outcome_4',  'InterventionText_4', 'ControlText_4', 'Outcome_4', 'SMD_4', 'SESMD_4', 'CIupperSMD_4', 'CIlowerSMD_4', 
-            'OutcomeID_5', 'OutcomeLabel_5', 'TestType_Outcome_5', 'EffectSizeType_Outcome_5', 'ToolkitStrand_Outcome_5',  'InterventionText_5', 'ControlText_5', 'Outcome_5', 'SMD_5', 'SESMD_5', 'CIupperSMD_5', 'CIlowerSMD_5', 
-            'OutcomeID_6', 'OutcomeLabel_6', 'TestType_Outcome_6', 'EffectSizeType_Outcome_6', 'ToolkitStrand_Outcome_6',  'InterventionText_6', 'ControlText_6', 'Outcome_6', 'SMD_6', 'SESMD_6', 'CIupperSMD_6', 'CIlowerSMD_6', 
-            'OutcomeID_7', 'OutcomeLabel_7', 'TestType_Outcome_7', 'EffectSizeType_Outcome_7', 'ToolkitStrand_Outcome_7',  'InterventionText_7', 'ControlText_7', 'Outcome_7', 'SMD_7', 'SESMD_7', 'CIupperSMD_7', 'CIlowerSMD_7', 
-            'OutcomeID_8', 'OutcomeLabel_8', 'TestType_Outcome_8', 'EffectSizeType_Outcome_8', 'ToolkitStrand_Outcome_8',  'InterventionText_8', 'ControlText_8', 'Outcome_8', 'SMD_8', 'SESMD_8', 'CIupperSMD_8', 'CIlowerSMD_8', 
-            'OutcomeID_9', 'OutcomeLabel_9', 'TestType_Outcome_9', 'EffectSizeType_Outcome_9', 'ToolkitStrand_Outcome_9',  'InterventionText_9', 'ControlText_9', 'Outcome_9', 'SMD_9', 'SESMD_9', 'CIupperSMD_9', 'CIlowerSMD_9', 
-            'OutcomeID_10', 'OutcomeLabel_10', 'TestType_Outcome_10', 'EffectSizeType_Outcome_10', 'ToolkitStrand_Outcome_10',  'InterventionText_10', 'ControlText_10', 'Outcome_10', 'SMD_10', 'SESMD_10', 'CIupperSMD_10', 'CIlowerSMD_10']]
+            'OutcomeID_1', 'OutcomeLabel_1', 'Sample_Outcome_1', 'TestType_Outcome_1', 'EffectSizeType_Outcome_1', 'ToolkitStrand_Outcome_1',  'InterventionText_1', 'ControlText_1', 'Outcome_1', 'SMD_1', 'SESMD_1', 'CIupperSMD_1', 'CIlowerSMD_1', 
+            'OutcomeID_2', 'OutcomeLabel_2', 'Sample_Outcome_2', 'TestType_Outcome_2', 'EffectSizeType_Outcome_2', 'ToolkitStrand_Outcome_2',  'InterventionText_2', 'ControlText_2', 'Outcome_2', 'SMD_2', 'SESMD_2', 'CIupperSMD_2', 'CIlowerSMD_2', 
+            'OutcomeID_3', 'OutcomeLabel_3', 'Sample_Outcome_3', 'TestType_Outcome_3', 'EffectSizeType_Outcome_3', 'ToolkitStrand_Outcome_3',  'InterventionText_3', 'ControlText_3', 'Outcome_3', 'SMD_3', 'SESMD_3', 'CIupperSMD_3', 'CIlowerSMD_3', 
+            'OutcomeID_4', 'OutcomeLabel_4', 'Sample_Outcome_4', 'TestType_Outcome_4', 'EffectSizeType_Outcome_4', 'ToolkitStrand_Outcome_4',  'InterventionText_4', 'ControlText_4', 'Outcome_4', 'SMD_4', 'SESMD_4', 'CIupperSMD_4', 'CIlowerSMD_4', 
+            'OutcomeID_5', 'OutcomeLabel_5', 'Sample_Outcome_5', 'TestType_Outcome_5', 'EffectSizeType_Outcome_5', 'ToolkitStrand_Outcome_5',  'InterventionText_5', 'ControlText_5', 'Outcome_5', 'SMD_5', 'SESMD_5', 'CIupperSMD_5', 'CIlowerSMD_5', 
+            'OutcomeID_6', 'OutcomeLabel_6', 'Sample_Outcome_6', 'TestType_Outcome_6', 'EffectSizeType_Outcome_6', 'ToolkitStrand_Outcome_6',  'InterventionText_6', 'ControlText_6', 'Outcome_6', 'SMD_6', 'SESMD_6', 'CIupperSMD_6', 'CIlowerSMD_6', 
+            'OutcomeID_7', 'OutcomeLabel_7', 'Sample_Outcome_7', 'TestType_Outcome_7', 'EffectSizeType_Outcome_7', 'ToolkitStrand_Outcome_7',  'InterventionText_7', 'ControlText_7', 'Outcome_7', 'SMD_7', 'SESMD_7', 'CIupperSMD_7', 'CIlowerSMD_7', 
+            'OutcomeID_8', 'OutcomeLabel_8', 'Sample_Outcome_8', 'TestType_Outcome_8', 'EffectSizeType_Outcome_8', 'ToolkitStrand_Outcome_8',  'InterventionText_8', 'ControlText_8', 'Outcome_8', 'SMD_8', 'SESMD_8', 'CIupperSMD_8', 'CIlowerSMD_8', 
+            'OutcomeID_9', 'OutcomeLabel_9', 'Sample_Outcome_9', 'TestType_Outcome_9', 'EffectSizeType_Outcome_9', 'ToolkitStrand_Outcome_9',  'InterventionText_9', 'ControlText_9', 'Outcome_9', 'SMD_9', 'SESMD_9', 'CIupperSMD_9', 'CIlowerSMD_9', 
+            'OutcomeID_10', 'OutcomeLabel_10', 'Sample_Outcome_10', 'TestType_Outcome_10', 'EffectSizeType_Outcome_10', 'ToolkitStrand_Outcome_10',  'InterventionText_10', 'ControlText_10', 'Outcome_10', 'SMD_10', 'SESMD_10', 'CIupperSMD_10', 'CIlowerSMD_10']]
 
     df = df.applymap(lambda x: round(x, 4) if isinstance(x, (int, float)) else x)
     df.replace('NaN','NA', regex=True, inplace=True)
     df.replace('','NA', regex=True, inplace=True)
-    
-    df.mask(df.applymap(type).eq(list) & ~df.astype(bool))
-
     df.fillna("NA", inplace=True)
 
 def move_primary():
     # column data to swap (by row)
+    sample_col         = ['Sample_Outcome_1', 'Sample_Outcome_2', 'Sample_Outcome_3', 'Sample_Outcome_4', 'Sample_Outcome_5', 
+                          'Sample_Outcome_6', 'Sample_Outcome_7', 'Sample_Outcome_8', 'Sample_Outcome_9', 'Sample_Outcome_10']
     effectsizetype_col = ['EffectSizeType_Outcome_1', 'EffectSizeType_Outcome_2', 'EffectSizeType_Outcome_3', 'EffectSizeType_Outcome_4',
                           'EffectSizeType_Outcome_5', 'EffectSizeType_Outcome_6', 'EffectSizeType_Outcome_7', 'EffectSizeType_Outcome_8',
                           'EffectSizeType_Outcome_9', 'EffectSizeType_Outcome_10']
@@ -410,6 +441,7 @@ def move_primary():
 
     # check against first column
     for i in range(len(rules)):
+        df.loc[rules[i],['Sample_Outcome_1', sample_col[i]]] = df.loc[rules[i],[sample_col[i], 'Sample_Outcome_1']].values
         df.loc[rules[i],['EffectSizeType_Outcome_1', effectsizetype_col[i]]] = df.loc[rules[i],[effectsizetype_col[i], 'EffectSizeType_Outcome_1']].values
         df.loc[rules[i],['TestType_Outcome_1', testtype_col[i]]]             = df.loc[rules[i],[testtype_col[i], 'TestType_Outcome_1']].values
         df.loc[rules[i],['OutcomeLabel_1', title_col[i]]]                    = df.loc[rules[i],[title_col[i], 'OutcomeLabel_1']].values
@@ -440,6 +472,7 @@ def move_primary():
     rules = [check_first, check_second, check_third, check_fourth, check_fifth,
                  check_sixth, check_seventh, check_eighth]
 
+    sample_col.pop(0)
     effectsizetype_col.pop(0)
     testtype_col.pop(0)
     title_col.pop(0)
@@ -454,6 +487,7 @@ def move_primary():
 
     # check against second column
     for i in range(len(rules)):
+        df.loc[rules[i],['Sample_Outcome_2', sample_col[i]]] = df.loc[rules[i],[sample_col[i], 'Sample_Outcome_2']].values
         df.loc[rules[i],['EffectSizeType_Outcome_2', effectsizetype_col[i]]] = df.loc[rules[i],[effectsizetype_col[i], 'EffectSizeType_Outcome_2']].values
         df.loc[rules[i],['TestType_Outcome_2', testtype_col[i]]]             = df.loc[rules[i],[testtype_col[i], 'TestType_Outcome_2']].values
         df.loc[rules[i],['OutcomeLabel_2', title_col[i]]]                    = df.loc[rules[i],[title_col[i], 'OutcomeLabel_2']].values
@@ -483,6 +517,7 @@ def move_primary():
     rules = [check_first, check_second, check_third, check_fourth, check_fifth,
              check_sixth, check_seventh]
 
+    sample_col.pop(0)
     effectsizetype_col.pop(0)
     testtype_col.pop(0)
     title_col.pop(0)
@@ -497,6 +532,7 @@ def move_primary():
 
     # check against third column
     for i in range(len(rules)):
+        df.loc[rules[i],['Sample_Outcome_3', sample_col[i]]] = df.loc[rules[i],[sample_col[i], 'Sample_Outcome_3']].values
         df.loc[rules[i],['EffectSizeType_Outcome_3', effectsizetype_col[i]]] = df.loc[rules[i],[effectsizetype_col[i], 'EffectSizeType_Outcome_3']].values
         df.loc[rules[i],['TestType_Outcome_3', testtype_col[i]]]             = df.loc[rules[i],[testtype_col[i], 'TestType_Outcome_3']].values
         df.loc[rules[i],['OutcomeLabel_3', title_col[i]]]                    = df.loc[rules[i],[title_col[i], 'OutcomeLabel_3']].values
@@ -525,6 +561,7 @@ def move_primary():
     rules = [check_first, check_second, check_third, check_fourth, check_fifth,
              check_sixth]
 
+    sample_col.pop(0)
     effectsizetype_col.pop(0)
     testtype_col.pop(0)
     title_col.pop(0)
@@ -539,6 +576,7 @@ def move_primary():
 
     # check against fourth column
     for i in range(len(rules)):
+        df.loc[rules[i],['Sample_Outcome_4', sample_col[i]]] = df.loc[rules[i],[sample_col[i], 'Sample_Outcome_4']].values
         df.loc[rules[i],['EffectSizeType_Outcome_4', effectsizetype_col[i]]] = df.loc[rules[i],[effectsizetype_col[i], 'EffectSizeType_Outcome_4']].values
         df.loc[rules[i],['TestType_Outcome_4', testtype_col[i]]]             = df.loc[rules[i],[testtype_col[i], 'TestType_Outcome_4']].values
         df.loc[rules[i],['OutcomeLabel_4', title_col[i]]]                    = df.loc[rules[i],[title_col[i], 'OutcomeLabel_4']].values
@@ -553,6 +591,7 @@ def move_primary():
         df.loc[rules[i],['ControlText_4', controltext_col[i]]]               = df.loc[rules[i],[controltext_col[i], 'ControlText_4']].values
 
 # call all functions
+get_sample(sample_output)
 get_admin_strand(admin_strand_output)
 get_estype(effect_size_type_output)
 get_testtype(test_type_output)
@@ -573,6 +612,38 @@ move_primary()
 df = df.applymap(lambda x: round(x, 4) if isinstance(x, (int, float)) else x)
 df.replace('NaN','NA', regex=True, inplace=True)
 df.replace('','NA', regex=True, inplace=True)
+
+# remove square brackets and "Sample: " from 'sampple outcome' columns
+
+df["Sample_Outcome_1"] = df["Sample_Outcome_1"].str.get(0)
+df["Sample_Outcome_1"] = df["Sample_Outcome_1"].str.replace("Sample: ", "")
+
+df["Sample_Outcome_2"] = df["Sample_Outcome_2"].str.get(0)
+df["Sample_Outcome_2"] = df["Sample_Outcome_2"].str.replace("Sample: ", "")
+
+df["Sample_Outcome_3"] = df["Sample_Outcome_3"].str.get(0)
+df["Sample_Outcome_3"] = df["Sample_Outcome_3"].str.replace("Sample: ", "")
+
+df["Sample_Outcome_4"] = df["Sample_Outcome_4"].str.get(0)
+df["Sample_Outcome_4"] = df["Sample_Outcome_4"].str.replace("Sample: ", "")
+
+df["Sample_Outcome_5"] = df["Sample_Outcome_5"].str.get(0)
+df["Sample_Outcome_5"] = df["Sample_Outcome_5"].str.replace("Sample: ", "")
+
+df["Sample_Outcome_6"] = df["Sample_Outcome_6"].str.get(0)
+df["Sample_Outcome_6"] = df["Sample_Outcome_6"].str.replace("Sample: ", "")
+
+df["Sample_Outcome_7"] = df["Sample_Outcome_7"].str.get(0)
+df["Sample_Outcome_7"] = df["Sample_Outcome_7"].str.replace("Sample: ", "")
+
+df["Sample_Outcome_8"] = df["Sample_Outcome_8"].str.get(0)
+df["Sample_Outcome_8"] = df["Sample_Outcome_8"].str.replace("Sample: ", "")
+
+df["Sample_Outcome_9"] = df["Sample_Outcome_9"].str.get(0)
+df["Sample_Outcome_9"] = df["Sample_Outcome_9"].str.replace("Sample: ", "")
+
+df["Sample_Outcome_10"] = df["Sample_Outcome_10"].str.get(0)
+df["Sample_Outcome_10"] = df["Sample_Outcome_10"].str.replace("Sample: ", "")
 
 # save dataframe to file (.csv)
 df.to_csv("EffectSizeDetails.csv", index=False)
