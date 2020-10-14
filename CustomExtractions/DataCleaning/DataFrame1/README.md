@@ -1,13 +1,3 @@
-<style>
-table:nth-of-type(1) {
-    display:table;
-    width:100%;
-}
-table:nth-of-type(1) th:nth-of-type(2) {
-    width:10%;
-}
-</style>
-
 ## Data frame 1: Study, research and design variables
 
 ### Study details
@@ -17,9 +7,10 @@ table:nth-of-type(1) th:nth-of-type(2) {
 | Record ID  | | id |
 | Short Title | | pub_author |
 | Publication Year  | | pub_year |
-| Abstract | Abstract | | abstract
-| Toolkit strand | Toolkitstrand | strand_raw<br>strand_info
-| Publication type in EPPI || pub_eppi
+| Abstract | Abstract | | abstract |
+| Toolkit strand | Toolkitstrand | strand_raw<br>strand_info |
+| Publication type in EPPI || pub_eppi |
+|<img width=200/>|<img width=200/>||<img width=200/> |
 
 ### Setting & sample characteristics
 
