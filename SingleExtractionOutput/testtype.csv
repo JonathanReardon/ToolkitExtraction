@@ -1,0 +1,172 @@
+test_type_raw,test_type_standardised_test,test_type_researcher_developed_test,test_type_school_developed_test,test_type_normal_test_or_examination,test_type_international_tests
+['Researcher developed test'],0,1,0,0,0
+"['Standardised test', 'National test or examination']",1,0,0,1,0
+['Standardised test'],1,0,0,0,0
+['Standardised test'],1,0,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Standardised test'],1,0,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Standardised test'],1,0,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Standardised test'],1,0,0,0,0
+['Standardised test'],1,0,0,0,0
+['Standardised test'],1,0,0,0,0
+['Researcher developed test'],0,1,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+"['Standardised test', 'Researcher developed test', 'School-developed test']",1,1,1,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+['Standardised test'],1,0,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+['Standardised test'],1,0,0,0,0
+"['Researcher developed test', 'Standardised test']",1,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Standardised test'],1,0,0,0,0
+"['Standardised test', 'National test or examination', 'Researcher developed test']",1,1,0,1,0
+['Standardised test'],1,0,0,0,0
+['Standardised test'],1,0,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+['Standardised test'],1,0,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+['Standardised test'],1,0,0,0,0
+"['School-developed test', 'Researcher developed test']",0,1,1,0,0
+['Standardised test'],1,0,0,0,0
+['Standardised test'],1,0,0,0,0
+['Standardised test'],1,0,0,0,0
+['Researcher developed test'],0,1,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Standardised test'],1,0,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+"['National test or examination', 'Researcher developed test']",0,1,0,1,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+"['Researcher developed test', 'School-developed test']",0,1,1,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+"['Researcher developed test', 'National test or examination']",0,1,0,1,0
+['Researcher developed test'],0,1,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+['Standardised test'],1,0,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Standardised test'],1,0,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Standardised test'],1,0,0,0,0
+['Standardised test'],1,0,0,0,0
+"['Researcher developed test', 'Standardised test']",1,1,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Standardised test'],1,0,0,0,0
+['Standardised test'],1,0,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+['Standardised test'],1,0,0,0,0
+['Researcher developed test'],0,1,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+['Standardised test'],1,0,0,0,0
+['Standardised test'],1,0,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Standardised test'],1,0,0,0,0
+['Standardised test'],1,0,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['School-developed test'],0,0,1,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+['Standardised test'],1,0,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Standardised test'],1,0,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Standardised test'],1,0,0,0,0
+['National test or examination'],0,0,0,1,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+"['Researcher developed test', 'School-developed test']",0,1,1,0,0
+['Researcher developed test'],0,1,0,0,0
+['National test or examination'],0,0,0,1,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['School-developed test'],0,0,1,0,0
+['Standardised test'],1,0,0,0,0
+"['Standardised test', 'School-developed test']",1,0,1,0,0
+['Researcher developed test'],0,1,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+['School-developed test'],0,0,1,0,0
+['Researcher developed test'],0,1,0,0,0
+['School-developed test'],0,0,1,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['School-developed test'],0,0,1,0,0
+['Researcher developed test'],0,1,0,0,0
+['National test or examination'],0,0,0,1,0
+['Standardised test'],1,0,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+"['School-developed test', 'National test or examination']",0,0,1,1,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Standardised test'],1,0,0,0,0
+"['Standardised test', 'Researcher developed test']",1,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0
+['Researcher developed test'],0,1,0,0,0

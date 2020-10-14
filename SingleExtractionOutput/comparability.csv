@@ -1,0 +1,172 @@
+comp_anal_raw,comp_anal_ht,comp_anal_info
+['Yes'],"['Page 27:\n[¬s]""A 2x2 repeated measures analysis of variance (ANOVA) was used to determine if a significant difference existed between the study group and the control group in pre and posttest scores.[¬e]""']",NA
+['No'],NA,NA
+['Yes'],NA,NA
+['Yes'],"['Page 77:\n[¬s]"" the groups are very similar in intelligence scores before the experiment- began[¬e]""']",NA
+['Yes'],"['Page 4:\n[¬s]""In order to include previous achieve- ment in writing as a covariate in the analysis, recent English/Language Arts grades for reading, spelling, and writing were summed.""\n""Previous achieve- ment scores ranged from 209 to 297. The treatment and comparison groups had comparable means [¬e]""']",NA
+['Yes'],"['Page 12:\n[¬s]""Pretreatment scores on\nthe Boehm Test of Basic Concepts was used as a covariate in the\nanalysis.[¬e]""']","Only given initial sample size for whole sample, not for intervention and control groups separately - so only whole sample attrition could be calculated."
+['Unclear or details not provided'],NA,NA
+['Yes'],"['Page 5:\n[¬s]"" A pretest of one hundred wrda was conatructed from words taken from the \'lX[ program. This test was administered to a l l experimental and control groups to det.em.lne whether or not a aigni£icant di£\xad !en:nce in spelling ability existed between these groups. J.f a difference had existed, the groups would have been reassigned until no differences in spelling ability were apparent. The re\xad sulting scores within groups and within classes, however, shoved no significant difference when submitted to a t test. The con\xad trol and the experimental groups were established solely on the basii, of their ability to spell.[¬e]""']",NA
+['Yes'],"['Page 9:\n[¬s]""The ﬁrst regression model with the self-concept and the learning condition as predictors\ndid not predict performance signiﬁcantly, F(2,69) =2.18, n.s.. R2 for the model was .06 and\nadjusted R2 was .03.[¬e]""']",NA
+['Yes'],"['Page 7:\n[¬s]""Data were analyzed by using the ANCOVA technique.[¬e]""']",NA
+['Yes'],"['Page 3:\n[¬s]"" In the ex\xad perimental group, the Pearson correlation indicated that metaphor performance was significantly related to grade level (r= .419, p< .01) and reading level (r = .663, p< .001). All other variables (i.e., sex, chronological age, and type of special education program) were found to have no significant relationship with the metaphor performance of the experi\xad mental group. In the control group, the /-test analysis indicated that metaphor performance was significantly related to sex (t = 2.95, p< .01). The Pearson cor\xad relation in this group indicated that meta\xad phor performance was also significantly related to grade level (r = .448, p< .05) and reading level (r= .419, p< .05). Other variables were found to have no signifi\xad cant relationship with the metaphor per\xad formance of the control group.[¬e]""']",NA
+['Yes'],"['Page 45:\n[¬s]"" analysis of covariance procedures were used to statistically equate the classroom groups on initial writing perfor\xad mance and initial attitude toward writing. Pretest measures were used only as covariates; there was no comparison of pretest and posttest scores for any variables.[¬e]""']",NA
+['Yes'],"['Page 45:\n[¬s]""Consequently, analysis of covariance procedures were used to statistically equate the classroom groups on initial writing perfor\xad mance and initial attitude toward writing.[¬e]""']",NA
+['No'],NA,NA
+['Yes'],"['Page 3:\n[¬s]"" One-way analyses of variance on CA, IQ, MA, and number correct on the screening test, showed no significant differences among training[¬e]""']",NA
+['No'],NA,NA
+['Unclear or details not provided'],NA,NA
+['No'],NA,NA
+['No'],NA,NA
+['Yes'],"['Page 6:\n[¬s]""s. The scores from the prein-\nstructional, objective test of language skills correlated\nmost strongly with final quality scores and thus were used\nas the covariate, N = 89, r = .39, p < .002.[¬e]""']",NA
+['Unclear or details not provided'],NA,NA
+['No'],NA,NA
+['No'],NA,NA
+['No'],NA,NA
+['Yes'],NA,NA
+['Yes'],"['Page 151:\n[¬s]""A 3 X 2 analysis of variance, using the GLM procedure of SAS, was performed on the pretest scores[¬e]""', 'Page 153:\n[¬s]""Again using 3X2 analysis of variance, as planned, the GLM procedures in SAS were employed to analyze the four posttests for effects of the model, main effects of the independent variables (informational feedback and social reinforcement), and interactions of these variables.[¬e]""', 'Page 161:\n[¬s]"" the inclusion of both feedback and reinforcement class variables ""overparameterized"" the model[¬e]""', 'Page 162:\n[¬s]""The analysis of variance for the fourth posttest with eighty percent mastery students excluded therefore was recalculated, again using the GLM procedure of SAS, with only feedback (with its three levels) as the class variable""\n""On the basis of the significance of this model and the feedback main effect (F = 3.90, P < .026), analysis of the preplanned comparisons of feedback levels then were instituted using the Least Squares Means method (LSMEANS procedure) provided in conjunction with the GLM procedure of SAS.[¬e]""']",NA
+['Yes'],"['Page 3:\n[¬s]""The hypotheses were then tested using analyses of covariance (ANCOVAS) performed for the various measures of perform\xad ance from Session 3, using the corresponding scores from Session 1 as covarianls. Because preliminary analyses in\xad dicated no significant main or interaction effects for sex on any measures, data for the sexes were combined.[¬e]""']",NA
+['Yes'],NA,NA
+NA,NA,NA
+['No'],NA,NA
+['No'],NA,NA
+['Yes'],NA,NA
+['Yes'],"['Page 16:\n[¬s]""An analysis of .covariance using pretest performance[¬e]""']",NA
+['Yes'],NA,"Any potential baseline differences were not discussed, however randomisation was used - hence baseline differences are unlikely."
+['Yes'],"['Page 8:\n[¬s]""The independent variables in this analysis were DA and RS,\nand the dependent variable was students’ posttest scores (Posttest). The covariate was students’ pretest scores (Pretest).[¬e]""']",NA
+['Yes'],"['Page 52:\n[¬s]""Analysis of test data indicated no significant\npretreatment difference between groups in ACT Natural Science Reading test scores\nor in Nelson-Denny Reading Comprehension Test scores\n. These indicators suggest that groups were equivalent before the treatments were administered.[¬e]""']",NA
+['No'],"['Page 7:\n[¬s]""with repeated measures with simple within-\nsubjects contrasts. The dependent variable consisted of a 32-item post-test given 5 days\nafter the lesson[¬e]""']",NA
+['Yes'],"['Page 39:\n[¬s]""three covariates were added to the planned benchmark analysis model in order to adjust the impact estimate for these exogenous differences between schools.[¬e]""']",NA
+['Yes'],"['Page 2:\n[¬s]""An analysis of covariance for both the Wide Range Achieve\xad ment Test and a criterion test[¬e]""']",NA
+['Yes'],"['Page 13:\n[¬s]""Results indicated that there\nwere no statistically significant group differences\nin students’ initial performance on any of the\nstudy’s baseline measures.[¬e]""', 'Page 6:\n[¬s]""No statistically significant group differences""\n""TABLE 2[¬e]""']",NA
+['Unclear or details not provided'],NA,"There is no information on any baseline differences (apart from gender), however randomisation was conducted - hence it is likely that there are not substantial differences between treatment groups."
+['No'],"['Page 18:\n[¬s]""The model of pretesting on measure Y, the dependent variable and then posttesting after the\nexperimental treatment was performed to test the differences between the two groups. It is\ninferred that positive changes observed from pre to posttesting can be interpreted as growth\ncaused by the experimental method if there was no significant pre-test differences.[¬e]""']",NA
+['No'],NA,NA
+['No'],NA,NA
+['No'],"['Page 9:\n[¬s]""To study inferential results, repeated\nmeasures ANOVAs were performed using\nstudent posttest mathematics achievement\nas the dependent variable. School, teacher,\nsex, and treatment served as factors.[¬e]""']",pre test was not included as a covariate
+['Yes'],"['Page 100:\n[¬s]""Post hoc analyses were carried out In two major categories:""\n"" Investigation of additional data about the subjects to determine if any unique[¬e]""', 'Page 101:\n[¬s]""characteristics of the sample, or a subset of the sample, might have influenced the results.[¬e]""']",NA
+['Yes'],"['Page 69:\n[¬s]""pretest means are used as covariates for adjusting posttest\nmeans.[¬e]""']",NA
+['Yes'],"['Page 13:\n[¬s]""In order\nto filter out differences keteeen classes, scores\nfrom a standardized test on letter and sound was used\nas a covariate when analyzing data.[¬e]""']",NA
+['Yes'],"['Page 13:\n[¬s]""In order\nto filter out differences keteeen classes, scores\nfrom a standardized test on letter and sound was used\nas a covariate when analyzing data.[¬e]""']",NA
+['Yes'],"['Page 13:\n[¬s]""In order\nto filter out differences keteeen classes, scores\nfrom a standardized test on letter and sound was used\nas a covariate when analyzing data.[¬e]""']",NA
+['Unclear or details not provided'],NA,NA
+['Yes'],"['Page 12:\n[¬s]""While they also earned lower\nscores in March, there was no longer a significant difference in achievement\nbetween the two groups.[¬e]""']",NA
+['Unclear or details not provided'],NA,NA
+['Yes'],NA,NA
+['Yes'],NA,NA
+['Yes'],NA,NA
+['Yes'],NA,NA
+['Yes'],"['Page 14:\n[¬s]""Analyses of Covariance (ANCOVA) with the pre-test used as a statis- tical covariant[¬e]""']",NA
+['Yes'],"['Page 6:\n[¬s]""The reading posttest scores therefore were analyzed with a multivariate and follow-up univariate two-way analyses of covariance.""\n""The experimental factor was measurement/evaluation treatment (experimental vs. contrast), the blocking factor was teacher trainer (1 vs. 2 vs. 3), and the covariate was the pretest error score.[¬e]""']",NA
+['Yes'],"['Page 5:\n[¬s]""4), and the covariate\nwas the PRT pretest[¬e]""']",NA
+['Yes'],"['Page 10:\n[¬s]""posttreatment achievement analyses controlled for pretreatment differences due to the raw score pretreatment differences in the sample.[¬e]""']",NA
+['Yes'],NA,The groups were comparable.
+['Yes'],"['Page 4:\n[¬s]""Chi-square tests applied to students’ race, sex, and handi\xad capping condition also indicated that experimental groups were comparable.[¬e]""']",NA
+['No'],NA,NA
+['No'],NA,NA
+['No'],NA,NA
+['Yes'],NA,NA
+['Yes'],"['Page 13:\n[¬s]""The evaluators ran a separate group analysis for this school and found that the groups were well balanced in terms of KS2 scores before the intervention began.[¬e]""']",NA
+['Yes'],NA,NA
+['Yes'],"['Page 3:\n[¬s]""Mest comparing the mean IQs of the two groups (t = 2.214, df= 2,78, p < .025) indicated that the IQs were significantly different and necessitated con trolling for that difference by including the IQ as a covari ate in the analysis of variance. Th""\n""In order to place Ss in the internal or external control\ncategory, the Intellectual Achievement Responsibility\n(IAR) s[¬e]""', 'Page 4:\n[¬s]""required; a 16-item multiple-choice test was\ngiven as both the pr[¬e]""']",IQ is used as a covariate; the sample was also stratified by locus of control; gain scores (post-test - pre-test) was used as an outcome
+['Yes'],NA,NA
+['No'],NA,NA
+['No'],NA,NA
+['Yes'],NA,NA
+['Yes'],"['Page 64:\n[¬s]""Descriptive statistics was used to display the results and to determine if a normal distribution exists within the data.""\n""The Mann-Whitney U was used to determine whether the groups were equivalent on the pretest, and the Wilcoxon test was utilized to test for the significance of the difference in pre-test and post-test scores.[¬e]""', 'Page 69:\n[¬s]""Table 3 Tests of Normality[¬e]""']",NA
+NA,NA,NA
+['Yes'],NA,NA
+['No'],NA,NA
+['Yes'],NA,NA
+['Yes'],NA,NA
+['Yes'],NA,NA
+['No'],NA,"Student's cognitive style was assessed, and this variable was used for stratification in an additional analysis - however it's unclear if this measure was administered pre or post-treatment."
+['No'],NA,NA
+['No'],NA,NA
+['No'],NA,NA
+['Yes'],NA,NA
+['No'],NA,NA
+['No'],"['Page 25:\n[¬s]""The initial linear mixed model was based on the assumption that the posttest score for a student would be linearly related to the pretest score, and that this pre-to-post relationship might vary from one classroom to another. A random-coefficient regression model was constructed, consisting of as many classroom-specific regression lines as the number of classrooms in the study. The model is expressed mathematically as: Post = Intercept [F] + Centered_Pre [F] + Teacher Intercept [R] + Teacher Slope (Centered_Pre) [R] + Residual [R] • Post: Posttest score of a student • Centered_Pre: Pretest score of a student, expressed as a deviation from the classroom mean[¬e]""', 'Page 26:\n[¬s]""• Teacher Intercept and Slope: The intercept and the slope of a classroom-specific regression line predicting the posttest score from the pretest score • [F] indicates a fixed effect, whereas [R] indicates a random effect According to the analysis of covariance parameters, significant variations were found among different classrooms regarding classroom-specific regression lines. To assess the effect of the intervention on the student score, a second model was created that is expressed mathematically as: Post = Intercept [F] + Condition [F] + Centered_Pre [F] + Condition x Centered_Pre [F] + Teacher Intercept [R] + Teacher Slope (Centered_Pre) [R] + Residual [R] The estimates of fixed effects showed that the interaction term was not significant. Consequently, this term was dropped and a simplified model was established: Post = Intercept [F] + Condition [F] + Centered_Pre [F] + Teacher Intercept [R] + Teacher Slope (Centered_Pre) [R] + Residual [R][¬e]""']",Covariance was considered but the interaction term between pretest and posttest was not significant. 
+['Yes'],NA,NA
+['No'],NA,NA
+['Yes'],NA,NA
+['Yes'],NA,NA
+['Yes'],NA,NA
+['Yes'],NA,NA
+['Yes'],NA,NA
+['Yes'],NA,NA
+['Yes'],NA,NA
+['Yes'],NA,NA
+['Yes'],NA,NA
+['Yes'],NA,NA
+['Yes'],NA,NA
+['No'],NA,NA
+['No'],NA,NA
+NA,NA,NA
+['No'],NA,NA
+['Unclear or details not provided'],"['Page 2:\n[¬s]""All 5s were pre-tested and post-tested with the Metropolitan Spelling Achievement Test, Form R within a week prior to and following the ex\xad perimental period.[¬e]""', 'Page 4:\n[¬s]""A pre-test, composed of a random selection of 50 words from the revised programmed units, was given to 5s one day before the beginning of the ex\xad perimental period.[¬e]""']",NA
+['No'],NA,NA
+['Yes'],NA,NA
+['Unclear or details not provided'],"['Page 4:\n[¬s]"" the [¬e]""', 'Page 7:\n[¬s]"" procedures). Analysis of covariance on targeted and nontargeted qualitative errors, using the Original series as acovariate, provided results essentially the same as those reported bel[¬e]""']",NA
+['Unclear or details not provided'],"['Page 7:\n[¬s]"" procedures). Analysis of covariance on targeted and nontargeted qualitative errors, using the Original series as acovariate, provided results essentially the same as those reported bel[¬e]""']",NA
+['Yes'],NA,NA
+['No'],NA,NA
+['No'],NA,NA
+['Yes'],"['Page 8:\n[¬s]""Next, an analysis of covariance test (ANCOVA) was performed. The purpose of the ANCOVA was to make the groups equivalent on the pre-test by applying this statistical technique [¬e]""']",NA
+['Yes'],"['Page 8:\n[¬s]""Next, an analysis of covariance test (ANCOVA) was performed. The purpose of the ANCOVA was to make the groups equivalent on the pre-test by applying this statistical technique[¬e]""']",NA
+['No'],NA,NA
+['No'],NA,NA
+['No'],NA,NA
+['No'],NA,NA
+['Yes'],"['Page 4:\n[¬s]""There\nwere no signiﬁcant differences between treatment groups in initial mean scores on the GM.[¬e]""']",NA
+NA,NA,NA
+['Yes'],NA,NA
+['Yes'],"['Page 10:\n[¬s]""Analysis of covariance\n(ANCOVA) was used to control for pretest differences.\nDescriptive statistics are provided in Table 4""\n""A multivariate analysis of covariance (MANCOVA)\nwas performed with four dependent variables (quality\nof both immediate posttests and final drafts of transfer\nand delayed posttests), two covariates (quality of both\npretests)[¬e]""']",NA
+['No'],NA,NA
+['Yes'],NA,"The study does not account for any differences statistically, but students were randomly assigned to conditions hence lack of differences are highly probable (differences are accounted for at the design stage)."
+['Yes'],NA,"The comparability is accounted for by design (randomisation), however it was not statistically controlled and comparisons were not conducted."
+['Yes'],"['Page 3:\n[¬s]"" The children were assigned to six groups (n = 12) that were equated on the basis of sex, grade, and the scores obtained on each pretest task. Only children who got a score of 3 or less on the speaking task and 12 or less on the four other pretest tasks were included in the experiment[¬e]""']",NA
+['No'],NA,NA
+['No'],NA,NA
+['Yes'],NA,NA
+['No'],NA,Partcipants did not differ.
+NA,NA,NA
+['Yes'],"['Page 3:\n[¬s]"" Scores on Part 1 were used as the covariate variable.[¬e]""']",NA
+['No'],NA,NA
+['Yes'],"['Page 4:\n[¬s]""significant\ndifferences for presentation, F (6,180) =\n9.93, p < .0001, prior achievement, F (2,90)\n= 3.42, p < .05, and the presentation-by-\nprior achievement interaction, F (6,180) =\n2.44, p < .05.[¬e]""']",NA
+['No'],NA,NA
+['Yes'],"['Page 10:\n[¬s]""pretest measures served as covariates.[¬e]""']",NA
+['Yes'],NA,NA
+['Unclear or details not provided'],NA,NA
+NA,NA,NA
+['Yes'],"['Page 21:\n[¬s]""Table 4 provides a comparison between treatment and control at baseline and suggests the trial is well balanced in terms of inspection grade, broad school type, cohort size, and eligibility for FSM. Most importantly it is well balanced in terms of the KS2 score pre-test. [¬e]""']",The trial was balanced.
+['No'],NA,NA
+['No'],NA,NA
+['Yes'],"['Page 4:\n[¬s]""There were no significant differences among conditions in adjusted mean tables post-test performance. When the regression of tables post-test perform\xad ance on tables pre-test performance was plotted, the slopes for the active and passive conditions were significantly different, 2=2-26, df=31, P<-05. Pupils who had a low score on the tables pre-test, and who had worked in the active feedback condition, performed much better on the tables post-test than similar pupils from the passive feedback group.[¬e]""']",NA
+['No'],NA,NA
+['No'],NA,As there were no significant differences in pretest
+['No'],NA,NA
+['Yes'],"['Page 4:\n[¬s]""Table 1.-Comparison of Means and Standard Deviations for Prior Achievement[¬e]""']",NA
+['Yes'],NA,NA
+NA,NA,NA
+['No'],NA,NA
+['Yes'],"['Page 30:\n[¬s]""Characteristics of the 6th grade and the 7th grade students were compared to check for possible differences in gender and ethnicity and in prior achievement[¬e]""', 'Page 31:\n[¬s]""there were no differences in ethnic distribution or mean stanine score based on random assignment. Also as expected, the 7th graders scored significantly higher than the 6th graders on the measures related to why things sink and float, a logical result of previous exposure to the curriculum""\n""7th graders’ level of achievement at pretest was still below the level expected at the end of the FAST unit and thus they remained good candidates for re-teaching[¬e]""']",NA
+NA,NA,NA
+['Yes'],"['Page 2:\n[¬s]""At the outset of the investigation, students in the coopera- tion-with-individual-feedback condition scored lower on achievement than did students in the control condition. To adjust for this difference, we performed an analysis of co- variance on the last achievement measurement, with the first measurement serving as the covariate.[¬e]""']",NA
+['No'],NA,NA
+NA,NA,NA
+['Yes'],NA,NA
+['No'],NA,NA
+['No'],NA,NA
+['Yes'],"['Page 29:\n[¬s]""For cohort A, the treatment and control groups are well balanced in terms of gender (49% male in both the treatment and control groups) and eligibility for FSM (36% in both groups). However, there is a clear difference in terms of KS1 test scores.[¬e]""', 'Page 31:\n[¬s]"" For both reading and maths, the mean score is higher for the treatment group than the control group. These results, however, ignore the imbalance that was observed in baseline (KS1) characteristics between these two groups. Once this has been adjusted for in the analysis model the effect size becomes small in terms of magnitude (i.e. 0.00) and never approaches statistical significance at conventional thresholds.[¬e]""']",Since there was an imbalance between the treatment and control groups in cohort A an adjustment was made during the analysis
+['Yes'],NA,NA
+['Yes'],NA,NA
+['Yes'],NA,NA
+['No'],NA,NA
+['No'],NA,NA
+['Yes'],NA,The groups did not differ significantly
+['Yes'],"['Page 51:\n[¬s]""Before analyzing differences in performance between the four treatments, pre- and posttest means of the two classes were compared to see if performance between classes varied significantly.[¬e]""']",The groups did not differ significantly
+['No'],NA,NA
+['Yes'],NA,NA
+['Yes'],NA,NA
+['No'],NA,NA

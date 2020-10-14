@@ -1,0 +1,172 @@
+base_n_treat_ht,base_n_treat_info,base_n_cont_ht,base_n_cont_info,base_n_treat2_ht,base_n_treat2_info,base_n_treat3_ht,base_n_treat3_info
+"['Page 21:\n[¬s]"" The experimental group had 22 boys and 22 girls[¬e]""']",44,"['Page 21:\n[¬s]"" The control group had 17 girls and 20 boys[¬e]""']",37,NA,NA,NA,NA
+"['Page 4:\n[¬s]""50 children[¬e]""']",50,"['Page 4:\n[¬s]""50 children[¬e]""']",50,NA,NA,NA,NA
+"['Page 11:\n[¬s]""Experimental\nFocal\n(n ⫽ 112)""\n""Experimental\nNonfocal\n(n ⫽ 125)[¬e]""']",112 (Focal)+ 125 (non-focal),"['Page 11:\n[¬s]""Control\nFocal\n(n ⫽ 63)""\n""Control\nNonfocal\n(n ⫽ 64)[¬e]""']",63(Focal)+64(Non-focal),NA,NA,NA,NA
+"['Page 54:\n[¬s]"" 26, 27,[¬e]""']",53,"['Page 54:\n[¬s]""29 students[¬e]""']",29,NA,NA,NA,NA
+"['Page 3:\n[¬s]""Three classes were grade 3 (N = 46) and four were grade 4 (N = 70).[¬e]""', 'Page 6:\n[¬s]""Table 3.""\n""Treatment""\n""70[¬e]""']",70,"['Page 3:\n[¬s]""Three classes were grade 3 (N = 46) and four were grade 4 (N = 70)[¬e]""', 'Page 6:\n[¬s]""Table 3.""\n""Comparison""\n""46[¬e]""']",46,NA,NA,NA,NA
+"['Page 17:\n[¬s]""N = 23""\n""N = 21""\n""N = \'n.\'n.[¬e]""']",66,"['Page 17:\n[¬s]""N = 23[¬e]""']",23,NA,NA,NA,NA
+"['Page 4:\n[¬s]""Classrooms were randomly assigned to either a ""treatment"" (integration) or a ""control"" (observation) condition. There were 67 students in the integration group[¬e]""']",67,"['Page 4:\n[¬s]""Classrooms were randomly assigned to either a ""treatment"" (integration) or a ""control"" (observation) condition.""\n"" 65 students in the observation group.[¬e]""']",65,NA,NA,NA,NA
+"['Page 29:\n[¬s]""40""\n""56[¬e]""']",96,"['Page 29:\n[¬s]""40""\n""54[¬e]""']",94,NA,NA,NA,NA
+"['Page 8:\n[¬s]""72 participants[¬e]""']",36,"['Page 8:\n[¬s]""72 participants[¬e]""']",36,NA,NA,NA,NA
+"['Page 3:\n[¬s]""79[¬e]""']",79,"['Page 3:\n[¬s]""77[¬e]""']",77,NA,NA,NA,NA
+"['Page 2:\n[¬s]""Experimental group (n = 27)[¬e]""']",27,"['Page 2:\n[¬s]""Control (n = ""\n""group 25)[¬e]""']",25,NA,NA,NA,NA
+NA,156,"['Page 44:\n[¬s]""Figure 3. Breakdown of the Sample by School, Grade,[¬e]""']",119,NA,NA,NA,NA
+"['Page 44:\n[¬s]""Treatment""\n""II""\n""22""\n""25""\n""19""\n""25""\n""21""\n""25[¬e]""']",137,"['Page 44:\n[¬s]""Treatment""\n""III""\n""23""\n""19""\n""16""\n""18""\n""23""\n""20[¬e]""']",119,NA,NA,NA,NA
+"['Page 2:\n[¬s]""The sample consisted of 72third-grade children""\n""Random assignment was made to each of three testing conditions: standard, elaborated feedback, and verbal[¬e]""']",24,"['Page 2:\n[¬s]""The sample consisted of 72third-grade children""\n""Random assignment was made to each of three testing conditions: standard, elaborated feedback, and verbal[¬e]""']",24,NA,NA,NA,NA
+"['Page 3:\n[¬s]""Subjects in Experiment 2 were 72 EMR adolescents[¬e]""', 'Page 4:\n[¬s]""Pictorial-""\n""Pictorial""\n""numerical[¬e]""']",24,"['Page 3:\n[¬s]""Subjects in Experiment 2 were 72 EMR adolescents[¬e]""', 'Page 4:\n[¬s]""Pictorial-""\n""Pictorial""\n""numerical[¬e]""']",24,NA,NA,NA,NA
+"['Page 62:\n[¬s]""Experimental""\n""(n = 16)[¬e]""']",64,"['Page 62:\n[¬s]""Control (n = 27)[¬e]""', 'Page 76:\n[¬s]""Control""\n""25)[¬e]""']",25,NA,NA,NA,NA
+"['Page 37:\n[¬s]"" 24[¬e]""']",24,"['Page 37:\n[¬s]""24[¬e]""']",24,NA,NA,NA,NA
+"['Page 5:\n[¬s]""Written feedback. Students of GE1 fn = 23),[¬e]""']",23,"['Page 5:\n[¬s]""No feedback. Students of GC (n = 27), [¬e]""']",27,NA,NA,NA,NA
+"['Page 5:\n[¬s]""Students of GE2 (n = 30)[¬e]""']",30 ,"['Page 5:\n[¬s]""Students of GC (n = 27)[¬e]""']",27,NA,NA,NA,NA
+"['Page 6:\n[¬s]""23[¬e]""']",23,"['Page 6:\n[¬s]""17[¬e]""']",17,NA,NA,NA,NA
+"['Page 2:\n[¬s]""There were 14 children in the class""\n""In order to avoid problems in matching stu\xad dents, the experiment followed a counterbal\xad anced method. The 14 children were divided into two groups of seven. The first group had their raw scores recorded on a rate sheet record (Figure 1) for the first 2 weeks. During the sec\xad ond 2 weeks the adult manager plotted their scores on linear graph paper (Figure 2) and discussed the graph with the child. The second group of seven children received the same rate sheets, but their scores were charted on linear graphs first and on the rate sheet record sec\xad ond.[¬e]""']",14,"['Page 2:\n[¬s]""There were 14 children in the class""\n""In order to avoid problems in matching stu\xad dents, the experiment followed a counterbal\xad anced method. The 14 children were divided into two groups of seven. The first group had their raw scores recorded on a rate sheet record (Figure 1) for the first 2 weeks. During the sec\xad ond 2 weeks the adult manager plotted their scores on linear graph paper (Figure 2) and discussed the graph with the child. The second group of seven children received the same rate sheets, but their scores were charted on linear graphs first and on the rate sheet record sec\xad ond.[¬e]""']",14,NA,NA,NA,NA
+"['Page 2:\n[¬s]"" the experiment followed a counterbal\xad anced method.[¬e]""', 'Page 4:\n[¬s]""The children were divided into two groups of nine.[¬e]""']",18,"['Page 2:\n[¬s]""the experiment followed a counterbal\xad anced method.[¬e]""', 'Page 4:\n[¬s]"" The children were divided into two groups of nine.[¬e]""']",18,NA,NA,NA,NA
+"['Page 4:\n[¬s]""77[¬e]""']",77,"['Page 4:\n[¬s]""79[¬e]""']",79,NA,NA,NA,NA
+"['Page 4:\n[¬s]""Failure""\n""77[¬e]""']",77,"['Page 4:\n[¬s]""None""\n""79[¬e]""']",79,NA,NA,NA,NA
+"['Page 12:\n[¬s]""31""\n""FA* group[¬e]""', 'Page 13:\n[¬s]""109""\n""FA* group[¬e]""']",140,"['Page 12:\n[¬s]""85""\n""Not in FA group[¬e]""', 'Page 13:\n[¬s]""42""\n""Not in FA group[¬e]""']",127,NA,NA,NA,NA
+"['Page 140:\n[¬s]""IS[¬e]""']",18,"['Page 140:\n[¬s]""21[¬e]""']",21,NA,NA,NA,NA
+"['Page 2:\n[¬s]""88[¬e]""']",88,"['Page 2:\n[¬s]"" 90[¬e]""']",90,"['Page 2:\n[¬s]""83[¬e]""']",83,NA,NA
+NA,88,NA,83,NA,90,NA,NA
+"['Page 3:\n[¬s]""The sample comprised 200 fifth and sixth grade Jewish Israeli pup""\n""s populations. Four classes were randomly assigned to each of the four experimental conditions. Although all pupils participated in the experiment, data were analyzed only for 50 pupils in each cond[¬e]""']",50,NA,50,NA,NA,NA,NA
+"['Page 3:\n[¬s]""The sample comprised 200 fifth and sixth grade Jewish Israeli pup""\n""iment, data were analyzed only for 50 pupils in each cond""\n""there were 25 high achievers and 25 low achievers in each experimen- tal condi[¬e]""']",50,"['Page 3:\n[¬s]""The sample comprised 200 fifth and sixth grade Jewish Israeli pup""\n""iment, data were analyzed only for 50 pupils in each cond""\n""e were 25 high achievers and 25 low achievers in each experimen- tal condi[¬e]""']",50,NA,NA,NA,NA
+"['Page 3:\n[¬s]""data were analyzed only for 50 pupils in each condition, randomly selected from those whose average grade in language and mathematics ontheir most recent report card was in the top or bottom 25% for their class. Thus there were 25 high achievers and 25 low achievers in each experimen- tal condi[¬e]""']",50,"['Page 3:\n[¬s]""data were analyzed only for 50 pupils in each condition, randomly selected from those whose average grade in language and mathematics ontheir most recent report card was in the top or bottom 25% for their class. Thus there were 25 high achievers and 25 low achievers in each experimen- tal condi[¬e]""']",50,NA,NA,NA,NA
+"['Page 9:\n[¬s]""In total, there were 127 experimental and 116 control students in this sample;[¬e]""']",127,"['Page 9:\n[¬s]""116 control students in this sample;[¬e]""']",116,NA,NA,NA,NA
+NA,45 (assumed),NA,45 (assumed),NA,NA,NA,NA
+NA,NA,NA,NA,NA,NA,NA,NA
+"['Page 5:\n[¬s]""19[¬e]""']",19,"['Page 5:\n[¬s]""19[¬e]""']",19,NA,NA,NA,NA
+"['Page 39:\n[¬s]""Complete\ndata were collected for a final sample of 103 subjects. To obtain equal numbers of\nsubjects in each cell, random removal of 3 subjects was carried out. All data\nanalysis was performed on a final sample of 100 subjects.[¬e]""']",60,"['Page 39:\n[¬s]""Complete\ndata were collected for a final sample of 103 subjects. To obtain equal numbers of\nsubjects in each cell, random removal of 3 subjects was carried out. All data\nanalysis was performed on a final sample of 100 subjects.[¬e]""']",40,NA,NA,NA,NA
+NA,KCR = 17 MTF = 16 DF = 16 total = 49,NA,Questiosn = 16 Text = 17 total = 33,NA,NA,NA,NA
+"['Page 40:\n[¬s]""Sample size 2,230[¬e]""']",2230,"['Page 40:\n[¬s]"" 1,929[¬e]""']",1929,NA,NA,NA,NA
+"['Page 2:\n[¬s]""The experimental group of 32 stu\xad dents[¬e]""']",32,"['Page 2:\n[¬s]""The control group of 37 students[¬e]""']",37,NA,NA,NA,NA
+"['Page 4:\n[¬s]""222 to\nRRI[¬e]""']",222,"['Page 4:\n[¬s]""285 to TSP[¬e]""']",285,NA,NA,NA,NA
+"['Page 4:\n[¬s]""Six children\nof each sex were randomly assigned to each of five\nconditions with the single constraint that the experi-\nmental groups be roughly equal in age.[¬e]""']",48,"['Page 4:\n[¬s]""Six children\nof each sex were randomly assigned to each of five\nconditions with the single constraint that the experi-\nmental groups be roughly equal in age.[¬e]""']",12,NA,NA,NA,NA
+NA,96,NA,90,NA,NA,NA,NA
+"['Page 4:\n[¬s]""22[¬e]""']",22,"['Page 4:\n[¬s]""22[¬e]""']",22,"['Page 4:\n[¬s]""21[¬e]""']",21,NA,NA
+"['Page 83:\n[¬s]""a sample of 100 subjects who could adequately read material at a seventh to eighth grade level, but who had 67[¬e]""', 'Page 84:\n[¬s]""difficulty monitoring their comprehension were selected and randomly assigned to one of four treatment groups.[¬e]""']",25,"['Page 83:\n[¬s]""a sample of 100 subjects who could adequately read material at a seventh to eighth grade level, but who had 67[¬e]""', 'Page 84:\n[¬s]""difficulty monitoring their comprehension were selected and randomly assigned to one of four treatment groups.[¬e]""']",25,NA,NA,NA,NA
+"['Page 3:\n[¬s]""504[¬e]""']","No details are provided specifying the n of intervention group, however, assuming the 504 students were assigned to the 3 conditions evenly n of intervention = 168",NA,assumed 168,NA,NA,NA,NA
+"['Page 72:\n[¬s]""20[¬e]""']",20,"['Page 72:\n[¬s]""24 [¬e]""']",24,NA,NA,NA,NA
+"['Page 52:\n[¬s]""154[¬e]""', 'Page 71:\n[¬s]""49[¬e]""']",49,"['Page 71:\n[¬s]""21[¬e]""']",21,NA,NA,NA,NA
+"['Page 14:\n[¬s]""12[¬e]""']",12,"['Page 14:\n[¬s]""10[¬e]""']",10,NA,NA,NA,NA
+"['Page 14:\n[¬s]""14[¬e]""']",14,"['Page 14:\n[¬s]""10[¬e]""']",10,NA,NA,NA,NA
+"['Page 14:\n[¬s]""11[¬e]""']",11,"['Page 14:\n[¬s]""10[¬e]""']",10,NA,NA,NA,NA
+NA,60,NA,30,NA,NA,NA,NA
+"['Page 11:\n[¬s]""30[¬e]""']",30,"['Page 11:\n[¬s]""95[¬e]""']",95,NA,NA,NA,NA
+"['Page 2:\n[¬s]""Fifteen sixth graders received instruction in the process of revision[¬e]""', 'Page 5:\n[¬s]""We tested 30 sixth graders who were randomly assigned (counterbalancing for language-arts teacher, sex, and race) to one of two treatments:[¬e]""']",15,"['Page 2:\n[¬s]""15 controls[¬e]""']",15,NA,NA,NA,NA
+"['Page 7:\n[¬s]""54[¬e]""']",54,"['Page 7:\n[¬s]""53[¬e]""']",53,NA,NA,NA,NA
+"['Page 7:\n[¬s]""61""\n""iList-1[¬e]""']",61,"['Page 7:\n[¬s]""53""\n""None[¬e]""']",53,NA,NA,NA,NA
+"['Page 7:\n[¬s]""56""\n""iList-2[¬e]""']",56,"['Page 7:\n[¬s]""53""\n""None[¬e]""']",53,NA,NA,NA,NA
+"['Page 7:\n[¬s]""19""\n""iList-[¬e]""']",19,"['Page 7:\n[¬s]""53""\n""None[¬e]""']",53,NA,NA,NA,NA
+"['Page 8:\n[¬s]""Of the participants with usable data, 52 were in the Summary Street® condition[¬e]""']",52,"['Page 8:\n[¬s]"" 59 participants were in the control condition (38 females and 21 males)[¬e]""']",59,NA,NA,NA,NA
+"['Page 3:\n[¬s]""51 boys, 13 girls[¬e]""']",64,"['Page 3:\n[¬s]""57 boys, 20 girls[¬e]""']",77,NA,NA,NA,NA
+"['Page 3:\n[¬s]""students in the\nalternative mastery learning treatment (DBI) a[¬e]""']",49,"['Page 3:\n[¬s]""pupils in the typical mastery learning treatm[¬e]""']",39,NA,NA,NA,NA
+"['Page 3:\n[¬s]""unenhanced feedback CBM""\n""4[¬e]""']",4,"['Page 3:\n[¬s]"" control""\n""6 teachers[¬e]""']",6,NA,NA,NA,NA
+"['Page 2:\n[¬s]""During the study, 10 of the 100 students moved, leaving student ns of 19 and 20 in the two su bgroups of Group 1; 18[¬e]""']",18,"['Page 2:\n[¬s]"" 18 in the control group.[¬e]""']",18,NA,NA,NA,NA
+"['Page 3:\n[¬s]"" student ns were 20,19, and 20 for the CBM-ES, CBM- NES, and control groups, respectively.[¬e]""']",19,"['Page 3:\n[¬s]"" student ns were 20,19, and 20 for the CBM-ES, CBM- NES, and control groups, respectively.[¬e]""']",20,NA,NA,NA,NA
+"['Page 2:\n[¬s]""assigned teachers to CBM (n = 20)""\n""To specify research participants for whom treat\xad ment effects would be evaluated, however, teach\xad ers identified three students:[¬e]""']",20,"['Page 2:\n[¬s]""contrast (no CBM, n = 20,""\n""To specify research participants for whom treat\xad ment effects would be evaluated, however, teach\xad ers identified three students:[¬e]""']",20,NA,NA,NA,NA
+"['Page 63:\n[¬s]""80[¬e]""']",80,"['Page 63:\n[¬s]""80[¬e]""']",80,NA,NA,NA,NA
+"['Page 4:\n[¬s]""45 high school juniors[¬e]""', 'Page 5:\n[¬s]""Students were randomly assigned to one of three condi- tions: (a) inserted questions, (b) inserted questions & feedback, and (c) read only control.[¬e]""']",15,"['Page 4:\n[¬s]"" 45 high school juniors[¬e]""']",15,NA,NA,NA,NA
+"['Page 4:\n[¬s]""100[¬e]""']",100,"['Page 4:\n[¬s]""98)[¬e]""']",98,NA,NA,NA,NA
+"['Page 19:\n[¬s]""Allocated to intervention (n=166)[¬e]""']",166,"['Page 19:\n[¬s]""Allocated to control (n=183)[¬e]""']",183,NA,NA,NA,NA
+NA,Intrinsic Reinforcement (IR) Intrinsic Extrinsic combined 27,NA,Intrinsic Extrinsic combined Feedback (F) 25,NA,NA,NA,NA
+"['Page 4:\n[¬s]""Table 2.[¬e]""']",26,"['Page 4:\n[¬s]""Table 2.-[¬e]""']",27,NA,NA,NA,NA
+"['Page 299:\n[¬s]""The experimental group consisted of 97 students[¬e]""']",97,"['Page 299:\n[¬s]""The control group con\xad tained 70 students[¬e]""']",70,NA,NA,NA,NA
+"['Page 4:\n[¬s]""matched groups of 389 cases[¬e]""']",389,NA,389,NA,NA,NA,NA
+"['Page 1:\n[¬s]""24 students[¬e]""']",24,"['Page 1:\n[¬s]""30 students[¬e]""']",30,NA,NA,NA,NA
+"['Page 12:\n[¬s]""33""\n""gnment A[¬e]""']",33,"['Page 12:\n[¬s]""1""\n""gnment[¬e]""']",31,NA,NA,NA,NA
+"['Page 63:\n[¬s]"" There were 80 participants at each school.[¬e]""']",80,NA,80,NA,NA,NA,NA
+NA,NA,NA,NA,NA,NA,NA,NA
+"['Page 5:\n[¬s]""The experimental group, including 82 students[¬e]""']",82,"['Page 5:\n[¬s]""the control group with 85 students[¬e]""']",85,NA,NA,NA,NA
+"['Page 2:\n[¬s]""Treatment II (N=21)[¬e]""']",21,"['Page 2:\n[¬s]""Treatment III (N=21)[¬e]""']",21,NA,NA,NA,NA
+"['Page 22:\n[¬s]""53[¬e]""', 'Page 23:\n[¬s]""15[¬e]""', 'Page 24:\n[¬s]""19[¬e]""']",87,"['Page 22:\n[¬s]""27[¬e]""', 'Page 23:\n[¬s]""12[¬e]""', 'Page 24:\n[¬s]""9[¬e]""']",48,NA,NA,NA,NA
+"['Page 55:\n[¬s]""94[¬e]""']",94,"['Page 55:\n[¬s]""67[¬e]""']",67,NA,NA,NA,NA
+NA,16,NA,16 (partial learner ) and 16 (full learner),NA,NA,NA,NA
+NA,34,"['Page 6:\n[¬s]""35[¬e]""']",35,NA,NA,NA,NA
+NA,35 no feedback,NA,36 elaborated feedback,NA,NA,NA,NA
+"['Page 10:\n[¬s]""23[¬e]""']",23,"['Page 10:\n[¬s]""23[¬e]""']",23,NA,NA,NA,NA
+"['Page 80:\n[¬s]"" Two classes (n = 43) served as the treatment group [¬e]""']",43,"['Page 80:\n[¬s]""one class (n = 22) served as the control (no intervention)[¬e]""']",22,NA,NA,NA,NA
+"['Page 9:\n[¬s]""372""\n""322""\n"" 253[¬e]""']",947,"['Page 9:\n[¬s]""293[¬e]""']",293,NA,NA,NA,NA
+"['Page 4:\n[¬s]""The participants were assigned to""\n""groups of 15 subjects[¬e]""']",15,"['Page 4:\n[¬s]""The participants were assigned to""\n""groups of 15 subjects[¬e]""']",15,NA,NA,NA,NA
+"['Page 30:\n[¬s]""207[¬e]""']",207,"['Page 30:\n[¬s]""212[¬e]""']",212,NA,NA,NA,NA
+"['Page 15:\n[¬s]""Group feedback (n = 32)[¬e]""']",32,"['Page 15:\n[¬s]""Control (n = 36)[¬e]""']",36,NA,NA,NA,NA
+NA,NA,NA,NA,NA,NA,NA,NA
+"['Page 9:\n[¬s]""conText\nReading Detectives\nN\n59[¬e]""']",59,"['Page 9:\n[¬s]""80""\n""Reading Detectives[¬e]""']",80,NA,NA,NA,NA
+"['Page 7:\n[¬s]""34 students participated in the right-answer feedback\ngroup[¬e]""']",34,"['Page 7:\n[¬s]""28 students participated in the placebo feed-\nback group.[¬e]""']",28,NA,NA,NA,NA
+"['Page 7:\n[¬s]""there were 30 stu-\ndents in the strategic-search-decisions feedback grou[¬e]""']",30,"['Page 7:\n[¬s]""28 students participated in the placebo feed-\nback group[¬e]""']",28,NA,NA,NA,NA
+"['Page 6:\n[¬s]""They were\nrandomly distributed into three groups according to\nconditions: 50, 51 and 41 students in placebo,\nsearch&revisit and select&revisit feedback groups,\nrespectively.[¬e]""']",51(Search and revisit),"['Page 6:\n[¬s]""0, 51 and 41 students in placebo,\nsearch&revisit and select&revisit feedback groups,\nrespectively.[¬e]""']",50,NA,NA,NA,NA
+"['Page 6:\n[¬s]""50, 51 and 41 students in placebo,\nsearch&revisit and select&revisit feedback groups,\nrespectively.[¬e]""']",41,"['Page 6:\n[¬s]""50, 51 and 41 students in placebo,\nsearch&revisit and select&revisit feedback groups,\nrespectively.[¬e]""']",50,NA,NA,NA,NA
+"['Page 12:\n[¬s]""They were randomly distributed\ninto three groups: 37, 37 and 38 students in placebo, only-\nselect and select&revisit feedback groups, respectively[¬e]""']",38 (Select and revisit),"['Page 12:\n[¬s]""They were randomly distributed\ninto three groups: 37, 37 and 38 students in placebo, only-\nselect and select&revisit feedback groups, respectively[¬e]""']",37,NA,NA,NA,NA
+NA,37 (Only select),"['Page 12:\n[¬s]""37, 37 and 38 students in placebo, only-\nselect and select&revisit feedback groups, respectively[¬e]""']",37,NA,NA,NA,NA
+"['Page 7:\n[¬s]""14 students received the experimental treatment[¬e]""']",14,"['Page 7:\n[¬s]""14 students worked as the control group[¬e]""']",14,NA,NA,NA,NA
+"['Page 6:\n[¬s]"" 13 experimental students[¬e]""']",13,"['Page 6:\n[¬s]""there were 16 control students on draft 3[¬e]""']",15,NA,NA,NA,NA
+"['Page 4:\n[¬s]""22 were assigned to a feed-\nback condition; mean age did not differ across\nconditions, t(34)01.16, SE0.19, p\t.25.[¬e]""']",22,"['Page 4:\n[¬s]""Of these,\n14 children were assigned to a control no-feed-\nback condition[¬e]""']",14,NA,NA,NA,NA
+"['Page 4:\n[¬s]""22 were assigned to a feed-\nback condition;[¬e]""']",22,"['Page 4:\n[¬s]""14 children were assigned to a control no-feed-\nback condition[¬e]""']",14,NA,NA,NA,NA
+"['Page 9:\n[¬s]""25 5s in each of the ""\n""experi\xad mental groups[¬e]""']",75,NA,75,NA,NA,NA,NA
+"['Page 5:\n[¬s]"" in the end, each experimental group numbered six""\n""Group 2 were instructed to use the same procedures but without the third element, praise.[¬e]""']",6,"['Page 6:\n[¬s]""In order to provide a group with whom the two experimental groups could be compared, a third set of six pupils from Year 7 were selected at random[¬e]""']",6,"['Page 5:\n[¬s]""Group 1 were directed to use the pause, prompt and praise strategies in the normal way[¬e]""']",6,NA,NA
+"['Page 1:\n[¬s]""121 students)[¬e]""']",121,"['Page 1:\n[¬s]""control students (n = 7 classrooms and 175[¬e]""']",175,NA,NA,NA,NA
+"['Page 4:\n[¬s]""13 subjects""\n""in each treatment group[¬e]""']",13,NA,13,NA,NA,NA,NA
+"['Page 3:\n[¬s]""33[¬e]""']",33,"['Page 3:\n[¬s]""29[¬e]""']",29,NA,NA,NA,NA
+"['Page 5:\n[¬s]""14[¬e]""']",14,"['Page 5:\n[¬s]""14[¬e]""']",14,NA,NA,NA,NA
+"['Page 6:\n[¬s]""Of the 178 students who completed the study,\n90 were assigned to the SSR condition, and 88 used the Reading Tuto[¬e]""']",88,"['Page 6:\n[¬s]""Of the 178 students who completed the study,\n90 were assigned to the SSR condition,[¬e]""']",90,NA,NA,NA,NA
+"['Page 4:\n[¬s]""f 1[¬e]""']",15,"['Page 4:\n[¬s]""f 1[¬e]""']",15,NA,NA,NA,NA
+"['Page 4:\n[¬s]""f 1[¬e]""']",15,"['Page 4:\n[¬s]""f 1[¬e]""']",15,NA,NA,NA,NA
+"['Page 6:\n[¬s]""Table 5[¬e]""']",25,NA,16,NA,NA,NA,NA
+"['Page 4:\n[¬s]""groups of 40[¬e]""']",40,NA,40,NA,NA,NA,NA
+NA,123,"['Page 2:\n[¬s]""antity. Data was collected from 247 Nigerian subjects us- ing the individual interv[¬e]""', 'Page 5:\n[¬s]""he pretest tasks on substance and quantity. During training, one half of the sample[¬e]""']",124,NA,NA,NA,NA
+"['Page 6:\n[¬s]""15[¬e]""']",15,"['Page 6:\n[¬s]""20[¬e]""']",20,NA,NA,NA,NA
+"['Page 4:\n[¬s]""25[¬e]""']",25,"['Page 4:\n[¬s]""25[¬e]""']",25,NA,NA,NA,NA
+"['Page 2:\n[¬s]""The subjects were 32 children (boys and girls) approximately 11 yr. old in the fifth grade of an elementary school. Subjects participated in their regular classroom and were randomly assigned to one of two conditions, the test form and the feedback form conditions. [¬e]""']",16,"['Page 2:\n[¬s]""The subjects were 32 children (boys and girls) approximately 11 yr. old in the fifth grade of an elementary school. Subjects participated in their regular classroom and were randomly assigned to one of two conditions, the test form and the feedback form conditions.[¬e]""']",16,NA,NA,NA,NA
+"['Page 5:\n[¬s]""34)[¬e]""']",34,"['Page 5:\n[¬s]""35)[¬e]""']",35,NA,NA,NA,NA
+NA,28,"['Page 5:\n[¬s]""Control (N = 35)[¬e]""']",35,NA,NA,NA,NA
+NA,12,"['Page 3:\n[¬s]""each group of 12 subjects[¬e]""']",12,NA,NA,NA,NA
+"['Page 6:\n[¬s]""20[¬e]""']",20,"['Page 6:\n[¬s]""10[¬e]""']",10,NA,NA,NA,NA
+NA,NA,NA,NA,NA,NA,NA,NA
+NA,48,"['Page 119:\n[¬s]""A total of 48 students comprised the groups of reviewers and readers[¬e]""']",48,NA,NA,NA,NA
+"['Page 4:\n[¬s]""44)[¬e]""']",NA,"['Page 4:\n[¬s]""44""\n""45[¬e]""']",45,NA,NA,NA,NA
+"['Page 5:\n[¬s]""Forty-six LEP students in grade four representing two elementary schools in the greater Houston area, Texas, participated in the study. The experimental group had 27 students,[¬e]""', 'Page 9:\n[¬s]""N=27[¬e]""']",27,"['Page 5:\n[¬s]""Forty-six LEP students in grade four representing two elementary schools in the greater Houston area, Texas, participated in the study. The experimental group had 27 students,[¬e]""', 'Page 9:\n[¬s]""N=19[¬e]""']",19,NA,NA,NA,NA
+NA,70; The sample size is not explicitly stated; equal number of students per experimental condition is assumed.,NA,70; The sample size is not explicitly stated; equal number of students per experimental condition is assumed.,NA,NA,NA,NA
+NA,"70; the sample size for individual conditions is not explicitly stated, it is assumed that an equal number of students was assigned to each experimental condition.",NA,"70; the sample size for individual conditions is not explicitly stated, it is assumed that an equal number of students was assigned to each experimental condition.",NA,NA,NA,NA
+"['Page 3:\n[¬s]""Seventy-two kindergarteners and first-graders (36 boys and 36 girls; M = age 6-5, range = 5-5 to 7-3) from three middle-class elementary schools in Montreal participated in the study.[¬e]""']",36,"['Page 3:\n[¬s]""Seventy-two kindergarteners and first-graders (36 boys and 36 girls; M = age 6-5, range = 5-5 to 7-3) from three middle-class elementary schools in Montreal participated in the study.[¬e]""']",36,NA,NA,NA,NA
+NA,18,NA,18,NA,17,NA,NA
+"['Page 6:\n[¬s]""Each good and poor comprehender was assigned in equal numbers (N = 16) to one of the experimental or control conditions[¬e]""']",16,NA,16,NA,16,NA,NA
+"['Page 19:\n[¬s]""Allocated to intervention (schools n=10; pupils=1,983)[¬e]""']",1983,"['Page 19:\n[¬s]""Allocated to control (schools n=10; pupils=1541)[¬e]""']",1541,NA,NA,NA,NA
+"['Page 112:\n[¬s]""Received multiple feedback condition (n = 15)[¬e]""']",15,"['Page 112:\n[¬s]""Received control condition (n = 12)[¬e]""']",12,"['Page 112:\n[¬s]""Received single feedback condition (n = 18)[¬e]""']",18,NA,NA
+NA,NA,NA,NA,NA,NA,NA,NA
+NA,132,NA,132,NA,NA,NA,NA
+"['Page 6:\n[¬s]""1830 students completing Cognitive Tutor (the Program\nSample)[¬e]""']",1830,"['Page 6:\n[¬s]""2819 students who completed conventional Algebra I\n(the Comparison Sample),[¬e]""']",2819,NA,NA,NA,NA
+NA,video plus questions inferred 98 / 4 conditions = 24,NA,24,NA,NA,NA,NA
+NA,11,NA,11,NA,NA,NA,NA
+"['Page 6:\n[¬s]""Children were assigned randomly within gender and classroom to one of four experimental conditions (ji » 15 per condition):[¬e]""']",15,"['Page 6:\n[¬s]""Children were assigned randomly within gender and classroom to one of four experimental conditions (ji » 15 per condition)[¬e]""']",15,NA,15,NA,NA
+NA,15,NA,15,NA,15,NA,NA
+"['Page 24:\n[¬s]""No. pupils[¬e]""']",3162,"['Page 24:\n[¬s]""No. pupils[¬e]""']",2297,NA,NA,NA,NA
+NA,10,NA,10,NA,NA,NA,NA
+"['Page 19:\n[¬s]""Intervention (N=70, n= 12,600)[¬e]""']",12600,"['Page 19:\n[¬s]""Control (n=70, n=13,277)[¬e]""']","13,277",NA,NA,NA,NA
+NA,inferred  140 as 424/ 3 conditions,NA,140,NA,NA,NA,NA
+"['Page 9:\n[¬s]""18[¬e]""']",18,"['Page 9:\n[¬s]""18[¬e]""']",18,NA,NA,NA,NA
+"['Page 4:\n[¬s]""The experiment was run in six shifts of from eight to 10 children. Approxi\xad mately equal numbers of children from within each shift received each of the three conditions.[¬e]""']",17,"['Page 4:\n[¬s]""The experiment was run in six shifts of from eight to 10 children. Approxi\xad mately equal numbers of children from within each shift received each of the three conditions.[¬e]""']",17,"['Page 4:\n[¬s]""The experiment was run in six shifts of from eight to 10 children. Approxi\xad mately equal numbers of children from within each shift received each of the three conditions.[¬e]""']",17,NA,NA
+"['Page 3:\n[¬s]""The subjects were 52 of the children who had partici\xad pated in the first experiment.[¬e]""']",34,"['Page 3:\n[¬s]""The subjects were 52 of the children who had partici\xad pated in the first experiment.[¬e]""']",18,NA,NA,NA,NA
+NA,29,NA,30,NA,NA,NA,NA
+NA,30,NA,28,NA,NA,NA,NA
+"['Page 8:\n[¬s]""Enhanced CPR + FB/C""\n""(n = 30)""\n""Enhanced CPR + FB/C""\n""( n = 29)[¬e]""']",59,"['Page 8:\n[¬s]""Conventional""\n""(n = 30)""\n""Conventional""\n""(n = 31)[¬e]""']",61,NA,NA,NA,NA
+"['Page 3:\n[¬s]""57 from a Jewish paro-\nchial school.[¬e]""']",57,"['Page 3:\n[¬s]""47 were recruited from a Catholic parochial\nschoo[¬e]""']",47,NA,NA,NA,NA
+NA,NA,NA,NA,NA,NA,NA,NA
+"['Page 4:\n[¬s]""MIFS—WHITE 100""\n""MIFS-jBLACK 240[¬e]""']",340,"['Page 4:\n[¬s]""CONTROL-WHITE . 156""\n""CONTROL-BLACK\' . 222[¬e]""']",378,NA,NA,NA,NA
+"['Page 7:\n[¬s]""a small randomized experiment involving 102 middle school students was conducted.[¬e]""']",52,"['Page 7:\n[¬s]"" In Phase I of the study, 52 6th graders were randomly assigned to a treatment or control group; in Phase II of this study, 50 7th graders were randomly assigned to a treatment or control group[¬e]""']",50,NA,NA,NA,NA
+NA,NA,NA,NA,NA,NA,NA,NA
+"['Page 1:\n[¬s]""The cooperation- with-individual-feedback and cooperation-with-shared-feedback con- ditions, each at 4 schools, consisted of 64 and 67 students, respec- tively.[¬e]""']",64,"['Page 1:\n[¬s]"" The control condition consisted of 87 students from 5 schools.[¬e]""']",87,"['Page 1:\n[¬s]"" cooperation-with-shared-feedback con- dition""\n""67 students,[¬e]""']",67,NA,NA
+"['Page 78:\n[¬s]""The population consisted o f 23 boys and 39 girls.[¬e]""']",31,"['Page 78:\n[¬s]"" The population consisted o f 23 boys and 39 girls.[¬e]""']",31,NA,NA,NA,NA
+NA,NA,NA,NA,NA,NA,NA,NA
+"['Page 8:\n[¬s]""twelve in the experimental[¬e]""']",12,"['Page 8:\n[¬s]""there were thirteen stu-\ndents in the control group[¬e]""']",13,NA,NA,NA,NA
+"['Page 18:\n[¬s]""52 students altogether[¬e]""']",26,"['Page 18:\n[¬s]""2 students altogether[¬e]""', 'Page 19:\n[¬s]""Half of the students at Time 1 used Summary Street, and the other half of the students used Summary Street at Time 2.[¬e]""']",26,NA,NA,NA,NA
+NA,NA,NA,NA,NA,NA,NA,NA
+"['Page 25:\n[¬s]""~ Cohort A (1 yr intervention) 1492 pupils ~Cohort B (2 yrs intervention) 1570 pupils[¬e]""']",3062,"['Page 25:\n[¬s]""Allocated to control 48 schools ~ Cohort A (1 yr intervention) 1721 pupils ~Cohort B (2 yrs intervention) 1789 pupils[¬e]""']",3510,NA,NA,NA,NA
+"['Page 10:\n[¬s]""244""\n""ent lvl\nPret""\n""TSS[¬e]""']",244,"['Page 10:\n[¬s]""223""\n""Control[¬e]""']",223,NA,NA,NA,NA
+"['Page 12:\n[¬s]""At pretest\n65 classrooms with 1,351 students were assigned to the ITSS research condition[¬e]""']",1351,"['Page 12:\n[¬s]""63\nclassrooms with 1,294 students were assigned to be in the control condition.[¬e]""']",1294,NA,NA,NA,NA
+"['Page 8:\n[¬s]""(n ⫽ 1,415) were\nin the ITSS condition, a[¬e]""']",1415,"['Page 8:\n[¬s]""(n ⫽ 1,325) came from rural\ndistricts.[¬e]""']",1325,NA,NA,NA,NA
+"['Page 10:\n[¬s]""shown in Table 4[¬e]""']",679,"['Page 10:\n[¬s]""shown in Table 4[¬e]""']",1383,NA,NA,NA,NA
+"['Page 104:\n[¬s]"" 46[¬e]""']",46,"['Page 104:\n[¬s]""41[¬e]""']",41,NA,NA,NA,NA
+NA,10,NA,12,NA,NA,NA,NA
+NA,11,NA,12,NA,NA,NA,NA
+"['Page 6:\n[¬s]""25[¬e]""']",25,"['Page 6:\n[¬s]""27[¬e]""']",27,NA,NA,NA,NA
+"['Page 159:\n[¬s]"" 145[¬e]""']",145,"['Page 159:\n[¬s]"" 135[¬e]""']",135,NA,NA,NA,NA
+"['Page 45:\n[¬s]""93[¬e]""']",93,"['Page 45:\n[¬s]""100[¬e]""']",100,NA,NA,NA,NA
+"['Page 3:\n[¬s]""The subjects were 36 6- and 8-year-old children""\n""Then, equal numbers of boys and girls of each age group were randomly assigned to each demon- stration condition.""\n""One half of the boys and girls in each structure group were randomly assigned to an imitation treat- ment.[¬e]""']",6,NA,6,NA,NA,NA,NA
