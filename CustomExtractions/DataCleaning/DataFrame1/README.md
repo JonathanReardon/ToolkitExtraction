@@ -10,7 +10,7 @@
 | Abstract | Abstract | | abstract
 | Toolkit strand | Toolkitstrand | strand_raw<br>strand_info
 | Publication type in EPPI || pub_eppi
-| |<img width=200/>|<img width=200/>|
+| |<img width=400/>|<img width=400/>|
 
 ### Setting & sample characteristics
 
