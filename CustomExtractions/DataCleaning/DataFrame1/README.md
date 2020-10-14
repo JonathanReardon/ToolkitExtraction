@@ -2,7 +2,7 @@
 
 ### Study details
 
-| Description   | Question | Columns |
+| <img>Description   | <img>Question | <img>Columns |
 | ------------- | ------------- | --- |
 | Record ID  | | id |
 | Short Title | | pub_author |
@@ -10,7 +10,7 @@
 | Abstract | Abstract | | abstract |
 | Toolkit strand | Toolkitstrand | strand_raw<br>strand_info |
 | Publication type in EPPI || pub_eppi |
-|<img width=200/>|<img width=200/>||<img width=200/> |
+|<img width=200/>|<img width=200/>|<img width=200/>|
 
 ### Setting & sample characteristics
 
