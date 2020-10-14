@@ -12,7 +12,7 @@
 | Country | In which country/countries was the study carried out? | List of countries | loc_country_raw<br>loc_country_ht<br>loc_country_info |
 | Educational Setting | What is the educational settings? | 1=Nursery school/pre-school<br>2=Primary/elementary school<br>3=Middle school<br>4=Secondary/High school<br>5=Residential/boarding school<br>6=Independent/private school<br>7=Home<br>8=Further education/junior or community college<br>9=Other educational setting (please specify><br>10=Outdoor adventure settings<br>11=No information provided | int_setting_raw<br>int_setting_ht<br>int_setting_info |
 | Ecological Validity | How realistic was the study? | 1=High ecological validity<Br>2=Low ecological validity<br>3=Unclear | eco_valid_raw<br>eco_valid_ht<br>eco_calid_info |
-| Age of participants | What is the age of the students? | 3-18<br>No information provided |part_age_raw<br>part_age_ht<br>part_age_info |
+| Age of participants | What is the age of the students? | 3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>No information provided |part_age_raw<br>part_age_ht<br>part_age_info |
 | Number of schools treatment | What is the number of schools involved in the intervention group(s)? | Open answer (HT) |school_treat_ht<br>school_treat_info |
 | Number schools control | What is the number of schools involved in the control or comparison group? | Open answer (HT) | school_cont_ht<br>school_cont_info |
 | Number schools total | What is the total number of schools involved | Open answer (HT) | school_total_ht<br>school_total_info |
