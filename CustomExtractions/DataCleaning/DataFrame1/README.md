@@ -8,7 +8,6 @@
 | Abstract | Abstract | | abstract |
 | Toolkit strand | Toolkitstrand | strand_raw<br>strand_info |
 | Publication type in EPPI || pub_eppi |
-|<img width=300/>|<img width=300/>|<img width=300/>|
 | Publication Type  | What is the publication type? | pub_type_raw<br>put_type_ht<br>put_type_info |
 | Country | In which country/countries was the study carried out? | loc_country_raw<br>loc_country_ht<br>loc_country_info |
 | Educational Setting | What is the educational settings? | int_setting_raw<br>int_setting_ht<br>int_setting_info |
