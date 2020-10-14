@@ -1,15 +1,10 @@
 <style>
-table th:first-of-type {
-    width: 10%;
+table:nth-of-type(1) {
+    display:table;
+    width:100%;
 }
-table th:nth-of-type(2) {
-    width: 10%;
-}
-table th:nth-of-type(3) {
-    width: 50%;
-}
-table th:nth-of-type(4) {
-    width: 30%;
+table:nth-of-type(1) th:nth-of-type(2) {
+    width:10%;
 }
 </style>
 
