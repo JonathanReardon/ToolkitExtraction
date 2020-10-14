@@ -2,7 +2,7 @@ import os
 import json
 import pandas as pd
 
-from CODES import *
+from AttributeIDList import *
 from DATAFILE import file
 
 exclude="NA"
@@ -49,4 +49,4 @@ year_df.columns=["pub_year"]
 
 year_df.fillna("NA", inplace=True)
 
-year_df.to_csv("year.csv", index=False)
+year_df.to_csv("date.csv", index=False)

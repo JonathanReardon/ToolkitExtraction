@@ -2,7 +2,7 @@ import os
 import json
 import pandas as pd
 
-from CODES import *
+from AttributeIDList import *
 from DATAFILE import file
 
 ##############################################

@@ -2,7 +2,7 @@ import os
 import json
 import pandas as pd
 
-from CODES import *
+from AttributeIDList import *
 from DATAFILE import file
 
 exclude="NA"
@@ -45,4 +45,4 @@ sesmd_df.columns=["SESMD_OUTCOME_"+'{}'.format(column+1) for column in sesmd_df.
 
 sesmd_df.fillna("NA", inplace=True)
 
-sesmd.to_csv("sesmd.csv", index=False)
+sesmd_df.to_csv("sesmd.csv", index=False)

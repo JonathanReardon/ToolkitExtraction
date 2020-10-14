@@ -2,7 +2,7 @@ import os
 import json
 import pandas as pd
 
-from CODES import *
+from AttributeIDList import *
 from DATAFILE import file
 
 exclude="NA"
@@ -113,4 +113,4 @@ location_info_df = pd.concat([location_specific_info_HT_df, location_specific_in
 
 location_info_df.fillna("NA", inplace=True)
 
-location_info_df.to_csv("further_location_information.csv", index=False)
+location_info_df.to_csv("location_information.csv", index=False)

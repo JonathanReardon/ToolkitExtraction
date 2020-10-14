@@ -2,7 +2,7 @@ import os
 import json
 import pandas as pd
 
-from CODES import *
+from AttributeIDList import *
 from DATAFILE import file
 
 exclude="NA"
@@ -206,11 +206,10 @@ DescStatsPrimaryOutcomeReported_Intervention_df = pd.concat([InterventionGroupNu
 
 DescStatsPrimaryOutcomeReported_Intervention_df.fillna("NA", inplace=True)
 
-""" DescStatsPrimaryOutcomeReported_Intervention_df.to_csv("DescriptiveStatsPrimary_Intervention.csv", index=False)
+DescStatsPrimaryOutcomeReported_Intervention_df.to_csv("PrimaryOutcomeDescStats_Intervention.csv", index=False)
 
-print(DescStatsPrimaryOutcomeReported_Intervention_df) """
 
 # sample size treatment (intervention)
-sample_size_treatment = pd.concat([InterventionGroupNumber_HT_df, InterventionGroupNumber_comments_df], axis=1, sort=False)
+""" sample_size_treatment = pd.concat([InterventionGroupNumber_HT_df, InterventionGroupNumber_comments_df], axis=1, sort=False)
 
-sample_size_treatment.to_csv("sample_size_treatment.csv", index=False)
+sample_size_treatment.to_csv("sample_size_treatment.csv", index=False) """

@@ -2,7 +2,7 @@ import os
 import json
 import pandas as pd
 
-from CODES import *
+from AttributeIDList import *
 from DATAFILE import file
 
 exclude="NA"
@@ -37,7 +37,7 @@ def get_toolkit_strand(sample_codes):
                     outerholder=exclude
             toolkit_strand.append(outerholder)
 
-""" def comments(codes):
+def comments(codes):
     all_comments, comments= [], []
     for var in range(len(codes)):
         for section in range(len(data["References"])):
@@ -63,7 +63,7 @@ get_toolkit_strand(toolkit_strand_codes)
 toolkitstrand_Comments            = comments(toolkit_strand_codes)
 toolkitstrand_Comments_df         = pd.DataFrame(toolkitstrand_Comments)
 toolkitstrand_Comments_df         = toolkitstrand_Comments_df.T
-toolkitstrand_Comments_df.columns = ["_info"] """
+toolkitstrand_Comments_df.columns = ["_info"]
 
 toolkitstrand_df = pd.DataFrame(toolkit_strand)
 toolkitstrand_df.fillna("NA", inplace=True)

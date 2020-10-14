@@ -2,7 +2,7 @@ import os
 import json
 import pandas as pd
 
-from CODES import *
+from AttributeIDList import *
 from DATAFILE import file
 
 exclude="NA"
@@ -133,4 +133,4 @@ initial_sample_size_df.replace('\n',' ', regex=True, inplace=True)
 
 initial_sample_size_df.fillna("NA", inplace=True)
 
-initial_sample_size_df.to_csv("initial_sample_size.csv", index=False)
+initial_sample_size_df.to_csv("sample_size_initial.csv", index=False)

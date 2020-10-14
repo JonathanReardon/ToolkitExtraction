@@ -2,7 +2,7 @@ import os
 import json
 import pandas as pd
 
-from CODES import *
+from AttributeIDList import *
 from DATAFILE import file
 
 exclude="NA"
@@ -217,9 +217,6 @@ followupdata_comments_df         = pd.DataFrame(followupdata_comments)
 followupdata_comments_df         = followupdata_comments_df.T
 followupdata_comments_df.columns = ["Follow_Up_Data_Reported_comments"]
 
-print(followupdata_df)
-
-
 # concatenate data frames
 DescStatsPrimaryOutcomeReported_Control_df = pd.concat([ControlGroupNumber_HT_df, ControlGroupNumber_comments_df,
                                                         ControlGroupPretestMean_HT_df, ControlGroupPretestMean_comments_df,
@@ -233,11 +230,4 @@ DescStatsPrimaryOutcomeReported_Control_df = pd.concat([ControlGroupNumber_HT_df
 
 DescStatsPrimaryOutcomeReported_Control_df.fillna("NA", inplace=True)
 
-""" DescStatsPrimaryOutcomeReported_Control_df.to_csv("DescriptiveStatsPrimary_Control.csv", index=False)
-
-print(DescStatsPrimaryOutcomeReported_Control_df) """
-
-# sample size treatment (intervention)
-sample_size_control = pd.concat([ControlGroupNumber_HT_df, ControlGroupNumber_comments_df], axis=1, sort=False)
-
-sample_size_control.to_csv("sample_size_control.csv", index=False)
+DescStatsPrimaryOutcomeReported_Control_df.to_csv("PrimaryOutcomeDescStats_Control.csv", index=False)
