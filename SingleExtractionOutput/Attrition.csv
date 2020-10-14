@@ -9,7 +9,7 @@ attri_raw,attri_ht,attri_info,attri_treat_ht,attri_treat_info,attri_perc_ht,attr
 ['No'],NA,NA,NA,NA,NA,NA
 ['No'],NA,NA,NA,0,NA,0%
 ['No'],NA,NA,NA,0,NA,0%
-['No'],NA,Not Reported,NA,0.00%,NA,0.00%
+['No'],NA,Not Reported ,NA,0.00%,NA,0.00%
 ['No'],NA,NA,NA,NA,NA,NA
 ['No'],NA,NA,NA,0,NA,0%
 ['No'],NA,NA,NA,0,NA,0%
@@ -128,7 +128,7 @@ NA,NA,NA,NA,NA,NA,NA
 ['No'],NA,NA,NA,Not reported,NA,NA
 ['No'],NA,NA,NA,NA,NA,NA
 ['Yes'],"['Page 6:\n[¬s]"" 3 children (each from different conditions) failed to complete the reading of the passage, they could not be included in the data analyses.[¬e]""']",NA,NA,6,"['Page 6:\n[¬s]""3 children (each from different conditions) failed to complete the reading of the passage, they could not be included in the data analyses.[¬e]""']",3
-['Yes'],NA,NA,"['Page 21:\n[¬s]""Of the 15 schools remaining in the study, 733 pupils were in the 6 intervention schools[¬e]""']",63,"['Page 19:\n[¬s]""Allocated to intervention (schools n=10; pupils=1,983)""\n""Allocated to control (schools n=10; pupils=1541)[¬e]""', 'Page 21:\n[¬s]""Of the 15 schools remaining in the study, 733 pupils were in the 6 intervention schools and 1,049 were in the 9 control schools.[¬e]""']",49
+['Yes'],NA,NA,"['Page 21:\n[¬s]""Of the 15 schools remaining in the study, 733 pupils were in the 6 intervention schools[¬e]""']",63 ,"['Page 19:\n[¬s]""Allocated to intervention (schools n=10; pupils=1,983)""\n""Allocated to control (schools n=10; pupils=1541)[¬e]""', 'Page 21:\n[¬s]""Of the 15 schools remaining in the study, 733 pupils were in the 6 intervention schools and 1,049 were in the 9 control schools.[¬e]""']",49
 ['Yes'],NA,NA,"['Page 112:\n[¬s]""Received allocated intervention (n = 33)""\n""Analyzed (n = 32)[¬e]""']",3,"['Page 112:\n[¬s]""Received allocated intervention (n = 33)""\n""Received allocated control (n = 12)""\n""Analyzed (n = 32)""\n""Analyzed (n = 10)[¬e]""']",7
 NA,NA,NA,NA,NA,NA,NA
 ['Yes'],"['Page 2:\n[¬s]""Subjects were the entire seventh grade class of 304 pupils ""\n"" After pupil attritions the subject population was randomly reduced to 264 to pro\xad vide equal (N - 33) cell frequencies. [¬e]""']",NA,NA,Not reported,"['Page 2:\n[¬s]""subject population was randomly reduced to 264[¬e]""']",13.16%
