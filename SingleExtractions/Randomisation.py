@@ -101,6 +101,4 @@ randomisation_df = pd.concat([randomisation_df, randomisation_details_df, random
 
 randomisation_df.fillna("NA", inplace=True)
 
-print(randomisation_df)
-
 randomisation_df.to_csv("randomisation.csv", index=False)

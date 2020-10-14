@@ -133,7 +133,5 @@ ses_fsm_df.replace(';',' ',  regex=True, inplace=True)
 
 ses_fsm_df.fillna("NA", inplace=True)
 
-print(ses_fsm_df)
-
 # SAVE DATAFRANE TO FILE
 ses_fsm_df.to_csv("sesfsm.csv", index=False)

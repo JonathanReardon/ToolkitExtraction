@@ -107,7 +107,5 @@ study_design_df = pd.concat([studydesign_df, studydesign_HT_df, studydesign_Comm
 
 study_design_df.fillna("NA", inplace=True)
 
-print(study_design_df)
-
 study_design_df.to_csv("studydesign.csv", index=False)
 

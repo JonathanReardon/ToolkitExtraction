@@ -47,6 +47,4 @@ smd_df.fillna("NA", inplace=True)
 
 smd_df.fillna("NA", inplace=True)
 
-print(smd_df)
-
 smd_df.to_csv("smd.csv", index=False)

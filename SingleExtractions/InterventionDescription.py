@@ -79,5 +79,3 @@ intervention_description_df.replace(';',' ', regex=True, inplace=True)
 intervention_description_df.fillna("NA", inplace=True)
 
 intervention_description_df.to_csv("InterventionDescription.csv", index=False)
-
-print(intervention_description_df)

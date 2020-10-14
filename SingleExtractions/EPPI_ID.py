@@ -25,8 +25,6 @@ get_EPPI_IDs()
 eppiid_df = pd.DataFrame(eppiids)
 eppiid_df.columns=["id"]
 
-print(eppiid_df)
-
 eppiid_df.to_csv("eppiid.csv", index=False)
 
 

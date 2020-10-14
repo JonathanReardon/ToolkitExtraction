@@ -138,7 +138,5 @@ attrition_df = pd.concat([attrition_dropout_reported_df, attrition_dropout_repor
 
 attrition_df.fillna("NA", inplace=True)
 
-print(attrition_df)
-
 attrition_df.to_csv("Attrition.csv", index=False)
 

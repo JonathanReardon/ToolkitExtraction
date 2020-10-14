@@ -141,5 +141,3 @@ intervention_inclusion_df.fillna("NA", inplace=True)
 
 # Save to file (.csv)
 intervention_inclusion_df.to_csv("InterventionInclusion.csv", index=False)
-
-print(intervention_inclusion_df)

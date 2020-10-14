@@ -115,5 +115,3 @@ intervention_focus_df.fillna("NA", inplace=True)
 
 # Save to file (.csv)
 intervention_focus_df.to_csv("InterventionFocus.csv", index=False)
-
-print(intervention_focus_df)

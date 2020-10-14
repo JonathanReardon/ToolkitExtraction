@@ -212,5 +212,5 @@ print(DescStatsPrimaryOutcomeReported_Intervention_df) """
 
 # sample size treatment (intervention)
 sample_size_treatment = pd.concat([InterventionGroupNumber_HT_df, InterventionGroupNumber_comments_df], axis=1, sort=False)
-print(sample_size_treatment)
+
 sample_size_treatment.to_csv("sample_size_treatment.csv", index=False)

@@ -45,6 +45,4 @@ cilowersmd_df.columns=["CI_lower_Outcome_"+'{}'.format(column+1) for column in c
 
 cilowersmd_df.fillna("NA", inplace=True)
 
-print(cilowersmd_df)
-
 cilowersmd_df.to_csv("cilowersmd.csv", index=False)

@@ -117,5 +117,3 @@ intervention_time_df.fillna("NA", inplace=True)
 
 # Save to file (.csv)
 intervention_time_df.to_csv("InterventionTime.csv", index=False)
-
-print(intervention_time_df)

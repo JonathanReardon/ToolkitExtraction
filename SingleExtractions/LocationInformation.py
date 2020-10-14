@@ -113,6 +113,4 @@ location_info_df = pd.concat([location_specific_info_HT_df, location_specific_in
 
 location_info_df.fillna("NA", inplace=True)
 
-print(location_info_df)
-
 location_info_df.to_csv("further_location_information.csv", index=False)

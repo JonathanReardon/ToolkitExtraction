@@ -80,6 +80,4 @@ intervention_name_df.fillna("NA", inplace=True)
 
 intervention_name_df.to_csv("InterventionName.csv", index=False)
 
-print(intervention_name_df)
-
 

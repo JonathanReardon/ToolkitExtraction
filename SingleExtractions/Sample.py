@@ -45,6 +45,4 @@ sample_df.columns=["Sample_Outcome_"+'{}'.format(column+1) for column in sample_
 
 sample_df.fillna("NA", inplace=True)
 
-print(sample_df)
-
 sample_df.to_csv("Sample.csv", index=False)

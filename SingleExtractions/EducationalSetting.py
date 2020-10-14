@@ -101,6 +101,4 @@ educational_setting_df = pd.concat([edusetting_df, edusetting_HT_df, edusetting_
 
 educational_setting_df.fillna("NA", inplace=True)
 
-print(educational_setting_df)
-
 educational_setting_df.to_csv("edusetting.csv", index=False)

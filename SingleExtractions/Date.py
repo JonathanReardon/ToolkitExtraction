@@ -49,6 +49,4 @@ year_df.columns=["pub_year"]
 
 year_df.fillna("NA", inplace=True)
 
-print(year_df)
-
 year_df.to_csv("year.csv", index=False)

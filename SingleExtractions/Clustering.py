@@ -96,6 +96,4 @@ clustering_df = pd.concat([clustering_df, clustering_HT_df, clustering_Comments_
 
 clustering_df.fillna("NA", inplace=True)
 
-print(clustering_df)
-
 clustering_df.to_csv("clustering.csv", index=False)

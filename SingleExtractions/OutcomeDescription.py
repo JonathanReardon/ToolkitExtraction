@@ -48,6 +48,4 @@ outcome_description_df.replace('\n',' ', regex=True, inplace=True)
 outcome_description_df.replace(':',' ', regex=True, inplace=True)
 outcome_description_df.replace(';',' ', regex=True, inplace=True)
 
-print(outcome_description_df)
-
-""" outcome_description_df.to_csv("outcomedescription.csv", index=False) """
+outcome_description_df.to_csv("outcomedescription.csv", index=False)

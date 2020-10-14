@@ -103,8 +103,6 @@ publication_type_df = pd.concat([publicationtype_df, publicationtype_HT_df, publ
 
 publication_type_df.fillna("NA", inplace=True)
 
-print(publication_type_df)
-
 publication_type_df.to_csv("publicationtype.csv", index=False)
 
 

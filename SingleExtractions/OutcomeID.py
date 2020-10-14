@@ -43,6 +43,4 @@ outcome_ID_df.columns=["Outcome_ID_"+'{}'.format(column+1) for column in outcome
 
 outcome_ID_df.fillna("NA", inplace=True)
 
-print(outcome_ID_df)
-
 outcome_ID_df.to_csv("outcomeID.csv", index=False)

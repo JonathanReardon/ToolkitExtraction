@@ -82,6 +82,4 @@ admin_strand_df.replace(';',' ',  regex=True, inplace=True)
 
 admin_strand_df.fillna("NA", inplace=True)
 
-print(admin_strand_df)
-
 admin_strand_df.to_csv("adminstrand.csv", index=False)

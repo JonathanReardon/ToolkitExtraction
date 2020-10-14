@@ -78,7 +78,5 @@ gender_split_df.replace('\n',' ', regex=True, inplace=True)
 
 gender_split_df.fillna("NA", inplace=True)
 
-print(gender_split_df)
-
 # SAVE DATAFRANE TO FILE
 gender_split_df.to_csv("gender_split.csv", index=False)

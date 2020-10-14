@@ -182,6 +182,4 @@ curriculum_subject_df.replace('\n',' ', regex=True, inplace=True)
 curriculum_subject_df.replace(':',' ', regex=True, inplace=True)
 curriculum_subject_df.replace(';',' ', regex=True, inplace=True)
 
-print(curriculum_subject_df)
-
 curriculum_subject_df.to_csv("curriculumsubjects.csv", index=False)

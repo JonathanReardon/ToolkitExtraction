@@ -43,6 +43,4 @@ outcome_label_text_df.columns=["Outcome_Label_"+'{}'.format(column+1) for column
 
 outcome_label_text_df.fillna("NA", inplace=True)
 
-print(outcome_label_text_df)
-
 outcome_label_text_df.to_csv("outcomelabel_text.csv", index=False)

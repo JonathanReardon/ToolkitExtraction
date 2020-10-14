@@ -69,5 +69,4 @@ toolkitstrand_df = pd.DataFrame(toolkit_strand)
 toolkitstrand_df.fillna("NA", inplace=True)
 toolkitstrand_df.columns=["Toolkit_Strand_Outcome_"+'{}'.format(column+1) for column in toolkitstrand_df.columns]
 
-print(toolkitstrand_df)
 toolkitstrand_df.to_csv("toolkitstrand.csv", index=False)

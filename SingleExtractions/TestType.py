@@ -76,6 +76,4 @@ testtype_outcome_df.columns=["test_type_outcome_"+'{}'.format(column+1) for colu
 
 test_type_main_df.fillna("NA", inplace=True)
 
-print(test_type_main_df)
-
 test_type_main_df.to_csv("testtype.csv", index=False)

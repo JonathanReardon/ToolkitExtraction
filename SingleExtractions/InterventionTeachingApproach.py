@@ -113,5 +113,3 @@ intervention_teaching_approach_df.fillna("NA", inplace=True)
 
 # Save to file (.csv)
 intervention_teaching_approach_df.to_csv("InterventionTeachingApproach.csv", index=False)
-
-print(intervention_teaching_approach_df)

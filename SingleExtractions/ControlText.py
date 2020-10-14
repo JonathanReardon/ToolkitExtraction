@@ -43,6 +43,4 @@ control_text_df.columns=["Control_Text_Outcome_"+'{}'.format(column+1) for colum
 
 control_text_df.fillna("NA", inplace=True)
 
-print(control_text_df)
-
 control_text_df.to_csv("controltext.csv", index=False)

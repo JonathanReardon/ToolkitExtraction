@@ -29,6 +29,4 @@ pubtype_eppi_df.columns=["pub_eppi"]
 
 pubtype_eppi_df.fillna("NA", inplace=True)
 
-print(pubtype_eppi_df)
-
 pubtype_eppi_df.to_csv("pubtype_eppi.csv", index=False)

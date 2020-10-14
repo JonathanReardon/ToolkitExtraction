@@ -122,6 +122,4 @@ comparability_vars_reported_df = pd.concat([comparability_vars_reported_df, comp
 
 comparability_vars_reported_df.fillna("NA", inplace=True)
 
-print(comparability_vars_reported_df)
-
 comparability_vars_reported_df.to_csv("comparability_vars_reported.csv", index=False)

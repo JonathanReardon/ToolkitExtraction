@@ -40,6 +40,4 @@ DescStatsPrimaryOutcomeReported_df.columns = ["Desc_Stats_(Primary Outcome)_Repo
 DescStatsPrimaryOutcomeReported_df["Desc_Stats_(Primary Outcome)_Yes"] = DescStatsPrimaryOutcomeReported_df["Desc_Stats_(Primary Outcome)_Reported_extract"].map(set(["Yes"]).issubset).astype(int)
 DescStatsPrimaryOutcomeReported_df["Desc_Stats_(Primary Outcome)_No"] = DescStatsPrimaryOutcomeReported_df["Desc_Stats_(Primary Outcome)_Reported_extract"].map(set(["No"]).issubset).astype(int)
 
-""" print(DescStatsPrimaryOutcomeReported_df) """
-
-""" DescStatsPrimaryOutcomeReported_df.to_csv("PrimaryOutcomeDescStatsReported.csv", index=False) """
+DescStatsPrimaryOutcomeReported_df.to_csv("PrimaryOutcomeDescStatsReported.csv", index=False)

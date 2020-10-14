@@ -30,6 +30,4 @@ abstract_df.columns=["abstract"]
 
 abstract_df.fillna("NA", inplace=True)
 
-print(abstract_df)
-
 abstract_df.to_csv("abstract.csv", index=False)

@@ -96,6 +96,4 @@ comparability_df = pd.concat([comparability_df, comparability_HT_df, comparabili
 
 comparability_df.fillna("NA", inplace=True)
 
-print(comparability_df)
-
 comparability_df.to_csv("comparability.csv", index=False)

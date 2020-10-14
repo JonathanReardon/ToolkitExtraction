@@ -109,5 +109,3 @@ intervention_costs_df.fillna("NA", inplace=True)
 
 # Save to file (.csv)
 intervention_costs_df.to_csv("InterventionCostsReported.csv", index=False)
-
-print(intervention_costs_df)

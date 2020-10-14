@@ -45,6 +45,4 @@ outcometype_df.columns=["OutcomeType_"+'{}'.format(column+1) for column in outco
 
 outcometype_df.fillna("NA", inplace=True)
 
-print(outcometype_df)
-
 outcometype_df.to_csv("outcometype.csv", index=False)

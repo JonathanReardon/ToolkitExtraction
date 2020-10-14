@@ -29,7 +29,5 @@ author_df.columns=["pub_author"]
 
 author_df.fillna("NA", inplace=True)
 
-print(author_df)
-
 author_df.to_csv("author.csv", index=False)
 

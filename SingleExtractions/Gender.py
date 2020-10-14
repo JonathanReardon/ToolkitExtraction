@@ -102,6 +102,4 @@ gender_df = pd.concat([gender_df, gender_HT_df, gender_Comments_df], axis=1, sor
 
 gender_df.fillna("NA", inplace=True)
 
-print(gender_df)
-
 gender_df.to_csv("gender.csv", index=False)

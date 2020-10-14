@@ -108,6 +108,4 @@ level_of_assignment_df = pd.concat([levelofassignment_df, level_of_assignment_ou
 
 level_of_assignment_df.fillna("NA", inplace=True)
 
-print(level_of_assignment_df)
-
 level_of_assignment_df.to_csv("levelofassignment.csv", index=False)

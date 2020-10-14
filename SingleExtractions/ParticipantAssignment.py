@@ -109,5 +109,4 @@ participant_assignment_df = pd.concat([participantassignment_df, participantassi
 
 participant_assignment_df.fillna("NA", inplace=True)
 
-print(participant_assignment_df)
 participant_assignment_df.to_csv("participantassignment.csv", index=False)

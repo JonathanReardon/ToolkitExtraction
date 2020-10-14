@@ -101,6 +101,4 @@ study_realism_df = pd.concat([studyrealism_df, studyrealism_HT_df, studyrealism_
 
 study_realism_df.fillna("NA", inplace=True)
 
-print(study_realism_df)
-
 study_realism_df.to_csv("studyrealism.csv", index=False)

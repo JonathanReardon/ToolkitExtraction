@@ -239,5 +239,5 @@ print(DescStatsPrimaryOutcomeReported_Control_df) """
 
 # sample size treatment (intervention)
 sample_size_control = pd.concat([ControlGroupNumber_HT_df, ControlGroupNumber_comments_df], axis=1, sort=False)
-print(sample_size_control)
+
 sample_size_control.to_csv("sample_size_control.csv", index=False)

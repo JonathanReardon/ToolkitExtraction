@@ -82,5 +82,3 @@ intervention_frequency_df.fillna("NA", inplace=True)
 
 # Save to file (.csv)
 intervention_frequency_df.to_csv("InterventionFrequency.csv", index=False)
-
-print(intervention_frequency_df)

@@ -82,6 +82,4 @@ sample_size_df.replace('\n',' ', regex=True, inplace=True)
 
 sample_size_df.fillna("NA", inplace=True)
 
-print(sample_size_df)
-
 sample_size_df.to_csv("sample_size.csv", index=False)

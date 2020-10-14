@@ -110,5 +110,3 @@ intervention_org_type.replace(';',' ', regex=True, inplace=True)
 intervention_org_type.fillna("NA", inplace=True)
 
 intervention_org_type.to_csv("InterventionOrgType.csv", index=False)
-
-print(intervention_org_type)

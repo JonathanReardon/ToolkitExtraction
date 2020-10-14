@@ -101,6 +101,4 @@ treatment_group_df = pd.concat([treatmentgroup_df, treatmentgroup_HT_df, treatme
 
 treatment_group_df.fillna("NA", inplace=True)
 
-print(treatment_group_df)
-
 treatment_group_df.to_csv("treatmentgroup.csv", index=False)

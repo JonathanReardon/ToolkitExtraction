@@ -45,6 +45,4 @@ ciuppersmd_df.columns=["CI_upper_Outcome_"+'{}'.format(column+1) for column in c
 
 ciuppersmd_df.fillna("NA", inplace=True)
 
-""" print(ciuppersmd_df) """
-
-""" ciuppersmd_df.to_csv("ciuppersmd.csv", index=False) """
+ciuppersmd_df.to_csv("ciuppersmd.csv", index=False)

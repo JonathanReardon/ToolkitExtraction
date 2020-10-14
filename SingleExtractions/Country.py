@@ -114,6 +114,4 @@ country_df = pd.concat([country_df, country_HT_df, country_Comments_df], axis=1,
 
 country_df.fillna("NA", inplace=True)
 
-print(country_df)
-
 country_df.to_csv("Country.csv", index=False)

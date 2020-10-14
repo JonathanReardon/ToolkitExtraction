@@ -45,6 +45,4 @@ effectsizetype_df.columns=["Effect_Size_Type_Outcome_"+'{}'.format(column+1) for
 
 effectsizetype_df.fillna("NA", inplace=True)
 
-print(effectsizetype_df)
-
 effectsizetype_df.to_csv("effectsizetype.csv", index=False)

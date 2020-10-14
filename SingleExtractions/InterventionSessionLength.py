@@ -82,5 +82,3 @@ intervention_session_length_df.fillna("NA", inplace=True)
 
 # Save to file (.csv)
 intervention_session_length_df.to_csv("InterventionSessionLength.csv", index=False)
-
-print(intervention_session_length_df)

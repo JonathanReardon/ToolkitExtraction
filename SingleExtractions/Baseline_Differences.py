@@ -96,6 +96,4 @@ baseline_differences_df = pd.concat([baselinedifferences_df, baselinedifferences
 
 baseline_differences_df.fillna("NA", inplace=True)
 
-print(baseline_differences_df)
-
 baseline_differences_df.to_csv("baselinedifferences.csv", index=False)

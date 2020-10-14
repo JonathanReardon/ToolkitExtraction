@@ -45,6 +45,4 @@ sesmd_df.columns=["SESMD_OUTCOME_"+'{}'.format(column+1) for column in sesmd_df.
 
 sesmd_df.fillna("NA", inplace=True)
 
-""" print(sesmd_df) """
-
-""" sesmd.to_csv("sesmd.csv", index=False) """
+sesmd.to_csv("sesmd.csv", index=False)

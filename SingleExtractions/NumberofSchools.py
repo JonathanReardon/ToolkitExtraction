@@ -149,7 +149,5 @@ number_of_schools_df.replace('\n',' ', regex=True, inplace=True)
 
 number_of_schools_df.fillna("NA", inplace=True)
 
-print(number_of_schools_df)
-
 # SAVE DATAFRANE TO FILE
 number_of_schools_df.to_csv("number_of_schools.csv", index=False)

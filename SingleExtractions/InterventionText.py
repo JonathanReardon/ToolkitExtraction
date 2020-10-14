@@ -43,6 +43,4 @@ intervention_text_df.columns=["Intervention_Text_Outcome_"+'{}'.format(column+1)
 
 intervention_text_df.fillna("NA", inplace=True)
 
-print(intervention_text_df)
-
 intervention_text_df.to_csv("interventiontext.csv", index=False)

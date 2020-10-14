@@ -117,5 +117,3 @@ intervention_delivery_df.fillna("NA", inplace=True)
 
 # Save to file (.csv)
 intervention_delivery_df.to_csv("InterventionDelivery.csv", index=False)
-
-print(intervention_delivery_df)

@@ -121,6 +121,4 @@ student_age.replace(';',' ',  regex=True, inplace=True)
 
 student_age.fillna("NA", inplace=True)
 
-print(student_age)
-
 student_age.to_csv("age.csv", index=False)
