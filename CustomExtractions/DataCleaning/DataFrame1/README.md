@@ -1,11 +1,11 @@
 ## Data frame 1: Study, research and design variables
 
-| Description | Question | Coding options " Columns |
+| Description | Question | Coding options | Columns |
 | ------------- | ------------- | ------------- | ------------- |
-| Record ID  | | id |
-| Short Title | | pub_author |
-| Publication Year  | | pub_year |
-| Abstract | Abstract | | abstract |
+| Record ID  | || id |
+| Short Title || | pub_author |
+| Publication Year  | || pub_year |
+| Abstract | Abstract || | abstract |
 | Toolkit strand | Toolkitstrand | strand_raw<br>strand_info |
 | Publication type in EPPI || pub_eppi |
 | Publication Type  | What is the publication type? | 1=Journal Article<br>2=Dissertation or thesis<br> |pub_type_raw<br>put_type_ht<br>put_type_info |
