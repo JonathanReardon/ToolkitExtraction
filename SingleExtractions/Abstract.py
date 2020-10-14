@@ -2,7 +2,7 @@ import os
 import json
 import pandas as pd
 
-from CODES import *
+from AttributeIDList import *
 from DATAFILE import file
 
 exclude="NA"
@@ -20,7 +20,6 @@ def get_abstract():
         if data["References"][section]["Abstract"]:
             abstract.append(data["References"][section]["Abstract"])
         else:
-            print("no")
             abstract.append(exclude)
             
 get_abstract()
