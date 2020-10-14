@@ -1,3 +1,18 @@
+<style>
+table th:first-of-type {
+    width: 10%;
+}
+table th:nth-of-type(2) {
+    width: 10%;
+}
+table th:nth-of-type(3) {
+    width: 50%;
+}
+table th:nth-of-type(4) {
+    width: 30%;
+}
+</style>
+
 ## Data frame 1: Study, research and design variables
 
 ### Study details
@@ -10,7 +25,6 @@
 | Abstract | Abstract | | abstract
 | Toolkit strand | Toolkitstrand | strand_raw<br>strand_info
 | Publication type in EPPI || pub_eppi
-| <img width=300/> |<img width=300/>|<img width=300/>|
 
 ### Setting & sample characteristics
 
