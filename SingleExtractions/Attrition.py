@@ -138,5 +138,11 @@ attrition_df = pd.concat([attrition_dropout_reported_df, attrition_dropout_repor
 
 attrition_df.fillna("NA", inplace=True)
 
+# Remove problematic text (potential escape sequences) from text input
+attrition_df.replace('\r',' ', regex=True, inplace=True)
+attrition_df.replace('\n',' ', regex=True, inplace=True)
+attrition_df.replace(':',' ',  regex=True, inplace=True)
+attrition_df.replace(';',' ',  regex=True, inplace=True)
+
 attrition_df.to_csv("Attrition.csv", index=False)
 
