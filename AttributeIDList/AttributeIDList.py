@@ -1,69 +1,76 @@
-#####################
-# SAMPLE SIZE INITIAL
-#####################
+other_outcomes_output = [{ 
+    # In addition to the primary educational attainment outcome, are there other outcomes reported? }]
+    5215572: 'Yes',
+    5215573: 'No'
+}]   
 
-# What is the sample size for the intervention group?
-sample_size_intervention_output = [{
+additional_outcomes_output = [{ 
+    # If yes, which other outcomes are reported? 
+    5215575: 'Cognitive outcomes measured (Please specify)',
+    5215576: 'Other types of student outcomes (Please specify)'
+}] 
+
+other_participants_output = [{ 
+    # Other participants (i.e. not students) outcomes
+    5215577: 'Other participants (i.e. not students) outcomes (Please specify)'
+}]
+
+sample_size_intervention_output = [{  
+    # What is the sample size for the intervention group?
     5407108: ''
 }]
 
-# What is the sample size for the control group?
-sample_size_control_output = [{
+sample_size_control_output = [{  
+    # What is the sample size for the control group?
     5407109: ''
 }]
 
-# *What is the sample size for the second intervention group?
-sample_size_second_intervention_output = [{
-    5407120: ''
-}]
+sample_size_second_intervention_output = [{  
+    # *What is the sample size for the second intervention group?}
+    5407120: ''}]
 
-# *What is the sample size for the third intervention group?
-sample_size_third_intervention_output = [{
+sample_size_third_intervention_output = [{  
+    # *What is the sample size for the third intervention group?}
     5407121: ''
 }]
 
-######################
 # SAMPLE SIZE ANALYZED
-######################
-
-# intervention group Number (n}
-sample_size_analyzed_intervention_output = [{
+sample_size_analyzed_intervention_output = [{  
+    # intervention group Number (n}
     5406980: ''
 }]
 
-# control* group Number (n}
-sample_size_analyzed_control_output = [{
+sample_size_analyzed_control_output = [{  
+    # control* group Number (n}
     5406985: ''
 }]
 
-# If yes, please add for a second intervention* group (if needed)
-sample_size_analyzed_second_intervention_output = [{
+sample_size_analyzed_second_intervention_output = [{  
+    # If yes, please add for a second intervention* group (if needed)
     5407135: ''
 }]
 
-# If needed, please add for the control group
-sample_size_analyzed_second_control_output = [{
+sample_size_analyzed_second_control_output = [{  
+    # If needed, please add for the control group
     5447053: ''
 }]
 
-#############################################################################
-
-# Is clustering accounted for in the analysis?
-clustering_output = [{
+clustering_output = [{  
+    # Is clustering accounted for in the analysis?
     5407158: "Yes",
     5407159: "No",
     5407160: "Unclear"
 }]
 
-# Are the variables used for comparability reported?"
-comparabiltiy_vars_reported = [{
-    5406859: 'Yes', 
-    5406862: 'No', 
+comparabiltiy_vars_reported = [{  
+    # Are the variables used for comparability reported?"
+    5406859: 'Yes',
+    5406862: 'No',
     5406863: 'N/A'
 }]
 
-# If yes, which variables are used for comparability?
-if_yes_which_comparability_variables_reported_output = [{
+if_yes_which_comparability_variables_reported_output = [{  
+    # If yes, which variables are used for comparability?
     5407122: 'Educational attainment',
     5407123: 'Gender',
     5407124: 'Socio-economic status',
@@ -71,38 +78,38 @@ if_yes_which_comparability_variables_reported_output = [{
     5407129: 'Other (please specify)'
 }]
 
-# Is comparability taken into account in the analysis?
-comparability_output = [{
-    5406855: 'Unclear or details not provided', 
-    5406861: 'Yes', 
+comparability_output = [{  
+    # Is comparability taken into account in the analysis?
+    5406855: 'Unclear or details not provided',
+    5406861: 'Yes',
     5406864: 'No'
 }]
 
-# Does the study report any group differences at baseline?
-baseline_differences_output = [{
-    5406860: 'No/Unclear', 
+baseline_differences_output = [{  
+    # Does the study report any group differences at baseline?
+    5406860: 'No/Unclear',
     5406866: 'Yes'
 }]
 
-# Is attrition or drop out reported?
-attrition_dropout_reported_output = [{
+attrition_dropout_reported_output = [{ 
+     # Is attrition or drop out reported?
     5407034: 'Yes',
     5407035: 'No',
     5407036: 'Unclear (please add notes)'
 }]
 
-# What is the attrition in the treatment group?
-treatment_group_attrition = [{
+treatment_group_attrition = [{  
+    # What is the attrition in the treatment group?
     5407037: ''
 }]
 
-# What is the total or overall percentage attrition?
-overall_percent_attrition = [{
+overall_percent_attrition = [{  
+    # What is the total or overall percentage attrition?
     5407038: ''
 }]
 
-# What was the study design?
-study_design_output = [{
+study_design_output = [{  
+    # What was the study design?
     5406847: 'Individual RCT',
     5406849: 'Cluster RCT',
     5406851: 'Multisite RCT',
@@ -118,25 +125,25 @@ study_design_output = [{
 # STRAND SPECIFIC VARIABLES #
 #############################
 
-### MENTORING
+# MENTORING
 
-# Who were the mentors?
-mentor_identity = [{# Who were the mentors?
+mentor_identity = [{  
+    # Who were the mentors?
     6120260: 'Older school students',
     6120258: 'College or University students',
     6120259: 'Adults (see description)',
     6120256: 'Other (please specify)'
 }]
 
-# Were the mentors paid or compensated in any way?
 mentor_paid_or_compensated = [{
+    # Were the mentors paid or compensated in any way?
     6120253: 'Yes',
     6120257: 'No',
     6120261: 'Unclear/ No information'
 }]
 
-# Who organised the mentoring?
 mentor_organisation = [{
+    # Who organised the mentoring?
     6120254: 'The school(s)',
     6120252: 'A local community group',
     6120255: 'A charity or other voluntary organisation',
@@ -144,15 +151,15 @@ mentor_organisation = [{
     6120269: 'Other (please specify'
 }]
 
-# Was training provided for mentors?
 mentor_training = [{
+    # Was training provided for mentors?
     6120264: 'Yes',
     6120267: 'No',
     6120271: 'Unclear/ No information'
 }]
 
-# How frequently did meetings take place?
 mentor_meeting_frequency = [{
+    # How frequently did meetings take place?
     6120232: 'Daily',
     6120238: 'Weekly',
     6120239: 'Every two to three weeks',
@@ -161,15 +168,15 @@ mentor_meeting_frequency = [{
     6120263: 'Other (please specify)'
 }]
 
-# Are details provided of what happened in mentoring meetings?
 mentor_meeting_details_provided = [{
+    # Are details provided of what happened in mentoring meetings?
     6120265: 'Yes',
     6120266: 'No',
     6120236: ''
 }]
 
-# Where did meetings take place? (Select main setting)
 mentor_meeting_location = [{
+    # Where did meetings take place? (Select main setting)
     6120233: 'In school',
     6120234: 'In the home',
     6120235: 'In the community',
@@ -178,15 +185,15 @@ mentor_meeting_location = [{
     6120244: 'Not specified'
 }]
 
-# Did the mentoring involve additional experiences?
 mentoring_additional_experiences = [{
+    # Did the mentoring involve additional experiences?
     6120251: 'Yes',
     6120247: 'No',
     6120241: 'Unclear/ not specified'
 }]
 
-# What was the focus or goals of the mentoring programme?
-mentoring_programme_focus = [{
+mentoring_programme_focus = [{  
+    # What was the focus or goals of the mentoring programme?
     6120242: 'Improving academic attainment or performance',
     6120243: 'Improving attendance',
     6120245: 'Preventing or reducing problem behaviours in school',
@@ -196,10 +203,9 @@ mentoring_programme_focus = [{
     6120250: 'Increasing motivation or raising aspirations'
 }]
 
-### ONE TO ONE
-
-# Which comparisons are available in this study? (Select all that apply)
+# ONE TO ONE
 comparisons_available = [{
+    # Which comparisons are available in this study? (Select all that apply)
     5697922: 'With business as usual comparison (no additional support, but still being taught)',
     5697923: 'With no equivalent teaching (e.g. summer school)',
     5697924: 'With alternative tutor (e.g. teaching assistant vs volunteer)',
@@ -210,10 +216,9 @@ comparisons_available = [{
     5697928: 'With pupils at a different level of attainment'
 }]
 
-### SMALL GROUP
-
-# Group size
+# SMALL GROUP
 group_size = [{
+    # Group size
     5566314: '2',
     5566308: '3',
     5566311: '4',
@@ -221,8 +226,8 @@ group_size = [{
     5566317: 'Mixed groups'
 }]
 
-# Group composition
-group_composition = [{
+group_composition = [{  
+    # Group composition
     5566303: 'Same level - low attainers',
     5566307: 'Same level - average attainers',
     5566309: 'Same level - high attainers',
@@ -234,19 +239,18 @@ group_composition = [{
 
 
 # MORE LOCATION INFORMATION
-
-# Specific to the location or place
-specific_to_location = [{
+specific_to_location = [{  
+    # Specific to the location or place
     5372848: ''
-    }]
+}]
 
-# Information about the type of location
-type_of_location = [{
+type_of_location = [{  
+    # Information about the type of location
     5372849: ''
 }]
 
-# No information provided
-no_location_info = [{# No information provided
+no_location_info = [{  
+    # No information provided
     5372850: ''
 }]
 
@@ -254,113 +258,207 @@ no_location_info = [{# No information provided
 # DESCRIPTIVE STATISTICS PRIMARY OUTCOME
 ########################################
 
-# Are descriptive statistics reported for the primary outcome?
-desc_stats_primary_outcome = [{
+desc_stats_primary_outcome = [{  
+    # Are descriptive statistics reported for the primary outcome?
     5407095: "Yes",
     5407096: "No"
 }]
 
-# intervention group Number (n}
-intervention_group_number = [{
+# INTERVENTION (TREATMENT) GROUP
+
+intervention_group_number = [{  
+    # intervention group Number (n}
     5406980: ''
 }]
 
-# intervention group Pre-test mean
-intervention_group_pretest_mean = [{
+intervention_group_pretest_mean = [{  
+    # intervention group Pre-test mean
     5406981: ''
 }]
 
-# intervention* group Pre-test SD
-intervention_group_pretest_sd = [{
+intervention_group_pretest_sd = [{  
+    # intervention* group Pre-test SD
     5406982: ''
 }]
 
-# intervention* group Post-test mean
-intervention_group_posttest_mean = [{
+intervention_group_posttest_mean = [{  
+    # intervention* group Post-test mean
     5406983: ''
 }]
 
-# intervention* group Post-test SD
-intervention_group_posttest_sd = [{
+intervention_group_posttest_sd = [{ 
+    # intervention* group Post-test SD
     5406989: ''
 }]
 
-# intervention gain score mean
-intervention_group_gain_score_mean = [{
+intervention_group_gain_score_mean = [{  
+    # intervention gain score mean
     5407130: ''
 }]
 
-# intervention gain score sd
-intervention_group_gain_score_sd = [{
+intervention_group_gain_score_sd = [{ 
+     # intervention gain score sd
     5407131: ''
 }]
 
-# intervention -  any other info
-intervention_group_any_other_info = [{
+intervention_group_any_other_info = [{  
+    # intervention -  any other info}]
     5406990: ''
 }]
 
-# control* group Number (n}
-control_group_number = [{
+# CONTROL GROUP
+
+control_group_number = [{  
+    # control* group Number (n}
     5406985: ''
 }]
 
-# control group Pre-test mean
-control_group_pretest_mean = [{
+control_group_pretest_mean = [{  
+    # control group Pre-test mean
     5406986: ''
 }]
 
-# control group Pre-test SD
-control_group_pretest_sd = [{
+control_group_pretest_sd = [{  
+    # control group Pre-test SD
     5406987: ''
 }]
 
-# control group Post-test mean
-control_group_posttest_mean = [{
+control_group_posttest_mean = [{  
+    # control group Post-test mean
     5406988: ''
 }]
 
-# control group Post-test SD
-control_group_posttest_sd = [{
+control_group_posttest_sd = [{  
+    # control group Post-test SD
     5406984: ''
 }]
 
-# control gain score mean
-control_group_gain_score_mean = [{
+control_group_gain_score_mean = [{ 
+     # control gain score mean
     5407132: ''
 }]
 
-# control gain score sd
-control_group_gain_score_sd = [{
+control_group_gain_score_sd = [{  
+    # control gain score sd
     5407133: ''
 }]
 
-# control -  any other info
-control_group_any_other_info = [{
+control_group_any_other_info = [{  
+    # control -  any other info}]
     5406991: ''
 }]
 
-# Is there follow up data?
-follow_up_data_reported = [{
+# INTERVENTION (TREATMENT) GROUP TWO
+
+intervention_group_two_number = [{  
+    # intervention group Number (n}
+    5407135: ''
+}]
+
+intervention_group_two_pretest_mean = [{  
+    # intervention group Pre-test mean
+    5407136: ''
+}]
+
+intervention_group_two_pretest_sd = [{  
+    # intervention* group Pre-test SD
+    5407137: ''
+}]
+
+intervention_group_two_posttest_mean = [{  
+    # intervention* group Post-test mean
+    5407138: ''
+}]
+
+intervention_group_two_posttest_sd = [{  
+    # intervention* group Post-test SD
+    5407139: ''
+}]
+
+intervention_group_two_gain_score_mean = [{  
+    # intervention gain score mean
+    5407141: ''
+}]
+
+intervention_group_two_gain_score_sd = [{  
+    # intervention gain score sd
+    5407142: ''
+}]
+
+intervention_group_two_any_other_info = [{  
+    # intervention -  any other info}]
+    5407140: ''
+}]
+
+# CONTROL GROUP TWO
+
+control_group_two_number = [{  
+    # control* group Number (n}
+    5447053: ''
+}]
+
+control_group_two_pretest_mean = [{  
+    # control group Pre-test mean
+    5447054: ''
+}]
+
+control_group_two_pretest_sd = [{  
+    # control group Pre-test SD
+    5447055: ''
+}]
+
+control_group_two_posttest_mean = [{  
+    # control group Post-test mean
+    5447056: ''
+}]
+
+control_group_two_posttest_sd = [{  
+    # control group Post-test SD
+    5447057: ''
+}]
+
+control_group_two_gain_score_mean = [{  
+    # control gain score mean
+    5447058: ''
+}]
+
+control_group_two_gain_score_sd = [{  
+    # control gain score sd
+    5447059: ''
+}]
+
+control_group_two_any_other_info = [{  
+    # control -  any other info}]
+    5447060: ''
+}]
+
+follow_up_data_reported = [{  
+    # Is there follow up data?
     5407103: 'Yes',
     5407104: 'No'
 }]
 
+###########################
 # INTERVENTION INFORMATION
+###########################
 
-intervention_name_output = [{# "What is the intervention name?"
-                             5215238: ''
+intervention_name_output = [{  
+    # "What is the intervention name?"
+    5215238: ''
 }]
 
-intervention_description_output = [{# How is the intervention described?
-                                   5215563: ''
+intervention_description_output = [{  
+    # How is the intervention described?
+    5215563: ''
 }]
 
-intervention_objectives_output = [{# What are the intervention objectives?
-                                   5215564: ''
+intervention_objectives_output = [{  
+    # What are the intervention objectives?
+    5215564: ''
 }]
 
-intervention_organisation_type_output = [{# What type of organisation was responsible for providing the intervention?
+intervention_organisation_type_output = [{  
+    # What type of organisation was responsible for providing the intervention?
     5215491: "School or group of schools",
     5215492: "Charity or voluntary organisation",
     5215493: "University/ researcher design",
@@ -369,13 +467,15 @@ intervention_organisation_type_output = [{# What type of organisation was respon
     5215496: "Other (please provide details)"
 }]
 
-intervention_training_provided_output = [{# Was training for the intervention provided?
+intervention_training_provided_output = [{  
+    # Was training for the intervention provided?
     5215498: "Yes (Please specify)",
     5215499: "No",
     5215500: "Unclear/ Not specified"
 }]
 
-intervention_focus_output = [{# Who is the focus of the intervention? (Select ALL that apply)
+intervention_focus_output = [{  
+    # Who is the focus of the intervention? (Select ALL that apply)
     5215502: "Students",
     5215503: "Teachers",
     5215504: "Teaching assistants",
@@ -386,7 +486,8 @@ intervention_focus_output = [{# Who is the focus of the intervention? (Select AL
     5215509: "Other (Please specify)"
 }]
 
-intervention_teaching_approach = [{# What is the intervention teaching approach? (Select ALL that apply)
+intervention_teaching_approach = [{  
+    # What is the intervention teaching approach? (Select ALL that apply)
     5215513: "Large group/class teaching (+6)",
     5215512: "Small group/intensive support (3-5)",
     5216713: "Paired learning",
@@ -395,22 +496,23 @@ intervention_teaching_approach = [{# What is the intervention teaching approach?
     5216714: "Other (Explain in notes)"
 }]
 
-# Were any of the following involved in the intervention or approach?
-intervention_approach_digital_technology = [{
+# INTERVENTION APPROACH INCLUSION
+intervention_approach_digital_technology = [{  
+    # Were any of the following involved in the intervention or approach?
     # Digital Technology
     5216718: "Yes",
     5216719: "No"
 }]
 
-# Were any of the following involved in the intervention or approach?
-intervention_approach_parents_or_community_volunteers = [{
+intervention_approach_parents_or_community_volunteers = [{  
+    # Were any of the following involved in the intervention or approach?
     # Parents or community volunteers
     5216720: "Yes",
     5216721: "No"
 }]
 
-# When did the intervention take place?  (Select ALL that apply)
-intervention_time_output = [{# When did the intervention take place?  (Select ALL that apply)
+intervention_time_output = [{  
+    # When did the intervention take place?  (Select ALL that apply)
     5215580: "During regular school hours ",
     5215581: "Before/after school",
     5215582: "Evenings and/or weekends",
@@ -419,8 +521,8 @@ intervention_time_output = [{# When did the intervention take place?  (Select AL
     5215585: "Unclear/ not specified"
 }]
 
-# Who was responsible for the teaching at the point of delivery? (Select ALL that apply)
-intervention_delivery_output = [{
+intervention_delivery_output = [{  
+    # Who was responsible for the teaching at the point of delivery? (Select ALL that apply)
     5215553: "Research staff",
     5215554: "Class teachers",
     5215555: "Teaching assistants",
@@ -433,36 +535,33 @@ intervention_delivery_output = [{
     5215562: "Unclear/not specified"
 }]
 
-# What was the duration of the intervention? (Please add to info box and specify units)
-intervention_duration_output = [{
+intervention_duration_output = [{  
+    # What was the duration of the intervention? (Please add to info box and specify units)
     5215517: ''
 }]
 
-# What was the frequency of the intervention?
-intervention_frequency_output = [{
+intervention_frequency_output = [{  
+    # What was the frequency of the intervention?
     5215518: ''
 }]
 
-# What is the length of intervention sessions? 
-intervention_session_length_output = [{
+intervention_session_length_output = [{  
+    # What is the length of intervention sessions?
     5215519: ''
 }]
 
-# Are implementation details and/or fidelity details provided?
-intervention_implementation_details = [{
+intervention_implementation_details = [{  # Are implementation details and/or fidelity details provided?
     5215521: "Qualitative",
     5215522: "Quantitative",
     5215523: "No implementation details provided."
 }]
 
-# Are the costs reported?
-intervention_costs_reported = [{# Are the costs reported?
+intervention_costs_reported = [{  # Are the costs reported?
     5215528: "Yes (Please add details)",
     5215529: "No"
 }]
 
-# Who undertook the outcome evaluation?
-intervention_evaluation = [{
+intervention_evaluation = [{  # Who undertook the outcome evaluation?
     5215533: "The developer",
     5215532: "A different organization paid by developer",
     5215531: "An organization commissioned independently to evaluate",
@@ -475,64 +574,60 @@ intervention_evaluation = [{
 ####################################
 
 # NUMBER OF SCHOOLS
-
-# What is the number of schools involved in the intervention group(s)?
-number_of_schools_intervention_output=[{
+number_of_schools_intervention_output = [{  
+    # What is the number of schools involved in the intervention group(s)?
     5407111: ''
 }]
 
-# What is the number of schools involved in the control or comparison group?
-number_of_schools_control_output=[{
+number_of_schools_control_output = [{  
+    # What is the number of schools involved in the control or comparison group?
     5407106: ''
 }]
 
-# What is the total number of schools involved?
-number_of_schools_total_output=[{
+number_of_schools_total_output = [{  
+    # What is the total number of schools involved?
     5407115: ''
 }]
 
-# Not provided/ unclear / not applicable
-number_of_schools_not_provided_output=[{
+number_of_schools_not_provided_output = [{  
+    # Not provided/ unclear / not applicable
     5407113: 'not_provided'
 }]
 
 # NUMBER OF CLASSES
-
-# What is the total number of classes involved in the intervention group?
-number_of_classes_intervention_output=[{
+number_of_classes_intervention_output = [{  
+    # What is the total number of classes involved in the intervention group?
     5407105: ''
 }]
 
-# What is the total number of classes involved in the control or comparison group?
-number_of_classes_control_output=[{
+number_of_classes_control_output = [{  
+    # What is the total number of classes involved in the control or comparison group?
     5407107: ''
 }]
 
-# What is the total number of classes involved?
-number_of_classes_total_output=[{
+number_of_classes_total_output = [{  
+    # What is the total number of classes involved?
     5407153: ''
 }]
 
-# Not provided/ unclear / not applicable
-number_of_classes_not_provided_output=[{
+number_of_classes_not_provided_output = [{  
+    # Not provided/ unclear / not applicable
     5407114: 'not_provided'
 }]
 
 # SAMPLE SIZE
-# What is the overall sample analysed?
-sample_size_output=[{
-    5215428: ''
-}]
+sample_size_output = [{  
+    # What is the overall sample analysed?
+    5215428: ''}]
 
 # GENDER SPLIT
-# Provide the percentage or number of female pupils in the study
-gender_split_output=[{
-    5215644: ''
-}]
+gender_split_output = [{  
+    # Provide the percentage or number of female pupils in the study
+    5215644: ''}]
 
-# STUDENT AGE
-# What is the age of the students? (Select ALL that apply)
-student_age_output=[{
+# STUDENT AGES
+student_age_output = [{  
+    # What is the age of the students? (Select ALL that apply)
     5215433: '3',
     5215434: '4',
     5215435: '5',
@@ -552,35 +647,37 @@ student_age_output=[{
     5513031: 'No information provided'
 }]
 
-# What is the proportion of low SES/FSM students in the sample?
-proportion_low_fsm_output=[{
+# PROPORTION LOW SES/FSM STUDENTS IN SAMPLE
+proportion_low_fsm_output = [{  
+    # What is the proportion of low SES/FSM students in the sample?
     5215454: ''
 }]
 
-# FSM or low SES student percentage
-percentage_low_fsm_output=[{
+# PERCENTAGE LOW SES_FSM STUDENTS IN SAMPLE
+percentage_low_fsm_output = [{  
+    # FSM or low SES student percentage
     5376693: ''
 }]
 
-# Further information about FSM or SES in the study sample
-further_ses_fsm_info_output=[{
+# FURTHER SES/FSM INFORMATION IN SAMPLE
+further_ses_fsm_info_output = [{  
+    # Further information about FSM or SES in the study sample.
     5376694: ''
 }]
 
-# No SES/FSM information provided
-no_ses_fsm_info_provided_output=[{
-    5366637: 'No SES/FSM Information Provided'             
+# NO SES/FSM INFO PROVIDED
+no_ses_fsm_info_provided_output = [{  
+    # No SES/FSM information provided
+    5366637: 'No SES/FSM Information Provided'
 }]
 
-# How realistic was the study?
-study_realism_output = [{
+study_realism_output = [{  # How realistic was the study?
     5215255: 'High ecological validity',
     5215256: 'Low ecological validity',
     5215257: 'Unclear'
 }]
 
-# What was the study design?
-study_design_output = [{
+study_design_output = [{  # What was the study design?
     5406847: 'Individual RCT',
     5406849: 'Cluster RCT',
     5406851: 'Multisite RCT',
@@ -592,8 +689,7 @@ study_design_output = [{
     5407075: 'Regression Discontinuity with randomisation'
 }]
 
-# What is the educational setting (Select ALL that apply)
-edu_setting_output = [{
+edu_setting_output = [{  # What is the educational setting (Select ALL that apply)
     5215410: 'Nursery school/pre-school',
     5215411: 'Primary/elementary school',
     5215412: 'Middle school',
@@ -607,8 +703,7 @@ edu_setting_output = [{
     5513033: 'No information provided'
 }]
 
-# Section 1 What is the publication type?
-publication_type_output = [{
+publication_type_output = [{  # Section 1 What is the publication type?
     5215227: 'Journal article',
     5215228: 'Dissertation or thesis',
     5215229: 'Technical report',
@@ -616,8 +711,7 @@ publication_type_output = [{
     5215231: 'Conference paper'
 }]
 
-# What was the level of assignment?
-level_of_assignment_output = [{
+level_of_assignment_output = [{  # What was the level of assignment?
     5215244: 'Individual',
     5215245: 'Class',
     5215246: 'School - cluster',
@@ -626,8 +720,7 @@ level_of_assignment_output = [{
     5215249: 'Not provided/ not available'
 }]
 
-# How were participants assigned?
-participant_assignment_output = [{
+participant_assignment_output = [{  # How were participants assigned?
     5215251: 'Random (please specify)',
     5215252: 'Non-random, but matched',
     5215253: 'Non-random, not matched prior to treatment',
@@ -637,16 +730,14 @@ participant_assignment_output = [{
     5641088: 'Regression discontinuity'
 }]
 
-# What is the gender of the students?
-student_gender = [{
+student_gender = [{  # What is the gender of the students?
     5215642: 'Female only',
     5215643: 'Male only',
     5215644: 'Mixed gender',
     5513032: 'No information provided'
 }]
 
-# Outcome type (select all that apply)
-outcome_type_codes = [{
+outcome_type_codes = [{  # Outcome type (select all that apply)
     7755570: "Toolkit primary outcome",
     7755571: "Reading primary outcome",
     7755572: "Writing and spelling primary outcome.",
@@ -655,8 +746,8 @@ outcome_type_codes = [{
     7755575: "Other outcome"
 }]
 
-# Sample (select one from this group)
-sample_output = [{
+sample_output = [{  
+    # Sample (select one from this group)
     5407009: 'Sample: All',
     5407041: 'Sample: Exceptional',
     5407006: 'Sample: High achievers',
@@ -664,8 +755,8 @@ sample_output = [{
     5407007: 'Sample: Low achievers'
 }]
 
-# Curriculum subjects tested
-curriculum_subjects = [{
+curriculum_subjects = [{  
+    # Curriculum subjects tested
     5215543: "Literacy (first language)",
     5215544: "Reading comprehension",
     5215567: "Decoding/phonics",
@@ -681,39 +772,37 @@ curriculum_subjects = [{
     5215551: "Other curriculum test"
 }]
 
-# In addition to the primary educational attainment outcome, are there other outcomes reported?
-other_outcomes_output = [{
+other_outcomes_output = [{  
+    # In addition to the primary educational attainment outcome, are there other outcomes reported?
     5215572: "Yes",
     5215573: "No"
 }]
 
-# If yes, which other outcomes are reported?
-which_other_outcomes_output = [{
+which_other_outcomes_output = [{  
+    # If yes, which other outcomes are reported?
     5215575: 'Cognitive outcomes measured (Please specify)',
-    5215576: 'Other types of student outcomes (Please specify)'
-}]
+    5215576: 'Other types of student outcomes (Please specify)'}]
 
-# part of the above 'which other outcomes output' list, but separated for its own column
-other_participants_output = [{
+other_participants_output = [{  
+    # [part of the above 'which other outcomes output' list, but separated for its own column]]
     5215577: 'Other participants (i.e. not students) outcomes (Please specify)'
 }]
 
-# Are details of randomisation provided?
-randomisation_details = [{
+randomisation_details = [{  
+    # Are details of randomisation provided?
     5407117: "Yes",
     5407119: "Not applicable",
     5407118: "No/Unclear"
 }]
 
-# Is there more than one treatment group?
-treatment_group = [{
+treatment_group = [{ 
+    # Is there more than one treatment group?
     5215240: "Yes (Please specify)",
     5215241: "No",
-    5215242: "Not specified or N/A"
-}]
+    5215242: "Not specified or N/A"}]
 
-# Admin Strand
-admin_strand_output = [{
+
+admin_strand_output = [{  # Admin Strand
     5023544: 'Arts participation',
     5023545: 'Aspiration interventions',
     5023546: 'Behaviour interventions',
@@ -749,13 +838,13 @@ admin_strand_output = [{
     5023576: 'Teaching assistants'
 }]
 
-# other admin strand data
-admin_strand_secondary = [{
-    7291837: "Feedback"
+admin_strand_secondary = [{  
+    # other admin strand data
+    7334120: "SGT_Update 2020"
 }]
 
-#Toolkit strand(s) (select at least one Toolkit strand)
-toolkit_strand_codes = [{
+toolkit_strand_codes = [{  
+    # Toolkit strand(s) (select at least one Toolkit strand)
     5407042: 'Toolkit: Arts participation ',
     5407043: 'Toolkit: Aspiration interventions',
     5407044: 'Toolkit: Behaviour interventions',
@@ -791,8 +880,8 @@ toolkit_strand_codes = [{
     5407074: 'Toolkit: Teaching assistants'
 }]
 
-# Test type (select one from this group)
-test_type_output = [{
+test_type_output = [{  
+    # Test type (select one from this group)
     5407028: 'Test type: Standardised test ',
     5407029: 'Test type: Researcher developed test',
     5407031: 'Test type: National test',
@@ -800,8 +889,8 @@ test_type_output = [{
     5407032: 'Test type: International tests'
 }]
 
-# What kind of tests were used? (Select ALL that apply)
-test_type_main = [{
+test_type_main = [{  
+    # What kind of tests were used? (Select ALL that apply)
     5215537: 'Standardised test',
     5215538: 'Researcher developed test',
     5215539: 'School-developed test',
@@ -809,16 +898,16 @@ test_type_main = [{
     5215541: 'International tests'
 }]
 
-# Effect size calculation (select one from this group)
-effect_size_type_output = [{
+effect_size_type_output = [{  
+    # Effect size calculation (select one from this group)
     5407010: 'Post-test unadjusted (select one from this group)',
     5407011: 'Post-test adjusted for baseline attainment',
     5407152: 'Post-test adjusted for baseline attainment AND clustering',
     5407012: 'Pre-post gain'
 }]
 
-# In which country/countries was the study carried out? (Select ALL that apply)
-countries =       [{
+countries = [{  
+    # In which country/countries was the study carried out? (Select ALL that apply)
     5215276: 'USA',
     5215277: 'UK (Select all that apply)',
     5215278: 'Afghanistan',
