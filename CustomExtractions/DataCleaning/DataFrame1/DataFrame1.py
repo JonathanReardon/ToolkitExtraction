@@ -16,6 +16,7 @@ from ParticipantAssignment import participant_assignment_df
 from LevelofAssignment import level_of_assignment_df
 from StudyDesign import study_design_df
 from Randomisation import randomisation_df
+from Other_Outcomes import other_outcomes_df
 
 import pandas as pd
 
@@ -37,7 +38,8 @@ all_variables = pd.concat([
     participant_assignment_df, 
     level_of_assignment_df, 
     study_design_df, 
-    randomisation_df
+    randomisation_df,
+    other_outcomes_df
 ], axis=1, sort=False)
 
 # insert empty columns per variable for data checkers to log changes
