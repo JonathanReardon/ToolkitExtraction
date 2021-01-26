@@ -43,29 +43,29 @@ all_variables = pd.concat([
 ], axis=1, sort=False)
 
 # insert empty columns per variable for data checkers to log changes
-all_variables.insert(6,  'strand_CLEAN',    '')
-all_variables.insert(8,  'pub_eppi_CLEAN',    '')
-all_variables.insert(12, 'pub_type_CLEAN',    '')
+all_variables.insert(6, 'strand_CLEAN', '')
+all_variables.insert(8, 'pub_eppi_CLEAN', '')
+all_variables.insert(12, 'pub_type_CLEAN', '')
 all_variables.insert(14, 'loc_country_CLEAN', '')
 all_variables.insert(18, 'int_Setting_CLEAN', '')
-all_variables.insert(22, 'eco_valid_CLEAN',   '')
-all_variables.insert(26, 'part_age_CLEAN',    '')
+all_variables.insert(22, 'eco_valid_CLEAN', '')
+all_variables.insert(26, 'part_age_CLEAN', '')
 
-all_variables.insert(29, 'school_treat_CLEAN',    '')
-all_variables.insert(32, 'school_cont_CLEAN',    '')
-all_variables.insert(35, 'school_total_CLEAN',    '')
-all_variables.insert(39, 'school_na_CLEAN',    '')
+all_variables.insert(29, 'school_treat_CLEAN', '')
+all_variables.insert(32, 'school_cont_CLEAN', '')
+all_variables.insert(35, 'school_total_CLEAN', '')
+all_variables.insert(39, 'school_na_CLEAN', '')
 
-all_variables.insert(42, 'class_treat_CLEAN',    '')
-all_variables.insert(45, 'class_cont_CLEAN',     '')
+all_variables.insert(42, 'class_treat_CLEAN', '')
+all_variables.insert(45, 'class_cont_CLEAN', '')
 all_variables.insert(48, 'class_total_CLEAN', '')
 all_variables.insert(52, 'class_na_CLEAN', '')
 
-all_variables.insert(56, 'treat_group_CLEAN',  '')
+all_variables.insert(56, 'treat_group_CLEAN', '')
 all_variables.insert(60, 'part_assig_CLEAN', '')
-all_variables.insert(64, 'level_assig_CLEAN',  '')
-all_variables.insert(68, 'int_design_CLEAN',  '')
-all_variables.insert(72, 'rand_CLEAN',  '')
+all_variables.insert(64, 'level_assig_CLEAN', '')
+all_variables.insert(68, 'int_design_CLEAN', '')
+all_variables.insert(72, 'rand_CLEAN', '')
 
 # remove problematic text from outputs
 all_variables.replace('\r', ' ', regex=True, inplace=True)
@@ -76,6 +76,7 @@ all_variables.replace(';', ' ',  regex=True, inplace=True)
 print(list(all_variables))
 
 # temporary whilst 'Update' strands have not been integrated into the main section
+# most files will not have this
 del all_variables["MSR_Update 2020"]
 
 # write to disk
