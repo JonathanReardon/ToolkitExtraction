@@ -26,13 +26,30 @@ from Clustering import clustering_df
 import pandas as pd
 
 all_variables = pd.concat([
-    eppiid_df, author_df, year_df, admin_strand_df, intervention_name_df, intervention_description_df,
-    intervention_objectives_df, intervention_org_type, intervention_training_provided_df,
-    intervention_focus_df, intervention_teaching_approach_df, intervention_inclusion_df,
-    intervention_time_df, intervention_delivery_df, intervention_duration_df, intervention_frequency_df,
-    intervention_session_length_df, intervention_detail_df, intervention_costs_df,
-    intervention_evaluation_df, baseline_differences_df, comparability_df,
-    comparability_vars_reported_df, clustering_df
+    eppiid_df, 
+    author_df, 
+    year_df, 
+    admin_strand_df, 
+    intervention_name_df, 
+    intervention_description_df,
+    intervention_objectives_df, 
+    intervention_org_type, 
+    intervention_training_provided_df,
+    intervention_focus_df, 
+    intervention_teaching_approach_df, 
+    intervention_inclusion_df,
+    intervention_time_df, 
+    intervention_delivery_df, 
+    intervention_duration_df, 
+    intervention_frequency_df,
+    intervention_session_length_df, 
+    intervention_detail_df, 
+    intervention_costs_df,
+    intervention_evaluation_df, 
+    baseline_differences_df, 
+    comparability_df,
+    comparability_vars_reported_df, 
+    clustering_df
 ], axis=1, sort=False)
 
 # insert empty columns per variable for data checkers to log changes
@@ -73,3 +90,6 @@ print(list(all_variables))
 print("Columns:", all_variables.shape[1])
 print("Rows:", all_variables.shape[0])
 print("Datapoints:", all_variables.shape[0] * all_variables.shape[1])
+
+# save to disk
+all_variables.to_csv("OL_14jan21_DataFrame2.csv", index=False)
