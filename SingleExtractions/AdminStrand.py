@@ -1,5 +1,5 @@
 from Main import get_data, comments
-from CODES import admin_strand_output, admin_strand_secondary
+from AttributeIDList import admin_strand_output, admin_strand_secondary
 import pandas as pd
 
 # get admin strand data
