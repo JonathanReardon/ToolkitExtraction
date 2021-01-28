@@ -1,36 +1,11 @@
-import os
-import json
+from Main import get_metadata
 import pandas as pd
 
-from DATAFILE import file
-
-exclude = "NA"
-
-script_dir = os.path.dirname(__file__)
-datafile = os.path.join(script_dir, file)
-
-with open(datafile) as f:
-    data = json.load(f)
-
-
-def get_abstract():
-    global abstract
-    abstract = []
-    for section in range(len(data["References"])):
-        if data["References"][section]["Abstract"]:
-            abstract.append(data["References"][section]["Abstract"])
-        else:
-            print("no")
-            abstract.append(exclude)
-
-
-get_abstract()
-
+# get abstract data
+abstract = get_metadata("Abstract")
 abstract_df = pd.DataFrame(abstract)
 abstract_df.columns = ["abstract"]
-
 abstract_df.fillna("NA", inplace=True)
 
-print(abstract_df)
-
+# save to disk
 abstract_df.to_csv("abstract.csv", index=False)
