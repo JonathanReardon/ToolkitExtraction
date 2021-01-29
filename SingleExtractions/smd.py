@@ -1,5 +1,8 @@
-from Main import get_outcome_lvl1
+from Main import load_json, get_outcome_lvl1
 import pandas as pd
+
+# load json file
+load_json()
 
 # get smd data
 smd = get_outcome_lvl1("SMD")
@@ -20,4 +23,4 @@ smd_df.fillna("NA", inplace=True)
 smd_df = smd_df.replace(r'^\s*$', "NA", regex=True)
 
 # save to disk
-smd_df.to_csv("smd.csv", index=False)
+""" smd_df.to_csv("smd.csv", index=False) """

@@ -1,9 +1,12 @@
-from Main import comments, highlighted_text
+from Main import load_json, comments, highlighted_text
 from AttributeIDList import sample_size_analyzed_intervention_output
 from AttributeIDList import sample_size_analyzed_control_output
 from AttributeIDList import sample_size_analyzed_second_intervention_output
 from AttributeIDList import sample_size_analyzed_second_control_output
 import pandas as pd
+
+# load json file
+load_json()
 
 #############################################
 # Analyzed sample size for intervention group
@@ -89,4 +92,4 @@ analyzed_sample_size_df.replace('\n', ' ', regex=True, inplace=True)
 analyzed_sample_size_df.fillna("NA", inplace=True)
 
 # save to disk
-analyzed_sample_size_df.to_csv("analyzed_sample_size.csv", index=False)
+""" analyzed_sample_size_df.to_csv("analyzed_sample_size.csv", index=False) """

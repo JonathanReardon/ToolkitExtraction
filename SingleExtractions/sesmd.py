@@ -1,5 +1,8 @@
-from Main import get_outcome_lvl1
+from Main import load_json, get_outcome_lvl1
 import pandas as pd
+
+# load json file
+load_json()
 
 # get sesmd data
 sesmd = get_outcome_lvl1("SESMD")
@@ -20,4 +23,4 @@ sesmd_df.fillna("NA", inplace=True)
 sesmd_df = sesmd_df.replace(r'^\s*$', "NA", regex=True)
 
 # save to disk
-sesmd_df.to_csv("sesmd.csv", index=False)
+""" sesmd_df.to_csv("sesmd.csv", index=False) """

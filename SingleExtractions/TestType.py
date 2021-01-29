@@ -1,6 +1,9 @@
-from Main import get_data, get_outcome_lvl2
+from Main import load_json, get_data, get_outcome_lvl2
 from AttributeIDList import test_type_main, test_type_output
 import pandas as pd
+
+# load json file
+load_json()
 
 # get test type main extraction data
 test_type_main = get_data(test_type_main)
@@ -34,4 +37,4 @@ testtype_outcome_df.columns = [
 testtype_outcome_df.fillna("NA", inplace=True)
 
 # save to disk
-testtype_outcome_df.to_csv("testtype.csv", index=False)
+""" testtype_outcome_df.to_csv("testtype.csv", index=False) """

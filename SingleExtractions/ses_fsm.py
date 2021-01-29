@@ -1,9 +1,12 @@
-from Main import get_data, comments, highlighted_text
+from Main import load_json, get_data, comments, highlighted_text
 from AttributeIDList import proportion_low_fsm_output
 from AttributeIDList import percentage_low_fsm_output
 from AttributeIDList import further_ses_fsm_info_output
 from AttributeIDList import no_ses_fsm_info_provided_output
 import pandas as pd
+
+# load json file
+load_json()
 
 #######################################
 # PROPORTION OF LOW SES/FSM IN SAMPLE #
@@ -93,4 +96,4 @@ ses_fsm_df.replace(';', ' ',  regex=True, inplace=True)
 ses_fsm_df.fillna("NA", inplace=True)
 
 # save to disk
-ses_fsm_df.to_csv("sesfsm.csv", index=False)
+""" ses_fsm_df.to_csv("sesfsm.csv", index=False) """

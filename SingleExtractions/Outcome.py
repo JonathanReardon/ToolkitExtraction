@@ -1,52 +1,19 @@
-import os
-import json
+from Main import load_json, get_outcome_lvl1
 import pandas as pd
 
-from CODES import *
-from DATAFILE import file
+# load json file
+load_json()
 
-exclude = "NA"
+# get outcome data
+outcome = get_outcome_lvl1("OutcomeText")
+outcome_df = pd.DataFrame(outcome)
 
-script_dir = os.path.dirname(__file__)
-datafile = os.path.join(script_dir, file)
+# name each column (number depends on outcome number)
+outcome_df.columns = [
+    "out_label_" +'{}'.format(column+1) for column in outcome_df.columns]
 
-with open(datafile) as f:
-    data = json.load(f)
-
-x = []
-for study in range(len(data["References"])):
-    if "Outcomes" in data["References"][study]:
-        x.append(len(data["References"][study]["Outcomes"]))
-
-
-def get_outcome():
-    global OUTCOME
-    OUTCOME = []
-    for section in range(len(data["References"])):
-        outcomeholder = []
-        if "Outcomes" in data["References"][section]:
-            for subsection in range(max(x)):
-                if subsection < len(data["References"][section]["Outcomes"]):
-                    outcomeholder.append(
-                        data["References"][section]["Outcomes"][subsection]["OutcomeText"])
-                else:
-                    outcomeholder.append(exclude)
-            OUTCOME.append(outcomeholder)
-        else:
-            for i in range(max(x)):
-                outcomeholder.append(exclude)
-            OUTCOME.append(outcomeholder)
-
-
-get_outcome()
-
-outcome_df = pd.DataFrame(OUTCOME)
-
-outcome_df.columns = ["out_out_type_" +
-                      '{}'.format(column+1) for column in outcome_df.columns]
-
+# fill blanks with NA
 outcome_df.fillna("NA", inplace=True)
 
-print(outcome_df)
-
-outcome_df.to_csv("outcome.csv", index=False)
+# save to disk
+""" outcome_df.to_csv("outcome.csv", index=False) """
