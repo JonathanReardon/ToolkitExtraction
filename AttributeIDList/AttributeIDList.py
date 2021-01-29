@@ -1,3 +1,8 @@
+admin_strand_secondary = [{  
+    # other admin strand data
+    7751161: "II_Update_2020"
+}]
+
 other_outcomes_output = [{ 
     # In addition to the primary educational attainment outcome, are there other outcomes reported? }]
     5215572: 'Yes',
@@ -27,14 +32,14 @@ sample_size_control_output = [{
 
 sample_size_second_intervention_output = [{  
     # *What is the sample size for the second intervention group?}
-    5407120: ''}]
+    5407120: ''
+}]
 
 sample_size_third_intervention_output = [{  
     # *What is the sample size for the third intervention group?}
     5407121: ''
 }]
 
-# SAMPLE SIZE ANALYZED
 sample_size_analyzed_intervention_output = [{  
     # intervention group Number (n}
     5406980: ''
@@ -306,7 +311,7 @@ intervention_group_any_other_info = [{
     5406990: ''
 }]
 
-# CONTROL GROUP
+# control group
 
 control_group_number = [{  
     # control* group Number (n}
@@ -348,7 +353,7 @@ control_group_any_other_info = [{
     5406991: ''
 }]
 
-# INTERVENTION (TREATMENT) GROUP TWO
+# intervention (treatment) group two
 
 intervention_group_two_number = [{  
     # intervention group Number (n}
@@ -390,7 +395,7 @@ intervention_group_two_any_other_info = [{
     5407140: ''
 }]
 
-# CONTROL GROUP TWO
+# control group two
 
 control_group_two_number = [{  
     # control* group Number (n}
@@ -496,7 +501,7 @@ intervention_teaching_approach = [{
     5216714: "Other (Explain in notes)"
 }]
 
-# INTERVENTION APPROACH INCLUSION
+# intervention approach inclusion
 intervention_approach_digital_technology = [{  
     # Were any of the following involved in the intervention or approach?
     # Digital Technology
@@ -836,11 +841,6 @@ admin_strand_output = [{  # Admin Strand
     5023574: 'Sports participation',
     5023575: 'Summer schools',
     5023576: 'Teaching assistants'
-}]
-
-admin_strand_secondary = [{  
-    # other admin strand data
-    7334120: "SGT_Update 2020"
 }]
 
 toolkit_strand_codes = [{  
