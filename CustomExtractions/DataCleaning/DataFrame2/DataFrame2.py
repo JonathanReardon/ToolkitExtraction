@@ -1,7 +1,8 @@
-from EPPI_ID import eppiid_df 
+from Main import file
+from eppi_ID import eppiid_df
 from Author import author_df
-from Date import year_df 
-from AdminStrand import admin_strand_df 
+from Date import year_df
+from AdminStrand import admin_strand_df
 from InterventionName import intervention_name_df
 from InterventionDescription import intervention_description_df
 from InterventionObjectives import intervention_objectives_df
@@ -17,12 +18,11 @@ from InterventionFrequency import intervention_frequency_df
 from InterventionSessionLength import intervention_session_length_df
 from InterventionDetail import intervention_detail_df
 from InterventionCostsReported import intervention_costs_df
-from InterventionEvaluation import intervention_evaluation_df 
+from InterventionEvaluation import intervention_evaluation_df  # includes EEF evaluation
 from Baseline_Differences import baseline_differences_df
 from Comparability import comparability_df
 from Comparability_Variables_Reported import comparability_vars_reported_df
 from Clustering import clustering_df
-
 import pandas as pd
 
 all_variables = pd.concat([
@@ -53,43 +53,48 @@ all_variables = pd.concat([
 ], axis=1, sort=False)
 
 # insert empty columns per variable for data checkers to log changes
-all_variables.insert(5,  'strand_CLEAN', '')
-all_variables.insert(8,  'int_name_CLEAN', '')
-all_variables.insert(11, 'int_desc_CLEAN', '')
-all_variables.insert(14, 'int_object_CLEAN', '')
-all_variables.insert(18, 'int_prov_CLEAN', '')
-all_variables.insert(22, 'int_training_CLEAN', '')
-all_variables.insert(26, 'int_part_CLEAN', '')
-all_variables.insert(30, 'int_approach_CLEAN', '')
-all_variables.insert(34, 'digital_tech_CLEAN', '')
-all_variables.insert(38, 'parent_partic_CLEAN', '')
-all_variables.insert(42, 'int_when_CLEAN', '')
-all_variables.insert(46, 'int_who_CLEAN', '')
-all_variables.insert(49, 'int_dur_CLEAN', '')
-all_variables.insert(52, 'int_freq_CLEAN', '')
-all_variables.insert(55, 'int_leng_CLEAN', '')
-all_variables.insert(59, 'int_fidel_CLEAN', '')
-all_variables.insert(63, 'int_cost_CLEAN', '')
-all_variables.insert(67, 'out_eval_CLEAN', '')
-all_variables.insert(69, 'eef_eval_CLEAN', '')
-all_variables.insert(73, 'base_diff_CLEAN', '')
-all_variables.insert(77, 'comp_anal_CLEAN', '')
-all_variables.insert(81, 'comp_var_rep_CLEAN', '')
-all_variables.insert(85, 'comp_var_CLEAN', '')
-all_variables.insert(89, 'clust_anal_CLEAN', ')
+all_variables.insert(6,  'strand_CLEAN',        '')
+all_variables.insert(9,  'int_name_CLEAN',      '')
+all_variables.insert(12, 'int_desc_CLEAN',      '')
+all_variables.insert(15, 'int_object_CLEAN',    '')
+all_variables.insert(19, 'int_prov_CLEAN',      '')
+all_variables.insert(23, 'int_training_CLEAN',  '')
+all_variables.insert(27, 'int_part_CLEAN',      '')
+all_variables.insert(31, 'int_approach_CLEAN',  '')
+all_variables.insert(35, 'digital_tech_CLEAN',  '')
+all_variables.insert(39, 'parent_partic_CLEAN', '')
+all_variables.insert(43, 'int_when_CLEAN',      '')
+all_variables.insert(46, 'int_who_CLEAN',       '')
+all_variables.insert(50, 'int_dur_CLEAN',       '')
+all_variables.insert(53, 'int_freq_CLEAN',      '')
+all_variables.insert(56, 'int_leng_CLEAN',      '')
+all_variables.insert(60, 'int_fidel_CLEAN',     '')
+all_variables.insert(64, 'int_cost_CLEAN',      '')
+all_variables.insert(68, 'out_eval_CLEAN',      '')
+all_variables.insert(70, 'eef_eval_CLEAN',      '')
+all_variables.insert(74, 'base_diff_CLEAN',     '')
+all_variables.insert(78, 'comp_anal_CLEAN',     '')
+all_variables.insert(82, 'comp_var_rep_CLEAN',  '')
+all_variables.insert(86, 'comp_var_CLEAN',      '')
+all_variables.insert(90, 'clust_anal_CLEAN',    '')
 
-all_variables.replace('\r',' ', regex=True, inplace=True)
-all_variables.replace('\n',' ', regex=True, inplace=True)
-all_variables.replace(':',' ',  regex=True, inplace=True)
-all_variables.replace(';',' ',  regex=True, inplace=True)
+all_variables.replace('\r', ' ', regex=True, inplace=True)
+all_variables.replace('\n', ' ', regex=True, inplace=True)
+all_variables.replace(':', ' ',  regex=True, inplace=True)
+all_variables.replace(';', ' ',  regex=True, inplace=True)
 
-all_variables.to_csv("DataFrame2.csv", index=False) 
-
-print(list(all_variables))
+# temporary whilst 'Update' strands have not been integrated into the main section
+""" del all_variables["MSR_Update 2020"] """
 
 print("Columns:", all_variables.shape[1])
 print("Rows:", all_variables.shape[0])
 print("Datapoints:", all_variables.shape[0] * all_variables.shape[1])
 
-# save to disk
-all_variables.to_csv("OL_14jan21_DataFrame2.csv", index=False)
+# get file name for output
+outfile_name = file.rsplit('/')[-1]
+outfile_name = outfile_name.rsplit('.')[0]
+outfile_name = outfile_name + "_DataFrame2.csv"
+
+# write to disk
+print("saving {}".format(outfile_name))
+all_variables.to_csv(outfile_name, index=False)
