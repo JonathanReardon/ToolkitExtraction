@@ -1,55 +1,23 @@
-import os
-import json
+from Main import get_outcome_lvl1
 import pandas as pd
 
-from DATAFILE import file
+# extract confidence interval upper data
+cilowersmd = get_outcome_lvl1("CIUpperSMD")
+ciuppersmd_df = pd.DataFrame(cilowersmd)
 
-exclude = "NA"
-
-script_dir = os.path.dirname(__file__)
-datafile = os.path.join(script_dir, file)
-
-with open(datafile) as f:
-    data = json.load(f)
-
-x = []
-for study in range(len(data["References"])):
-    if "Outcomes" in data["References"][study]:
-        x.append(len(data["References"][study]["Outcomes"]))
-
-
-def get_CIupperSMD():
-    global CIupperSMD
-    CIupperSMD = []
-    for section in range(len(data["References"])):
-        ciupperholder = []
-        if "Outcomes" in data["References"][section]:
-            for subsection in range(max(x)):
-                if subsection < len(data["References"][section]["Outcomes"]):
-                    ciupperholder.append(
-                        data["References"][section]["Outcomes"][subsection]["CIUpperSMD"])
-                else:
-                    ciupperholder.append(exclude)
-            CIupperSMD.append(ciupperholder)
-        else:
-            for i in range(max(x)):
-                ciupperholder.append(exclude)
-            CIupperSMD.append(ciupperholder)
-
-
-get_CIupperSMD()
-
-ciuppersmd_df = pd.DataFrame(CIupperSMD)
-
+# round data to 4 decimal places
 ciuppersmd_df = ciuppersmd_df.applymap(
     lambda x: round(x, 4) if isinstance(x, (int, float)) else x)
 
+# name each column (number depends on outcome number)
 ciuppersmd_df.columns = [
     "ci_upper_"+'{}'.format(column+1) for column in ciuppersmd_df.columns]
 
+# fill blanks with NA
 ciuppersmd_df.fillna("NA", inplace=True)
+
+# replace problematic text
 ciuppersmd_df = ciuppersmd_df.replace(r'^\s*$', "NA", regex=True)
 
-""" print(ciuppersmd_df) """
-
-""" ciuppersmd_df.to_csv("ciuppersmd.csv", index=False) """
+# save to disk
+ciuppersmd_df.to_csv("ciuppersmd.csv", index=False)

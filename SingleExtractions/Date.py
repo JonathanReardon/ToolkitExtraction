@@ -1,16 +1,5 @@
-import os
-import json
+from Main import get_metadata
 import pandas as pd
-
-from DATAFILE import file
-
-exclude = "NA"
-
-script_dir = os.path.dirname(__file__)
-datafile = os.path.join(script_dir, file)
-
-with open(datafile) as f:
-    data = json.load(f)
 
 # add decade column
 def decade_row(row):
@@ -30,24 +19,16 @@ def decade_row(row):
         decade = "2020-2029"
     return decade
 
-def get_date():
-    global year
-    year = []
-    for section in range(len(data["References"])):
-        if data["References"][section]["Year"]:
-            year.append(data["References"][section]["Year"])
-        else:
-            year.append(exclude)
-
-get_date()
-
+# get year data
+year = get_metadata("Year")
 year_df = pd.DataFrame(year)
 year_df.columns = ["pub_year"]
 
+# add decade column
 """ year_df["decade"] = year_df.apply(decade_row, axis=1) """
 
+# fill blanks with NA
 year_df.fillna("NA", inplace=True)
 
-print(year_df)
-
+# save to disk
 year_df.to_csv("year.csv", index=False)

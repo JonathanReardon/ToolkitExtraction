@@ -1,72 +1,25 @@
-import os
-import json
+from Main import get_Outcome_lvl1
 import pandas as pd
 
-from DATAFILE import file
+# get group1 mean data
+group1mean = get_Outcome_lvl1("Data3")
+group1mean_df = pd.DataFrame(group1mean)
 
-exclude = "NA"
-
-script_dir = os.path.dirname(__file__)
-datafile = os.path.join(script_dir, file)
-
-with open(datafile) as f:
-    data = json.load(f)
-
-x = []
-for study in range(len(data["References"])):
-    if "Outcomes" in data["References"][study]:
-        x.append(len(data["References"][study]["Outcomes"]))
-
-def get_group1mean():
-    global GROUP1MEAN
-    GROUP1MEAN = []
-    for section in range(len(data["References"])):
-        group1meanholder = []
-        if "Outcomes" in data["References"][section]:
-            for subsection in range(max(x)):
-                if subsection < len(data["References"][section]["Outcomes"]):
-                    group1meanholder.append(
-                        data["References"][section]["Outcomes"][subsection]["Data3"])
-                else:
-                    group1meanholder.append(exclude)
-            GROUP1MEAN.append(group1meanholder)
-        else:
-            for i in range(max(x)):
-                group1meanholder.append(exclude)
-            GROUP1MEAN.append(group1meanholder)
-
-def get_outcometypeID():
-    global OUTCOMETYPEID
-    OUTCOMETYPEID = []
-    for section in range(len(data["References"])):
-        outcometypeidholder = []
-        if "Outcomes" in data["References"][section]:
-            for subsection in range(max(x)):
-                if subsection < len(data["References"][section]["Outcomes"]):
-                    outcometypeidholder.append(
-                        data["References"][section]["Outcomes"][subsection]["OutcomeTypeId"])
-                else:
-                    outcometypeidholder.append(exclude)
-            OUTCOMETYPEID.append(outcometypeidholder)
-        else:
-            for i in range(max(x)):
-                outcometypeidholder.append(exclude)
-            OUTCOMETYPEID.append(outcometypeidholder)
-
-get_group1mean()
-
-group1mean_df = pd.DataFrame(GROUP1MEAN)
-
+# name each column (number depends on outcome number)
 group1mean_df.columns = [
     "out_g1_mean_"+'{}'.format(column+1) for column in group1mean_df.columns]
 
+# fill blanks with NA   
 group1mean_df.fillna("NA", inplace=True)
+
+# remove problematic text
 group1mean_df = group1mean_df.replace(r'^\s*$', "NA", regex=True)
 
 # get outcometypeId data (to check)
-get_outcometypeID()
-outcometypeid_df = pd.DataFrame(OUTCOMETYPEID)
+outcometypeid = get_Outcome_lvl1("OutcomeTypeId")
+outcometypeid_df = pd.DataFrame(outcometypeid)
 
+# name each column (number depends on outcome number)
 outcometypeid_df.columns = [
     "outcometype_df_"+'{}'.format(column+1) for column in outcometypeid_df.columns]
 
@@ -78,4 +31,5 @@ mask = mask.iloc[:, 0]
 for col in group1mean_df.columns:
     group1mean_df[col][mask] = "NA"
 
+# save to disk
 group1mean_df.to_csv("Group1Mean.csv", index=False)
