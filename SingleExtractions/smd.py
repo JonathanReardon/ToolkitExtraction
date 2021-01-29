@@ -1,56 +1,23 @@
-import os
-import json
+from Main import get_outcome_lvl1
 import pandas as pd
 
-from CODES import *
-from DATAFILE import file
+# get smd data
+smd = get_outcome_lvl1("SMD")
+smd_df = pd.DataFrame(smd)
 
-exclude = "NA"
+# round data to 4 decimal places
+smd_df = smd_df.applymap(
+    lambda x: round(x, 4) if isinstance(x, (int, float)) else x)
 
-script_dir = os.path.dirname(__file__)
-datafile = os.path.join(script_dir, file)
+# name each column (number depends on outcome number)
+smd_df.columns = [
+    "smd_"+'{}'.format(column+1) for column in smd_df.columns]
 
-with open(datafile) as f:
-    data = json.load(f)
-
-x = []
-for study in range(len(data["References"])):
-    if "Outcomes" in data["References"][study]:
-        x.append(len(data["References"][study]["Outcomes"]))
-
-
-def get_SMD():
-    global SMD
-    SMD = []
-    for section in range(len(data["References"])):
-        smdholder = []
-        if "Outcomes" in data["References"][section]:
-            for subsection in range(max(x)):
-                if subsection < len(data["References"][section]["Outcomes"]):
-                    smdholder.append(
-                        data["References"][section]["Outcomes"][subsection]["SMD"])
-                else:
-                    smdholder.append(exclude)
-            SMD.append(smdholder)
-        else:
-            for i in range(max(x)):
-                smdholder.append(exclude)
-            SMD.append(smdholder)
-
-
-get_SMD()
-
-smd_df = pd.DataFrame(SMD)
-
-smd_df = smd_df.applymap(lambda x: round(
-    x, 4) if isinstance(x, (int, float)) else x)
-
-smd_df.columns = ["smd_"+'{}'.format(column+1) for column in smd_df.columns]
-
+# fill blanks with NA
 smd_df.fillna("NA", inplace=True)
 
+# replace problematic text
 smd_df = smd_df.replace(r'^\s*$', "NA", regex=True)
 
-print(smd_df)
-
+# save to disk
 smd_df.to_csv("smd.csv", index=False)

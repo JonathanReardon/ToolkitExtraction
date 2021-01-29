@@ -1,55 +1,23 @@
-import os
-import json
+from Main import get_outcome_lvl1
 import pandas as pd
 
-from CODES import *
-from DATAFILE import file
+# get sesmd data
+sesmd = get_outcome_lvl1("SESMD")
+sesmd_df = pd.DataFrame(sesmd)
 
-exclude = "NA"
+# round data to 4 decimal places
+sesmd_df = sesmd_df.applymap(
+    lambda x: round(x, 4) if isinstance(x, (int, float)) else x)
 
-script_dir = os.path.dirname(__file__)
-datafile = os.path.join(script_dir, file)
+# name each column (number depends on outcome number)
+sesmd_df.columns = [
+    "se_"+'{}'.format(column+1) for column in sesmd_df.columns]
 
-with open(datafile) as f:
-    data = json.load(f)
-
-x = []
-for study in range(len(data["References"])):
-    if "Outcomes" in data["References"][study]:
-        x.append(len(data["References"][study]["Outcomes"]))
-
-
-def get_SESMD():
-    global SESMD
-    SESMD = []
-    for section in range(len(data["References"])):
-        sesmdholder = []
-        if "Outcomes" in data["References"][section]:
-            for subsection in range(max(x)):
-                if subsection < len(data["References"][section]["Outcomes"]):
-                    sesmdholder.append(
-                        data["References"][section]["Outcomes"][subsection]["SESMD"])
-                else:
-                    sesmdholder.append(exclude)
-            SESMD.append(sesmdholder)
-        else:
-            for i in range(max(x)):
-                sesmdholder.append(exclude)
-            SESMD.append(sesmdholder)
-
-
-get_SESMD()
-
-sesmd_df = pd.DataFrame(SESMD)
-
-sesmd_df = sesmd_df.applymap(lambda x: round(
-    x, 4) if isinstance(x, (int, float)) else x)
-
-sesmd_df.columns = ["se_"+'{}'.format(column+1) for column in sesmd_df.columns]
-
+# fill blanks with NA
 sesmd_df.fillna("NA", inplace=True)
+
+# replace problematic text
 sesmd_df = sesmd_df.replace(r'^\s*$', "NA", regex=True)
 
-print(sesmd_df)
-
-""" sesmd.to_csv("sesmd.csv", index=False) """
+# save to disk
+sesmd_df.to_csv("sesmd.csv", index=False)
