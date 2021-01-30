@@ -1,3 +1,4 @@
+from Main import file
 from eppi_ID import eppiid_df
 from Author import author_df
 from Date import year_df
@@ -21,7 +22,6 @@ from Group1_Mean import group1mean_df
 from Group2_Mean import group2mean_df
 from Group1_SD import group1sd_df
 from Group2_SD import group2sd_df
-
 import pandas as pd
 import numpy as np
 from toolz import interleave
@@ -106,7 +106,7 @@ for counter, row in enumerate(df['out_type_1']):
         toolkit_prim_se.append(df['se_1'][counter])
         toolkit_prim_ci_lower.append(df['ci_lower_1'][counter])
         toolkit_prim_ci_upper.append(df['ci_upper_1'][counter])
-        toolkit_prim_outcome.append(df['outcome_1'][counter])
+        toolkit_prim_outcome.append(df['out_label_1'][counter])
         toolkit_prim_sample.append(df['out_samp_1'][counter])
         toolkit_prim_outcomp.append(df['out_comp_1'][counter])
         toolkit_es_type.append(df['out_es_type_1'][counter])
@@ -126,7 +126,7 @@ for counter, row in enumerate(df['out_type_1']):
         toolkit_prim_se.append(df['se_2'][counter])
         toolkit_prim_ci_lower.append(df['ci_lower_2'][counter])
         toolkit_prim_ci_upper.append(df['ci_upper_2'][counter])
-        toolkit_prim_outcome.append(df['outcome_2'][counter])
+        toolkit_prim_outcome.append(df['out_label_2'][counter])
         toolkit_prim_sample.append(df['out_samp_2'][counter])
         toolkit_prim_outcomp.append(df['out_comp_2'][counter])
         toolkit_es_type.append(df['out_es_type_2'][counter])
@@ -146,7 +146,7 @@ for counter, row in enumerate(df['out_type_1']):
         toolkit_prim_se.append(df['se_3'][counter])
         toolkit_prim_ci_lower.append(df['ci_lower_3'][counter])
         toolkit_prim_ci_upper.append(df['ci_upper_3'][counter])
-        toolkit_prim_outcome.append(df['outcome_3'][counter])
+        toolkit_prim_outcome.append(df['out_label_3'][counter])
         toolkit_prim_sample.append(df['out_samp_3'][counter])
         toolkit_prim_outcomp.append(df['out_comp_3'][counter])
         toolkit_es_type.append(df['out_es_type_3'][counter])
@@ -166,7 +166,7 @@ for counter, row in enumerate(df['out_type_1']):
         toolkit_prim_se.append(df['se_4'][counter])
         toolkit_prim_ci_lower.append(df['ci_lower_4'][counter])
         toolkit_prim_ci_upper.append(df['ci_upper_4'][counter])
-        toolkit_prim_outcome.append(df['outcome_4'][counter])
+        toolkit_prim_outcome.append(df['out_label_4'][counter])
         toolkit_prim_sample.append(df['out_samp_4'][counter])
         toolkit_prim_outcomp.append(df['out_comp_4'][counter])
         toolkit_es_type.append(df['out_es_type_4'][counter])
@@ -186,7 +186,7 @@ for counter, row in enumerate(df['out_type_1']):
         toolkit_prim_se.append(df['se_5'][counter])
         toolkit_prim_ci_lower.append(df['ci_lower_5'][counter])
         toolkit_prim_ci_upper.append(df['ci_upper_5'][counter])
-        toolkit_prim_outcome.append(df['outcome_5'][counter])
+        toolkit_prim_outcome.append(df['out_label_5'][counter])
         toolkit_prim_sample.append(df['out_samp_5'][counter])
         toolkit_prim_outcomp.append(df['out_comp_5'][counter])
         toolkit_es_type.append(df['out_es_type_5'][counter])
@@ -206,7 +206,7 @@ for counter, row in enumerate(df['out_type_1']):
         toolkit_prim_se.append(df['se_6'][counter])
         toolkit_prim_ci_lower.append(df['ci_lower_6'][counter])
         toolkit_prim_ci_upper.append(df['ci_upper_6'][counter])
-        toolkit_prim_outcome.append(df['outcome_6'][counter])
+        toolkit_prim_outcome.append(df['out_label_6'][counter])
         toolkit_prim_sample.append(df['out_samp_6'][counter])
         toolkit_prim_outcomp.append(df['out_comp_6'][counter])
         toolkit_es_type.append(df['out_es_type_6'][counter])
@@ -226,7 +226,7 @@ for counter, row in enumerate(df['out_type_1']):
         toolkit_prim_se.append(df['se_7'][counter])
         toolkit_prim_ci_lower.append(df['ci_lower_7'][counter])
         toolkit_prim_ci_upper.append(df['ci_upper_7'][counter])
-        toolkit_prim_outcome.append(df['outcome_7'][counter])
+        toolkit_prim_outcome.append(df['out_label_7'][counter])
         toolkit_prim_sample.append(df['out_samp_7'][counter])
         toolkit_prim_outcomp.append(df['out_comp_7'][counter])
         toolkit_es_type.append(df['out_es_type_7'][counter])
@@ -246,7 +246,7 @@ for counter, row in enumerate(df['out_type_1']):
         toolkit_prim_se.append(df['se_8'][counter])
         toolkit_prim_ci_lower.append(df['ci_lower_8'][counter])
         toolkit_prim_ci_upper.append(df['ci_upper_8'][counter])
-        toolkit_prim_outcome.append(df['outcome_8'][counter])
+        toolkit_prim_outcome.append(df['out_label_8'][counter])
         toolkit_prim_sample.append(df['out_samp_8'][counter])
         toolkit_prim_outcomp.append(df['out_comp_8'][counter])
         toolkit_es_type.append(df['out_es_type_8'][counter])
@@ -266,7 +266,7 @@ for counter, row in enumerate(df['out_type_1']):
         toolkit_prim_se.append(df['se_9'][counter])
         toolkit_prim_ci_lower.append(df['ci_lower_9'][counter])
         toolkit_prim_ci_upper.append(df['ci_upper_9'][counter])
-        toolkit_prim_outcome.append(df['outcome_9'][counter])
+        toolkit_prim_outcome.append(df['out_label_9'][counter])
         toolkit_prim_sample.append(df['out_samp_9'][counter])
         toolkit_prim_outcomp.append(df['out_comp_9'][counter])
         toolkit_es_type.append(df['out_es_type_9'][counter])
@@ -280,66 +280,9 @@ for counter, row in enumerate(df['out_type_1']):
         toolkit_g1_sd.append(df['out_g1_sd_9'][counter])
         toolkit_g2_sd.append(df['out_g2_sd_9'][counter])
         toolkit_out_desc.append(df['out_desc_9'][counter])
-    elif 'Toolkit primary outcome' in df['out_type_10'][counter]:
-        toolkit_prim.append(df['out_type_10'][counter])
-        toolkit_prim_smd.append(df['smd_10'][counter])
-        toolkit_prim_se.append(df['se_10'][counter])
-        toolkit_prim_ci_lower.append(df['ci_lower_10'][counter])
-        toolkit_prim_ci_upper.append(df['ci_upper_10'][counter])
-        toolkit_prim_outcome.append(df['outcome_10'][counter])
-        toolkit_prim_sample.append(df['out_samp_10'][counter])
-        toolkit_prim_outcomp.append(df['out_comp_10'][counter])
-        toolkit_es_type.append(df['out_es_type_10'][counter])
-        toolkit_out_measure.append(df['out_measure_10'][counter])
-        toolkit_out_strand.append(df['out_strand_10'][counter])
-        toolkit_out_tit.append(df['out_tit_10'][counter])
-        toolkit_g1_n.append(df['out_g1_n_10'][counter])
-        toolkit_g2_n.append(df['out_g2_n_10'][counter])
-        toolkit_g1_mean.append(df['out_g1_mean_10'][counter])
-        toolkit_g2_mean.append(df['out_g2_mean_10'][counter])
-        toolkit_g1_sd.append(df['out_g1_sd_10'][counter])
-        toolkit_g2_sd.append(df['out_g2_sd_10'][counter])
-        toolkit_out_desc.append(df['out_desc_10'][counter])
-    elif 'Toolkit primary outcome' in df['out_type_11'][counter]:
-        toolkit_prim.append(df['out_type_11'][counter])
-        toolkit_prim_smd.append(df['smd_11'][counter])
-        toolkit_prim_se.append(df['se_11'][counter])
-        toolkit_prim_ci_lower.append(df['ci_lower_11'][counter])
-        toolkit_prim_ci_upper.append(df['ci_upper_11'][counter])
-        toolkit_prim_outcome.append(df['outcome_11'][counter])
-        toolkit_prim_sample.append(df['out_samp_11'][counter])
-        toolkit_prim_outcomp.append(df['out_comp_11'][counter])
-        toolkit_es_type.append(df['out_es_type_11'][counter])
-        toolkit_out_measure.append(df['out_measure_11'][counter])
-        toolkit_out_strand.append(df['out_strand_11'][counter])
-        toolkit_out_tit.append(df['out_tit_11'][counter])
-        toolkit_g1_n.append(df['out_g1_n_11'][counter])
-        toolkit_g2_n.append(df['out_g2_n_11'][counter])
-        toolkit_g1_mean.append(df['out_g1_mean_11'][counter])
-        toolkit_g2_mean.append(df['out_g2_mean_11'][counter])
-        toolkit_g1_sd.append(df['out_g1_sd_11'][counter])
-        toolkit_g2_sd.append(df['out_g2_sd_11'][counter])
-        toolkit_out_desc.append(df['out_desc_11'][counter])
-    elif 'Toolkit primary outcome' in df['out_type_12'][counter]:
-        toolkit_prim.append(df['out_type_12'][counter])
-        toolkit_prim_smd.append(df['smd_12'][counter])
-        toolkit_prim_se.append(df['se_12'][counter])
-        toolkit_prim_ci_lower.append(df['ci_lower_12'][counter])
-        toolkit_prim_ci_upper.append(df['ci_upper_12'][counter])
-        toolkit_prim_outcome.append(df['outcome_12'][counter])
-        toolkit_prim_sample.append(df['out_samp_12'][counter])
-        toolkit_prim_outcomp.append(df['out_comp_12'][counter])
-        toolkit_es_type.append(df['out_es_type_12'][counter])
-        toolkit_out_measure.append(df['out_measure_12'][counter])
-        toolkit_out_strand.append(df['out_strand_12'][counter])
-        toolkit_out_tit.append(df['out_tit_12'][counter])
-        toolkit_g1_n.append(df['out_g1_n_12'][counter])
-        toolkit_g2_n.append(df['out_g2_n_12'][counter])
-        toolkit_g1_mean.append(df['out_g1_mean_12'][counter])
-        toolkit_g2_mean.append(df['out_g2_mean_12'][counter])
-        toolkit_g1_sd.append(df['out_g1_sd_12'][counter])
-        toolkit_g2_sd.append(df['out_g2_sd_12'][counter])
-        toolkit_out_desc.append(df['out_desc_12'][counter])
+
+
+
     else:
         toolkit_prim.append("NA")
         toolkit_prim_smd.append("NA")
@@ -388,7 +331,7 @@ for counter, row in enumerate(df['out_type_1']):
         reading_prim_se.append(df['se_1'][counter])
         reading_prim_ci_lower.append(df['ci_lower_1'][counter])
         reading_prim_ci_upper.append(df['ci_upper_1'][counter])
-        reading_prim_outcome.append(df['outcome_1'][counter])
+        reading_prim_outcome.append(df['out_label_1'][counter])
         reading_prim_sample.append(df['out_samp_1'][counter])
         reading_prim_outcomp.append(df['out_comp_1'][counter])
         reading_prim_es_type.append(df['out_es_type_1'][counter])
@@ -408,7 +351,7 @@ for counter, row in enumerate(df['out_type_1']):
         reading_prim_se.append(df['se_2'][counter])
         reading_prim_ci_lower.append(df['ci_lower_2'][counter])
         reading_prim_ci_upper.append(df['ci_upper_2'][counter])
-        reading_prim_outcome.append(df['outcome_2'][counter])
+        reading_prim_outcome.append(df['out_label_2'][counter])
         reading_prim_sample.append(df['out_samp_2'][counter])
         reading_prim_outcomp.append(df['out_comp_2'][counter])
         reading_prim_es_type.append(df['out_es_type_2'][counter])
@@ -428,7 +371,7 @@ for counter, row in enumerate(df['out_type_1']):
         reading_prim_se.append(df['se_3'][counter])
         reading_prim_ci_lower.append(df['ci_lower_3'][counter])
         reading_prim_ci_upper.append(df['ci_upper_3'][counter])
-        reading_prim_outcome.append(df['outcome_3'][counter])
+        reading_prim_outcome.append(df['out_label_3'][counter])
         reading_prim_sample.append(df['out_samp_3'][counter])
         reading_prim_outcomp.append(df['out_comp_3'][counter])
         reading_prim_es_type.append(df['out_es_type_3'][counter])
@@ -448,7 +391,7 @@ for counter, row in enumerate(df['out_type_1']):
         reading_prim_se.append(df['se_4'][counter])
         reading_prim_ci_lower.append(df['ci_lower_4'][counter])
         reading_prim_ci_upper.append(df['ci_upper_4'][counter])
-        reading_prim_outcome.append(df['outcome_4'][counter])
+        reading_prim_outcome.append(df['out_label_4'][counter])
         reading_prim_sample.append(df['out_samp_4'][counter])
         reading_prim_outcomp.append(df['out_comp_4'][counter])
         reading_prim_es_type.append(df['out_es_type_4'][counter])
@@ -468,7 +411,7 @@ for counter, row in enumerate(df['out_type_1']):
         reading_prim_se.append(df['se_5'][counter])
         reading_prim_ci_lower.append(df['ci_lower_5'][counter])
         reading_prim_ci_upper.append(df['ci_upper_5'][counter])
-        reading_prim_outcome.append(df['outcome_5'][counter])
+        reading_prim_outcome.append(df['out_label_5'][counter])
         reading_prim_sample.append(df['out_samp_5'][counter])
         reading_prim_outcomp.append(df['out_comp_5'][counter])
         reading_prim_es_type.append(df['out_es_type_5'][counter])
@@ -488,7 +431,7 @@ for counter, row in enumerate(df['out_type_1']):
         reading_prim_se.append(df['se_6'][counter])
         reading_prim_ci_lower.append(df['ci_lower_6'][counter])
         reading_prim_ci_upper.append(df['ci_upper_6'][counter])
-        reading_prim_outcome.append(df['outcome_6'][counter])
+        reading_prim_outcome.append(df['out_label_6'][counter])
         reading_prim_sample.append(df['out_samp_6'][counter])
         reading_prim_outcomp.append(df['out_comp_6'][counter])
         reading_prim_es_type.append(df['out_es_type_6'][counter])
@@ -508,7 +451,7 @@ for counter, row in enumerate(df['out_type_1']):
         reading_prim_se.append(df['se_7'][counter])
         reading_prim_ci_lower.append(df['ci_lower_7'][counter])
         reading_prim_ci_upper.append(df['ci_upper_7'][counter])
-        reading_prim_outcome.append(df['outcome_7'][counter])
+        reading_prim_outcome.append(df['out_label_7'][counter])
         reading_prim_sample.append(df['out_samp_7'][counter])
         reading_prim_outcomp.append(df['out_comp_7'][counter])
         reading_prim_es_type.append(df['out_es_type_7'][counter])
@@ -528,7 +471,7 @@ for counter, row in enumerate(df['out_type_1']):
         reading_prim_se.append(df['se_8'][counter])
         reading_prim_ci_lower.append(df['ci_lower_8'][counter])
         reading_prim_ci_upper.append(df['ci_upper_8'][counter])
-        reading_prim_outcome.append(df['outcome_8'][counter])
+        reading_prim_outcome.append(df['out_label_8'][counter])
         reading_prim_sample.append(df['out_samp_8'][counter])
         reading_prim_outcomp.append(df['out_comp_8'][counter])
         reading_prim_es_type.append(df['out_es_type_8'][counter])
@@ -548,7 +491,7 @@ for counter, row in enumerate(df['out_type_1']):
         reading_prim_se.append(df['se_9'][counter])
         reading_prim_ci_lower.append(df['ci_lower_9'][counter])
         reading_prim_ci_upper.append(df['ci_upper_9'][counter])
-        reading_prim_outcome.append(df['outcome_9'][counter])
+        reading_prim_outcome.append(df['out_label_9'][counter])
         reading_prim_sample.append(df['out_samp_9'][counter])
         reading_prim_outcomp.append(df['out_comp_9'][counter])
         reading_prim_es_type.append(df['out_es_type_9'][counter])
@@ -562,66 +505,9 @@ for counter, row in enumerate(df['out_type_1']):
         reading_prim_g1_sd.append(df['out_g1_sd_9'][counter])
         reading_prim_g2_sd.append(df['out_g2_sd_9'][counter])
         reading_prim_out_desc.append(df['out_desc_9'][counter])
-    elif 'Reading primary outcome' in df['out_type_10'][counter]:
-        reading_prim.append(df['out_type_10'][counter])
-        reading_prim_smd.append(df['smd_10'][counter])
-        reading_prim_se.append(df['se_10'][counter])
-        reading_prim_ci_lower.append(df['ci_lower_10'][counter])
-        reading_prim_ci_upper.append(df['ci_upper_10'][counter])
-        reading_prim_outcome.append(df['outcome_10'][counter])
-        reading_prim_sample.append(df['out_samp_10'][counter])
-        reading_prim_outcomp.append(df['out_comp_10'][counter])
-        reading_prim_es_type.append(df['out_es_type_10'][counter])
-        reading_prim_out_measure.append(df['out_measure_10'][counter])
-        reading_prim_out_strand.append(df['out_strand_10'][counter])
-        reading_prim_out_tit.append(df['out_tit_10'][counter])
-        reading_prim_g1_n.append(df['out_g1_n_10'][counter])
-        reading_prim_g2_n.append(df['out_g2_n_10'][counter])
-        reading_prim_g1_mean.append(df['out_g1_mean_10'][counter])
-        reading_prim_g2_mean.append(df['out_g2_mean_10'][counter])
-        reading_prim_g1_sd.append(df['out_g1_sd_10'][counter])
-        reading_prim_g2_sd.append(df['out_g2_sd_10'][counter])
-        reading_prim_out_desc.append(df['out_desc_10'][counter])
-    elif 'Reading primary outcome' in df['out_type_11'][counter]:
-        reading_prim.append(df['out_type_11'][counter])
-        reading_prim_smd.append(df['smd_11'][counter])
-        reading_prim_se.append(df['se_11'][counter])
-        reading_prim_ci_lower.append(df['ci_lower_11'][counter])
-        reading_prim_ci_upper.append(df['ci_upper_11'][counter])
-        reading_prim_outcome.append(df['outcome_11'][counter])
-        reading_prim_sample.append(df['out_samp_11'][counter])
-        reading_prim_outcomp.append(df['out_comp_11'][counter])
-        reading_prim_es_type.append(df['out_es_type_11'][counter])
-        reading_prim_out_measure.append(df['out_measure_11'][counter])
-        reading_prim_out_strand.append(df['out_strand_11'][counter])
-        reading_prim_out_tit.append(df['out_tit_11'][counter])
-        reading_prim_g1_n.append(df['out_g1_n_11'][counter])
-        reading_prim_g2_n.append(df['out_g2_n_11'][counter])
-        reading_prim_g1_mean.append(df['out_g1_mean_11'][counter])
-        reading_prim_g2_mean.append(df['out_g2_mean_11'][counter])
-        reading_prim_g1_sd.append(df['out_g1_sd_11'][counter])
-        reading_prim_g2_sd.append(df['out_g2_sd_11'][counter])
-        reading_prim_out_desc.append(df['out_desc_11'][counter])
-    elif 'Reading primary outcome' in df['out_type_12'][counter]:
-        reading_prim.append(df['out_type_12'][counter])
-        reading_prim_smd.append(df['smd_12'][counter])
-        reading_prim_se.append(df['se_12'][counter])
-        reading_prim_ci_lower.append(df['ci_lower_12'][counter])
-        reading_prim_ci_upper.append(df['ci_upper_12'][counter])
-        reading_prim_outcome.append(df['outcome_12'][counter])
-        reading_prim_sample.append(df['out_samp_12'][counter])
-        reading_prim_outcomp.append(df['out_comp_12'][counter])
-        reading_prim_es_type.append(df['out_es_type_12'][counter])
-        reading_prim_out_measure.append(df['out_measure_12'][counter])
-        reading_prim_out_strand.append(df['out_strand_12'][counter])
-        reading_prim_out_tit.append(df['out_tit_12'][counter])
-        reading_prim_g1_n.append(df['out_g1_n_12'][counter])
-        reading_prim_g2_n.append(df['out_g2_n_12'][counter])
-        reading_prim_g1_mean.append(df['out_g1_mean_12'][counter])
-        reading_prim_g2_mean.append(df['out_g2_mean_12'][counter])
-        reading_prim_g1_sd.append(df['out_g1_sd_12'][counter])
-        reading_prim_g2_sd.append(df['out_g2_sd_12'][counter])
-        reading_prim_out_desc.append(df['out_desc_12'][counter])
+
+
+
     else:
         reading_prim.append("NA")
         reading_prim_smd.append("NA")
@@ -670,7 +556,7 @@ for counter, row in enumerate(df['out_type_1']):
         Writing_and_spelling_prim_se.append(df['se_1'][counter])
         Writing_and_spelling_prim_ci_lower.append(df['ci_lower_1'][counter])
         Writing_and_spelling_prim_ci_upper.append(df['ci_upper_1'][counter])
-        Writing_and_spelling_prim_outcome.append(df['outcome_1'][counter])
+        Writing_and_spelling_prim_outcome.append(df['out_label_1'][counter])
         Writing_and_spelling_prim_sample.append(df['out_samp_1'][counter])
         Writing_and_spelling_prim_outcomp.append(df['out_comp_1'][counter])
         Writing_and_spelling_prim_es_type.append(df['out_es_type_1'][counter])
@@ -690,7 +576,7 @@ for counter, row in enumerate(df['out_type_1']):
         Writing_and_spelling_prim_se.append(df['se_2'][counter])
         Writing_and_spelling_prim_ci_lower.append(df['ci_lower_2'][counter])
         Writing_and_spelling_prim_ci_upper.append(df['ci_upper_2'][counter])
-        Writing_and_spelling_prim_outcome.append(df['outcome_2'][counter])
+        Writing_and_spelling_prim_outcome.append(df['out_label_2'][counter])
         Writing_and_spelling_prim_sample.append(df['out_samp_2'][counter])
         Writing_and_spelling_prim_outcomp.append(df['out_comp_2'][counter])
         Writing_and_spelling_prim_es_type.append(df['out_es_type_2'][counter])
@@ -710,7 +596,7 @@ for counter, row in enumerate(df['out_type_1']):
         Writing_and_spelling_prim_se.append(df['se_3'][counter])
         Writing_and_spelling_prim_ci_lower.append(df['ci_lower_3'][counter])
         Writing_and_spelling_prim_ci_upper.append(df['ci_upper_3'][counter])
-        Writing_and_spelling_prim_outcome.append(df['outcome_3'][counter])
+        Writing_and_spelling_prim_outcome.append(df['out_label_3'][counter])
         Writing_and_spelling_prim_sample.append(df['out_samp_3'][counter])
         Writing_and_spelling_prim_outcomp.append(df['out_comp_3'][counter])
         Writing_and_spelling_prim_es_type.append(df['out_es_type_3'][counter])
@@ -730,7 +616,7 @@ for counter, row in enumerate(df['out_type_1']):
         Writing_and_spelling_prim_se.append(df['se_4'][counter])
         Writing_and_spelling_prim_ci_lower.append(df['ci_lower_4'][counter])
         Writing_and_spelling_prim_ci_upper.append(df['ci_upper_4'][counter])
-        Writing_and_spelling_prim_outcome.append(df['outcome_4'][counter])
+        Writing_and_spelling_prim_outcome.append(df['out_label_4'][counter])
         Writing_and_spelling_prim_sample.append(df['out_samp_4'][counter])
         Writing_and_spelling_prim_outcomp.append(df['out_comp_4'][counter])
         Writing_and_spelling_prim_es_type.append(df['out_es_type_4'][counter])
@@ -750,7 +636,7 @@ for counter, row in enumerate(df['out_type_1']):
         Writing_and_spelling_prim_se.append(df['se_5'][counter])
         Writing_and_spelling_prim_ci_lower.append(df['ci_lower_5'][counter])
         Writing_and_spelling_prim_ci_upper.append(df['ci_upper_5'][counter])
-        Writing_and_spelling_prim_outcome.append(df['outcome_5'][counter])
+        Writing_and_spelling_prim_outcome.append(df['out_label_5'][counter])
         Writing_and_spelling_prim_sample.append(df['out_samp_5'][counter])
         Writing_and_spelling_prim_outcomp.append(df['out_comp_5'][counter])
         Writing_and_spelling_prim_es_type.append(df['out_es_type_5'][counter])
@@ -770,7 +656,7 @@ for counter, row in enumerate(df['out_type_1']):
         Writing_and_spelling_prim_se.append(df['se_6'][counter])
         Writing_and_spelling_prim_ci_lower.append(df['ci_lower_6'][counter])
         Writing_and_spelling_prim_ci_upper.append(df['ci_upper_6'][counter])
-        Writing_and_spelling_prim_outcome.append(df['outcome_6'][counter])
+        Writing_and_spelling_prim_outcome.append(df['out_label_6'][counter])
         Writing_and_spelling_prim_sample.append(df['out_samp_6'][counter])
         Writing_and_spelling_prim_outcomp.append(df['out_comp_6'][counter])
         Writing_and_spelling_prim_es_type.append(df['out_es_type_6'][counter])
@@ -790,7 +676,7 @@ for counter, row in enumerate(df['out_type_1']):
         Writing_and_spelling_prim_se.append(df['se_7'][counter])
         Writing_and_spelling_prim_ci_lower.append(df['ci_lower_7'][counter])
         Writing_and_spelling_prim_ci_upper.append(df['ci_upper_7'][counter])
-        Writing_and_spelling_prim_outcome.append(df['outcome_7'][counter])
+        Writing_and_spelling_prim_outcome.append(df['out_label_7'][counter])
         Writing_and_spelling_prim_sample.append(df['out_samp_7'][counter])
         Writing_and_spelling_prim_outcomp.append(df['out_comp_7'][counter])
         Writing_and_spelling_prim_es_type.append(df['out_es_type_7'][counter])
@@ -810,7 +696,7 @@ for counter, row in enumerate(df['out_type_1']):
         Writing_and_spelling_prim_se.append(df['se_8'][counter])
         Writing_and_spelling_prim_ci_lower.append(df['ci_lower_8'][counter])
         Writing_and_spelling_prim_ci_upper.append(df['ci_upper_8'][counter])
-        Writing_and_spelling_prim_outcome.append(df['outcome_8'][counter])
+        Writing_and_spelling_prim_outcome.append(df['out_label_8'][counter])
         Writing_and_spelling_prim_sample.append(df['out_samp_8'][counter])
         Writing_and_spelling_prim_outcomp.append(df['out_comp_8'][counter])
         Writing_and_spelling_prim_es_type.append(df['out_es_type_8'][counter])
@@ -830,7 +716,7 @@ for counter, row in enumerate(df['out_type_1']):
         Writing_and_spelling_prim_se.append(df['se_9'][counter])
         Writing_and_spelling_prim_ci_lower.append(df['ci_lower_9'][counter])
         Writing_and_spelling_prim_ci_upper.append(df['ci_upper_9'][counter])
-        Writing_and_spelling_prim_outcome.append(df['outcome_9'][counter])
+        Writing_and_spelling_prim_outcome.append(df['out_label_9'][counter])
         Writing_and_spelling_prim_sample.append(df['out_samp_9'][counter])
         Writing_and_spelling_prim_outcomp.append(df['out_comp_9'][counter])
         Writing_and_spelling_prim_es_type.append(df['out_es_type_9'][counter])
@@ -844,66 +730,9 @@ for counter, row in enumerate(df['out_type_1']):
         Writing_and_spelling_prim_g1_sd.append(df['out_g1_sd_9'][counter])
         Writing_and_spelling_prim_g2_sd.append(df['out_g2_sd_9'][counter])
         Writing_and_spelling_prim_out_desc.append(df['out_desc_9'][counter])
-    elif 'Writing and spelling primary outcome' in df['out_type_10'][counter]:
-        Writing_and_spelling_prim.append(df['out_type_10'][counter])
-        Writing_and_spelling_prim_smd.append(df['smd_10'][counter])
-        Writing_and_spelling_prim_se.append(df['se_10'][counter])
-        Writing_and_spelling_prim_ci_lower.append(df['ci_lower_10'][counter])
-        Writing_and_spelling_prim_ci_upper.append(df['ci_upper_10'][counter])
-        Writing_and_spelling_prim_outcome.append(df['outcome_10'][counter])
-        Writing_and_spelling_prim_sample.append(df['out_samp_10'][counter])
-        Writing_and_spelling_prim_outcomp.append(df['out_comp_10'][counter])
-        Writing_and_spelling_prim_es_type.append(df['out_es_type_10'][counter])
-        Writing_and_spelling_prim_out_measure.append(df['out_measure_10'][counter])
-        Writing_and_spelling_prim_out_strand.append(df['out_strand_10'][counter])
-        Writing_and_spelling_prim_out_tit.append(df['out_tit_10'][counter])
-        Writing_and_spelling_prim_g1_n.append(df['out_g1_n_10'][counter])
-        Writing_and_spelling_prim_g2_n.append(df['out_g2_n_10'][counter])
-        Writing_and_spelling_prim_g1_mean.append(df['out_g1_mean_10'][counter])
-        Writing_and_spelling_prim_g2_mean.append(df['out_g2_mean_10'][counter])
-        Writing_and_spelling_prim_g1_sd.append(df['out_g1_sd_10'][counter])
-        Writing_and_spelling_prim_g2_sd.append(df['out_g2_sd_10'][counter])
-        Writing_and_spelling_prim_out_desc.append(df['out_desc_10'][counter])
-    elif 'Writing and spelling primary outcome' in df['out_type_11'][counter]:
-        Writing_and_spelling_prim.append(df['out_type_11'][counter])
-        Writing_and_spelling_prim_smd.append(df['smd_11'][counter])
-        Writing_and_spelling_prim_se.append(df['se_11'][counter])
-        Writing_and_spelling_prim_ci_lower.append(df['ci_lower_11'][counter])
-        Writing_and_spelling_prim_ci_upper.append(df['ci_upper_11'][counter])
-        Writing_and_spelling_prim_outcome.append(df['outcome_11'][counter])
-        Writing_and_spelling_prim_sample.append(df['out_samp_11'][counter])
-        Writing_and_spelling_prim_outcomp.append(df['out_comp_11'][counter])
-        Writing_and_spelling_prim_es_type.append(df['out_es_type_11'][counter])
-        Writing_and_spelling_prim_out_measure.append(df['out_measure_11'][counter])
-        Writing_and_spelling_prim_out_strand.append(df['out_strand_11'][counter])
-        Writing_and_spelling_prim_out_tit.append(df['out_tit_11'][counter])
-        Writing_and_spelling_prim_g1_n.append(df['out_g1_n_11'][counter])
-        Writing_and_spelling_prim_g2_n.append(df['out_g2_n_11'][counter])
-        Writing_and_spelling_prim_g1_mean.append(df['out_g1_mean_11'][counter])
-        Writing_and_spelling_prim_g2_mean.append(df['out_g2_mean_11'][counter])
-        Writing_and_spelling_prim_g1_sd.append(df['out_g1_sd_11'][counter])
-        Writing_and_spelling_prim_g2_sd.append(df['out_g2_sd_11'][counter])
-        Writing_and_spelling_prim_out_desc.append(df['out_desc_11'][counter])
-    elif 'Writing and spelling primary outcome' in df['out_type_12'][counter]:
-        Writing_and_spelling_prim.append(df['out_type_12'][counter])
-        Writing_and_spelling_prim_smd.append(df['smd_12'][counter])
-        Writing_and_spelling_prim_se.append(df['se_12'][counter])
-        Writing_and_spelling_prim_ci_lower.append(df['ci_lower_12'][counter])
-        Writing_and_spelling_prim_ci_upper.append(df['ci_upper_12'][counter])
-        Writing_and_spelling_prim_outcome.append(df['outcome_12'][counter])
-        Writing_and_spelling_prim_sample.append(df['out_samp_12'][counter])
-        Writing_and_spelling_prim_outcomp.append(df['out_comp_12'][counter])
-        Writing_and_spelling_prim_es_type.append(df['out_es_type_12'][counter])
-        Writing_and_spelling_prim_out_measure.append(df['out_measure_12'][counter])
-        Writing_and_spelling_prim_out_strand.append(df['out_strand_12'][counter])
-        Writing_and_spelling_prim_out_tit.append(df['out_tit_12'][counter])
-        Writing_and_spelling_prim_g1_n.append(df['out_g1_n_12'][counter])
-        Writing_and_spelling_prim_g2_n.append(df['out_g2_n_12'][counter])
-        Writing_and_spelling_prim_g1_mean.append(df['out_g1_mean_12'][counter])
-        Writing_and_spelling_prim_g2_mean.append(df['out_g2_mean_12'][counter])
-        Writing_and_spelling_prim_g1_sd.append(df['out_g1_sd_12'][counter])
-        Writing_and_spelling_prim_g2_sd.append(df['out_g2_sd_12'][counter])
-        Writing_and_spelling_prim_out_desc.append(df['out_desc_12'][counter])
+
+
+
     else:
         Writing_and_spelling_prim.append("NA")
         Writing_and_spelling_prim_smd.append("NA")
@@ -952,7 +781,7 @@ for counter, row in enumerate(df['out_type_1']):
         Mathematics_prim_se.append(df['se_1'][counter])
         Mathematics_prim_ci_lower.append(df['ci_lower_1'][counter])
         Mathematics_prim_ci_upper.append(df['ci_upper_1'][counter])
-        Mathematics_prim_outcome.append(df['outcome_1'][counter])
+        Mathematics_prim_outcome.append(df['out_label_1'][counter])
         Mathematics_prim_sample.append(df['out_samp_1'][counter])
         Mathematics_prim_outcomp.append(df['out_comp_1'][counter])
         Mathematics_prim_es_type.append(df['out_es_type_1'][counter])
@@ -972,7 +801,7 @@ for counter, row in enumerate(df['out_type_1']):
         Mathematics_prim_se.append(df['se_2'][counter])
         Mathematics_prim_ci_lower.append(df['ci_lower_2'][counter])
         Mathematics_prim_ci_upper.append(df['ci_upper_2'][counter])
-        Mathematics_prim_outcome.append(df['outcome_2'][counter])
+        Mathematics_prim_outcome.append(df['out_label_2'][counter])
         Mathematics_prim_sample.append(df['out_samp_2'][counter])
         Mathematics_prim_outcomp.append(df['out_comp_2'][counter])
         Mathematics_prim_es_type.append(df['out_es_type_2'][counter])
@@ -992,7 +821,7 @@ for counter, row in enumerate(df['out_type_1']):
         Mathematics_prim_se.append(df['se_3'][counter])
         Mathematics_prim_ci_lower.append(df['ci_lower_3'][counter])
         Mathematics_prim_ci_upper.append(df['ci_upper_3'][counter])
-        Mathematics_prim_outcome.append(df['outcome_3'][counter])
+        Mathematics_prim_outcome.append(df['out_label_3'][counter])
         Mathematics_prim_sample.append(df['out_samp_3'][counter])
         Mathematics_prim_outcomp.append(df['out_comp_3'][counter])
         Mathematics_prim_es_type.append(df['out_es_type_3'][counter])
@@ -1012,7 +841,7 @@ for counter, row in enumerate(df['out_type_1']):
         Mathematics_prim_se.append(df['se_4'][counter])
         Mathematics_prim_ci_lower.append(df['ci_lower_4'][counter])
         Mathematics_prim_ci_upper.append(df['ci_upper_4'][counter])
-        Mathematics_prim_outcome.append(df['outcome_4'][counter])
+        Mathematics_prim_outcome.append(df['out_label_4'][counter])
         Mathematics_prim_sample.append(df['out_samp_4'][counter])
         Mathematics_prim_outcomp.append(df['out_comp_4'][counter])
         Mathematics_prim_es_type.append(df['out_es_type_4'][counter])
@@ -1032,7 +861,7 @@ for counter, row in enumerate(df['out_type_1']):
         Mathematics_prim_se.append(df['se_5'][counter])
         Mathematics_prim_ci_lower.append(df['ci_lower_5'][counter])
         Mathematics_prim_ci_upper.append(df['ci_upper_5'][counter])
-        Mathematics_prim_outcome.append(df['outcome_5'][counter])
+        Mathematics_prim_outcome.append(df['out_label_5'][counter])
         Mathematics_prim_sample.append(df['out_samp_5'][counter])
         Mathematics_prim_outcomp.append(df['out_comp_5'][counter])
         Mathematics_prim_es_type.append(df['out_es_type_5'][counter])
@@ -1052,7 +881,7 @@ for counter, row in enumerate(df['out_type_1']):
         Mathematics_prim_se.append(df['se_6'][counter])
         Mathematics_prim_ci_lower.append(df['ci_lower_6'][counter])
         Mathematics_prim_ci_upper.append(df['ci_upper_6'][counter])
-        Mathematics_prim_outcome.append(df['outcome_6'][counter])
+        Mathematics_prim_outcome.append(df['out_label_6'][counter])
         Mathematics_prim_sample.append(df['out_samp_6'][counter])
         Mathematics_prim_outcomp.append(df['out_comp_6'][counter])
         Mathematics_prim_es_type.append(df['out_es_type_6'][counter])
@@ -1072,7 +901,7 @@ for counter, row in enumerate(df['out_type_1']):
         Mathematics_prim_se.append(df['se_7'][counter])
         Mathematics_prim_ci_lower.append(df['ci_lower_7'][counter])
         Mathematics_prim_ci_upper.append(df['ci_upper_7'][counter])
-        Mathematics_prim_outcome.append(df['outcome_7'][counter])
+        Mathematics_prim_outcome.append(df['out_label_7'][counter])
         Mathematics_prim_sample.append(df['out_samp_7'][counter])
         Mathematics_prim_outcomp.append(df['out_comp_7'][counter])
         Mathematics_prim_es_type.append(df['out_es_type_7'][counter])
@@ -1092,7 +921,7 @@ for counter, row in enumerate(df['out_type_1']):
         Mathematics_prim_se.append(df['se_8'][counter])
         Mathematics_prim_ci_lower.append(df['ci_lower_8'][counter])
         Mathematics_prim_ci_upper.append(df['ci_upper_8'][counter])
-        Mathematics_prim_outcome.append(df['outcome_8'][counter])
+        Mathematics_prim_outcome.append(df['out_label_8'][counter])
         Mathematics_prim_sample.append(df['out_samp_8'][counter])
         Mathematics_prim_outcomp.append(df['out_comp_8'][counter])
         Mathematics_prim_es_type.append(df['out_es_type_8'][counter])
@@ -1112,7 +941,7 @@ for counter, row in enumerate(df['out_type_1']):
         Mathematics_prim_se.append(df['se_9'][counter])
         Mathematics_prim_ci_lower.append(df['ci_lower_9'][counter])
         Mathematics_prim_ci_upper.append(df['ci_upper_9'][counter])
-        Mathematics_prim_outcome.append(df['outcome_9'][counter])
+        Mathematics_prim_outcome.append(df['out_label_9'][counter])
         Mathematics_prim_sample.append(df['out_samp_9'][counter])
         Mathematics_prim_outcomp.append(df['out_comp_9'][counter])
         Mathematics_prim_es_type.append(df['out_es_type_9'][counter])
@@ -1126,66 +955,9 @@ for counter, row in enumerate(df['out_type_1']):
         Mathematics_prim_g1_sd.append(df['out_g1_sd_9'][counter])
         Mathematics_prim_g2_sd.append(df['out_g2_sd_9'][counter])
         Mathematics_prim_out_desc.append(df['out_desc_9'][counter])
-    elif 'Mathematics primary outcome' in df['out_type_10'][counter]:
-        Mathematics_prim.append(df['out_type_10'][counter])
-        Mathematics_prim_smd.append(df['smd_10'][counter])
-        Mathematics_prim_se.append(df['se_10'][counter])
-        Mathematics_prim_ci_lower.append(df['ci_lower_10'][counter])
-        Mathematics_prim_ci_upper.append(df['ci_upper_10'][counter])
-        Mathematics_prim_outcome.append(df['outcome_10'][counter])
-        Mathematics_prim_sample.append(df['out_samp_10'][counter])
-        Mathematics_prim_outcomp.append(df['out_comp_10'][counter])
-        Mathematics_prim_es_type.append(df['out_es_type_10'][counter])
-        Mathematics_prim_out_measure.append(df['out_measure_10'][counter])
-        Mathematics_prim_out_strand.append(df['out_strand_10'][counter])
-        Mathematics_prim_out_tit.append(df['out_tit_10'][counter])
-        Mathematics_prim_g1_n.append(df['out_g1_n_10'][counter])
-        Mathematics_prim_g2_n.append(df['out_g2_n_10'][counter])
-        Mathematics_prim_g1_mean.append(df['out_g1_mean_10'][counter])
-        Mathematics_prim_g2_mean.append(df['out_g2_mean_10'][counter])
-        Mathematics_prim_g1_sd.append(df['out_g1_sd_10'][counter])
-        Mathematics_prim_g2_sd.append(df['out_g2_sd_10'][counter])
-        Mathematics_prim_out_desc.append(df['out_desc_10'][counter])
-    elif 'Mathematics primary outcome' in df['out_type_11'][counter]:
-        Mathematics_prim.append(df['out_type_11'][counter])
-        Mathematics_prim_smd.append(df['smd_11'][counter])
-        Mathematics_prim_se.append(df['se_11'][counter])
-        Mathematics_prim_ci_lower.append(df['ci_lower_11'][counter])
-        Mathematics_prim_ci_upper.append(df['ci_upper_11'][counter])
-        Mathematics_prim_outcome.append(df['outcome_11'][counter])
-        Mathematics_prim_sample.append(df['out_samp_11'][counter])
-        Mathematics_prim_outcomp.append(df['out_comp_11'][counter])
-        Mathematics_prim_es_type.append(df['out_es_type_11'][counter])
-        Mathematics_prim_out_measure.append(df['out_measure_11'][counter])
-        Mathematics_prim_out_strand.append(df['out_strand_11'][counter])
-        Mathematics_prim_out_tit.append(df['out_tit_11'][counter])
-        Mathematics_prim_g1_n.append(df['out_g1_n_11'][counter])
-        Mathematics_prim_g2_n.append(df['out_g2_n_11'][counter])
-        Mathematics_prim_g1_mean.append(df['out_g1_mean_11'][counter])
-        Mathematics_prim_g2_mean.append(df['out_g2_mean_11'][counter])
-        Mathematics_prim_g1_sd.append(df['out_g1_sd_11'][counter])
-        Mathematics_prim_g2_sd.append(df['out_g2_sd_11'][counter])
-        Mathematics_prim_out_desc.append(df['out_desc_11'][counter])
-    elif 'Mathematics primary outcome' in df['out_type_12'][counter]:
-        Mathematics_prim.append(df['out_type_12'][counter])
-        Mathematics_prim_smd.append(df['smd_12'][counter])
-        Mathematics_prim_se.append(df['se_12'][counter])
-        Mathematics_prim_ci_lower.append(df['ci_lower_12'][counter])
-        Mathematics_prim_ci_upper.append(df['ci_upper_12'][counter])
-        Mathematics_prim_outcome.append(df['outcome_12'][counter])
-        Mathematics_prim_sample.append(df['out_samp_12'][counter])
-        Mathematics_prim_outcomp.append(df['out_comp_12'][counter])
-        Mathematics_prim_es_type.append(df['out_es_type_12'][counter])
-        Mathematics_prim_out_measure.append(df['out_measure_12'][counter])
-        Mathematics_prim_out_strand.append(df['out_strand_12'][counter])
-        Mathematics_prim_out_tit.append(df['out_tit_12'][counter])
-        Mathematics_prim_g1_n.append(df['out_g1_n_12'][counter])
-        Mathematics_prim_g2_n.append(df['out_g2_n_12'][counter])
-        Mathematics_prim_g1_mean.append(df['out_g1_mean_12'][counter])
-        Mathematics_prim_g2_mean.append(df['out_g2_mean_12'][counter])
-        Mathematics_prim_g1_sd.append(df['out_g1_sd_12'][counter])
-        Mathematics_prim_g2_sd.append(df['out_g2_sd_12'][counter])
-        Mathematics_prim_out_desc.append(df['out_desc_12'][counter])
+
+
+
     else:
         Mathematics_prim.append("NA")
         Mathematics_prim_smd.append("NA")
@@ -1234,7 +1006,7 @@ for counter, row in enumerate(df['out_type_1']):
         Science_prim_se.append(df['se_1'][counter])
         Science_prim_ci_lower.append(df['ci_lower_1'][counter])
         Science_prim_ci_upper.append(df['ci_upper_1'][counter])
-        Science_prim_outcome.append(df['outcome_1'][counter])
+        Science_prim_outcome.append(df['out_label_1'][counter])
         Science_prim_sample.append(df['out_samp_1'][counter])
         Science_prim_outcomp.append(df['out_comp_1'][counter])
         Science_prim_es_type.append(df['out_es_type_1'][counter])
@@ -1254,7 +1026,7 @@ for counter, row in enumerate(df['out_type_1']):
         Science_prim_se.append(df['se_2'][counter])
         Science_prim_ci_lower.append(df['ci_lower_2'][counter])
         Science_prim_ci_upper.append(df['ci_upper_2'][counter])
-        Science_prim_outcome.append(df['outcome_2'][counter])
+        Science_prim_outcome.append(df['out_label_2'][counter])
         Science_prim_sample.append(df['out_samp_2'][counter])
         Science_prim_outcomp.append(df['out_comp_2'][counter])
         Science_prim_es_type.append(df['out_es_type_2'][counter])
@@ -1274,7 +1046,7 @@ for counter, row in enumerate(df['out_type_1']):
         Science_prim_se.append(df['se_3'][counter])
         Science_prim_ci_lower.append(df['ci_lower_3'][counter])
         Science_prim_ci_upper.append(df['ci_upper_3'][counter])
-        Science_prim_outcome.append(df['outcome_3'][counter])
+        Science_prim_outcome.append(df['out_label_3'][counter])
         Science_prim_sample.append(df['out_samp_3'][counter])
         Science_prim_outcomp.append(df['out_comp_3'][counter])
         Science_prim_es_type.append(df['out_es_type_3'][counter])
@@ -1294,7 +1066,7 @@ for counter, row in enumerate(df['out_type_1']):
         Science_prim_se.append(df['se_4'][counter])
         Science_prim_ci_lower.append(df['ci_lower_4'][counter])
         Science_prim_ci_upper.append(df['ci_upper_4'][counter])
-        Science_prim_outcome.append(df['outcome_4'][counter])
+        Science_prim_outcome.append(df['out_label_4'][counter])
         Science_prim_sample.append(df['out_samp_4'][counter])
         Science_prim_outcomp.append(df['out_comp_4'][counter])
         Science_prim_es_type.append(df['out_es_type_4'][counter])
@@ -1314,7 +1086,7 @@ for counter, row in enumerate(df['out_type_1']):
         Science_prim_se.append(df['se_5'][counter])
         Science_prim_ci_lower.append(df['ci_lower_5'][counter])
         Science_prim_ci_upper.append(df['ci_upper_5'][counter])
-        Science_prim_outcome.append(df['outcome_5'][counter])
+        Science_prim_outcome.append(df['out_label_5'][counter])
         Science_prim_sample.append(df['out_samp_5'][counter])
         Science_prim_outcomp.append(df['out_comp_5'][counter])
         Science_prim_es_type.append(df['out_es_type_5'][counter])
@@ -1334,7 +1106,7 @@ for counter, row in enumerate(df['out_type_1']):
         Science_prim_se.append(df['se_6'][counter])
         Science_prim_ci_lower.append(df['ci_lower_6'][counter])
         Science_prim_ci_upper.append(df['ci_upper_6'][counter])
-        Science_prim_outcome.append(df['outcome_6'][counter])
+        Science_prim_outcome.append(df['out_label_6'][counter])
         Science_prim_sample.append(df['out_samp_6'][counter])
         Science_prim_outcomp.append(df['out_comp_6'][counter])
         Science_prim_es_type.append(df['out_es_type_6'][counter])
@@ -1354,7 +1126,7 @@ for counter, row in enumerate(df['out_type_1']):
         Science_prim_se.append(df['se_7'][counter])
         Science_prim_ci_lower.append(df['ci_lower_7'][counter])
         Science_prim_ci_upper.append(df['ci_upper_7'][counter])
-        Science_prim_outcome.append(df['outcome_7'][counter])
+        Science_prim_outcome.append(df['out_label_7'][counter])
         Science_prim_sample.append(df['out_samp_7'][counter])
         Science_prim_outcomp.append(df['out_comp_7'][counter])
         Science_prim_es_type.append(df['out_es_type_7'][counter])
@@ -1374,7 +1146,7 @@ for counter, row in enumerate(df['out_type_1']):
         Science_prim_se.append(df['se_8'][counter])
         Science_prim_ci_lower.append(df['ci_lower_8'][counter])
         Science_prim_ci_upper.append(df['ci_upper_8'][counter])
-        Science_prim_outcome.append(df['outcome_8'][counter])
+        Science_prim_outcome.append(df['out_label_8'][counter])
         Science_prim_sample.append(df['out_samp_8'][counter])
         Science_prim_outcomp.append(df['out_comp_8'][counter])
         Science_prim_es_type.append(df['out_es_type_8'][counter])
@@ -1394,7 +1166,7 @@ for counter, row in enumerate(df['out_type_1']):
         Science_prim_se.append(df['se_9'][counter])
         Science_prim_ci_lower.append(df['ci_lower_9'][counter])
         Science_prim_ci_upper.append(df['ci_upper_9'][counter])
-        Science_prim_outcome.append(df['outcome_9'][counter])
+        Science_prim_outcome.append(df['out_label_9'][counter])
         Science_prim_sample.append(df['out_samp_9'][counter])
         Science_prim_outcomp.append(df['out_comp_9'][counter])
         Science_prim_es_type.append(df['out_es_type_9'][counter])
@@ -1408,66 +1180,9 @@ for counter, row in enumerate(df['out_type_1']):
         Science_prim_g1_sd.append(df['out_g1_sd_9'][counter])
         Science_prim_g2_sd.append(df['out_g2_sd_9'][counter])
         Science_prim_out_desc.append(df['out_desc_9'][counter])
-    elif 'Science primary outcome' in df['out_type_10'][counter]:
-        Science_prim.append(df['out_type_10'][counter])
-        Science_prim_smd.append(df['smd_10'][counter])
-        Science_prim_se.append(df['se_10'][counter])
-        Science_prim_ci_lower.append(df['ci_lower_10'][counter])
-        Science_prim_ci_upper.append(df['ci_upper_10'][counter])
-        Science_prim_outcome.append(df['outcome_10'][counter])
-        Science_prim_sample.append(df['out_samp_10'][counter])
-        Science_prim_outcomp.append(df['out_comp_10'][counter])
-        Science_prim_es_type.append(df['out_es_type_10'][counter])
-        Science_prim_out_measure.append(df['out_measure_10'][counter])
-        Science_prim_out_strand.append(df['out_strand_10'][counter])
-        Science_prim_out_tit.append(df['out_tit_10'][counter])
-        Science_prim_g1_n.append(df['out_g1_n_10'][counter])
-        Science_prim_g2_n.append(df['out_g2_n_10'][counter])
-        Science_prim_g1_mean.append(df['out_g1_mean_10'][counter])
-        Science_prim_g2_mean.append(df['out_g2_mean_10'][counter])
-        Science_prim_g1_sd.append(df['out_g1_sd_10'][counter])
-        Science_prim_g2_sd.append(df['out_g2_sd_10'][counter])
-        Science_prim_out_desc.append(df['out_desc_10'][counter])
-    elif 'Science primary outcome' in df['out_type_11'][counter]:
-        Science_prim.append(df['out_type_11'][counter])
-        Science_prim_smd.append(df['smd_11'][counter])
-        Science_prim_se.append(df['se_11'][counter])
-        Science_prim_ci_lower.append(df['ci_lower_11'][counter])
-        Science_prim_ci_upper.append(df['ci_upper_11'][counter])
-        Science_prim_outcome.append(df['outcome_11'][counter])
-        Science_prim_sample.append(df['out_samp_11'][counter])
-        Science_prim_outcomp.append(df['out_comp_11'][counter])
-        Science_prim_es_type.append(df['out_es_type_11'][counter])
-        Science_prim_out_measure.append(df['out_measure_11'][counter])
-        Science_prim_out_strand.append(df['out_strand_11'][counter])
-        Science_prim_out_tit.append(df['out_tit_11'][counter])
-        Science_prim_g1_n.append(df['out_g1_n_11'][counter])
-        Science_prim_g2_n.append(df['out_g2_n_11'][counter])
-        Science_prim_g1_mean.append(df['out_g1_mean_11'][counter])
-        Science_prim_g2_mean.append(df['out_g2_mean_11'][counter])
-        Science_prim_g1_sd.append(df['out_g1_sd_11'][counter])
-        Science_prim_g2_sd.append(df['out_g2_sd_11'][counter])
-        Science_prim_out_desc.append(df['out_desc_11'][counter])
-    elif 'Science primary outcome' in df['out_type_12'][counter]:
-        Science_prim.append(df['out_type_12'][counter])
-        Science_prim_smd.append(df['smd_12'][counter])
-        Science_prim_se.append(df['se_12'][counter])
-        Science_prim_ci_lower.append(df['ci_lower_12'][counter])
-        Science_prim_ci_upper.append(df['ci_upper_12'][counter])
-        Science_prim_outcome.append(df['outcome_12'][counter])
-        Science_prim_sample.append(df['out_samp_12'][counter])
-        Science_prim_outcomp.append(df['out_comp_12'][counter])
-        Science_prim_es_type.append(df['out_es_type_12'][counter])
-        Science_prim_out_measure.append(df['out_measure_12'][counter])
-        Science_prim_out_strand.append(df['out_strand_12'][counter])
-        Science_prim_out_tit.append(df['out_tit_12'][counter])
-        Science_prim_g1_n.append(df['out_g1_n_12'][counter])
-        Science_prim_g2_n.append(df['out_g2_n_12'][counter])
-        Science_prim_g1_mean.append(df['out_g1_mean_12'][counter])
-        Science_prim_g2_mean.append(df['out_g2_mean_12'][counter])
-        Science_prim_g1_sd.append(df['out_g1_sd_12'][counter])
-        Science_prim_g2_sd.append(df['out_g2_sd_12'][counter])
-        Science_prim_out_desc.append(df['out_desc_12'][counter])
+
+
+
     else:
         Science_prim.append("NA")
         Science_prim_smd.append("NA")
@@ -1488,6 +1203,231 @@ for counter, row in enumerate(df['out_type_1']):
         Science_prim_g1_sd.append("NA")
         Science_prim_g2_sd.append("NA")
         Science_prim_out_desc.append("NA")
+
+FSM_prim = []
+FSM_prim_smd = []
+FSM_prim_se = []
+FSM_prim_ci_lower = []
+FSM_prim_ci_upper = []
+FSM_prim_outcome = []
+FSM_prim_sample = []
+FSM_prim_outcomp = []
+FSM_prim_es_type = []
+FSM_prim_out_measure = []
+FSM_prim_out_strand = []
+FSM_prim_out_tit = []
+FSM_prim_g1_n = []
+FSM_prim_g2_n = []
+FSM_prim_g1_mean = []
+FSM_prim_g2_mean = []
+FSM_prim_g1_sd = []
+FSM_prim_g2_sd = []
+FSM_prim_out_desc = []
+
+for counter, row in enumerate(df['out_type_1']):
+    if 'SES/FSM outcome' in row:
+        FSM_prim.append(row)
+        FSM_prim_smd.append(df['smd_1'][counter])
+        FSM_prim_se.append(df['se_1'][counter])
+        FSM_prim_ci_lower.append(df['ci_lower_1'][counter])
+        FSM_prim_ci_upper.append(df['ci_upper_1'][counter])
+        FSM_prim_outcome.append(df['out_label_1'][counter])
+        FSM_prim_sample.append(df['out_samp_1'][counter])
+        FSM_prim_outcomp.append(df['out_comp_1'][counter])
+        FSM_prim_es_type.append(df['out_es_type_1'][counter])
+        FSM_prim_out_measure.append(df['out_measure_1'][counter])
+        FSM_prim_out_strand.append(df['out_strand_1'][counter])
+        FSM_prim_out_tit.append(df['out_tit_1'][counter])
+        FSM_prim_g1_n.append(df['out_g1_n_1'][counter])
+        FSM_prim_g2_n.append(df['out_g2_n_1'][counter])
+        FSM_prim_g1_mean.append(df['out_g1_mean_1'][counter])
+        FSM_prim_g2_mean.append(df['out_g2_mean_1'][counter])
+        FSM_prim_g1_sd.append(df['out_g1_sd_1'][counter])
+        FSM_prim_g2_sd.append(df['out_g2_sd_1'][counter])
+        FSM_prim_out_desc.append(df['out_desc_1'][counter])
+    elif 'SES/FSM outcome' in df['out_type_2'][counter]:
+        FSM_prim.append(df['out_type_2'][counter])
+        FSM_prim_smd.append(df['smd_2'][counter])
+        FSM_prim_se.append(df['se_2'][counter])
+        FSM_prim_ci_lower.append(df['ci_lower_2'][counter])
+        FSM_prim_ci_upper.append(df['ci_upper_2'][counter])
+        FSM_prim_outcome.append(df['out_label_2'][counter])
+        FSM_prim_sample.append(df['out_samp_2'][counter])
+        FSM_prim_outcomp.append(df['out_comp_2'][counter])
+        FSM_prim_es_type.append(df['out_es_type_2'][counter])
+        FSM_prim_out_measure.append(df['out_measure_2'][counter])
+        FSM_prim_out_strand.append(df['out_strand_2'][counter])
+        FSM_prim_out_tit.append(df['out_tit_2'][counter])
+        FSM_prim_g1_n.append(df['out_g1_n_2'][counter])
+        FSM_prim_g2_n.append(df['out_g2_n_2'][counter])
+        FSM_prim_g1_mean.append(df['out_g1_mean_2'][counter])
+        FSM_prim_g2_mean.append(df['out_g2_mean_2'][counter])
+        FSM_prim_g1_sd.append(df['out_g1_sd_2'][counter])
+        FSM_prim_g2_sd.append(df['out_g2_sd_2'][counter])
+        FSM_prim_out_desc.append(df['out_desc_2'][counter])
+    elif 'SES/FSM outcome' in df['out_type_3'][counter]:
+        FSM_prim.append(df['out_type_3'][counter])
+        FSM_prim_smd.append(df['smd_3'][counter])
+        FSM_prim_se.append(df['se_3'][counter])
+        FSM_prim_ci_lower.append(df['ci_lower_3'][counter])
+        FSM_prim_ci_upper.append(df['ci_upper_3'][counter])
+        FSM_prim_outcome.append(df['out_label_3'][counter])
+        FSM_prim_sample.append(df['out_samp_3'][counter])
+        FSM_prim_outcomp.append(df['out_comp_3'][counter])
+        FSM_prim_es_type.append(df['out_es_type_3'][counter])
+        FSM_prim_out_measure.append(df['out_measure_3'][counter])
+        FSM_prim_out_strand.append(df['out_strand_3'][counter])
+        FSM_prim_out_tit.append(df['out_tit_3'][counter])
+        FSM_prim_g1_n.append(df['out_g1_n_3'][counter])
+        FSM_prim_g2_n.append(df['out_g2_n_3'][counter])
+        FSM_prim_g1_mean.append(df['out_g1_mean_3'][counter])
+        FSM_prim_g2_mean.append(df['out_g2_mean_3'][counter])
+        FSM_prim_g1_sd.append(df['out_g1_sd_3'][counter])
+        FSM_prim_g2_sd.append(df['out_g2_sd_3'][counter])
+        FSM_prim_out_desc.append(df['out_desc_3'][counter])
+    elif 'SES/FSM outcome' in df['out_type_4'][counter]:
+        FSM_prim.append(df['out_type_4'][counter])
+        FSM_prim_smd.append(df['smd_4'][counter])
+        FSM_prim_se.append(df['se_4'][counter])
+        FSM_prim_ci_lower.append(df['ci_lower_4'][counter])
+        FSM_prim_ci_upper.append(df['ci_upper_4'][counter])
+        FSM_prim_outcome.append(df['out_label_4'][counter])
+        FSM_prim_sample.append(df['out_samp_4'][counter])
+        FSM_prim_outcomp.append(df['out_comp_4'][counter])
+        FSM_prim_es_type.append(df['out_es_type_4'][counter])
+        FSM_prim_out_measure.append(df['out_measure_4'][counter])
+        FSM_prim_out_strand.append(df['out_strand_4'][counter])
+        FSM_prim_out_tit.append(df['out_tit_4'][counter])
+        FSM_prim_g1_n.append(df['out_g1_n_4'][counter])
+        FSM_prim_g2_n.append(df['out_g2_n_4'][counter])
+        FSM_prim_g1_mean.append(df['out_g1_mean_4'][counter])
+        FSM_prim_g2_mean.append(df['out_g2_mean_4'][counter])
+        FSM_prim_g1_sd.append(df['out_g1_sd_4'][counter])
+        FSM_prim_g2_sd.append(df['out_g2_sd_4'][counter])
+        FSM_prim_out_desc.append(df['out_desc_4'][counter])
+    elif 'SES/FSM outcome' in df['out_type_5'][counter]:
+        FSM_prim.append(df['out_type_5'][counter])
+        FSM_prim_smd.append(df['smd_5'][counter])
+        FSM_prim_se.append(df['se_5'][counter])
+        FSM_prim_ci_lower.append(df['ci_lower_5'][counter])
+        FSM_prim_ci_upper.append(df['ci_upper_5'][counter])
+        FSM_prim_outcome.append(df['out_label_5'][counter])
+        FSM_prim_sample.append(df['out_samp_5'][counter])
+        FSM_prim_outcomp.append(df['out_comp_5'][counter])
+        FSM_prim_es_type.append(df['out_es_type_5'][counter])
+        FSM_prim_out_measure.append(df['out_measure_5'][counter])
+        FSM_prim_out_strand.append(df['out_strand_5'][counter])
+        FSM_prim_out_tit.append(df['out_tit_5'][counter])
+        FSM_prim_g1_n.append(df['out_g1_n_5'][counter])
+        FSM_prim_g2_n.append(df['out_g2_n_5'][counter])
+        FSM_prim_g1_mean.append(df['out_g1_mean_5'][counter])
+        FSM_prim_g2_mean.append(df['out_g2_mean_5'][counter])
+        FSM_prim_g1_sd.append(df['out_g1_sd_5'][counter])
+        FSM_prim_g2_sd.append(df['out_g2_sd_5'][counter])
+        FSM_prim_out_desc.append(df['out_desc_5'][counter])
+    elif 'SES/FSM outcome' in df['out_type_6'][counter]:
+        FSM_prim.append(df['out_type_6'][counter])
+        FSM_prim_smd.append(df['smd_6'][counter])
+        FSM_prim_se.append(df['se_6'][counter])
+        FSM_prim_ci_lower.append(df['ci_lower_6'][counter])
+        FSM_prim_ci_upper.append(df['ci_upper_6'][counter])
+        FSM_prim_outcome.append(df['out_label_6'][counter])
+        FSM_prim_sample.append(df['out_samp_6'][counter])
+        FSM_prim_outcomp.append(df['out_comp_6'][counter])
+        FSM_prim_es_type.append(df['out_es_type_6'][counter])
+        FSM_prim_out_measure.append(df['out_measure_6'][counter])
+        FSM_prim_out_strand.append(df['out_strand_6'][counter])
+        FSM_prim_out_tit.append(df['out_tit_6'][counter])
+        FSM_prim_g1_n.append(df['out_g1_n_6'][counter])
+        FSM_prim_g2_n.append(df['out_g2_n_6'][counter])
+        FSM_prim_g1_mean.append(df['out_g1_mean_6'][counter])
+        FSM_prim_g2_mean.append(df['out_g2_mean_6'][counter])
+        FSM_prim_g1_sd.append(df['out_g1_sd_6'][counter])
+        FSM_prim_g2_sd.append(df['out_g2_sd_6'][counter])
+        FSM_prim_out_desc.append(df['out_desc_6'][counter])
+    elif 'SES/FSM outcome' in df['out_type_7'][counter]:
+        FSM_prim.append(df['out_type_7'][counter])
+        FSM_prim_smd.append(df['smd_7'][counter])
+        FSM_prim_se.append(df['se_7'][counter])
+        FSM_prim_ci_lower.append(df['ci_lower_7'][counter])
+        FSM_prim_ci_upper.append(df['ci_upper_7'][counter])
+        FSM_prim_outcome.append(df['out_label_7'][counter])
+        FSM_prim_sample.append(df['out_samp_7'][counter])
+        FSM_prim_outcomp.append(df['out_comp_7'][counter])
+        FSM_prim_es_type.append(df['out_es_type_7'][counter])
+        FSM_prim_out_measure.append(df['out_measure_7'][counter])
+        FSM_prim_out_strand.append(df['out_strand_7'][counter])
+        FSM_prim_out_tit.append(df['out_tit_7'][counter])
+        FSM_prim_g1_n.append(df['out_g1_n_7'][counter])
+        FSM_prim_g2_n.append(df['out_g2_n_7'][counter])
+        FSM_prim_g1_mean.append(df['out_g1_mean_7'][counter])
+        FSM_prim_g2_mean.append(df['out_g2_mean_7'][counter])
+        FSM_prim_g1_sd.append(df['out_g1_sd_7'][counter])
+        FSM_prim_g2_sd.append(df['out_g2_sd_7'][counter])
+        FSM_prim_out_desc.append(df['out_desc_7'][counter])
+    elif 'SES/FSM outcome' in df['out_type_8'][counter]:
+        FSM_prim.append(df['out_type_8'][counter])
+        FSM_prim_smd.append(df['smd_8'][counter])
+        FSM_prim_se.append(df['se_8'][counter])
+        FSM_prim_ci_lower.append(df['ci_lower_8'][counter])
+        FSM_prim_ci_upper.append(df['ci_upper_8'][counter])
+        FSM_prim_outcome.append(df['out_label_8'][counter])
+        FSM_prim_sample.append(df['out_samp_8'][counter])
+        FSM_prim_outcomp.append(df['out_comp_8'][counter])
+        FSM_prim_es_type.append(df['out_es_type_8'][counter])
+        FSM_prim_out_measure.append(df['out_measure_8'][counter])
+        FSM_prim_out_strand.append(df['out_strand_8'][counter])
+        FSM_prim_out_tit.append(df['out_tit_8'][counter])
+        FSM_prim_g1_n.append(df['out_g1_n_8'][counter])
+        FSM_prim_g2_n.append(df['out_g2_n_8'][counter])
+        FSM_prim_g1_mean.append(df['out_g1_mean_8'][counter])
+        FSM_prim_g2_mean.append(df['out_g2_mean_8'][counter])
+        FSM_prim_g1_sd.append(df['out_g1_sd_8'][counter])
+        FSM_prim_g2_sd.append(df['out_g2_sd_8'][counter])
+        FSM_prim_out_desc.append(df['out_desc_8'][counter])
+    elif 'SES/FSM outcome' in df['out_type_9'][counter]:
+        FSM_prim.append(df['out_type_9'][counter])
+        FSM_prim_smd.append(df['smd_9'][counter])
+        FSM_prim_se.append(df['se_9'][counter])
+        FSM_prim_ci_lower.append(df['ci_lower_9'][counter])
+        FSM_prim_ci_upper.append(df['ci_upper_9'][counter])
+        FSM_prim_outcome.append(df['out_label_9'][counter])
+        FSM_prim_sample.append(df['out_samp_9'][counter])
+        FSM_prim_outcomp.append(df['out_comp_9'][counter])
+        FSM_prim_es_type.append(df['out_es_type_9'][counter])
+        FSM_prim_out_measure.append(df['out_measure_9'][counter])
+        FSM_prim_out_strand.append(df['out_strand_9'][counter])
+        FSM_prim_out_tit.append(df['out_tit_9'][counter])
+        FSM_prim_g1_n.append(df['out_g1_n_9'][counter])
+        FSM_prim_g2_n.append(df['out_g2_n_9'][counter])
+        FSM_prim_g1_mean.append(df['out_g1_mean_9'][counter])
+        FSM_prim_g2_mean.append(df['out_g2_mean_9'][counter])
+        FSM_prim_g1_sd.append(df['out_g1_sd_9'][counter])
+        FSM_prim_g2_sd.append(df['out_g2_sd_9'][counter])
+        FSM_prim_out_desc.append(df['out_desc_9'][counter])
+
+
+
+    else:
+        FSM_prim.append("NA")
+        FSM_prim_smd.append("NA")
+        FSM_prim_se.append("NA")
+        FSM_prim_ci_lower.append("NA")
+        FSM_prim_ci_upper.append("NA")
+        FSM_prim_outcome.append("NA")
+        FSM_prim_sample.append("NA")
+        FSM_prim_outcomp.append("NA")
+        FSM_prim_es_type.append("NA")
+        FSM_prim_out_measure.append("NA")
+        FSM_prim_out_strand.append("NA")
+        FSM_prim_out_tit.append("NA")
+        FSM_prim_g1_n.append("NA")
+        FSM_prim_g2_n.append("NA")
+        FSM_prim_g1_mean.append("NA")
+        FSM_prim_g2_mean.append("NA")
+        FSM_prim_g1_sd.append("NA")
+        FSM_prim_g2_sd.append("NA")
+        FSM_prim_out_desc.append("NA")
 
 df_zip = list(zip(
     toolkit_out_tit, 
@@ -1588,7 +1528,27 @@ df_zip = list(zip(
     Science_prim_outcomp, 
     Science_prim_es_type, 
     Science_prim_out_measure, 
-    Science_prim_out_strand
+    Science_prim_out_strand,
+
+    FSM_prim_out_tit,
+    FSM_prim_out_desc,
+    FSM_prim,
+    FSM_prim_g1_n,
+    FSM_prim_g1_mean,
+    FSM_prim_g1_sd,
+    FSM_prim_g2_n,
+    FSM_prim_g2_mean,
+    FSM_prim_g2_sd,
+    FSM_prim_smd,
+    FSM_prim_se,
+    FSM_prim_ci_lower,
+    FSM_prim_ci_upper,
+    FSM_prim_outcome,
+    FSM_prim_sample,
+    FSM_prim_outcomp,
+    FSM_prim_es_type,
+    FSM_prim_out_measure,
+    FSM_prim_out_strand,
 ))
 
 df = pd.DataFrame(df_zip)
@@ -1605,9 +1565,9 @@ df.rename(columns={
     8:"out_g2_sd_tool", 
     9:"smd_tool", 
     10:"se_tool", 
-    11:"co_lower_tool", 
+    11:"ci_lower_tool", 
     12:"ci_upper_tool",
-    13:"outcome_tool",
+    13:"out_label_tool",
     14:"out_samp_tool", 
     15:"out_comp_tool", 
     16:"out_es_type_tool", 
@@ -1625,9 +1585,9 @@ df.rename(columns={
     27:"out_g2_sd_red", 
     28:"smd_red", 
     29:"se_red", 
-    30:"co_lower_red", 
+    30:"ci_lower_red", 
     31:"ci_upper_red",
-    32:"outcome_red",
+    32:"out_label_red",
     33:"out_samp_red", 
     34:"out_comp_red", 
     35:"out_es_type_red", 
@@ -1645,9 +1605,9 @@ df.rename(columns={
     46:"out_g2_sd_wri", 
     47:"smd_wri", 
     48:"se_wri", 
-    49:"co_lower_wri", 
+    49:"ci_lower_wri", 
     50:"ci_upper_wri",
-    51:"outcome_wri",
+    51:"out_label_wri",
     52:"out_samp_wri", 
     53:"out_comp_wri", 
     54:"out_es_type_wri", 
@@ -1665,9 +1625,9 @@ df.rename(columns={
     65:"out_g2_sd_math", 
     66:"smd_math", 
     67:"se_math", 
-    68:"co_lower_math", 
+    68:"ci_lower_math", 
     69:"ci_upper_math",
-    70:"outcome_math",
+    70:"out_label_math",
     71:"out_samp_math", 
     72:"out_comp_math", 
     73:"out_es_type_math", 
@@ -1685,21 +1645,54 @@ df.rename(columns={
     84:"out_g2_sd_sci", 
     85:"smd_sci", 
     86:"se_sci", 
-    87:"co_lower_sci", 
+    87:"ci_lower_sci", 
     88:"ci_upper_sci",
-    89:"outcome_sci",
+    89:"out_label_sci",
     90:"out_samp_sci", 
     91:"out_comp_sci", 
     92:"out_es_type_sci", 
     93:"out_measure_sci", 
     94:"out_strand_sci",
+
+    95:"out_tit_fsm", 
+    96:"out_desc_fsm", 
+    97:"out_type_fsm", 
+    98:"out_g1_n_fsm", 
+    99:"out_g1_mean_fsm", 
+    100:"out_g1_sd_fsm", 
+    101:"out_g2_n_fsm", 
+    102:"out_g2_mean_fsm", 
+    103:"out_g2_sd_fsm", 
+    104:"smd_fsm", 
+    105:"se_fsm", 
+    106:"ci_lower_fsm", 
+    107:"ci_upper_fsm",
+    108:"out_label_fsm",
+    109:"out_samp_fsm", 
+    110:"out_comp_fsm", 
+    111:"out_es_type_fsm", 
+    112:"out_measure_fsm", 
+    113:"out_strand_fsm",
     
 }, inplace=True)
 
 # concatenate record details and main dataframes
 df = pd.concat([record_details_df, df], axis=1, sort=False)
 
-# save to disk
-df.to_csv("MSR_14jan21_Effect_Size_B.csv", index=False, header=True)
+# list column names and position
+for counter, i in enumerate(df):
+    print(counter, i)
 
+# useful info
+print("Columns:", df.shape[1])
+print("Rows:", df.shape[0])
+print("Datapoints:", df.shape[0] * df.shape[1])
 
+# get file name for output
+outfile_name = file.rsplit('/')[-1]
+outfile_name = outfile_name.rsplit('.')[0]
+outfile_name = outfile_name + "_Effect_Size_B.csv"
+
+# write to disk
+print("saving {}".format(outfile_name))
+df.to_csv(outfile_name, index=False, header=True)
