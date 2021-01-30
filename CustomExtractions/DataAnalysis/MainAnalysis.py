@@ -1,4 +1,6 @@
 # Record details
+from Main import file
+
 from eppi_ID import eppiid_df
 from Author import author_df
 from Date import year_df
@@ -33,11 +35,11 @@ from InterventionFrequency import InterventionFrequency_Comments_df
 from InterventionSessionLength import InterventionSessionLength_Comments_df
 from EducationalSetting import edusetting_df
 from Age import student_age_df
-from NumberofSchools import number_of_schools_total_df
-from NumberofClasses import number_of_classes_total_df
+from NumberofSchools import number_of_schools_total_Comments_df
+from NumberofClasses import number_of_classes_total_Comments_df
 from StudyDesign import studydesign_df
-from SampleSize import samplesize_df
-from ses_fsm import low_ses_percentage_df
+from SampleSize import sample_size_Comments_df
+from ses_fsm import low_ses_percentage_Comments_df
 
 import pandas as pd
 import numpy as np
@@ -92,10 +94,11 @@ general_df = pd.concat([
     InterventionSessionLength_Comments_df,
     edusetting_df,
     student_age_df,
-    number_of_schools_total_df,
-    number_of_classes_total_df,
-    studydesign_df, samplesize_df,
-    low_ses_percentage_df
+    number_of_schools_total_Comments_df,
+    number_of_classes_total_Comments_df,
+    studydesign_df, 
+    sample_size_Comments_df,
+    low_ses_percentage_Comments_df
 ], axis = 1)
 
 toolkit_prim = []
@@ -463,7 +466,7 @@ df_all = df_all[[
     'pub_author',
     'pub_year',
     'strand_raw',
-    'SGT_Update_2020',
+    'II_Update_2020',
     'out_out_type_tool',
     'smd_tool',
     'se_tool',
@@ -514,7 +517,20 @@ df_all.replace(';', ' ',  regex=True, inplace=True)
 # replace NaN with NA
 df_all = df_all.replace('NaN', 'NA', regex=True)
 
-# save to disk
-df_all.to_csv("TA_14jan21_Main_Analysis.csv", index=False, header=True)
+# list column names and position
+for counter, i in enumerate(df):
+    print(counter, i)
 
+# useful info
+print("Columns:", df.shape[1])
+print("Rows:", df.shape[0])
+print("Datapoints:", df.shape[0] * df.shape[1])
 
+# get file name for output
+outfile_name = file.rsplit('/')[-1]
+outfile_name = outfile_name.rsplit('.')[0]
+outfile_name = outfile_name + "_Main_Analysis.csv"
+
+# write to disk
+print("saving {}".format(outfile_name))
+df_all.to_csv(outfile_name, index=False, header=True)
