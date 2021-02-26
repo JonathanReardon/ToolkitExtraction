@@ -109,7 +109,7 @@ def make_dataframe(save_file=True, clean_cols=True, verbose=True):
         # get file name for output
         outfile_name_pre = file.rsplit('/')[-1]
         outfile_name_mid = outfile_name_pre.rsplit('.')[0]  # use for dir name
-        outfile_name = outfile_name_mid + "_DataFrame1.csv"
+        outfile_name = outfile_name_mid + "_DataFrame2.csv"
         outfile = os.path.join(cw + "/" + outfile_name_mid, outfile_name)
 
         # create dir (filename)
