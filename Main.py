@@ -1,18 +1,20 @@
 import os
+import sys
 import json
 
-file="II_28jan21.json"
+""" from files import data_files """
+
+data_files = sys.argv[1]
 
 EXCLUDE = "NA"
 
 def load_json():
     global data
     script_dir = os.path.dirname(__file__)
-    datafile = os.path.join(script_dir, file)
+    datafile = os.path.join(script_dir, data_files)
 
     with open(datafile) as f:
         data = json.load(f)
-    print("loading json")
 
 def get_metadata(var):
     ''' 
@@ -28,7 +30,7 @@ def get_metadata(var):
             varlist.append(EXCLUDE)
     return varlist
 
-def get_data(codes):
+""" def get_data(codes):
     '''
     Extract study-level main data.
     Params: List/dict [{..}] of one or more AttributeID's and Attribute labels.
@@ -48,7 +50,7 @@ def get_data(codes):
                     holderfind = EXCLUDE
                 holder.append(holderfind)
         df.append(holder)
-    return df
+    return df """
 
 def comments(codes):
     ''' 
@@ -162,3 +164,27 @@ def get_outcome_lvl2(var):
                     outerholder = EXCLUDE
             varlist.append(outerholder)
     return varlist
+
+# CEDIL Project
+
+def get_data(codes):
+    '''
+    Extract study-level main data.
+    Params: List/dict [{..}] of one or more AttributeID's and Attribute labels.
+    Returns: A list of extracted data. One or more datapoints per study.
+    '''
+    df = []
+    for var in range(len(codes)):
+        holder = []
+        for section in range(len(data["References"])):
+            if "Codes" in data["References"][section]:
+                holderfind = []
+                for study in range(len(data["References"][section]["Codes"])):
+                    for key, value in codes[var].items():
+                        if key == data["References"][section]["Codes"][study]["AttributeId"]:
+                            holderfind.append(value)
+                if len(holderfind) == 0:
+                    holderfind = EXCLUDE
+                holder.append(holderfind)
+        df.append(holder)
+    return df
