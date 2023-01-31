@@ -1,58 +1,58 @@
 #!/usr/bin/env python3
 
 # Record details
-from files import data_files
-
-# for CEDIL Cash Transfer strand specific data
-#from CEDIL_CT_SS.CEDIL_CT_SS import CT_CEDIL_ss_df
-
-# for CEDIL Menstual Hygiene strand specific data
-from CEDIL_CT_SS.CEDIL_MH_SS import CT_CEDIL_MH_SS_df
+""" from files import data_files """
 
 from ind_var_Gen.eppi_ID import eppiid_df
 from ind_var_Gen.Author import author_df
 from ind_var_Gen.Date import year_df
-from ind_var_CEDIL.PublicationType_CEDIL import publication_type_df
+from ind_var_Gen.PublicationType import publicationtype_df
 from ind_var_Gen.AdminStrand import adminstrand_df
 
-# [CEDIL] Outcome dataframes
+# Outcome dataframes
+from ind_var_Gen.ToolkitStrand import toolkitstrand_df
 from ind_var_Gen.OutcomeType import outcometype_df
 from ind_var_Gen.smd import smd_df
 from ind_var_Gen.sesmd import sesmd_df
 from ind_var_Gen.OutcomeTitle import outcome_title_df
 from ind_var_Gen.OutcomeType import outcometype_df
 from ind_var_Gen.Outcome import outcome_df
-from ind_var_CEDIL.out_samp_CEDIL import sample_df
+from ind_var_Gen.Sample import sample_df
 from ind_var_Gen.OutcomeComparison import out_comp_df
-from ind_var_CEDIL.out_es_type_CEDIL import effectsizetype_df
+from ind_var_Gen.EffectSizeType import effectsizetype_df
 from ind_var_Gen.OutcomeMeasure import outcome_measure_df
-from ind_var_CEDIL.out_test_type_CEDIL import testtype_outcome_df
+from ind_var_Gen.Outcome_TestType import testtype_df
 from ind_var_Gen.ToolkitStrand import toolkitstrand_df
 
-# [CEDIL] general dataframes
-from ind_var_CEDIL.Country_CEDIL import country_df
-from ind_var_CEDIL.InterventionTrainingProvided_CEDIL import InterventionTrainingProvided_df
-from ind_var_CEDIL.InterventionTeachingApproach_CEDIL import InterventionTeachingApproach_df
-from ind_var_CEDIL.InterventionInclusion_CEDIL import DigitalTechnology_df
-from ind_var_CEDIL.InterventionInclusion_CEDIL import Parents_or_Community_Volunteers_df
-from ind_var_CEDIL.InterventionTime_CEDIL import InterventionTime_df
-from ind_var_CEDIL.InterventionDelivery_CEDIL import interventiondelivery_df
-from ind_var_CEDIL.InterventionDuration_CEDIL import InterventionDuration_Comments_df
-from ind_var_CEDIL.InterventionFrequency_CEDIL import InterventionFrequency_Comments_df
-from ind_var_CEDIL.InterventionSessionLength_CEDIL import InterventionSessionLength_Comments_df
-from ind_var_CEDIL.EducationalSetting_CEDIL import edusetting_df
-from ind_var_CEDIL.Age_CEDIL import student_age_df
-from ind_var_CEDIL.NumberofSchools_CEDIL import number_of_schools_total_Comments_df
-from ind_var_CEDIL.NumberofClasses_CEDIL import number_of_classes_total_Comments_df
-from ind_var_CEDIL.StudyDesign_CEDIL import studydesign_df
-from ind_var_CEDIL.SampleSize_CEDIL import sample_size_Comments_df
-from ind_var_CEDIL.ses_fsm_CEDIL import low_ses_percentage_Comments_df
+# general dataframes
+from ind_var_Gen.Country import country_df
+from ind_var_Gen.InterventionTrainingProvided import InterventionTrainingProvided_df
+from ind_var_Gen.InterventionTeachingApproach import InterventionTeachingApproach_df
+from ind_var_Gen.InterventionInclusion import DigitalTechnology_df
+from ind_var_Gen.InterventionInclusion import Parents_or_Community_Volunteers_df
+from ind_var_Gen.InterventionTime import InterventionTime_df
+from ind_var_Gen.InterventionDelivery import interventiondelivery_df
+from ind_var_Gen.InterventionDuration import InterventionDuration_Comments_df
+from ind_var_Gen.InterventionFrequency import InterventionFrequency_Comments_df
+from ind_var_Gen.InterventionSessionLength import InterventionSessionLength_Comments_df
+from ind_var_Gen.EducationalSetting import edusetting_df
+from ind_var_Gen.Age import student_age_df
+from ind_var_Gen.NumberofSchools import number_of_schools_total_Comments_df
+from ind_var_Gen.NumberofClasses import number_of_classes_total_Comments_df
+from ind_var_Gen.StudyDesign import studydesign_df
+from ind_var_Gen.SampleSize import sample_size_Comments_df
+from ind_var_Gen.ses_fsm import low_ses_percentage_Comments_df
 
-# standard imports
-import os
 import pandas as pd
 import numpy as np
+import os
+import sys
 from toolz import interleave
+
+# strand specific addition
+from ind_var_SS.EY_PBL_strand_specific import ey_pbl_df
+
+data_files = sys.argv[1]
 
 #################################
 # REFACTOR STRAND FILTERING CODE
@@ -60,11 +60,13 @@ from toolz import interleave
 
 def make_dataframe(save_file=True, verbose=True):
 
+    global df_all
+
     record_details_df = pd.concat([
         eppiid_df,
         author_df,
         year_df,
-        publication_type_df
+        publicationtype_df
     ], axis=1)
 
     df = pd.concat([
@@ -77,7 +79,7 @@ def make_dataframe(save_file=True, verbose=True):
         out_comp_df,
         effectsizetype_df,
         outcome_measure_df,
-        testtype_outcome_df
+        testtype_df
     ], axis=1)[list(interleave([
         toolkitstrand_df,
         smd_df,
@@ -88,7 +90,7 @@ def make_dataframe(save_file=True, verbose=True):
         out_comp_df,
         effectsizetype_df,
         outcome_measure_df,
-        testtype_outcome_df
+        testtype_df
     ]))]
 
     general_df = pd.concat([
@@ -157,9 +159,6 @@ def make_dataframe(save_file=True, verbose=True):
             toolkit_es_type.append(df['out_es_type_3'][counter])
             toolkit_out_measure.append(df['out_measure_3'][counter])
             toolkit_out_testtype.append(df['out_test_type_raw_3'][counter])
-
-
-
         else:
             toolkit_prim.append("NA")
             toolkit_out_strand.append("NA")
@@ -171,7 +170,6 @@ def make_dataframe(save_file=True, verbose=True):
             toolkit_es_type.append("NA")
             toolkit_out_measure.append("NA")
             toolkit_out_testtype.append("NA")
-
 
     reading_prim = []
     reading_prim_smd = []
@@ -190,8 +188,6 @@ def make_dataframe(save_file=True, verbose=True):
             reading_prim.append(df['out_type_3'][counter])
             reading_prim_smd.append(df['smd_3'][counter])
             reading_prim_se.append(df['se_3'][counter])
-
-
         else:
             reading_prim.append("NA")
             reading_prim_smd.append("NA")
@@ -214,7 +210,6 @@ def make_dataframe(save_file=True, verbose=True):
             Writing_and_spelling_prim.append(df['out_type_3'][counter])
             Writing_and_spelling_prim_smd.append(df['smd_3'][counter])
             Writing_and_spelling_prim_se.append(df['se_3'][counter])
-
         else:
             Writing_and_spelling_prim.append("NA")
             Writing_and_spelling_prim_smd.append("NA")
@@ -237,10 +232,6 @@ def make_dataframe(save_file=True, verbose=True):
             Mathematics_prim.append(df['out_type_3'][counter])
             Mathematics_prim_smd.append(df['smd_3'][counter])
             Mathematics_prim_se.append(df['se_3'][counter])
-
-
-
-
         else:
             Mathematics_prim.append("NA")
             Mathematics_prim_smd.append("NA")
@@ -263,8 +254,6 @@ def make_dataframe(save_file=True, verbose=True):
             Science_prim.append(df['out_type_3'][counter])
             Science_prim_smd.append(df['smd_3'][counter])
             Science_prim_se.append(df['se_3'][counter])
-
-
         else:
             Science_prim.append("NA")
             Science_prim_smd.append("NA")
@@ -287,8 +276,6 @@ def make_dataframe(save_file=True, verbose=True):
             fsm_prim.append(df['out_type_3'][counter])
             fsm_prim_smd.append(df['smd_3'][counter])
             fsm_prim_se.append(df['se_3'][counter])
-
-
         else:
             fsm_prim.append("NA")
             fsm_prim_smd.append("NA")
@@ -423,30 +410,33 @@ def make_dataframe(save_file=True, verbose=True):
         'out_strand'
     ]]
 
-    #df_all = pd.concat([record_details_df, df, general_df], axis=1, sort=False)
+    df_all_ey_pbl_SS = pd.concat([df_all, ey_pbl_df], axis=1, sort=False)
 
     # remove problematic text from outputs
-    df_all.replace('\r', ' ', regex=True, inplace=True)
-    df_all.replace('\n', ' ', regex=True, inplace=True)
-    df_all.replace(':', ' ',  regex=True, inplace=True)
-    df_all.replace(';', ' ',  regex=True, inplace=True)
+    df_all_ey_pbl_SS.replace('\r', ' ', regex=True, inplace=True)
+    df_all_ey_pbl_SS.replace('\n', ' ', regex=True, inplace=True)
+    df_all_ey_pbl_SS.replace(':', ' ',  regex=True, inplace=True)
+    df_all_ey_pbl_SS.replace(';', ' ',  regex=True, inplace=True)
 
     # replace NaN with NA
-    df_all = df_all.replace('NaN', 'NA', regex=True)
-
-    df_all = pd.concat([df_all, CT_CEDIL_MH_SS_df], axis=1, sort=False)
+    df_all_ey_pbl_SS = df_all_ey_pbl_SS.replace('NaN', 'NA', regex=True)
 
     if verbose:
+
         # print dataframe
-        print(df_all)
+        print(df_all_ey_pbl_SS)
+        print("\n")
+
         # list column names and position
-        for counter, i in enumerate(df_all):
+        for counter, i in enumerate(df_all_ey_pbl_SS):
             print(counter, i)
+        print("\n")
 
         # print dataframe info
-        print("Columns:", df_all.shape[1])
-        print("Rows:", df_all.shape[0])
-        print("Datapoints:", df_all.shape[0] * df_all.shape[1])
+        print("Columns:", df_all_ey_pbl_SS.shape[1])
+        print("Rows:", df_all_ey_pbl_SS.shape[0])
+        print("Datapoints:", df_all_ey_pbl_SS.shape[0] * df_all_ey_pbl_SS.shape[1])
+        print("\n")
 
     if save_file:
         # get current wd
@@ -455,7 +445,7 @@ def make_dataframe(save_file=True, verbose=True):
         # get file name for output
         outfile_name_pre = data_files.rsplit('/')[-1]
         outfile_name_mid = outfile_name_pre.rsplit('.')[0]
-        outfile_name = outfile_name_mid + "_CEDIL_Main_Analysis_SS.csv"
+        outfile_name = outfile_name_mid + "_Main_Analysis_SS.csv"
         outfile = os.path.join(cw + "/" + outfile_name_mid, outfile_name)
 
         # create dir (filename)
@@ -469,8 +459,7 @@ def make_dataframe(save_file=True, verbose=True):
         # write to disk
         print("Input file: {}".format(data_files))
         print("Saving extracted output to: {}".format(outfile))
-        df_all.to_csv(outfile, index=False)
-
+        df_all_ey_pbl_SS.to_csv(outfile, index=False, header=True)
 
 make_dataframe(save_file=True, verbose=True)
 
@@ -483,7 +472,28 @@ make_dataframe(save_file=True, verbose=True)
 
 
 
-""" ################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+################
 ## for percipio
 ################
 
@@ -506,8 +516,8 @@ percipio.replace(';', ' ',  regex=True, inplace=True)
 percipio = percipio.replace('NaN', 'NA', regex=True)
 
 # get file name for output
-outfile_name = "dummy_filters_website.csv"
+outfile_name = "EY_PBL_20221125_filters_website.csv"
 
 # write to disk
 print("saving {}".format(outfile_name))
-percipio.to_csv(outfile_name, index=False, header=True) """
+percipio.to_csv(outfile_name, index=False, header=True)
