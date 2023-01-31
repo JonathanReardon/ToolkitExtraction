@@ -1,0 +1,38 @@
+strand,filename,num_of_studies,num_of_studies_ps,%_since_2000,%_since_2000_ps,%_randomised,%_randomised_ps,%_high_eco_valid,%_eco_valid_ps,%_indep_eval,%_indep_eval_ps,%_med_attrit_reported,%_med_attrit_rep_ps,MA_floor,New_padlock
+['Arts participation'],AP_210824.json,80,4,53.75,L,47.5,M,85,L,8.8,H,0,L,False,3
+['Behaviour interventions'],BI_210824.json,89,4,24.72,H,52.8,M,82,L,7.9,H,0,L,False,2
+['Collaborative learning'],CL_210824.json,212,5,22.64,H,45.8,M,91.5,L,1.4,H,0,L,False,3
+['Extending school time'],EST_7dec20.json,74,4,40.54,M,29.7,H,89.2,L,29.7,M,0,L,False,3
+[‘EY_ENA’],EY_ENA_20221212.json,54,3,83.33,L,61.1,L,85.2,L,5.6,H,0,L,False,2
+[‘EY_ELA’],EY_ELA_20221212.json,73,4,56.16,L,53.4,M,84.9,L,11,M,0,L,False,4
+[‘EY_ESA’],EY_ESA_20221201.json,41,3,36.58,M,14.6,H,97.6,L,19.5,M,0,L,False,2
+['EY_ExtH],EY_ExtH_20221129.json,53,3,39.62,M,1.9,H,100,L,9.4,H,0,L,False,1
+['EY_CLA'],EY_CLA_20221209.json,66,4,54.54,L,59.1,M,90.9,L,3,H,3.12,L,False,3
+[‘EY_PBL’],EY_PBL_20221125.json,22,1,86.36,L,50,M,77.3,L,4.5,H,0,L,True,1
+[‘EY_PE’],EY_PE_20221202.json,94,5,61.7,L,44.7,M,76.6,L,6.4,H,0,L,False,4
+['EY_SEL'],EY_SEL_20221116.json,19,1,94.73,L,63.2,L,89.5,L,5.3,H,8,L,True,1
+['EY_SR'],EY_SR_20221116.json,15,1,93.33,L,80,L,53.3,M,0,H,0,L,True,1
+['Feedback'],FB_15thJune2022.json,155,5,35.48,M,56.1,M,72.9,M,1.9,H,0,L,False,4
+['Homework'],HW_210824.json,44,3,79.55,L,15.9,H,97.7,L,0,H,0,L,False,1
+['Individualised instruction'],II_210824.json,198,5,21.21,H,45.5,M,83.3,L,6.1,H,0,L,False,3
+['Mastery learning'],ML_210824.json,81,4,3.7,H,64.2,L,96.3,L,1.2,H,0,L,False,2
+['Mentoring'],M_210824.json,44,3,54.55,L,45.5,M,84.1,L,27.3,M,4.8,L,False,3
+['Metacognition and self-regulation'],MSR_210824.json,245,5,45.31,M,53.1,M,75.9,L,1.2,H,0,L,False,4
+['One to one tuition'],1_1_22march21.json,124,5,66.94,L,59.7,M,76.6,L,9.7,H,1.78,L,False,4
+['Oral language interventions'],OL_20220718.json,154,5,36.36,M,50.6,M,83.8,L,4.5,H,0,L,False,4
+['Outdoor adventure learning'],OAL_210702.json,9,0,44.44,M,33.3,M,44.4,H,0,H,0,L,False,0
+['Sports participation'],PA_210423.json,61,4,86.89,L,32.8,M,93.4,L,3.3,H,0,L,False,3
+['Parental engagement'],PE_210824.json,97,5,28.87,M,46.4,M,74.2,M,6.2,H,0,L,False,4
+['Peer tutoring'],PT_24Jan2022.json,127,5,44.09,M,52,M,85.8,L,3.9,H,0,L,False,4
+['Performance pay'],PP_210824.json,27,2,100,L,33.3,M,96.3,L,14.8,M,0,L,False,2
+['Phonics'],Ph_210824.json,121,5,55.37,L,50.4,M,89.3,L,11.6,M,0,L,False,5
+['Reading comprehension strategies'],RC_210824.json,140,5,32.86,M,46.4,M,81.4,L,2.9,H,0,L,False,4
+['Reducing class size'],RedC_210824.json,41,3,26.83,M,29.3,H,97.6,L,7.3,H,0,L,False,1
+['Repeating a year'],RY_07feb2022.json,71,4,16.9,H,8.5,H,98.6,L,25.4,M,0,L,False,2
+['School uniform'],SU_210702.json,7,0,71.43,L,0,H,100,L,28.6,M,0,L,False,0
+['Setting or streaming'],SetS_210824.json,58,3,5.17,H,24.1,H,93.1,L,12.1,M,0,L,False,1
+['Small group tuition'],SGT_210824.json,62,4,85.48,L,62.9,L,80.6,L,1.6,H,0,L,False,3
+['Social and emotional learning'],SEL_210824.json,54,3,66.67,L,57.4,M,87,L,5.6,H,2,L,False,2
+['Summer schools'],SS_210824.json,59,3,54.24,L,25.4,H,98.3,L,42.4,L,0,L,False,2
+['Teaching assistants'],TA_210824.json,65,4,93.85,L,69.2,L,90.8,L,1.5,H,6.52,L,False,3
+['WC* Setting or streaming'],WC_210824.json,22,1,0,H,40.9,M,100,L,18.2,M,0,L,False,0
