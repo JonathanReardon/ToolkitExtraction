@@ -32,6 +32,6 @@ sample_size_df.replace('\n', ' ', regex=True, inplace=True)
 sample_size_df.fillna("NA", inplace=True)
 
 # save to disk
-sample_size_df.to_csv("sample_size.csv", index=False)
+""" sample_size_df.to_csv("sample_size.csv", index=False) """
 
 """ print(sample_size_df) """

@@ -33,7 +33,7 @@ mask = mask.iloc[:, 0]
 
 # replace all 0 instances (null data) with "NA"
 for col in group1mean_df.columns:
-    group1mean_df[col][mask] = "NA"
+    group1mean_df.loc[mask, col] = "NA"
 
 # save to disk
 #group1mean_df.to_csv("Group1Mean.csv", index=False)

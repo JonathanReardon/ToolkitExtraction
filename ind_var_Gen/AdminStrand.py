@@ -1,7 +1,6 @@
 from Main import load_json, get_data, comments
 from AttributeIDList import admin_strand_output
 import pandas as pd
-from IPython.display import display
 
 load_json()
 

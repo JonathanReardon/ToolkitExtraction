@@ -1,57 +1,75 @@
 #!/usr/bin/env python3
 
-from ind_var_Gen.eppi_ID import eppiid_df
-from ind_var_Gen.Author import author_df
-from ind_var_Gen.Date import year_df
-from ind_var_Gen.PublicationType import publicationtype_df
-from ind_var_Gen.AdminStrand import adminstrand_df
-
-# Outcome dataframes
-from ind_var_Gen.ToolkitStrand import toolkitstrand_df
-from ind_var_Gen.OutcomeType import outcometype_df
-from ind_var_Gen.smd import smd_df
-from ind_var_Gen.sesmd import sesmd_df
-from ind_var_Gen.OutcomeTitle import outcome_title_df
-from ind_var_Gen.OutcomeType import outcometype_df
-from ind_var_Gen.Outcome import outcome_df
-from ind_var_Gen.Sample import sample_df
-from ind_var_Gen.OutcomeComparison import out_comp_df
-from ind_var_Gen.EffectSizeType import effectsizetype_df
-from ind_var_Gen.OutcomeMeasure import outcome_measure_df
-from ind_var_Gen.Outcome_TestType import testtype_df
-from ind_var_Gen.ToolkitStrand import toolkitstrand_df
-
-# general dataframes
-from ind_var_Gen.Country import country_df
-from ind_var_Gen.InterventionTrainingProvided import InterventionTrainingProvided_df
-from ind_var_Gen.InterventionTeachingApproach import InterventionTeachingApproach_df
-from ind_var_Gen.InterventionInclusion import DigitalTechnology_df
-from ind_var_Gen.InterventionInclusion import Parents_or_Community_Volunteers_df
-from ind_var_Gen.InterventionTime import InterventionTime_df
-from ind_var_Gen.InterventionDelivery import interventiondelivery_df
-from ind_var_Gen.InterventionDuration import InterventionDuration_Comments_df
-from ind_var_Gen.InterventionFrequency import InterventionFrequency_Comments_df
-from ind_var_Gen.InterventionSessionLength import InterventionSessionLength_Comments_df
-from ind_var_Gen.EducationalSetting import edusetting_df
-from ind_var_Gen.Age import student_age_df
-from ind_var_Gen.NumberofSchools import number_of_schools_total_Comments_df
-from ind_var_Gen.NumberofClasses import number_of_classes_total_Comments_df
-from ind_var_Gen.StudyDesign import studydesign_df
-from ind_var_Gen.SampleSize import sample_size_Comments_df
-from ind_var_Gen.ses_fsm import low_ses_percentage_Comments_df
-
-# standard imports
+# Standard libraries
 import os
 import sys
+
+# Third party libraries
 import pandas as pd
 import numpy as np
 from toolz import interleave
+
+# Local libraries - Basic dataframes
+from ind_var_Gen import eppiid_df
+from ind_var_Gen import author_df
+from ind_var_Gen import year_df
+from ind_var_Gen import publicationtype_df
+from ind_var_Gen import adminstrand_df
+
+# Local libraries - Outcome dataframes
+from ind_var_Gen import toolkitstrand_df
+from ind_var_Gen import outcometype_df
+from ind_var_Gen import smd_df
+from ind_var_Gen import sesmd_df
+from ind_var_Gen import outcome_title_df
+from ind_var_Gen import outcometype_df
+from ind_var_Gen import outcome_df
+from ind_var_Gen import sample_df
+from ind_var_Gen import out_comp_df
+from ind_var_Gen import effectsizetype_df
+from ind_var_Gen import outcome_measure_df
+from ind_var_Gen import testtype_df
+from ind_var_Gen import toolkitstrand_df
+
+# Local libraries - Intervention dataframes
+from ind_var_Gen import country_df
+from ind_var_Gen import InterventionTrainingProvided_df
+from ind_var_Gen import InterventionTeachingApproach_df
+from ind_var_Gen import DigitalTechnology_df
+from ind_var_Gen import Parents_or_Community_Volunteers_df
+from ind_var_Gen import InterventionTime_df
+from ind_var_Gen import interventiondelivery_df
+from ind_var_Gen import InterventionDuration_Comments_df
+from ind_var_Gen import InterventionFrequency_Comments_df
+from ind_var_Gen import InterventionSessionLength_Comments_df
+from ind_var_Gen import edusetting_df
+
+# Local libraries - Sample dataframes
+from ind_var_Gen import student_age_df
+from ind_var_Gen import number_of_schools_total_Comments_df
+from ind_var_Gen import number_of_classes_total_Comments_df
+from ind_var_Gen import studydesign_df
+from ind_var_Gen import sample_size_Comments_df
+from ind_var_Gen import low_ses_percentage_Comments_df
 
 # strand specific addition
 from ind_var_SS.AP_strand_specific import ap_ss_df
 
 # for getting number of outcomes
 from Toolkit_Outcome_Check import outcome_num
+
+def getOutcomeData(dataframe, out_label, out_container, var_names):
+    for counter, row in enumerate(dataframe['out_type_1']):
+            found = False
+            for outcome_n in range(1, outcome_num + 1):
+                if out_label in dataframe[f'out_type_{outcome_n}'][counter]:
+                    found = True
+                    for counter2, holder in enumerate(out_container):
+                        holder.append(dataframe[var_names[counter2] + f"{outcome_n}"][counter])
+                    break
+            if not found:
+                for holder in out_container:
+                    holder.append("NA")
 
 datafile = sys.argv[1]
 
@@ -113,29 +131,18 @@ def make_dataframe(save_file=True, verbose=True):
         low_ses_percentage_Comments_df
     ], axis=1)
 
-    toolkit_prim = []
-    toolkit_prim_smd = []
-    toolkit_prim_se = []
-    toolkit_out_tit = []
-    toolkit_prim_sample = []
-    toolkit_prim_outcomp = []
-    toolkit_es_type = []
-    toolkit_out_measure = []
-    toolkit_out_testtype = []
-    toolkit_out_strand = []
+    toolkit_lists = [[] for _ in range(10)]
 
-    toolkit_holders = [
-        toolkit_prim,
-        toolkit_prim_smd,
-        toolkit_prim_se,
-        toolkit_out_tit,
-        toolkit_prim_sample,
-        toolkit_prim_outcomp,
-        toolkit_es_type,
-        toolkit_out_measure,
-        toolkit_out_testtype,
-        toolkit_out_strand,
-    ]
+    (toolkit_prim, 
+     toolkit_prim_smd, 
+     toolkit_prim_se, 
+     toolkit_out_tit, 
+     toolkit_prim_sample, 
+     toolkit_prim_outcomp, 
+     toolkit_es_type, 
+     toolkit_out_measure, 
+     toolkit_out_testtype, 
+     toolkit_out_strand) = toolkit_lists
 
     outcome_vars = [
         "out_type_",
@@ -150,120 +157,43 @@ def make_dataframe(save_file=True, verbose=True):
         "out_strand_",
     ]
 
-    for counter, row in enumerate(df['out_type_1']):
-        for outcome_n in range(1, outcome_num+1):
-            if 'Toolkit primary outcome' in df[f'out_type_{outcome_n}'][counter]:
-                for counter2, holder in enumerate(toolkit_holders):
-                    holder.append(df[outcome_vars[counter2] +f"{outcome_n}"][counter])
-                break
-        else:
-            for holder in toolkit_holders:
-                holder.append("NA")
+    getOutcomeData(df, 'Toolkit primary outcome', toolkit_lists, outcome_vars)
 
-    reading_prim = []
-    reading_prim_smd = []
-    reading_prim_se = []
+    reading_lists = [[] for _ in range(3)]
 
-    reading_holders = [
-        reading_prim,
-        reading_prim_smd,
-        reading_prim_se,
-    ]
+    (reading_prim, 
+     reading_prim_smd, 
+     reading_prim_se) = reading_lists
 
-    for counter, row in enumerate(df['out_type_1']):
-        for outcome_n in range(1, outcome_num+1):
-            if 'Reading primary outcome' in df[f'out_type_{outcome_n}'][counter]:
-                for counter2, holder in enumerate(reading_holders):
-                    holder.append(
-                        df[outcome_vars[counter2] + f"{outcome_n}"][counter])
-                break
-        else:
-            for holder in reading_holders:
-                holder.append("NA")
+    getOutcomeData(df, 'Reading primary outcome', reading_lists, outcome_vars)
 
-    Writing_and_spelling_prim = []
-    Writing_and_spelling_prim_smd = []
-    Writing_and_spelling_prim_se = []
+    writing_lists = [[] for _ in range(3)]
 
-    Writing_and_spelling_holders = [
-        Writing_and_spelling_prim,
-        Writing_and_spelling_prim_smd,
-        Writing_and_spelling_prim_se,
-    ]
+    (Writing_and_spelling_prim,
+     Writing_and_spelling_prim_smd,
+     Writing_and_spelling_prim_se) = writing_lists
 
-    for counter, row in enumerate(df['out_type_1']):
-        for outcome_n in range(1, outcome_num+1):
-            if 'Writing and spelling primary outcome' in df[f'out_type_{outcome_n}'][counter]:
-                for counter2, holder in enumerate(Writing_and_spelling_holders):
-                    holder.append(
-                        df[outcome_vars[counter2] + f"{outcome_n}"][counter])
-                break
-        else:
-            for holder in Writing_and_spelling_holders:
-                holder.append("NA")
+    getOutcomeData(df, 'Writing and spelling primary outcome', writing_lists, outcome_vars)
 
-    Mathematics_prim = []
-    Mathematics_prim_smd = []
-    Mathematics_prim_se = []
+    mathematics_lists = [[] for _ in range(3)]
 
-    Mathematics_holders = [
-        Mathematics_prim,
-        Mathematics_prim_smd,
-        Mathematics_prim_se,
-    ]
+    (Mathematics_prim,
+     Mathematics_prim_smd,
+     Mathematics_prim_se) = mathematics_lists
 
-    for counter, row in enumerate(df['out_type_1']):
-        for outcome_n in range(1, outcome_num+1):
-            if 'Mathematics primary outcome' in df[f'out_type_{outcome_n}'][counter]:
-                for counter2, holder in enumerate(Mathematics_holders):
-                    holder.append(
-                        df[outcome_vars[counter2] + f"{outcome_n}"][counter])
-                break
-        else:
-            for holder in Mathematics_holders:
-                holder.append("NA")
+    getOutcomeData(df, 'Mathematics primary outcome', mathematics_lists, outcome_vars)
 
-    Science_prim = []
-    Science_prim_smd = []
-    Science_prim_se = []
+    science_lists = [[] for _ in range(3)]
 
-    Science_holders = [
-        Science_prim,
-        Science_prim_smd,
-        Science_prim_se,
-    ]
+    (Science_prim, Science_prim_smd, Science_prim_se) = science_lists
 
-    for counter, row in enumerate(df['out_type_1']):
-        for outcome_n in range(1, outcome_num+1):
-            if 'Science primary outcome' in df[f'out_type_{outcome_n}'][counter]:
-                for counter2, holder in enumerate(Science_holders):
-                    holder.append(
-                        df[outcome_vars[counter2] + f"{outcome_n}"][counter])
-                break
-        else:
-            for holder in Science_holders:
-                holder.append("NA")
+    getOutcomeData(df, 'Science primary outcome', science_lists, outcome_vars)
 
-    fsm_prim = []
-    fsm_prim_smd = []
-    fsm_prim_se = []
+    fsm_lists = [[] for _ in range(3)]
+    
+    (fsm_prim, fsm_prim_smd, fsm_prim_se) = fsm_lists
 
-    fsm_holders = [
-        fsm_prim,
-        fsm_prim_smd,
-        fsm_prim_se,
-    ]
-
-    for counter, row in enumerate(df['out_type_1']):
-        for outcome_n in range(1, outcome_num+1):
-            if 'FSM primary outcome' in df[f'out_type_{outcome_n}'][counter]:
-                for counter2, holder in enumerate(fsm_holders):
-                    holder.append(
-                        df[outcome_vars[counter2] + f"{outcome_n}"][counter])
-                break
-        else:
-            for holder in fsm_holders:
-                holder.append("NA")
+    getOutcomeData(df, 'FSM primary outcome', fsm_lists, outcome_vars)
 
     df_zip = list(zip(
         toolkit_out_strand,
@@ -396,26 +326,21 @@ def make_dataframe(save_file=True, verbose=True):
 
     df_all_ap_SS = pd.concat([df_all, ap_ss_df], axis=1, sort=False)
 
-    # remove problematic text from outputs
-    df_all_ap_SS.replace('\r', ' ', regex=True, inplace=True)
-    df_all_ap_SS.replace('\n', ' ', regex=True, inplace=True)
-    df_all_ap_SS.replace(':', ' ',  regex=True, inplace=True)
-    df_all_ap_SS.replace(';', ' ',  regex=True, inplace=True)
+    replacements = [('\r', ' '), ('\n', ' '), (':', ' '), (';', ' ')]
+    for old, new in replacements:
+        df_all_ap_SS.replace(old, new, regex=True, inplace=True)
 
     # replace NaN with NA
-    df_all_ap_SS = df_all_ap_SS.replace('NaN', 'NA', regex=True)
+    #df_all_ap_SS = df_all_ap_SS.replace('NaN', 'NA', regex=True)
 
     if verbose:
-
         # print dataframe
         print(df_all_ap_SS)
         print("\n")
-
         # list column names and position
         for counter, i in enumerate(df_all_ap_SS):
             print(counter, i)
         print("\n")
-
         # print dataframe info
         print("Columns:", df_all_ap_SS.shape[1])
         print("Rows:", df_all_ap_SS.shape[0])
@@ -424,28 +349,25 @@ def make_dataframe(save_file=True, verbose=True):
 
     if save_file:
         # get current wd
-        cw = os.getcwd()
-
+        cw = os.getcwd() + "/Extractions"
         # get file name for output
         outfile_name_pre = datafile.rsplit('/')[-1]
         outfile_name_mid = outfile_name_pre.rsplit('.')[0]
         outfile_name = outfile_name_mid + "_Main_Analysis_SS.csv"
         outfile = os.path.join(cw + "/" + outfile_name_mid, outfile_name)
-
-        # create dir (filename)
+        # create dir
         try:
-            os.mkdir(outfile_name_mid)
+            os.mkdir("Extractions/" + outfile_name_mid)
         except OSError:
-            print("Create {} dir fail, already exists or permission error".format(outfile_name_mid))
+            print("Create {} dir fail, check if it already exists or permissions".format("Extractions/" + outfile_name_mid))
         else:
-            print("Successfully created {} directory".format(outfile_name_mid))
-
+            print("Successfully created {} directory".format("Extractions/" + outfile_name_mid))
         # write to disk
         print("Input file: {}".format(datafile))
         print("Saving extracted output to: {}".format(outfile))
         df_all_ap_SS.to_csv(outfile, index=False, header=True)
 
-make_dataframe(save_file=True, verbose=True)
+make_dataframe(save_file=True, verbose=False)
 
 
 

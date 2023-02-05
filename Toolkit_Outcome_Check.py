@@ -48,7 +48,7 @@ def make_outcomes_df(save_file=True):
         outfile = os.path.join(cw + "/" + outfile_name_mid, outfile_name)
 
         # create dir (filename)
-        try:
+        """ try:
             os.mkdir(outfile_name_mid)
         except OSError:
             print("Create {} dir fail, already exists or permission error".format(outfile_name_mid))
@@ -58,7 +58,7 @@ def make_outcomes_df(save_file=True):
         # write to disk
         print("Input file: {}".format(data_files))
         print("Saving extracted output to: {}".format(outfile))
-        all_variables.to_csv(outfile, index=False, header=True)
+        all_variables.to_csv(outfile, index=False, header=True) """
 
 make_outcomes_df(save_file=True)
 

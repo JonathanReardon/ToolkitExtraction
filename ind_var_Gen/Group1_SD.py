@@ -33,7 +33,7 @@ mask = mask.iloc[:, 0]
 
 # replace all 0 instances (null data) with "NA"
 for col in group1sd_df.columns:
-    group1sd_df[col][mask] = "NA"
+    group1sd_df.loc[mask, col] = "NA"
 
 # save to disk
 #group1sd_df.to_csv("Group1SD.csv", index=False)

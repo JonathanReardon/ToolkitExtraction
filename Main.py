@@ -1,8 +1,20 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+Author: Jonathan Reardon
+"""
+
 import os
 import sys
 import json
 
 data_files = sys.argv[1]
+
+
+#/****************/
+#/ CORE FUNCTIONS /
+#/****************/
 
 EXCLUDE = "NA"
 
@@ -186,3 +198,22 @@ def get_data(codes):
                 holder.append(holderfind)
         df.append(holder)
     return df
+
+
+#/*********************/
+#/ SECONDARY FUNCTIONS /
+#/*********************/
+
+def getOutcomeData(dataframe, out_label, out_container, var_names):
+    from Toolkit_Outcome_Check import outcome_num
+    for counter, row in enumerate(dataframe['out_type_1']):
+            found = False
+            for outcome_n in range(1, outcome_num + 1):
+                if out_label in dataframe[f'out_type_{outcome_n}'][counter]:
+                    found = True
+                    for counter2, holder in enumerate(out_container):
+                        holder.append(dataframe[var_names[counter2] + f"{outcome_n}"][counter])
+                    break
+            if not found:
+                for holder in out_container:
+                    holder.append("NA")
