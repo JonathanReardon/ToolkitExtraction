@@ -50,7 +50,7 @@ from toolz import interleave
 from ind_var_SS.EY_ESA_strand_specific import ey_esa_df
 
 # for getting number of outcomes
-from toolkit_outcome_check import outcome_num
+from Toolkit_Outcome_Check import outcome_num
 
 data_files = sys.argv[1]
 

@@ -51,13 +51,10 @@ from toolz import interleave
 from ind_var_SS.One_to_One_strand_specific import one_to_one_ss_df
 
 # for getting number of outcomes
-from toolkit_outcome_check import outcome_num
+from Toolkit_Outcome_Check import outcome_num
 
+# accept datafile name from user as argument 1
 datafile = sys.argv[1]
-
-#################################
-# REFACTOR STRAND FILTERING CODE
-#################################
 
 def make_dataframe(save_file=True, verbose=True):
 
@@ -113,29 +110,18 @@ def make_dataframe(save_file=True, verbose=True):
         low_ses_percentage_Comments_df
     ], axis=1)
 
-    toolkit_prim = []
-    toolkit_prim_smd = []
-    toolkit_prim_se = []
-    toolkit_out_tit = []
-    toolkit_prim_sample = []
-    toolkit_prim_outcomp = []
-    toolkit_es_type = []
-    toolkit_out_measure = []
-    toolkit_out_testtype = []
-    toolkit_out_strand = []
+    toolkit_lists = [[] for _ in range(10)]
 
-    toolkit_holders = [
-        toolkit_prim,
-        toolkit_prim_smd,
-        toolkit_prim_se,
-        toolkit_out_tit,
-        toolkit_prim_sample,
-        toolkit_prim_outcomp,
-        toolkit_es_type,
-        toolkit_out_measure,
-        toolkit_out_testtype,
-        toolkit_out_strand,
-    ]
+    (toolkit_prim, 
+     toolkit_prim_smd, 
+     toolkit_prim_se, 
+     toolkit_out_tit, 
+     toolkit_prim_sample, 
+     toolkit_prim_outcomp, 
+     toolkit_es_type, 
+     toolkit_out_measure, 
+     toolkit_out_testtype, 
+     toolkit_out_strand) = toolkit_lists
 
     outcome_vars = [
         "out_type_",
@@ -151,118 +137,99 @@ def make_dataframe(save_file=True, verbose=True):
     ]
 
     for counter, row in enumerate(df['out_type_1']):
-        for outcome_n in range(1, outcome_num+1):
+        found = False
+        for outcome_n in range(1, outcome_num + 1):
             if 'Toolkit primary outcome' in df[f'out_type_{outcome_n}'][counter]:
-                for counter2, holder in enumerate(toolkit_holders):
-                    holder.append(df[outcome_vars[counter2] +f"{outcome_n}"][counter])
+                found = True
+                for counter2, holder in enumerate(toolkit_lists):
+                    holder.append(df[outcome_vars[counter2] + f"{outcome_n}"][counter])
                 break
-        else:
-            for holder in toolkit_holders:
+        if not found:
+            for holder in toolkit_lists:
                 holder.append("NA")
 
-    reading_prim = []
-    reading_prim_smd = []
-    reading_prim_se = []
+    reading_lists = [[] for _ in range(3)]
 
-    reading_holders = [
-        reading_prim,
-        reading_prim_smd,
-        reading_prim_se,
-    ]
+    (reading_prim, 
+     reading_prim_smd, 
+     reading_prim_se) = reading_lists
 
     for counter, row in enumerate(df['out_type_1']):
-        for outcome_n in range(1, outcome_num+1):
-            if 'Reading primary outcome' in df[f'out_type_{outcome_n}'][counter]:
-                for counter2, holder in enumerate(reading_holders):
-                    holder.append(
-                        df[outcome_vars[counter2] + f"{outcome_n}"][counter])
-                break
-        else:
-            for holder in reading_holders:
-                holder.append("NA")
+            found = False
+            for outcome_n in range(1, outcome_num + 1):
+                if 'Reading primary outcome' in df[f'out_type_{outcome_n}'][counter]:
+                    found = True
+                    for counter2, holder in enumerate(reading_lists):
+                        holder.append(df[outcome_vars[counter2] + f"{outcome_n}"][counter])
+                    break
+            if not found:
+                for holder in reading_lists:
+                    holder.append("NA")
 
-    Writing_and_spelling_prim = []
-    Writing_and_spelling_prim_smd = []
-    Writing_and_spelling_prim_se = []
+    writing_lists = [[] for _ in range(3)]
 
-    Writing_and_spelling_holders = [
-        Writing_and_spelling_prim,
-        Writing_and_spelling_prim_smd,
-        Writing_and_spelling_prim_se,
-    ]
+    (Writing_and_spelling_prim,
+     Writing_and_spelling_prim_smd,
+     Writing_and_spelling_prim_se) = writing_lists
 
     for counter, row in enumerate(df['out_type_1']):
-        for outcome_n in range(1, outcome_num+1):
+        found = False
+        for outcome_n in range(1, outcome_num + 1):
             if 'Writing and spelling primary outcome' in df[f'out_type_{outcome_n}'][counter]:
-                for counter2, holder in enumerate(Writing_and_spelling_holders):
-                    holder.append(
-                        df[outcome_vars[counter2] + f"{outcome_n}"][counter])
+                found = True
+                for counter2, holder in enumerate(writing_lists):
+                    holder.append(df[outcome_vars[counter2] + f"{outcome_n}"][counter])
                 break
-        else:
-            for holder in Writing_and_spelling_holders:
+        if not found:
+            for holder in writing_lists:
                 holder.append("NA")
 
-    Mathematics_prim = []
-    Mathematics_prim_smd = []
-    Mathematics_prim_se = []
+    mathematics_lists = [[] for _ in range(3)]
 
-    Mathematics_holders = [
-        Mathematics_prim,
-        Mathematics_prim_smd,
-        Mathematics_prim_se,
-    ]
+    (Mathematics_prim,
+     Mathematics_prim_smd,
+     Mathematics_prim_se) = mathematics_lists
 
     for counter, row in enumerate(df['out_type_1']):
-        for outcome_n in range(1, outcome_num+1):
+        found = False
+        for outcome_n in range(1, outcome_num + 1):
             if 'Mathematics primary outcome' in df[f'out_type_{outcome_n}'][counter]:
-                for counter2, holder in enumerate(Mathematics_holders):
-                    holder.append(
-                        df[outcome_vars[counter2] + f"{outcome_n}"][counter])
+                found = True
+                for counter2, holder in enumerate(mathematics_lists):
+                    holder.append(df[outcome_vars[counter2] + f"{outcome_n}"][counter])
                 break
-        else:
-            for holder in Mathematics_holders:
+        if not found:
+            for holder in mathematics_lists:
                 holder.append("NA")
 
-    Science_prim = []
-    Science_prim_smd = []
-    Science_prim_se = []
-
-    Science_holders = [
-        Science_prim,
-        Science_prim_smd,
-        Science_prim_se,
-    ]
+    science_lists = [[] for _ in range(3)]
+    (Science_prim, Science_prim_smd, Science_prim_se) = science_lists
 
     for counter, row in enumerate(df['out_type_1']):
-        for outcome_n in range(1, outcome_num+1):
+        found = False
+        for outcome_n in range(1, outcome_num + 1):
             if 'Science primary outcome' in df[f'out_type_{outcome_n}'][counter]:
-                for counter2, holder in enumerate(Science_holders):
-                    holder.append(
-                        df[outcome_vars[counter2] + f"{outcome_n}"][counter])
+                found = True
+                for counter2, holder in enumerate(science_lists):
+                    holder.append(df[outcome_vars[counter2] + f"{outcome_n}"][counter])
                 break
-        else:
-            for holder in Science_holders:
+        if not found:
+            for holder in science_lists:
                 holder.append("NA")
 
-    fsm_prim = []
-    fsm_prim_smd = []
-    fsm_prim_se = []
-
-    fsm_holders = [
-        fsm_prim,
-        fsm_prim_smd,
-        fsm_prim_se,
-    ]
+    fsm_lists = [[] for _ in range(3)]
+    (fsm_prim, fsm_prim_smd, fsm_prim_se) = fsm_lists
 
     for counter, row in enumerate(df['out_type_1']):
-        for outcome_n in range(1, outcome_num+1):
+        found = False
+        for outcome_n in range(1, outcome_num + 1):
             if 'FSM primary outcome' in df[f'out_type_{outcome_n}'][counter]:
-                for counter2, holder in enumerate(fsm_holders):
-                    holder.append(
-                        df[outcome_vars[counter2] + f"{outcome_n}"][counter])
+                found = True
+                for counter2, holder in enumerate(fsm_lists):
+                    holder.append(df[outcome_vars[counter2] + f"{outcome_n}"][counter])
                 break
-        else:
-            for holder in fsm_holders:
+        if not found:
+            for holder in fsm_lists:
                 holder.append("NA")
 
     df_zip = list(zip(
@@ -295,7 +262,7 @@ def make_dataframe(save_file=True, verbose=True):
 
     df = pd.DataFrame(df_zip)
 
-    df.rename(columns={
+    df = df.rename(columns={
         0: "out_strand",
         1: "smd_tool",
         2: "se_tool",
@@ -321,7 +288,7 @@ def make_dataframe(save_file=True, verbose=True):
         22: "out_out_type_fsm",
         23: "smd_fsm",
         24: "se_fsm"
-    }, inplace=True)
+    })
 
     df_all = pd.concat([record_details_df, df, general_df], axis=1, sort=False)
 
@@ -339,7 +306,8 @@ def make_dataframe(save_file=True, verbose=True):
     df_all['fsm_50'] = np.select(conditions, values)
 
     df_all["fsm_perc_info"] = df_all["fsm_perc_info"].replace(
-        np.nan, "NA", regex=True)
+        to_replace=np.nan, value="NA", regex=True
+    )
 
     df_all['fsm_50'] = df_all['fsm_50'].replace("0", "NA", regex=True)
 
@@ -394,28 +362,75 @@ def make_dataframe(save_file=True, verbose=True):
         'out_strand'
     ]]
 
+
+    """ col = (
+        ('id', 'Unique identifier for the publication'),
+        ('pub_author', 'Author(s) of the publication'),
+        ('pub_year', 'Year of publication'),
+        ('pub_type_raw', 'Raw publication type'),
+        ('strand_raw', 'Raw strand'),
+        ('out_out_type_tool', 'Outcome type for tool'),
+        ('smd_tool', 'Standard mean difference for tool'),
+        ('se_tool', 'Standard error for tool'),
+        ('out_es_type', 'Type of effect size for tool'),
+        ('out_tit', 'Outcome for technology in the classroom'),
+        ('out_comp', 'Outcome for computer use'),
+        ('out_samp', 'Outcome for sample'),
+        ('out_measure', 'Outcome measurement'),
+        ('out_test_type_raw', 'Raw test type for outcome'),
+        ('out_out_type_red', 'Outcome type for reading'),
+        ('smd_red', 'Standard mean difference for reading'),
+        ('se_red', 'Standard error for reading'),
+        ('out_out_type_wri', 'Outcome type for writing'),
+        ('smd_wri', 'Standard mean difference for writing'),
+        ('se_wri', 'Standard error for writing'),
+        ('out_out_type_math', 'Outcome type for mathematics'),
+        ('smd_math', 'Standard mean difference for mathematics'),
+        ('se_math', 'Standard error for mathematics'),
+        ('out_out_type_sci', 'Outcome type for science'),
+        ('smd_sci', 'Standard mean difference for science'),
+        ('se_sci', 'Standard error for science'),
+        ('out_out_type_fsm', 'Outcome type for free school meal eligibility'),
+        ('smd_fsm', 'Standard mean difference for free school meal eligibility'),
+        ('se_fsm', 'Standard error for free school meal eligibility'),
+        ('sample_analysed_info', 'Information about the sample analyzed'),
+        ('school_total_info', 'Total number of schools'),
+        ('class_total_info', 'Total number of classes'),
+        ('int_setting_raw', 'Raw setting for the intervention'),
+        ('part_age_raw', 'Raw age range of participants'),
+        ('fsm_50', 'Indicator of free school meal eligibility'),
+        ('fsm_perc_info', 'Percentage of participants eligible for free school meals'),
+        ('loc_country_raw', 'Raw location country'),
+        ('int_desig_raw', 'Raw design of the intervention'),
+        ('int_approach_raw', 'Raw approach of the intervention'),
+        ('int_training_raw', 'Raw training for the intervention'),
+        ('digit_tech_raw', 'Raw technology used in the intervention'),
+        ('parent_partic_raw', 'Raw level of parent participation'),
+        ('int_when_raw', 'Raw timing of the intervention'),
+        ('int_who_raw', 'Raw person(s) responsible for the intervention'),
+        ('int_dur_info', 'Duration of the intervention'),
+        ('int_freq_info', 'Frequency of the intervetion'),
+        ('int_leng_info', 'Length of the intervetion'),
+        ('out_strand', 'Length of the intervetion'),
+    ) """
+
+    """ df_all.columns = [col[0] for col in col] """
+
     df_all_1_1_SS = pd.concat([df_all, one_to_one_ss_df], axis=1, sort=False)
 
-    # remove problematic text from outputs
-    df_all_1_1_SS.replace('\r', ' ', regex=True, inplace=True)
-    df_all_1_1_SS.replace('\n', ' ', regex=True, inplace=True)
-    df_all_1_1_SS.replace(':', ' ',  regex=True, inplace=True)
-    df_all_1_1_SS.replace(';', ' ',  regex=True, inplace=True)
+    replacements = [('\r', ' '), ('\n', ' '), (':', ' '), (';', ' ')]
 
-    # replace NaN with NA
-    df_all_1_1_SS = df_all_1_1_SS.replace('NaN', 'NA', regex=True)
+    for old, new in replacements:
+        df_all_1_1_SS.replace(old, new, regex=True, inplace=True)
 
     if verbose:
-
         # print dataframe
         print(df_all_1_1_SS)
         print("\n")
-
         # list column names and position
         for counter, i in enumerate(df_all_1_1_SS):
             print(counter, i)
         print("\n")
-
         # print dataframe info
         print("Columns:", df_all_1_1_SS.shape[1])
         print("Rows:", df_all_1_1_SS.shape[0])
@@ -425,7 +440,6 @@ def make_dataframe(save_file=True, verbose=True):
     if save_file:
         # get current wd
         cw = os.getcwd()
-
         # get file name for output
         outfile_name_pre = datafile.rsplit('/')[-1]
         outfile_name_mid = outfile_name_pre.rsplit('.')[0]
@@ -445,7 +459,7 @@ def make_dataframe(save_file=True, verbose=True):
         print("Saving extracted output to: {}".format(outfile))
         df_all_1_1_SS.to_csv(outfile, index=False, header=True)
 
-make_dataframe(save_file=True, verbose=True)
+make_dataframe(save_file=True, verbose=False)
 
 
 

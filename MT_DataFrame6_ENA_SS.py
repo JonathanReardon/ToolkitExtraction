@@ -49,7 +49,7 @@ from toolz import interleave
 from ind_var_SS.ENA_strand_specific import ena_ss_df
 
 # for getting number of outcomes
-from toolkit_outcome_check import outcome_num
+from Toolkit_Outcome_Check import outcome_num
 
 datafile = sys.argv[1]
 
