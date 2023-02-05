@@ -46,7 +46,5 @@ country_Comments_df.columns = ["loc_country_info"]
 # fill blanks with NA
 country_df.fillna("NA", inplace=True)
 
-# save to disk
-country_df.to_csv("Country.csv", index=False)
-
-""" print(country_df) """
+""" # save to disk
+country_df.to_csv("Country.csv", index=False) """

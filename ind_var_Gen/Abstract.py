@@ -15,6 +15,6 @@ abstract_df.replace(':', ' ',  regex=True, inplace=True)
 abstract_df.replace(';', ' ',  regex=True, inplace=True)
 
 # save to disk
-abstract_df.to_csv("abstract.csv", index=False)
+""" abstract_df.to_csv("abstract.csv", index=False) """
 
 

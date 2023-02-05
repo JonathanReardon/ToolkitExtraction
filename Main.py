@@ -2,8 +2,6 @@ import os
 import sys
 import json
 
-""" from files import data_files """
-
 data_files = sys.argv[1]
 
 EXCLUDE = "NA"
@@ -17,8 +15,8 @@ def load_json():
         data = json.load(f)
 
 def get_metadata(var):
-    ''' 
-    Extracts study-level metadata.
+    ''' """ 
+    Extracts study-level metadata. """
     Params: Variable name e.g. "Year", "ShortTitle".
     Returns: A list of extracted data. One datapoint per study.
     '''
