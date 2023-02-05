@@ -53,61 +53,75 @@ from ind_var_SS.One_to_One_strand_specific import one_to_one_ss_df
 # for getting number of outcomes
 from Toolkit_Outcome_Check import outcome_num
 
+def getOutcomeData(dataframe, out_label, out_container, var_names):
+    for counter, row in enumerate(dataframe['out_type_1']):
+            found = False
+            for outcome_n in range(1, outcome_num + 1):
+                if out_label in dataframe[f'out_type_{outcome_n}'][counter]:
+                    found = True
+                    for counter2, holder in enumerate(out_container):
+                        holder.append(dataframe[var_names[counter2] + f"{outcome_n}"][counter])
+                    break
+            if not found:
+                for holder in out_container:
+                    holder.append("NA")
+
 # accept datafile name from user as argument 1
 datafile = sys.argv[1]
 
 def make_dataframe(save_file=True, verbose=True):
-
     record_details_df = pd.concat([
-        eppiid_df,
-        author_df,
-        year_df,
-        publicationtype_df
+            eppiid_df,
+            author_df,
+            year_df,
+            publicationtype_df
     ], axis=1)
 
     df = pd.concat([
-        toolkitstrand_df,
-        smd_df,
-        sesmd_df,
-        outcome_title_df,
-        outcometype_df,
-        sample_df,
-        out_comp_df,
-        effectsizetype_df,
-        outcome_measure_df,
-        testtype_df
-    ], axis=1)[list(interleave([
-        toolkitstrand_df,
-        smd_df,
-        sesmd_df,
-        outcome_title_df,
-        outcometype_df,
-        sample_df,
-        out_comp_df,
-        effectsizetype_df,
-        outcome_measure_df,
-        testtype_df
-    ]))]
+            toolkitstrand_df,
+            smd_df,
+            sesmd_df,
+            outcome_title_df,
+            outcometype_df,
+            sample_df,
+            out_comp_df,
+            effectsizetype_df,
+            outcome_measure_df,
+            testtype_df
+        ], axis=1, sort=False)
+
+    df = df[list(interleave([
+            toolkitstrand_df,
+            smd_df,
+            sesmd_df,
+            outcome_title_df,
+            outcometype_df,
+            sample_df,
+            out_comp_df,
+            effectsizetype_df,
+            outcome_measure_df,
+            testtype_df
+        ]))]
 
     general_df = pd.concat([
-        adminstrand_df,
-        country_df,
-        InterventionTrainingProvided_df,
-        InterventionTeachingApproach_df,
-        DigitalTechnology_df,
-        Parents_or_Community_Volunteers_df,
-        InterventionTime_df,
-        interventiondelivery_df,
-        InterventionDuration_Comments_df,
-        InterventionFrequency_Comments_df,
-        InterventionSessionLength_Comments_df,
-        edusetting_df,
-        student_age_df,
-        number_of_schools_total_Comments_df,
-        number_of_classes_total_Comments_df,
-        studydesign_df,
-        sample_size_Comments_df,
-        low_ses_percentage_Comments_df
+            adminstrand_df,
+            country_df,
+            InterventionTrainingProvided_df,
+            InterventionTeachingApproach_df,
+            DigitalTechnology_df,
+            Parents_or_Community_Volunteers_df,
+            InterventionTime_df,
+            interventiondelivery_df,
+            InterventionDuration_Comments_df,
+            InterventionFrequency_Comments_df,
+            InterventionSessionLength_Comments_df,
+            edusetting_df,
+            student_age_df,
+            number_of_schools_total_Comments_df,
+            number_of_classes_total_Comments_df,
+            studydesign_df,
+            sample_size_Comments_df,
+            low_ses_percentage_Comments_df
     ], axis=1)
 
     toolkit_lists = [[] for _ in range(10)]
@@ -136,17 +150,8 @@ def make_dataframe(save_file=True, verbose=True):
         "out_strand_",
     ]
 
-    for counter, row in enumerate(df['out_type_1']):
-        found = False
-        for outcome_n in range(1, outcome_num + 1):
-            if 'Toolkit primary outcome' in df[f'out_type_{outcome_n}'][counter]:
-                found = True
-                for counter2, holder in enumerate(toolkit_lists):
-                    holder.append(df[outcome_vars[counter2] + f"{outcome_n}"][counter])
-                break
-        if not found:
-            for holder in toolkit_lists:
-                holder.append("NA")
+    getOutcomeData(dataframe=df, out_label='Toolkit primary outcome', 
+                   out_container=toolkit_lists, var_names=outcome_vars)
 
     reading_lists = [[] for _ in range(3)]
 
@@ -154,17 +159,8 @@ def make_dataframe(save_file=True, verbose=True):
      reading_prim_smd, 
      reading_prim_se) = reading_lists
 
-    for counter, row in enumerate(df['out_type_1']):
-            found = False
-            for outcome_n in range(1, outcome_num + 1):
-                if 'Reading primary outcome' in df[f'out_type_{outcome_n}'][counter]:
-                    found = True
-                    for counter2, holder in enumerate(reading_lists):
-                        holder.append(df[outcome_vars[counter2] + f"{outcome_n}"][counter])
-                    break
-            if not found:
-                for holder in reading_lists:
-                    holder.append("NA")
+    getOutcomeData(dataframe=df, out_label='Reading primary outcome', 
+                   out_container=reading_lists, var_names=outcome_vars)
 
     writing_lists = [[] for _ in range(3)]
 
@@ -172,17 +168,8 @@ def make_dataframe(save_file=True, verbose=True):
      Writing_and_spelling_prim_smd,
      Writing_and_spelling_prim_se) = writing_lists
 
-    for counter, row in enumerate(df['out_type_1']):
-        found = False
-        for outcome_n in range(1, outcome_num + 1):
-            if 'Writing and spelling primary outcome' in df[f'out_type_{outcome_n}'][counter]:
-                found = True
-                for counter2, holder in enumerate(writing_lists):
-                    holder.append(df[outcome_vars[counter2] + f"{outcome_n}"][counter])
-                break
-        if not found:
-            for holder in writing_lists:
-                holder.append("NA")
+    getOutcomeData(dataframe=df, out_label='Writing and spelling primary outcome', 
+                   out_container=writing_lists, var_names=outcome_vars)
 
     mathematics_lists = [[] for _ in range(3)]
 
@@ -190,47 +177,20 @@ def make_dataframe(save_file=True, verbose=True):
      Mathematics_prim_smd,
      Mathematics_prim_se) = mathematics_lists
 
-    for counter, row in enumerate(df['out_type_1']):
-        found = False
-        for outcome_n in range(1, outcome_num + 1):
-            if 'Mathematics primary outcome' in df[f'out_type_{outcome_n}'][counter]:
-                found = True
-                for counter2, holder in enumerate(mathematics_lists):
-                    holder.append(df[outcome_vars[counter2] + f"{outcome_n}"][counter])
-                break
-        if not found:
-            for holder in mathematics_lists:
-                holder.append("NA")
+    getOutcomeData(dataframe=df, out_label='Mathematics primary outcome', 
+                   out_container=mathematics_lists, var_names=outcome_vars)
 
     science_lists = [[] for _ in range(3)]
     (Science_prim, Science_prim_smd, Science_prim_se) = science_lists
 
-    for counter, row in enumerate(df['out_type_1']):
-        found = False
-        for outcome_n in range(1, outcome_num + 1):
-            if 'Science primary outcome' in df[f'out_type_{outcome_n}'][counter]:
-                found = True
-                for counter2, holder in enumerate(science_lists):
-                    holder.append(df[outcome_vars[counter2] + f"{outcome_n}"][counter])
-                break
-        if not found:
-            for holder in science_lists:
-                holder.append("NA")
+    getOutcomeData(dataframe=df, out_label='Science primary outcome', 
+                   out_container=science_lists, var_names=outcome_vars)
 
     fsm_lists = [[] for _ in range(3)]
     (fsm_prim, fsm_prim_smd, fsm_prim_se) = fsm_lists
 
-    for counter, row in enumerate(df['out_type_1']):
-        found = False
-        for outcome_n in range(1, outcome_num + 1):
-            if 'FSM primary outcome' in df[f'out_type_{outcome_n}'][counter]:
-                found = True
-                for counter2, holder in enumerate(fsm_lists):
-                    holder.append(df[outcome_vars[counter2] + f"{outcome_n}"][counter])
-                break
-        if not found:
-            for holder in fsm_lists:
-                holder.append("NA")
+    getOutcomeData(dataframe=df, out_label='FSM primary outcome', 
+                   out_container=fsm_lists, var_names=outcome_vars)
 
     df_zip = list(zip(
         toolkit_out_strand,
@@ -419,7 +379,6 @@ def make_dataframe(save_file=True, verbose=True):
     df_all_1_1_SS = pd.concat([df_all, one_to_one_ss_df], axis=1, sort=False)
 
     replacements = [('\r', ' '), ('\n', ' '), (':', ' '), (';', ' ')]
-
     for old, new in replacements:
         df_all_1_1_SS.replace(old, new, regex=True, inplace=True)
 
@@ -445,7 +404,6 @@ def make_dataframe(save_file=True, verbose=True):
         outfile_name_mid = outfile_name_pre.rsplit('.')[0]
         outfile_name = outfile_name_mid + "_Main_Analysis_SS.csv"
         outfile = os.path.join(cw + "/" + outfile_name_mid, outfile_name)
-
         # create dir (filename)
         try:
             os.mkdir(outfile_name_mid)
@@ -453,7 +411,6 @@ def make_dataframe(save_file=True, verbose=True):
             print("Create {} dir fail, already exists or permission error".format(outfile_name_mid))
         else:
             print("Successfully created {} directory".format(outfile_name_mid))
-
         # write to disk
         print("Input file: {}".format(datafile))
         print("Saving extracted output to: {}".format(outfile))
