@@ -10,6 +10,6 @@ title_df.columns = ["title"]
 title_df.fillna("NA", inplace=True)
 
 # save to disk
-title_df.to_csv("title.csv", index=False)
+""" title_df.to_csv("title.csv", index=False) """
 
 """ print(title_df) """
