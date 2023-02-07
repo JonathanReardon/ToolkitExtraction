@@ -5,23 +5,28 @@
 Author: Jonathan Reardon
 """
 
-# Standard libraries
+# Standard imports
 import os
 import sys
 
-# Third party libraries
+# Third party imports
 import pandas as pd
 import numpy as np
 from toolz import interleave
 
-# Local libraries - Basic dataframes
+# Local imports
+from Main import getOutcomeData
+from Main import verbose_display
+from Main import save_dataframe
+
+# Local imports - Basic dataframes
 from ind_var_Gen import eppiid_df
 from ind_var_Gen import author_df
 from ind_var_Gen import year_df
 from ind_var_Gen import publicationtype_df
 from ind_var_Gen import adminstrand_df
 
-# Local libraries - Outcome dataframes
+# Local imports - Outcome dataframes
 from ind_var_Gen import toolkitstrand_df
 from ind_var_Gen import outcometype_df
 from ind_var_Gen import smd_df
@@ -36,7 +41,7 @@ from ind_var_Gen import outcome_measure_df
 from ind_var_Gen import testtype_df
 from ind_var_Gen import toolkitstrand_df
 
-# Local libraries - Intervention dataframes
+# Local imports - Intervention dataframes
 from ind_var_Gen import country_df
 from ind_var_Gen import InterventionTrainingProvided_df
 from ind_var_Gen import InterventionTeachingApproach_df
@@ -49,16 +54,13 @@ from ind_var_Gen import InterventionFrequency_Comments_df
 from ind_var_Gen import InterventionSessionLength_Comments_df
 from ind_var_Gen import edusetting_df
 
-# Local libraries - Sample dataframes
+# Local imports - Sample dataframes
 from ind_var_Gen import student_age_df
 from ind_var_Gen import number_of_schools_total_Comments_df
 from ind_var_Gen import number_of_classes_total_Comments_df
 from ind_var_Gen import studydesign_df
 from ind_var_Gen import sample_size_Comments_df
 from ind_var_Gen import low_ses_percentage_Comments_df
-
-# Local libraries - Main
-from Main import getOutcomeData
 
 # Accept datafile name from user as argument 1
 datafile = sys.argv[1]
@@ -552,38 +554,10 @@ def make_dataframe(save_file=True, verbose=True):
         df_all_SS.replace(old, new, regex=True, inplace=True)
 
     if verbose:
-        # print dataframe
-        print(df_all_SS)
-        print("\n")
-        # list column names and position
-        for counter, i in enumerate(df_all_SS):
-            print(counter, i)
-        print("\n")
-        # print dataframe info
-        print("Columns:", df_all_SS.shape[1])
-        print("Rows:", df_all_SS.shape[0])
-        print("Datapoints:", df_all_SS.shape[0] * df_all_SS.shape[1])
-        print("\n")
+        verbose_display(df_all_SS)
 
     if save_file:
-        # get current wd
-        cw = os.getcwd() + "/Extractions"
-        # get file name for output
-        outfile_name_pre = datafile.rsplit('/')[-1]
-        outfile_name_mid = outfile_name_pre.rsplit('.')[0]
-        outfile_name = outfile_name_mid + "_Main_Analysis_SS.csv"
-        outfile = os.path.join(cw + "/" + outfile_name_mid, outfile_name)
-        # create dir
-        try:
-            os.mkdir("Extractions/" + outfile_name_mid)
-        except OSError:
-            print("Create {} dir fail, check if it already exists or permissions".format("Extractions/" + outfile_name_mid))
-        else:
-            print("Successfully created {} directory".format("Extractions/" + outfile_name_mid))
-        # write to disk
-        print("Input file: {}".format(datafile))
-        print("Saving extracted output to: {}".format(outfile))
-        df_all_SS.to_csv(outfile, index=False, header=True)
+        save_dataframe(df_all_SS, "_Main_Analysis_SS.csv")
 
 make_dataframe(save_file=True, verbose=False)
 

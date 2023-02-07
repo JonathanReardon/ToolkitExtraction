@@ -9,7 +9,7 @@ import os
 import sys
 import json
 
-data_files = sys.argv[1]
+data_file = sys.argv[1]
 
 #/****************/
 #/ CORE FUNCTIONS /
@@ -20,7 +20,7 @@ EXCLUDE = "NA"
 def load_json():
     global data
     script_dir = os.path.dirname(__file__)
-    datafile = os.path.join(script_dir, data_files)
+    datafile = os.path.join(script_dir, data_file)
 
     with open(datafile) as f:
         data = json.load(f)
@@ -219,3 +219,43 @@ def getOutcomeData(dataframe, out_label, out_container, var_names):
             if not found:
                 for holder in out_container:
                     holder.append("NA")
+
+def save_dataframe(df, df_name):
+    '''
+    Saves a .csv of the dataframe to Extractions/
+    '''
+    # get current working dir
+    cw = os.getcwd() + "/Extractions"
+    # get file name for output
+    outfile_name_pre = data_file.rsplit('/')[-1] # 
+    outfile_name_mid = outfile_name_pre.rsplit('.')[0]  # use for dir name
+    outfile_name = outfile_name_mid + df_name
+    outfile = os.path.join(cw + "/" + outfile_name_mid, outfile_name)
+    # create dir (filename)
+    try:
+        os.mkdir("Extractions/" + outfile_name_mid)
+    except OSError:
+        print("Create {} dir fail, check if it already exists or permissions".format("Extractions/" + outfile_name_mid))
+    else:
+        print("Successfully created {} directory".format("Extractions/" + outfile_name_mid))
+    # write to disk
+    print("Input file: {}".format(data_file))
+    print("Saving extracted output to: {}".format(outfile))
+    df.to_csv(outfile, index=False)
+
+def verbose_display(df):
+    '''
+    Displays further info
+    '''
+    # print dataframe
+    print(df)
+    print("\n")
+    # list column names and position
+    for counter, i in enumerate(df):
+        print(counter, i)
+    print("\n")
+    # print dataframe info
+    print("Columns: {}".format(df.shape[1]))
+    print("Rows: {}".format(df.shape[0]))
+    print("Datapoints: {}".format(df.shape[0] * df.shape[1]))
+    print("\n")
