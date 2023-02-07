@@ -1,33 +1,35 @@
 #!/usr/bin/env python3
 
-# import core extraction functions
-from Main import get_metadata, get_data, get_outcome_lvl1, get_outcome_lvl2
-
-# local imports
-from ind_var_Gen.eppi_ID import eppiid_df
-from ind_var_Gen.Author import author_df
-from ind_var_Gen.Date import year_df
-from ind_var_Gen.Abstract import abstract_df
-from ind_var_Gen.AdminStrand import admin_strand_df
-from ind_var_Gen.PublicationType_EPPI import pubtype_eppi_df
-from ind_var_Gen.PublicationType import publication_type_df
-from ind_var_Gen.Country import country_df
-from ind_var_Gen.EducationalSetting import educational_setting_df
-from ind_var_Gen.StudyRealism import study_realism_df
-from ind_var_Gen.Age import student_age
-from ind_var_Gen.NumberofSchools import number_of_schools_df
-from ind_var_Gen.NumberofClasses import number_of_classes_df
-from ind_var_Gen.TreatmentGroup import treatment_group_df
-from ind_var_Gen.ParticipantAssignment import participant_assignment_df
-from ind_var_Gen.LevelofAssignment import level_of_assignment_df
-from ind_var_Gen.StudyDesign import study_design_df
-from ind_var_Gen.Randomisation import randomisation_df
-from ind_var_Gen.Other_Outcomes import other_outcomes_df
-
 # standard imports
 import os
 import sys
 import pandas as pd
+
+# import core extraction functions
+from Main import get_metadata
+from Main import get_outcome_lvl1
+from Main import get_outcome_lvl2
+
+# local imports
+from ind_var_Gen import eppiid_df
+from ind_var_Gen import author_df
+from ind_var_Gen import year_df
+from ind_var_Gen import abstract_df
+from ind_var_Gen import admin_strand_df
+from ind_var_Gen import pubtype_eppi_df
+from ind_var_Gen import publication_type_df
+from ind_var_Gen import country_df
+from ind_var_Gen import educational_setting_df
+from ind_var_Gen import study_realism_df
+from ind_var_Gen import student_age
+from ind_var_Gen import number_of_schools_df
+from ind_var_Gen import number_of_classes_df
+from ind_var_Gen import treatment_group_df
+from ind_var_Gen import participant_assignment_df
+from ind_var_Gen import level_of_assignment_df
+from ind_var_Gen import study_design_df
+from ind_var_Gen import randomisation_df
+from ind_var_Gen import other_outcomes_df
 
 datafile = sys.argv[1]
 
@@ -134,8 +136,4 @@ def make_dataframe(save_file=True, clean_cols=True, verbose=True):
         print("Saving extracted output to: {}".format(outfile))
         all_variables.to_csv(outfile, index=False)
 
-        print(all_variables["strand_raw"])
-
 make_dataframe(save_file=True, clean_cols=True, verbose=True)
-
-

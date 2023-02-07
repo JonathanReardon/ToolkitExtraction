@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
-#from Main import data_files
+import os
+import sys
+
+import pandas as pd
 
 from ind_var_Gen.eppi_ID import eppiid_df
 from ind_var_Gen.Author import author_df
@@ -15,11 +18,7 @@ from ind_var_Gen.Sample_Size_Initial import initial_sample_size_df
 from ind_var_Gen.Sample_Size_Analyzed import analyzed_sample_size_df
 from ind_var_Gen.Attrition import attrition_df
 
-import os
-import sys
-import pandas as pd
-
-data_files = sys.argv[1]
+datafile = sys.argv[1]
 
 def make_dataframe(save_file=True, clean_cols=True, verbose=True):
 
@@ -81,25 +80,24 @@ def make_dataframe(save_file=True, clean_cols=True, verbose=True):
     if save_file:
 
         # get current working dir
-        cw = os.getcwd()
+        cw = os.getcwd() + "/Extractions"
 
         # get file name for output
-        outfile_name_pre = data_files.rsplit('/')[-1]
+        outfile_name_pre = datafile.rsplit('/')[-1] # 
         outfile_name_mid = outfile_name_pre.rsplit('.')[0]  # use for dir name
-        outfile_name = outfile_name_mid + "_Sample_Size.csv"
+        outfile_name = outfile_name_mid + "_DataFrame3_Sample_Size.csv"
         outfile = os.path.join(cw + "/" + outfile_name_mid, outfile_name)
 
         # create dir (filename)
         try:
-            os.mkdir(outfile_name_mid)
+            os.mkdir("Extractions/" + outfile_name_mid)
         except OSError:
-            print("Create {} dir fail, check if it already exists or permissions".format(
-                outfile_name_mid))
+            print("Create {} dir fail, check if it already exists or permissions".format("Extractions/" + outfile_name_mid))
         else:
-            print("Successfully created {} directory".format(outfile_name_mid))
+            print("Successfully created {} directory".format("Extractions/" + outfile_name_mid))
 
         # write to disk
-        print("Input file: {}".format(data_files))
+        print("Input file: {}".format(datafile))
         print("Saving extracted output to: {}".format(outfile))
         all_variables.to_csv(outfile, index=False)
 

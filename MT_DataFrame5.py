@@ -1,5 +1,13 @@
 #!/usr/bin/python3
 
+# standard imports
+import os
+import sys
+import pandas as pd
+import numpy as np
+from toolz import interleave
+import re
+
 # local imports
 from ind_var_Gen.eppi_ID import eppiid_df
 from ind_var_Gen.Author import author_df
@@ -25,18 +33,10 @@ from ind_var_Gen.Group1_SD import group1sd_df
 from ind_var_Gen.Group2_SD import group2sd_df
 from ind_var_Gen.TestType import testtype_outcome_df
 
-# standard imports
-import os
-import sys
-import pandas as pd
-import numpy as np
-from toolz import interleave
-import re
-
 # for getting number of outcomes
-from toolkit_outcome_check import outcome_num
+from Toolkit_Outcome_Check import outcome_num
 
-data_files = sys.argv[1]
+datafile = sys.argv[1]
 
 #################################
 # REFACTOR STRAND FILTERING CODE
@@ -826,28 +826,27 @@ def make_dataframe(save_file=True, clean_cols=True, verbose=True):
         print("\n")
 
     if save_file:
-        # get current wd
-        cw = os.getcwd()
+
+        # get current working dir
+        cw = os.getcwd() + "/Extractions"
 
         # get file name for output
-        outfile_name_pre = data_files.rsplit('/')[-1]
+        outfile_name_pre = datafile.rsplit('/')[-1] # 
         outfile_name_mid = outfile_name_pre.rsplit('.')[0]  # use for dir name
         outfile_name = outfile_name_mid + "_Effect_Size_B.csv"
         outfile = os.path.join(cw + "/" + outfile_name_mid, outfile_name)
 
         # create dir (filename)
         try:
-            os.mkdir(outfile_name_mid)
+            os.mkdir("Extractions/" + outfile_name_mid)
         except OSError:
-            print("Create {} dir fail, already exists or permission error".format(outfile_name_mid))
+            print("Create {} dir fail, check if it already exists or permissions".format("Extractions/" + outfile_name_mid))
         else:
-            print("Successfully created {} directory".format(outfile_name_mid))
+            print("Successfully created {} directory".format("Extractions/" + outfile_name_mid))
 
         # write to disk
-        print("Input file: {}".format(data_files))
+        print("Input file: {}".format(datafile))
         print("Saving extracted output to: {}".format(outfile))
         df.to_csv(outfile, index=False)
 
 make_dataframe(save_file=True, clean_cols=True, verbose=False)
-
-print(outcome_num)

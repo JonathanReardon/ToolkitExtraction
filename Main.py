@@ -11,7 +11,6 @@ import json
 
 data_files = sys.argv[1]
 
-
 #/****************/
 #/ CORE FUNCTIONS /
 #/****************/

@@ -571,7 +571,7 @@ def make_dataframe(save_file=True, verbose=True):
         # get file name for output
         outfile_name_pre = datafile.rsplit('/')[-1]
         outfile_name_mid = outfile_name_pre.rsplit('.')[0]
-        outfile_name = outfile_name_mid + "_Main_Analysis.csv"
+        outfile_name = outfile_name_mid + "_Main_Analysis_SS.csv"
         outfile = os.path.join(cw + "/" + outfile_name_mid, outfile_name)
         # create dir
         try:

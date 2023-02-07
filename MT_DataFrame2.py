@@ -1,34 +1,36 @@
 #!/usr/bin/env python3
 
-from Main import data_files
-
-from ind_var_Gen.eppi_ID import eppiid_df
-from ind_var_Gen.Author import author_df
-from ind_var_Gen.Date import year_df
-from ind_var_Gen.AdminStrand import admin_strand_df
-from ind_var_Gen.InterventionName import intervention_name_df
-from ind_var_Gen.InterventionDescription import intervention_description_df
-from ind_var_Gen.InterventionObjectives import intervention_objectives_df
-from ind_var_Gen.InterventionTrainingProvided import intervention_training_provided_df
-from ind_var_Gen.InterventionOrganizationType import intervention_org_type
-from ind_var_Gen.InterventionFocus import intervention_focus_df
-from ind_var_Gen.InterventionTeachingApproach import intervention_teaching_approach_df
-from ind_var_Gen.InterventionInclusion import intervention_inclusion_df
-from ind_var_Gen.InterventionTime import intervention_time_df
-from ind_var_Gen.InterventionDelivery import intervention_delivery_df
-from ind_var_Gen.InterventionDuration import intervention_duration_df
-from ind_var_Gen.InterventionFrequency import intervention_frequency_df
-from ind_var_Gen.InterventionSessionLength import intervention_session_length_df
-from ind_var_Gen.InterventionDetail import intervention_detail_df
-from ind_var_Gen.InterventionCostsReported import intervention_costs_df
-from ind_var_Gen.InterventionEvaluation import intervention_evaluation_df
-from ind_var_Gen.Baseline_Differences import baseline_differences_df
-from ind_var_Gen.Comparability import comparability_df
-from ind_var_Gen.Comparability_Variables_Reported import comparability_vars_reported_df
-from ind_var_Gen.Clustering import clustering_df
-
 import os
+import sys
+
 import pandas as pd
+
+from ind_var_Gen import eppiid_df
+from ind_var_Gen import author_df
+from ind_var_Gen import year_df
+from ind_var_Gen import admin_strand_df
+from ind_var_Gen import intervention_name_df
+from ind_var_Gen import intervention_description_df
+from ind_var_Gen import intervention_objectives_df
+from ind_var_Gen import intervention_training_provided_df
+from ind_var_Gen import intervention_org_type
+from ind_var_Gen import intervention_focus_df
+from ind_var_Gen import intervention_teaching_approach_df
+from ind_var_Gen import intervention_inclusion_df
+from ind_var_Gen import intervention_time_df
+from ind_var_Gen import intervention_delivery_df
+from ind_var_Gen import intervention_duration_df
+from ind_var_Gen import intervention_frequency_df
+from ind_var_Gen import intervention_session_length_df
+from ind_var_Gen import intervention_detail_df
+from ind_var_Gen import intervention_costs_df
+from ind_var_Gen import intervention_evaluation_df
+from ind_var_Gen import baseline_differences_df
+from ind_var_Gen import comparability_df
+from ind_var_Gen import comparability_vars_reported_df
+from ind_var_Gen import clustering_df
+
+datafile = sys.argv[1]
 
 def make_dataframe(save_file=True, clean_cols=True, verbose=True):
 
@@ -113,25 +115,24 @@ def make_dataframe(save_file=True, clean_cols=True, verbose=True):
     if save_file:
 
         # get current working dir
-        cw = os.getcwd()
+        cw = os.getcwd() + "/Extractions"
 
         # get file name for output
-        outfile_name_pre = data_files.rsplit('/')[-1]
+        outfile_name_pre = datafile.rsplit('/')[-1] # 
         outfile_name_mid = outfile_name_pre.rsplit('.')[0]  # use for dir name
         outfile_name = outfile_name_mid + "_DataFrame2.csv"
         outfile = os.path.join(cw + "/" + outfile_name_mid, outfile_name)
 
         # create dir (filename)
         try:
-            os.mkdir(outfile_name_mid)
+            os.mkdir("Extractions/" + outfile_name_mid)
         except OSError:
-            print("Create {} dir fail, check if it already exists or permissions".format(
-                outfile_name_mid))
+            print("Create {} dir fail, check if it already exists or permissions".format("Extractions/" + outfile_name_mid))
         else:
-            print("Successfully created {} directory".format(outfile_name_mid))
+            print("Successfully created {} directory".format("Extractions/" + outfile_name_mid))
 
         # write to disk
-        print("Input file: {}".format(data_files))
+        print("Input file: {}".format(datafile))
         print("Saving extracted output to: {}".format(outfile))
         all_variables.to_csv(outfile, index=False)
 

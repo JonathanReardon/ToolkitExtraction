@@ -1,24 +1,22 @@
 #!/usr/bin/env python3
 
-""" from files import data_files """
-
-# local imports
-from ind_var_Gen.eppi_ID import eppiid_df
-from ind_var_Gen.Author import author_df
-from ind_var_Gen.Date import year_df
-from ind_var_Gen.AdminStrand import admin_strand_df
-from ind_var_Gen.PrimaryOutcomeDescStatsReported import DescStatsOutcomeReported_df
-from ind_var_Gen.PrimaryOutcomeDescStatsInterventionGroup import DescStatsPrimaryOutcomeReported_Intervention_df
-from ind_var_Gen.PrimaryOutcomeDescStatsControlGroup import DescStatsPrimaryOutcomeReported_Control_df
-from ind_var_Gen.PrimaryOutcomeDescStatsInterventionGroup_TWO import DescStatsPrimaryOutcomeReported_Intervention_TWO_df
-from ind_var_Gen.PrimaryOutcomeDescStatsControlGroup_TWO import DescStatsPrimaryOutcomeReported_Control_TWO_df
-
 # standard imports
 import os
 import sys
 import pandas as pd
 
-data_files = sys.argv[1]
+# local imports
+from ind_var_Gen import eppiid_df
+from ind_var_Gen import author_df
+from ind_var_Gen import year_df
+from ind_var_Gen import admin_strand_df
+from ind_var_Gen import DescStatsOutcomeReported_df
+from ind_var_Gen import DescStatsPrimaryOutcomeReported_Intervention_df
+from ind_var_Gen import DescStatsPrimaryOutcomeReported_Control_df
+from ind_var_Gen import DescStatsPrimaryOutcomeReported_Intervention_TWO_df
+from ind_var_Gen import DescStatsPrimaryOutcomeReported_Control_TWO_df
+
+datafile = sys.argv[1]
 
 def make_dataframe(save_file=True, clean_cols=True, verbose=True):
 
@@ -96,27 +94,25 @@ def make_dataframe(save_file=True, clean_cols=True, verbose=True):
     if save_file:
 
         # get current working dir
-        cw = os.getcwd()
+        cw = os.getcwd() + "/Extractions"
 
         # get file name for output
-        outfile_name_pre = data_files.rsplit('/')[-1]
+        outfile_name_pre = datafile.rsplit('/')[-1] # 
         outfile_name_mid = outfile_name_pre.rsplit('.')[0]  # use for dir name
         outfile_name = outfile_name_mid + "_Effect_Size_A.csv"
         outfile = os.path.join(cw + "/" + outfile_name_mid, outfile_name)
 
         # create dir (filename)
         try:
-            os.mkdir(outfile_name_mid)
+            os.mkdir("Extractions/" + outfile_name_mid)
         except OSError:
-            print("Create {} dir fail, check if it already exists or permissions".format(
-                outfile_name_mid))
+            print("Create {} dir fail, check if it already exists or permissions".format("Extractions/" + outfile_name_mid))
         else:
-            print("Successfully created {} directory".format(outfile_name_mid))
+            print("Successfully created {} directory".format("Extractions/" + outfile_name_mid))
 
         # write to disk
-        print("Input file: {}".format(data_files))
+        print("Input file: {}".format(datafile))
         print("Saving extracted output to: {}".format(outfile))
         all_variables.to_csv(outfile, index=False)
-
 
 make_dataframe(save_file=True, clean_cols=True, verbose=True)

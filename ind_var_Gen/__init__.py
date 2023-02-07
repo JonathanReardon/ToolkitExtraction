@@ -16,6 +16,7 @@ from .Date import year_df
 from .DOI import doi_df
 from .Editors import editedby_df
 from .EducationalSetting import edusetting_df
+from .EducationalSetting import educational_setting_df
 from .EffectSizeType import effectsizetype_df
 from .eppi_ID import eppiid_df
 from .Gender import gender_df
@@ -33,6 +34,7 @@ from .InterventionDelivery import interventiondelivery_df
 from .InterventionDescription import intervention_description_df
 from .InterventionDetail import intervention_detail_df
 from .InterventionDuration import InterventionDuration_Comments_df
+from .InterventionDuration import intervention_duration_df
 from .InterventionEvaluation import intervention_evaluation_df
 from .InterventionFocus import intervention_focus_df
 from .InterventionFrequency import intervention_frequency_df
@@ -43,6 +45,7 @@ from .InterventionInclusion import Parents_or_Community_Volunteers_df
 from .InterventionName import intervention_name_df
 from .InterventionObjectives import intervention_objectives_df
 from .InterventionOrganizationType import InterventionOrgType_df
+from .InterventionOrganizationType import intervention_org_type
 from .InterventionSessionLength import intervention_session_length_df
 from .InterventionSessionLength import InterventionSessionLength_Comments_df
 from .InterventionTeachingApproach import intervention_teaching_approach_df
