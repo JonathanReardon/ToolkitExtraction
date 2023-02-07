@@ -76,5 +76,3 @@ attrition_df.fillna("NA", inplace=True)
 
 # save to disk
 #attrition_df.to_csv("Attrition.csv", index=False)
-
-print(attrition_df)

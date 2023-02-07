@@ -211,26 +211,16 @@ attend_mon_Comments_df.columns = ["est_attendance_monitored_info"]
 # concatenate data frames
 est_ss_df = pd.concat([
     extended_how_df,
-
     time_added_df,
     time_added_Comments_df,
-    
     purpose_df,
-
     target_group_df,
-
     pupil_participation_df,
-
     activity_focus_df,
-
     staff_kind_df,
-
     parent_involved_df,
-
     digit_tech_df,
-
     attend_mon_df,
-
 ], axis=1, sort=False)
 
 # remove problematic text from outputs
@@ -239,6 +229,4 @@ est_ss_df.replace('\n', ' ', regex=True, inplace=True)
 est_ss_df.replace(':', ' ',  regex=True, inplace=True)
 est_ss_df.replace(';', ' ',  regex=True, inplace=True)
 
-est_ss_df.to_csv("extended_school_time_ss.csv", index=False, header=True)
-
-print(attend_mon_df[0:50])
+""" est_ss_df.to_csv("extended_school_time_ss.csv", index=False, header=True) """

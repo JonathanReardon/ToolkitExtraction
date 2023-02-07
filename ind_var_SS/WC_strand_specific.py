@@ -72,6 +72,4 @@ wc_ss_df.replace('\n', ' ', regex=True, inplace=True)
 wc_ss_df.replace(':', ' ',  regex=True, inplace=True)
 wc_ss_df.replace(';', ' ',  regex=True, inplace=True)
 
-wc_ss_df.to_csv("within_class_grouping_ss.csv", index=False, header=True)
-
-print(wc_ss_df[0:50])
+""" wc_ss_df.to_csv("within_class_grouping_ss.csv", index=False, header=True) """

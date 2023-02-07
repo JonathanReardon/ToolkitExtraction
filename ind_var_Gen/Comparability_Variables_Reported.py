@@ -64,5 +64,3 @@ comparability_vars_reported_df.fillna("NA", inplace=True)
 
 # savce to disk
 #comparability_vars_reported_df.to_csv("comparability_vars_reported.csv", index=False)
-
-""" print(comparability_vars_reported_df) """

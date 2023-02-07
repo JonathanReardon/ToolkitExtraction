@@ -24,5 +24,3 @@ toolkitstrand_df.columns = [
 
 # save to disk
 """ toolkitstrand_df.to_csv("toolkitstrand.csv", index=False) """
-
-""" print(toolkitstrand_df) """

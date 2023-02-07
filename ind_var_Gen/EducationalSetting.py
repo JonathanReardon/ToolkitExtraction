@@ -39,5 +39,3 @@ educational_setting_df.fillna("NA", inplace=True)
 
 # save to disk
 # educational_setting_df.to_csv("edusetting.csv", index=False)
-
-""" print(educational_setting_df) """

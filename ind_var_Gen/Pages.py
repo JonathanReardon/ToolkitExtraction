@@ -11,5 +11,3 @@ pages_df.fillna("NA", inplace=True)
 
 # save to disk
 #pages_df.to_csv("pages.csv", index=False)
-
-""" print(pages_df) """

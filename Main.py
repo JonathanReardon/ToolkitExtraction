@@ -205,6 +205,9 @@ def get_data(codes):
 #/*********************/
 
 def getOutcomeData(dataframe, out_label, out_container, var_names):
+    '''
+    Extract strand level outcome data for main analysis dataframe
+    '''
     from Toolkit_Outcome_Check import outcome_num
     for counter, row in enumerate(dataframe['out_type_1']):
             found = False

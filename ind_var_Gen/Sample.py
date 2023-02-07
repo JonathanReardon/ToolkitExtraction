@@ -30,5 +30,3 @@ all_variables.fillna("NA", inplace=True)
 
 # save to disk
 """ all_variables.to_csv("Sample.csv", index=False) """
-
-""" print(all_variables) """

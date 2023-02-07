@@ -11,5 +11,3 @@ institution_df.fillna("NA", inplace=True)
 
 # save to disk
 #institution_df.to_csv("Institution.csv", index=False)
-
-""" print(institution_df) """

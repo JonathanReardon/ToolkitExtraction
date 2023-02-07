@@ -34,5 +34,3 @@ intervention_description_df.fillna("NA", inplace=True)
 
 # save to disk
 """ intervention_description_df.to_csv("InterventionDescription.csv", index=False) """
-
-""" print(intervention_description_df[0:50]) """

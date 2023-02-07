@@ -14,5 +14,3 @@ pubtype_eppi_df.fillna("NA", inplace=True)
 
 # save to risk
 """ pubtype_eppi_df.to_csv("pubtype_eppi.csv", index=False) """
-
-""" print(pubtype_eppi_df) """

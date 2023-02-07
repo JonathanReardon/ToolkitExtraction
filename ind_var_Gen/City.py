@@ -11,5 +11,3 @@ city_df.fillna("NA", inplace=True)
 
 # save to disk
 #city_df.to_csv("city.csv", index=False)
-
-""" print(city_df) """

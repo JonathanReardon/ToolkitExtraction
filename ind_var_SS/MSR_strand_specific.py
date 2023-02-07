@@ -61,6 +61,4 @@ msr_ss_df = pd.concat([
 msr_ss_df.fillna("NA", inplace=True)
 
 # save to disk
-msr_ss_df.to_csv("metacog_self_reg_ss.csv", index=False)
-
-print(msr_ss_df[0:50])
+""" msr_ss_df.to_csv("metacog_self_reg_ss.csv", index=False) """

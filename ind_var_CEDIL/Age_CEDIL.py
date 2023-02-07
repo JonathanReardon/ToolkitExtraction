@@ -40,5 +40,3 @@ student_age.fillna("NA", inplace=True)
 
 # save to disk
 #student_age.to_csv("age.csv", index=False)
-
-print(student_age)

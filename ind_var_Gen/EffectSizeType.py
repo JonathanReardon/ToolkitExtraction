@@ -17,5 +17,3 @@ effectsizetype_df.fillna("NA", inplace=True)
 
 # save to disk
 #effectsizetype_df.to_csv("effectsizetype.csv", index=False)
-
-""" print(effectsizetype_df) """

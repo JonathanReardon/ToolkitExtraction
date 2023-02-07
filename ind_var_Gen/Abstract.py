@@ -1,5 +1,6 @@
-from Main import load_json, get_metadata
 import pandas as pd
+
+from Main import load_json, get_metadata
 
 load_json()
 
@@ -16,5 +17,3 @@ abstract_df.replace(';', ' ',  regex=True, inplace=True)
 
 # save to disk
 """ abstract_df.to_csv("abstract.csv", index=False) """
-
-

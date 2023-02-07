@@ -11,5 +11,3 @@ url_df.fillna("NA", inplace=True)
 
 # save to disk
 #url_df.to_csv("url.csv", index=False)
-
-""" print(url_df) """

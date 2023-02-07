@@ -22,6 +22,4 @@ cilowersmd_df.fillna("NA", inplace=True)
 cilowersmd_df = cilowersmd_df.replace(r'^\s*$', "NA", regex=True)
 
 # save to disk
-#cilowersmd_df.to_csv("cilowersmd.csv", index=False)
-
-""" print(cilowersmd_df) """
+# cilowersmd_df.to_csv("cilowersmd.csv", index=False)

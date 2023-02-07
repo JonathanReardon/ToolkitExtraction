@@ -11,5 +11,3 @@ shorttitle_df.fillna("NA", inplace=True)
 
 # save to disk
 #shorttitle_df.to_csv("shorttitle.csv", index=False)
-
-""" print(shorttitle_df) """

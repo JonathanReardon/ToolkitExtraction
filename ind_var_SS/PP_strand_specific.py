@@ -62,6 +62,4 @@ pp_ss_df = pd.concat([
 pp_ss_df.fillna("NA", inplace=True)
 
 # save to disk
-pp_ss_df.to_csv("performance_pay_ss.csv", index=False)
-
-print(pp_ss_df[0:50])
+""" pp_ss_df.to_csv("performance_pay_ss.csv", index=False) """

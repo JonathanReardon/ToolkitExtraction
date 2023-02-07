@@ -30,5 +30,3 @@ gender_df.fillna("NA", inplace=True)
 
 # save to disk
 #gender_df.to_csv("gender.csv", index=False)
-
-print(gender_df)

@@ -18,5 +18,3 @@ testtype_df.fillna("NA", inplace=True)
 
 # save to disk
 """ testtype_df.to_csv("outcome_testtype.csv", index=False) """
-
-""" print(testtype_df) """

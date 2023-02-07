@@ -1,3 +1,5 @@
+import pandas as pd
+
 from Main import load_json, get_data, highlighted_text, comments
 
 from AttributeIDList import sets_dir_grouping_change
@@ -10,8 +12,6 @@ from AttributeIDList import sets_attain_grouping_level
 from AttributeIDList import sets_follow_same_curr
 from AttributeIDList import sets_approach_name
 from AttributeIDList import sets_pupil_assignment
-
-import pandas as pd
 
 load_json()
 
@@ -93,14 +93,10 @@ sets_pup_assignment_df.columns = ["sets_pup_assign"]
 
 sets_ss_df = pd.concat([
     sets_dir_grp_change_df,
-
     sets_dir_grp_type_regroup_df,
-
     sets_curr_taught_regroup_df,
-
     sets_dir_grp_stream_df,
     sets_dir_grp_gifted_df,
-
     sets_schl_groupings_df,
     sets_attain_grp_levels_df,
     sets_foll_same_curr_df,
@@ -112,6 +108,4 @@ sets_ss_df = pd.concat([
 sets_ss_df.fillna("NA", inplace=True)
 
 # save to disk
-sets_ss_df.to_csv("setting_or_streaming_ss.csv", index=False)
-
-print(sets_ss_df[0:50])
+""" sets_ss_df.to_csv("setting_or_streaming_ss.csv", index=False) """

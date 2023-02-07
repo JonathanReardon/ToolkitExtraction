@@ -1,5 +1,10 @@
 from Main import load_json, get_data, highlighted_text, comments
-from AttributeIDList import feedback_source_output, feedback_directed_output , feedback_form_output, feedback_when_output, feedback_kind_output, feedback_emo_tone
+from AttributeIDList import feedback_source_output
+from AttributeIDList import feedback_directed_output
+from AttributeIDList import feedback_form_output
+from AttributeIDList import feedback_when_output
+from AttributeIDList import feedback_kind_output
+from AttributeIDList import feedback_emo_tone
 from AttributeIDList import feedback_about_outcome_output
 
 # feedback source options for ind column extraction
@@ -251,25 +256,13 @@ feedback_ss_df.replace('\n', ' ', regex=True, inplace=True)
 feedback_ss_df.replace(':', ' ',  regex=True, inplace=True)
 feedback_ss_df.replace(';', ' ',  regex=True, inplace=True)
 
-feedback_ss_df.to_csv("feedback_ss.csv", index=False, header=True)
+""" feedback_ss_df.to_csv("feedback_ss.csv", index=False, header=True) """
 
-""" print(feedb_form_df[0:10])
-
-
-if feedb_form_df["feedback_form_SS"].str.contains('Written verbal').any():
+""" if feedb_form_df["feedback_form_SS"].str.contains('Written verbal').any():
     print("yes")
 
 if "Written verbal" in feedb_form_df["feedback_form_SS"].values:
     print("Yep")
 
+feedb_form_df['new'] = feedb_form_df["feedback_form_SS"].str.contains('Written verbal') """
 
-
-feedb_form_df['new'] = feedb_form_df["feedback_form_SS"].str.contains('Written verbal')
-
-print(feedb_form_df['new'][0:10])
-
-#feedb_form_df['Match'] = feedb_form_df["feedback_form_SS"].isin('Written verbal')
-
-print(feedb_form_df["feedback_form_SS"].dtype) """
-
-print(feedb_emo_tone_df[0:50])

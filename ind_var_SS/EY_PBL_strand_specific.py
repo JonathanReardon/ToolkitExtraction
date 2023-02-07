@@ -9,8 +9,6 @@ import sys
 
 load_json()
 
-""" data_files = sys.argv[1] """
-
 # get kind if play data
 kind_play = get_data(kind_of_play)
 kind_play_df = pd.DataFrame(kind_play)
@@ -40,7 +38,3 @@ ey_pbl_df.fillna("NA", inplace=True)
 
 # save to disk
 #ey_pbl_df.to_csv("ey_pbl_ss_df.csv", index=False)
-
-""" print(ey_pbl_df[0:25]) """
-
-print(ey_pbl_df)

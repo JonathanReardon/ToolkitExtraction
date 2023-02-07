@@ -11,6 +11,3 @@ issue_df.fillna("NA", inplace=True)
 
 # save to disk
 #issue_df.to_csv("issue.csv", index=False)
-
-""" print(issue_df)
- """

@@ -55,7 +55,6 @@ redc_impl_all_or_most_lessons_df = pd.DataFrame(redc_impl_all_or_most_lessons)
 redc_impl_all_or_most_lessons_df = redc_impl_all_or_most_lessons_df.T
 redc_impl_all_or_most_lessons_df.columns = ["redc_impl_all_or_most_lessons"]
 
-
 redc_ss_df = pd.concat([
     redc_avg_small_class_size_df,
     redc_avg_large_class_size_df,
@@ -66,6 +65,4 @@ redc_ss_df = pd.concat([
     redc_impl_all_or_most_lessons_df,
 ], axis=1, sort=False)
 
-redc_ss_df.to_csv("reducing_class_size.csv", index=False, header=True)
-
-print(redc_ss_df[0:25])
+""" redc_ss_df.to_csv("reducing_class_size.csv", index=False, header=True) """

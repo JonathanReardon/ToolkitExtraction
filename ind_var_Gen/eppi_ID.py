@@ -11,5 +11,3 @@ eppiid_df.fillna("NA", inplace=True)
 
 # save to disk
 #eppiid_df.to_csv("eppiid.csv", index=False)
-
-""" print(eppiid_df) """

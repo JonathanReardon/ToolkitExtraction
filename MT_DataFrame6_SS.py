@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+Author: Jonathan Reardon
+"""
 
 # Standard libraries
 import os
@@ -52,14 +57,191 @@ from ind_var_Gen import studydesign_df
 from ind_var_Gen import sample_size_Comments_df
 from ind_var_Gen import low_ses_percentage_Comments_df
 
-# Local libraries - Strand specific dataframe
-from ind_var_SS.One_to_One_strand_specific import one_to_one_ss_df
-
 # Local libraries - Main
 from Main import getOutcomeData
 
-# accept datafile name from user as argument 1
+# Accept datafile name from user as argument 1
 datafile = sys.argv[1]
+
+# Command line strand specific options display
+print('''
+      ============================================
+      *    Strand Specific Dataframe Selection   * 
+      ============================================
+
+      ------------------
+      *  Main Toolkit  *
+      ------------------
+
+      1.  Arts Participation
+      2.  Behaviour Interventions
+      3.  Collaborative Learning
+      4.  Extending School Time
+      5.  Feedback
+      6.  Homework
+      7.  Individualised Instruction
+      8.  Mentoring
+      9.  Mastery Learning
+      10. Metacognition & Self Regulation
+      11. One to One Tution
+      12. Oral Language
+      13. Physical Activity
+      14. Parentel Engagement
+      15. Phonics
+      16. Performance Pay
+      17. Peer Tutoring
+      18. Reading Comprehension
+      19. Reducing Class Size
+      20. Repeating a Year
+      21. Social & Emotional Learning
+      22. Setting/Streaming
+      23. Small Group Tuition
+      24. Summer Schools
+      25. Teaching Assistants
+      26. Within-Class Grouping
+
+      ------------------
+      *   Early Years  *
+      ------------------
+
+      27. Early Years - Early Literacy Approaches
+      28. Early Years - Early Numeracy Approaches
+      29. Early Years - Earlier Starting Age
+      30. Early Years - Extra Hours
+      31. Early Years - Play Based Learning
+      '''
+)
+
+# Get user selection for strand specific dataframe (if needed)
+strand_specific_option = int(input("Input a strand specific dataframe option from the list above: "))
+
+match strand_specific_option:
+    # MAIN TOOLKIT
+    case 1: 
+        print("- Strand specific datraframe selection: Arts Participation")
+        from ind_var_SS import ap_ss_df
+        ss_df = ap_ss_df
+    case 2: 
+        print("- Strand specific datraframe selection: Behaviour Interventions")
+        from ind_var_SS import bi_ss_df
+        ss_df = bi_ss_df
+    case 3:
+        print("- Strand specific datraframe selection: Collaborative Learning")
+        from ind_var_SS import cl_ss_df
+        ss_df = cl_ss_df
+    case 4: 
+        print("- Strand specific datraframe selection: Extending School Time")
+        from ind_var_SS import est_ss_df
+        ss_df = est_ss_df
+    case 5: 
+        print("- Strand specific datraframe selection: Feedback")
+        from ind_var_SS import feedback_ss_df
+        ss_df = feedback_ss_df
+    case 6:
+        print("- Strand specific datraframe selection: Homework")
+        from ind_var_SS import hw_ss_df
+        ss_df = hw_ss_df
+    case 7: 
+        print("- Strand specific datraframe selection: Individualised Instruction")
+        from ind_var_SS import ii_ss_df
+        ss_df = ii_ss_df
+    case 8: 
+        print("- Strand specific datraframe selection: Mentoring")
+        from ind_var_SS import mentoring_ss_df
+        ss_df = mentoring_ss_df
+    case 9:
+        print("- Strand specific datraframe selection: Mastery Learning")
+        from ind_var_SS import ml_ss_df
+        ss_df = ml_ss_df
+    case 10: 
+        print("- Strand specific datraframe selection: Metacognition & Self Regulation")
+        from ind_var_SS import msr_ss_df
+        ss_df = msr_ss_df
+    case 11:
+        print("- Strand specific datraframe selection: One to One Tuition")
+        from ind_var_SS import one_to_one_ss_df
+        ss_df = one_to_one_ss_df
+    case 12: 
+        print("- Strand specific datraframe selection: Oral Language")
+        from ind_var_SS import ol_ss_df
+        ss_df = ol_ss_df
+    case 13:
+        print("- Strand specific datraframe selection: Physical Activity")
+        from ind_var_SS import pha_ss_df
+        ss_df = pha_ss_df
+    case 14: 
+        print("- Strand specific datraframe selection: Parentel Engagement")
+        from ind_var_SS import pe_ss_df
+        ss_df = pe_ss_df
+    case 15: 
+        print("- Strand specific datraframe selection: Phonics")
+        from ind_var_SS import ph_ss_df
+        ss_df = ph_ss_df
+    case 16:
+        print("- Strand specific datraframe selection: Performance Pay")
+        from ind_var_SS import pp_ss_df
+        ss_df = pp_ss_df
+    case 17: 
+        print("- Strand specific datraframe selection: Peer Tutoring")
+        from ind_var_SS import peer_tut_ss_df
+        ss_df = peer_tut_ss_df
+    case 18: 
+        print("- Strand specific datraframe selection: Reading Comprehension")
+        from ind_var_SS import rc_ss_df
+        ss_df = rc_ss_df
+    case 19:
+        print("- Strand specific datraframe selection: Reducing Class Size")
+        from ind_var_SS import redc_ss_df
+        ss_df = redc_ss_df
+    case 20: 
+        print("- Strand specific datraframe selection: Repeating a Year")
+        from ind_var_SS import ry_ss_df
+        ss_df = ry_ss_df
+    case 21: 
+        print("- Strand specific datraframe selection: Social & Emotional Learning")
+        from ind_var_SS import sel_ss_df
+        ss_df = sel_ss_df
+    case 22: 
+        print("- Strand specific datraframe selection: Setting/Streaming")
+        from ind_var_SS import sets_ss_df
+        ss_df = sets_ss_df
+    case 23: 
+        print("- Strand specific datraframe selection: Small Group Tuition")
+        from ind_var_SS import sgt_ss_df
+        ss_df = sgt_ss_df
+    case 24: 
+        print("- Strand specific datraframe selection: Summer Schools")
+        from ind_var_SS import SS_ss_df
+        ss_df = SS_ss_df
+    case 25: 
+        print("- Strand specific datraframe selection: Teaching Assistants")
+        from ind_var_SS import ta_ss_df
+        ss_df = ta_ss_df
+    case 26: 
+        print("- Strand specific datraframe selection: Within-Class Grouping")
+        from ind_var_SS import wc_ss_df
+        ss_df = wc_ss_df
+    # EARLY YEARS
+    case 27: 
+        print("- Strand specific datraframe selection: Early Years - Early Literacy Approaches")
+        from ind_var_SS import ela_ss_df
+        ss_df = ela_ss_df
+    case 28: 
+        print("- Strand specific datraframe selection: Early Numeracy Approaches")
+        from ind_var_SS import ena_ss_df
+        ss_df = ena_ss_df
+    case 29: 
+        print("- Strand specific datraframe selection: Earlier Starting Age")
+        from ind_var_SS import ey_esa_df
+        ss_df = ey_esa_df
+    case 30: 
+        print("- Strand specific datraframe selection: Extra Hours")
+        from ind_var_SS import ey_eh_df
+        ss_df = ey_eh_df
+    case 31: 
+        print("- Strand specific datraframe selection: Play Based Learning")
+        from ind_var_SS import ey_pbl_df
+        ss_df = ey_pbl_df
 
 def make_dataframe(save_file=True, verbose=True):
     record_details_df = pd.concat([
@@ -129,7 +311,7 @@ def make_dataframe(save_file=True, verbose=True):
      toolkit_out_testtype, 
      toolkit_out_strand) = toolkit_lists
 
-    outcome_vars = [
+    outcome_vars = (
         "out_type_",
         "smd_",
         "se_",
@@ -140,7 +322,7 @@ def make_dataframe(save_file=True, verbose=True):
         "out_measure_",
         "out_test_type_raw_",
         "out_strand_",
-    ]
+    )
 
     getOutcomeData(df, 'Toolkit primary outcome', toolkit_lists, outcome_vars)
 
@@ -169,11 +351,13 @@ def make_dataframe(save_file=True, verbose=True):
     getOutcomeData(df, 'Mathematics primary outcome', mathematics_lists, outcome_vars)
 
     science_lists = [[] for _ in range(3)]
+
     (Science_prim, Science_prim_smd, Science_prim_se) = science_lists
 
     getOutcomeData(df, 'Science primary outcome', science_lists, outcome_vars)
 
     fsm_lists = [[] for _ in range(3)]
+
     (fsm_prim, fsm_prim_smd, fsm_prim_se) = fsm_lists
 
     getOutcomeData(df, 'FSM primary outcome', fsm_lists, outcome_vars)
@@ -361,24 +545,24 @@ def make_dataframe(save_file=True, verbose=True):
 
     """ df_all.columns = [col[0] for col in col] """
 
-    df_all_1_1_SS = pd.concat([df_all, one_to_one_ss_df], axis=1, sort=False)
+    df_all_SS = pd.concat([df_all, ss_df], axis=1, sort=False)
 
     replacements = [('\r', ' '), ('\n', ' '), (':', ' '), (';', ' ')]
     for old, new in replacements:
-        df_all_1_1_SS.replace(old, new, regex=True, inplace=True)
+        df_all_SS.replace(old, new, regex=True, inplace=True)
 
     if verbose:
         # print dataframe
-        print(df_all_1_1_SS)
+        print(df_all_SS)
         print("\n")
         # list column names and position
-        for counter, i in enumerate(df_all_1_1_SS):
+        for counter, i in enumerate(df_all_SS):
             print(counter, i)
         print("\n")
         # print dataframe info
-        print("Columns:", df_all_1_1_SS.shape[1])
-        print("Rows:", df_all_1_1_SS.shape[0])
-        print("Datapoints:", df_all_1_1_SS.shape[0] * df_all_1_1_SS.shape[1])
+        print("Columns:", df_all_SS.shape[1])
+        print("Rows:", df_all_SS.shape[0])
+        print("Datapoints:", df_all_SS.shape[0] * df_all_SS.shape[1])
         print("\n")
 
     if save_file:
@@ -387,7 +571,7 @@ def make_dataframe(save_file=True, verbose=True):
         # get file name for output
         outfile_name_pre = datafile.rsplit('/')[-1]
         outfile_name_mid = outfile_name_pre.rsplit('.')[0]
-        outfile_name = outfile_name_mid + "_Main_Analysis_SS.csv"
+        outfile_name = outfile_name_mid + "_Main_Analysis.csv"
         outfile = os.path.join(cw + "/" + outfile_name_mid, outfile_name)
         # create dir
         try:
@@ -399,7 +583,7 @@ def make_dataframe(save_file=True, verbose=True):
         # write to disk
         print("Input file: {}".format(datafile))
         print("Saving extracted output to: {}".format(outfile))
-        df_all_1_1_SS.to_csv(outfile, index=False, header=True)
+        df_all_SS.to_csv(outfile, index=False, header=True)
 
 make_dataframe(save_file=True, verbose=False)
 

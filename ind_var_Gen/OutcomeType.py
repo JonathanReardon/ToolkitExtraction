@@ -17,5 +17,3 @@ outcometype_df.fillna("NA", inplace=True)
 
 # save to disk
 """ outcometype_df.to_csv("outcometype.csv", index=False) """
-
-""" print(outcometype_df) """

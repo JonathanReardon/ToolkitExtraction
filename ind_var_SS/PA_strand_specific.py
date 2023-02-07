@@ -46,6 +46,4 @@ pha_ss_df = pd.concat([
 pha_ss_df.fillna("NA", inplace=True)
 
 # save to disk
-pha_ss_df.to_csv("physical_activity_ss.csv", index=False)
-
-print(pha_ss_df[0:50])
+""" pha_ss_df.to_csv("physical_activity_ss.csv", index=False) """

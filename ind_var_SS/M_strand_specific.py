@@ -1,6 +1,11 @@
 from Main import load_json, get_data, highlighted_text, comments
-from AttributeIDList import mentor_identity, mentor_paid_or_compensated, mentor_organisation
-from AttributeIDList import mentor_training, mentor_meeting_frequency, mentor_meeting_details_provided, mentor_meeting_location
+from AttributeIDList import mentor_identity
+from AttributeIDList import mentor_paid_or_compensated
+from AttributeIDList import mentor_organisation
+from AttributeIDList import mentor_training
+from AttributeIDList import mentor_meeting_frequency
+from AttributeIDList import mentor_meeting_details_provided
+from AttributeIDList import mentor_meeting_location
 from AttributeIDList import mentoring_additional_experiences, mentoring_programme_focus
 import pandas as pd
 
@@ -172,23 +177,14 @@ ment_prog_focus_Comments_df.columns = ["m_prog_focus_info"]
 # concatenate data frames
 mentoring_ss_df = pd.concat([
     ment_ident_df,
-
     ment_pay_df,
-
     ment_org_df,
-
     ment_training_df,
-
     ment_meeting_freq_df,
-
     ment_meeting_details_df,
-
     ment_meeting_location_df,
-
     ment_addit_exp_df,
-
     ment_prog_focus_df,
-
 ], axis=1, sort=False)
 
 # fill blanks with NA
@@ -196,5 +192,3 @@ mentoring_ss_df.fillna("NA", inplace=True)
 
 # save to disk
 # mentoring_ss_df.to_csv("mentoring_ss_df.csv", index=False)
-
-print(ment_meeting_details_df)

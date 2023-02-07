@@ -33,5 +33,3 @@ sample_size_df.fillna("NA", inplace=True)
 
 # save to disk
 """ sample_size_df.to_csv("sample_size.csv", index=False) """
-
-""" print(sample_size_df) """

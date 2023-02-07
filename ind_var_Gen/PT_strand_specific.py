@@ -1,8 +1,14 @@
 from Main import load_json, get_data, highlighted_text, comments
-from AttributeIDList import tutor_age_output, tutor_same_age_output, tutor_cross_age_output
-from AttributeIDList import tutor_from_output, tutor_role_output, tutee_attainment_output
-from AttributeIDList import digit_tech_output, tutor_tutee_incentive_output
-from AttributeIDList import tutor_age_same, tutor_age_cross
+from AttributeIDList import tutor_age_output
+from AttributeIDList import tutor_same_age_output
+from AttributeIDList import tutor_cross_age_output
+from AttributeIDList import tutor_from_output
+from AttributeIDList import tutor_role_output
+from AttributeIDList import tutee_attainment_output
+from AttributeIDList import digit_tech_output
+from AttributeIDList import tutor_tutee_incentive_output
+from AttributeIDList import tutor_age_same
+from AttributeIDList import tutor_age_cross
 from eppi_ID import eppiid_df
 
 import pandas as pd

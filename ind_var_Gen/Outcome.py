@@ -16,5 +16,3 @@ outcome_df.fillna("NA", inplace=True)
 
 # save to disk
 """ outcome_df.to_csv("outcome.csv", index=False) """
-
-""" print(outcome_df) """

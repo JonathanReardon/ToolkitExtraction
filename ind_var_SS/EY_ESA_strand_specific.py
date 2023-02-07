@@ -13,8 +13,6 @@ import sys
 
 load_json()
 
-""" data_files = sys.argv[1] """
-
 # get prev starting age data
 prev_start_age = get_data(ey_esa_prev_starting_age)
 prev_start_age_df = pd.DataFrame(prev_start_age)

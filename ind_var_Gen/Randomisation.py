@@ -37,5 +37,3 @@ randomisation_df['rand_raw'] = randomisation_df['rand_raw'].apply(lambda x: ",".
 
 # save to disk
 """ randomisation_df.to_csv("randomisation.csv", index=False) """
-
-""" print(randomisation_df['rand_raw']) """

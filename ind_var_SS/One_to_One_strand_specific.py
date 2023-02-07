@@ -40,5 +40,3 @@ one_to_one_ss_df.replace(';', ' ',  regex=True, inplace=True)
 
 # save to disk
 # one_to_one_ss_df.to_csv("one_to_one_ss_df.csv", index=False)
-
-print(one_to_one_ss_df)

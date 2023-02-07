@@ -35,5 +35,3 @@ for col in group1N_df.columns:
 
 # save to disk
 #group1N_df.to_csv("Group1N.csv", index=False)
-
-""" print(group1N_df) """

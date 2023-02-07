@@ -11,5 +11,3 @@ typename_df.fillna("NA", inplace=True)
 
 # save to disk
 #typename_df.to_csv("typename.csv", index=False)
-
-""" print(typename_df) """

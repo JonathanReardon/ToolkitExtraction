@@ -15,5 +15,3 @@ all_variables = pd.concat([eppiid_df, outcometype_df], axis=1, sort=False)
 
 # save to disk
 #all_variables.to_csv("PT_14jan21_Outcome_Info.csv", index=False)
-
-""" print(all_variables) """

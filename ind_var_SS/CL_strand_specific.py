@@ -136,6 +136,4 @@ cl_ss_df = pd.concat([
 cl_ss_df.fillna("NA", inplace=True)
 
 # save to disk
-cl_ss_df.to_csv("collaborative_learning_ss.csv", index=False)
-
-print(cl_ss_df[0:50])
+""" cl_ss_df.to_csv("collaborative_learning_ss.csv", index=False) """

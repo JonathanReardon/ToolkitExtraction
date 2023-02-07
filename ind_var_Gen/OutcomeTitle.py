@@ -18,5 +18,3 @@ outcome_title_df = outcome_title_df.replace(r'^\s*$', "NA", regex=True)
 
 # save to disk
 """ outcome_title_df.to_csv("out_tit.csv", index=False) """
-
-""" print(outcome_title_df) """

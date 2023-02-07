@@ -47,5 +47,3 @@ ena_ss_df.fillna("NA", inplace=True)
 
 # save to disk
 # mentoring_ss_df.to_csv("mentoring_ss_df.csv", index=False)
-
-print(ena_ss_df)

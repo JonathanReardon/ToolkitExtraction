@@ -11,5 +11,3 @@ parentittle_df.fillna("NA", inplace=True)
 
 # save to disk
 #parentittle_df.to_csv("parentittle.csv", index=False)
-
-""" print(parentittle_df) """

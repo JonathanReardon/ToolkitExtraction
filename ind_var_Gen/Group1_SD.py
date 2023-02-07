@@ -36,6 +36,4 @@ for col in group1sd_df.columns:
     group1sd_df.loc[mask, col] = "NA"
 
 # save to disk
-#group1sd_df.to_csv("Group1SD.csv", index=False)
-
-""" print(group1sd_df) """
+# group1sd_df.to_csv("Group1SD.csv", index=False)

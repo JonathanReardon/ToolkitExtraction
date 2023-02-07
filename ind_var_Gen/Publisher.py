@@ -11,6 +11,3 @@ publisher_df.fillna("NA", inplace=True)
 
 # save to disk
 #publisher_df.to_csv("publisher.csv", index=False)
-
-""" print(publisher_df)
- """

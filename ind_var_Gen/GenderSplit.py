@@ -28,5 +28,3 @@ gender_split_df.fillna("NA", inplace=True)
 
 # save to disk
 #gender_split_df.to_csv("gender_split.csv", index=False)
-
-""" print(gender_split_df) """

@@ -56,5 +56,3 @@ ela_ss_df = pd.concat([
     prog_desc_df,
     #prog_desc_HT_df,
 ], axis=1, sort=False)
-
-print(ela_ss_df)

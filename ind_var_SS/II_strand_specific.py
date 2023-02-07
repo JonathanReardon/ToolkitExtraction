@@ -37,6 +37,4 @@ ii_ss_df = pd.concat([
 ii_ss_df.fillna("NA", inplace=True)
 
 # save to disk
-ii_ss_df.to_csv("individualised_instruction_ss.csv", index=False)
-
-print(ii_ss_df[0:50])
+""" ii_ss_df.to_csv("individualised_instruction_ss.csv", index=False) """

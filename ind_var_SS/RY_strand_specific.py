@@ -89,6 +89,4 @@ ry_ss_df.replace('\n', ' ', regex=True, inplace=True)
 ry_ss_df.replace(':', ' ',  regex=True, inplace=True)
 ry_ss_df.replace(';', ' ',  regex=True, inplace=True)
 
-ry_ss_df.to_csv("repeating_a_year_ss.csv", index=False, header=True)
-
-print(ry_ss_df[0:15])
+""" ry_ss_df.to_csv("repeating_a_year_ss.csv", index=False, header=True) """

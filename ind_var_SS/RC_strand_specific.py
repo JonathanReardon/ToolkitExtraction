@@ -1,8 +1,16 @@
 from Main import load_json, get_data, highlighted_text, comments
-from AttributeIDList import rc_components_output, rc_strat_instruct_type_output, rc_instruct_components_output, rc_txt_type_output
-from AttributeIDList import rc_comp_strat_output, rc_comp_vocab_output, rc_comp_red_flu_output, rc_comp_phon_output
-from AttributeIDList import rc_comp_wri_output, rc_comp_other_output, rc_comp_unclear_output
-""" from eppi_ID import eppiid_df """
+from AttributeIDList import rc_components_output
+from AttributeIDList import rc_strat_instruct_type_output
+from AttributeIDList import rc_instruct_components_output
+from AttributeIDList import rc_txt_type_output
+
+from AttributeIDList import rc_comp_strat_output
+from AttributeIDList import rc_comp_vocab_output
+from AttributeIDList import rc_comp_red_flu_output
+from AttributeIDList import rc_comp_phon_output
+from AttributeIDList import rc_comp_wri_output
+from AttributeIDList import rc_comp_other_output
+from AttributeIDList import rc_comp_unclear_output
 
 import pandas as pd
 
@@ -74,13 +82,11 @@ rc_instruc_comp_df = pd.DataFrame(rc_instruc_comp)
 rc_instruc_comp_df = rc_instruc_comp_df.T
 rc_instruc_comp_df.columns = ["rc_instruc_comp"]
 
-
 # get rc text type / reading materials data
 rc_txt_type = get_data(rc_txt_type_output)
 rc_txt_type_df = pd.DataFrame(rc_txt_type)
 rc_txt_type_df = rc_txt_type_df.T
 rc_txt_type_df.columns = ["rc_txt_type_red_mat"]
-
 
 rc_ss_df = pd.concat([
     rc_comp_df,
@@ -97,6 +103,4 @@ rc_ss_df = pd.concat([
     rc_txt_type_df,
 ], axis=1, sort=False)
 
-print(rc_ss_df[0:25])
-
-rc_ss_df.to_csv("reading_comprehension_ss.csv", index=False, header=True)
+""" rc_ss_df.to_csv("reading_comprehension_ss.csv", index=False, header=True) """

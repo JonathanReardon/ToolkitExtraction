@@ -11,5 +11,3 @@ volume_df.fillna("NA", inplace=True)
 
 # save to disk
 #volume_df.to_csv("volume.csv", index=False)
-
-""" print(volume_df) """

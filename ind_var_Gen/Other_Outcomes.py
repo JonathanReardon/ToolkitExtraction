@@ -84,5 +84,3 @@ other_outcomes_df.fillna("NA", inplace=True)
 
 # save to disk
 """ other_outcomes_df.to_csv("other_outcomes.csv", index=False) """
-
-""" print(other_outcomes_df[0:3]) """

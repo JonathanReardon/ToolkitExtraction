@@ -11,5 +11,3 @@ editedby_df.fillna("NA", inplace=True)
 
 # save to disk
 #editedby_df.to_csv("editors.csv", index=False)
-
-""" print(editedby_df) """

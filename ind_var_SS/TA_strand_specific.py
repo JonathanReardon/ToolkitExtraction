@@ -1,6 +1,9 @@
-from Main import load_json, get_data, highlighted_text, comments
-from AttributeIDList import ta_description_output, ta_role_output, ta_group_size_output
 import pandas as pd
+
+from Main import load_json, get_data, highlighted_text, comments
+from AttributeIDList import ta_description_output
+from AttributeIDList import ta_role_output
+from AttributeIDList import ta_group_size_output
 
 load_json()
 
@@ -67,9 +70,7 @@ ta_group_size_Comments_df.columns = ["ta_group_size_info"]
 # concatenate data frames
 ta_ss_df = pd.concat([
     ta_desc_df,
-
     ta_role_df,
-
     ta_group_size_df,
 
 ], axis=1, sort=False)
@@ -80,6 +81,4 @@ ta_ss_df.replace('\n', ' ', regex=True, inplace=True)
 ta_ss_df.replace(':', ' ',  regex=True, inplace=True)
 ta_ss_df.replace(';', ' ',  regex=True, inplace=True)
 
-ta_ss_df.to_csv("ta_ss.csv", index=False, header=True)
-
-print(ta_ss_df)
+""" ta_ss_df.to_csv("ta_ss.csv", index=False, header=True) """

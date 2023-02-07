@@ -13,21 +13,6 @@ curriculumsubjects_df = pd.DataFrame(curriculumsubjects)
 curriculumsubjects_df = curriculumsubjects_df.T
 curriculumsubjects_df.columns = ["test_subject_raw"]
 
-# binarize curriculum subject options
-''' curriculumsubjects_df["test_subject_literacy_(first_language)"] = curriculumsubjects_df["test_subject_raw"].map(set(['Literacy (first language)']).issubset).astype(int)
-curriculumsubjects_df["test_subject_reading_Comprehension"] = curriculumsubjects_df["test_subject_raw"].map(set(['Reading comprehension']).issubset).astype(int)
-curriculumsubjects_df["test_subject_decoding/phonics"] = curriculumsubjects_df["test_subject_raw"].map(set(['Decoding/phonics']).issubset).astype(int)
-curriculumsubjects_df["test_subject_spelling"] = curriculumsubjects_df["test_subject_raw"].map(set(['Spelling']).issubset).astype(int)
-curriculumsubjects_df["test_subject_reading_other"] = curriculumsubjects_df["test_subject_raw"].map(set(['Reading other']).issubset).astype(int)
-curriculumsubjects_df["test_subject_speaking_and_listening/oral_language"] = curriculumsubjects_df["test_subject_raw"].map(set(['Speaking and listening/Oral language']).issubset).astype(int)
-curriculumsubjects_df["test_subject_writing"] = curriculumsubjects_df["test_subject_raw"].map(set(['Writing']).issubset).astype(int)
-curriculumsubjects_df["test_subject_mathematics"] = curriculumsubjects_df["test_subject_raw"].map(set(['Mathematics']).issubset).astype(int)
-curriculumsubjects_df["test_subject_science"] = curriculumsubjects_df["test_subject_raw"].map(set(['Science']).issubset).astype(int)
-curriculumsubjects_df["test_subject_social_studies"] = curriculumsubjects_df["test_subject_raw"].map(set(['Social studies']).issubset).astype(int)
-curriculumsubjects_df["test_subject_arts"] = curriculumsubjects_df["test_subject_raw"].map(set(['Arts']).issubset).astype(int)
-curriculumsubjects_df["test_subject_languages"] = curriculumsubjects_df["test_subject_raw"].map(set(['Languages']).issubset).astype(int)
-curriculumsubjects_df["test_subject_other_curriculum_test"] = curriculumsubjects_df["test_subject_raw"].map(set(['Other curriculum test']).issubset).astype(int) '''
-
 # Get Country highlighted text
 curriculumsubjects_HT = highlighted_text(curriculum_subjects)
 curriculumsubjects_HT_df = pd.DataFrame(curriculumsubjects_HT)
@@ -126,5 +111,3 @@ curriculum_subject_df.replace(';', ' ', regex=True, inplace=True)
 
 # save to disk
 # curriculum_subject_df.to_csv("curriculumsubjects.csv", index=False)
-
-""" print(curriculum_subject_df) """

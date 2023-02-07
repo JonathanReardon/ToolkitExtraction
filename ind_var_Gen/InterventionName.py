@@ -39,5 +39,4 @@ intervention_name_df = pd.concat([
 intervention_name_df.fillna("NA", inplace=True)
 
 # save to disk
-""" intervention_name_df.to_csv("InterventionName.csv", index=False)
-print(intervention_name_df[100:150]) """
+""" intervention_name_df.to_csv("InterventionName.csv", index=False) """

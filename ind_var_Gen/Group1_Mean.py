@@ -37,5 +37,3 @@ for col in group1mean_df.columns:
 
 # save to disk
 #group1mean_df.to_csv("Group1Mean.csv", index=False)
-
-""" print(group1mean_df) """

@@ -11,5 +11,3 @@ doi_df.fillna("NA", inplace=True)
 
 # save to disk
 #doi_df.to_csv("doi.csv", index=False)
-
-""" print(doi_df) """

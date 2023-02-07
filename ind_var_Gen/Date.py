@@ -34,5 +34,3 @@ year_df.fillna("NA", inplace=True)
 
 # save to disk
 #year_df.to_csv("year.csv", index=False)
-
-""" print(year_df) """

@@ -8,8 +8,6 @@ import sys
 
 load_json()
 
-""" data_files = sys.argv[1] """
-
 # get additional time organised data
 time_org = get_data(time_organsised)
 time_org_df = pd.DataFrame(time_org)
@@ -22,8 +20,6 @@ addit_time_struc_df = pd.DataFrame(addit_time_struc)
 addit_time_struc_df = addit_time_struc_df.T
 addit_time_struc_df.columns = ["addit_time_struct"]
 
-
-
 ey_eh_df = pd.concat([
     time_org_df,
     addit_time_struc_df
@@ -34,7 +30,3 @@ ey_eh_df.fillna("NA", inplace=True)
 
 # save to disk
 #ey_eh_df.to_csv("ey_pbl_ss_df.csv", index=False)
-
-""" print(ey_eh_df[0:25]) """
-
-print(ey_eh_df)

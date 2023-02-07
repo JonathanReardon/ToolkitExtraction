@@ -36,6 +36,4 @@ ap_ss_df = pd.concat([
 ap_ss_df.fillna("NA", inplace=True)
 
 # save to disk
-ap_ss_df.to_csv("arts_participation_ss.csv", index=False)
-
-print(ap_ss_df[0:50])
+""" ap_ss_df.to_csv("arts_participation_ss.csv", index=False) """

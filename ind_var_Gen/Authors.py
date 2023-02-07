@@ -12,6 +12,4 @@ authors_df.fillna("NA", inplace=True)
 # save to disk
 #authors_df.to_csv("authors.csv", index=False)
 
-""" print(authors_df) """
-
 """ authors_df.replace(';', ' ', regex=True, inplace=True) """

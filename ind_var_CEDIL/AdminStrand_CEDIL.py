@@ -33,5 +33,3 @@ admin_strand_df.fillna("NA", inplace=True)
 
 # save to disk
 #admin_strand_df.to_csv("adminstrand.csv", index=False)
-
-print(admin_strand_df)

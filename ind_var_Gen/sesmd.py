@@ -24,5 +24,3 @@ sesmd_df = sesmd_df.replace(r'^\s*$', "NA", regex=True)
 
 # save to disk
 """ sesmd_df.to_csv("sesmd.csv", index=False) """
-
-""" print(sesmd_df[100:150]) """

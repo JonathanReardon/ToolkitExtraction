@@ -1,6 +1,9 @@
-from Main import load_json, get_data, highlighted_text, comments
-from AttributeIDList import group_size_output, group_composition_output, group_teaching_lead_output
 import pandas as pd
+
+from Main import load_json, get_data, highlighted_text, comments
+from AttributeIDList import group_size_output
+from AttributeIDList import group_composition_output
+from AttributeIDList import group_teaching_lead_output
 
 load_json()
 
@@ -60,9 +63,7 @@ group_lead_Comments_df.columns = ["sgt_group_lead_info"]
 
 sgt_ss_df = pd.concat([
     group_size_df,
-
     group_composition_df,
-
     group_lead_df,
 ], axis=1, sort=False)
 
@@ -71,5 +72,3 @@ sgt_ss_df.fillna("NA", inplace=True)
 
 # save to disk
 # sgt_ss_df.to_csv("small_group_tuition_ss_df.csv", index=False)
-
-print(sgt_ss_df[0:25])

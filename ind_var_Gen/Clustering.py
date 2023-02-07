@@ -34,5 +34,3 @@ clustering_df.fillna("NA", inplace=True)
 
 # save to disk
 # clustering_df.to_csv("clustering.csv", index=False)
-
-""" print(clustering_df) """

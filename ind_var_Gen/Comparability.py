@@ -34,5 +34,3 @@ comparability_df.fillna("NA", inplace=True)
 
 # save to disk
 # comparability_df.to_csv("comparability.csv", index=False)
-
-""" print(comparability_df) """

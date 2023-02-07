@@ -1,3 +1,5 @@
+import pandas as pd
+
 from Main import load_json, get_data, highlighted_text, comments
 from AttributeIDList import ss_aim_output
 
@@ -6,18 +8,14 @@ from AttributeIDList import ss_aim_output_enrich
 from AttributeIDList import ss_aim_output_school_trans
 from AttributeIDList import ss_aim_output_gifted
 from AttributeIDList import ss_aim_output_unclear
-
 from AttributeIDList import ss_pupil_part_output
 from AttributeIDList import ss_resid_comp_output
 from AttributeIDList import ss_group_size_output
 from AttributeIDList import ss_activity_focus_output
 from AttributeIDList import ss_staff_kind_output
-
 from AttributeIDList import ss_parent_invol
 from AttributeIDList import ss_digit_tech
 from AttributeIDList import ss_attendance
-
-import pandas as pd
 
 load_json()
 
@@ -113,13 +111,11 @@ SS_ss_df = pd.concat([
     ss_aim_trans_df,
     ss_aim_gifted_df,
     ss_aim_unclear_df,
-
     ss_pupil_part_df,
     ss_resid_comp_df,
     ss_grp_size_df,
     ss_act_focus_df,
     ss_staff_kind_df,
-
     ss_par_invol_df,
     ss_dig_tech_df,
     ss_atten_df
@@ -129,6 +125,4 @@ SS_ss_df = pd.concat([
 SS_ss_df.fillna("NA", inplace=True)
 
 # save to disk
-SS_ss_df.to_csv("summer_school_ss.csv", index=False)
-
-print(SS_ss_df[0:50])
+""" SS_ss_df.to_csv("summer_school_ss.csv", index=False) """

@@ -11,5 +11,3 @@ author_df.fillna("NA", inplace=True)
 
 # save to disk
 #author_df.to_csv("author.csv", index=False)
-
-""" print(author_df) """

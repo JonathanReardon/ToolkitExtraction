@@ -45,6 +45,4 @@ ol_ss_df = pd.concat([
 ol_ss_df.fillna("NA", inplace=True)
 
 # save to disk
-ol_ss_df.to_csv("oral_language_ss.csv", index=False)
-
-print(ol_ss_df[0:50])
+""" ol_ss_df.to_csv("oral_language_ss.csv", index=False) """

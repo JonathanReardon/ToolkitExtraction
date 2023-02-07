@@ -35,5 +35,3 @@ publication_type_df.fillna("NA", inplace=True)
 
 # save to risk
 """ publication_type_df.to_csv("publicationtype.csv", index=False) """
-
-""" print(publication_type_df) """

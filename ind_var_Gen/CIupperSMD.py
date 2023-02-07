@@ -23,5 +23,3 @@ ciuppersmd_df = ciuppersmd_df.replace(r'^\s*$', "NA", regex=True)
 
 # save to disk
 #ciuppersmd_df.to_csv("ciuppersmd.csv", index=False)
-
-""" print(ciuppersmd_df) """

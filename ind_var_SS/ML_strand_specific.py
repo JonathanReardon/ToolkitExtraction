@@ -77,6 +77,4 @@ ml_ss_df = pd.concat([
 ml_ss_df.fillna("NA", inplace=True)
 
 # save to disk
-ml_ss_df.to_csv("mastery_learning_ss.csv", index=False)
-
-print(ml_ss_df[0:50])
+""" ml_ss_df.to_csv("mastery_learning_ss.csv", index=False) """

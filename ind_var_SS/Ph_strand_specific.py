@@ -1,5 +1,9 @@
 from Main import load_json, get_data, highlighted_text, comments
-from AttributeIDList import ph_targ_pop_output, ph_constit_part_approach_output, ph_central_teach_lit_output, ph_par_invol_output, ph_digit_tech_output
+from AttributeIDList import ph_targ_pop_output
+from AttributeIDList import ph_constit_part_approach_output
+from AttributeIDList import ph_central_teach_lit_output
+from AttributeIDList import ph_par_invol_output
+from AttributeIDList import ph_digit_tech_output
 
 from AttributeIDList import ph_constit_part_approach_synth_ph
 from AttributeIDList import ph_constit_part_approach_syst_ph
@@ -144,6 +148,4 @@ ph_ss_df = pd.concat([
 ph_ss_df.fillna("NA", inplace=True)
 
 # save to disk
-ph_ss_df.to_csv("phonics_ss.csv", index=False)
-
-print(ph_ss_df[0:50])
+""" ph_ss_df.to_csv("phonics_ss.csv", index=False) """

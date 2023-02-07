@@ -68,6 +68,4 @@ hw_ss_df = pd.concat([
 hw_ss_df.fillna("NA", inplace=True)
 
 # save to disk
-hw_ss_df.to_csv("homework_ss.csv", index=False)
-
-print(hw_ss_df[0:50])
+""" hw_ss_df.to_csv("homework_ss.csv", index=False) """

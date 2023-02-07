@@ -1,5 +1,12 @@
+import os
+import sys
+
+import pandas as pd
+
 from Main import load_json, get_data, highlighted_text, comments
-from AttributeIDList import sel_involvement_output, sel_focus_output, sel_location_output
+from AttributeIDList import sel_involvement_output
+from AttributeIDList import sel_focus_output
+from AttributeIDList import sel_location_output
 from AttributeIDList import sel_invol_all_pupils
 from AttributeIDList import sel_invol_targ_grp
 from AttributeIDList import sel_invol_classes
@@ -8,13 +15,8 @@ from AttributeIDList import sel_invol_teachers
 from AttributeIDList import sel_invol_other_staff
 from AttributeIDList import sel_invol_outside_experts
 from AttributeIDList import sel_invol_other
-import pandas as pd
-import os
-import sys
 
 load_json()
-
-""" data_files = sys.argv[1] """
 
 # get involvement data
 sel_involvement = get_data(sel_involvement_output)
@@ -105,5 +107,3 @@ sel_ss_df.fillna("NA", inplace=True)
 
 # save to disk
 #sel_ss_df.to_csv("social_emot_learning_ss_df.csv", index=False)
-
-print(sel_ss_df[0:25])

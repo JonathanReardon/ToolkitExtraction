@@ -22,5 +22,3 @@ smd_df = smd_df.replace(r'^\s*$', "NA", regex=True)
 
 # save to disk
 """ smd_df.to_csv("smd.csv", index=False) """
-
-""" print(smd_df[0:20]) """

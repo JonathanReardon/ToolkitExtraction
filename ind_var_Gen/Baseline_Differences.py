@@ -34,5 +34,3 @@ baseline_differences_df.fillna("NA", inplace=True)
 
 # save to disk
 #baseline_differences_df.to_csv("baselinedifferences.csv", index=False)
-
-""" print(baseline_differences_df) """

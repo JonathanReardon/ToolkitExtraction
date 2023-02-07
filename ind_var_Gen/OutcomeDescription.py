@@ -25,5 +25,3 @@ outcome_description_df.replace(';', ' ', regex=True, inplace=True)
 
 # save to disk
 """ outcome_description_df.to_csv("outcomedescription.csv", index=False) """
-
-""" print(outcome_description_df) """
