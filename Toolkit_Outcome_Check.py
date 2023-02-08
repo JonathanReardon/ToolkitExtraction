@@ -1,8 +1,8 @@
-from ind_var_Gen.eppi_ID import eppiid_df
-from ind_var_Gen.Author import author_df
-from ind_var_Gen.OutcomeType import outcometype_df
-from ind_var_Gen.Outcome import outcome_df
-from ind_var_Gen.OutcomeTitle import outcome_title_df
+from ind_var_functions.eppi_ID import eppiid_df
+from ind_var_functions.Author import author_df
+from ind_var_functions.OutcomeType import outcometype_df
+from ind_var_functions.Outcome import outcome_df
+from ind_var_functions.OutcomeTitle import outcome_title_df
 
 import pandas as pd
 from toolz import interleave

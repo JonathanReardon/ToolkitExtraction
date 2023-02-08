@@ -7,9 +7,9 @@ from AttributeIDList import tutor_role_output
 from AttributeIDList import tutee_attainment_output
 from AttributeIDList import digit_tech_output
 from AttributeIDList import tutor_tutee_incentive_output
-from AttributeIDList import tutor_age_same
+from AttributeIDList import tutor_age_same, tutor_age_cross
 from AttributeIDList import tutor_age_cross
-from eppi_ID import eppiid_df
+from ind_var_functions.eppi_ID import eppiid_df
 
 import pandas as pd
 
@@ -80,7 +80,6 @@ tut_incentive_df = tut_incentive_df.T
 tut_incentive_df.columns = ["pt_incentive"]
 
 peer_tut_ss_df = pd.concat([
-    eppiid_df,
     tut_desc_df,
     tut_desc_same_age_df,
     tut_desc_cross_age_df,
@@ -93,7 +92,5 @@ peer_tut_ss_df = pd.concat([
     digit_tech_df,
     tut_incentive_df,
 ], axis=1, sort=False)
-
-print(peer_tut_ss_df[0:25])
 
 """ peer_tut_ss_df.to_csv("peer_tutoring_ss.csv", index=False, header=True) """

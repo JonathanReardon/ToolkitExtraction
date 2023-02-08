@@ -1,41 +1,47 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+Author: Jonathan Reardon
+"""
 
 # standard imports
 import os
 import sys
 import pandas as pd
-import re
 from toolz import interleave
 
-# lcoal imports - core extraction functions
+# local imports - core extraction functions
 from Main import verbose_display
 from Main import save_dataframe
+from Main import clean_up
 
 # local imports - individual variables
-from ind_var_Gen import eppiid_df
-from ind_var_Gen import author_df
-from ind_var_Gen import year_df
-from ind_var_Gen import admin_strand_df
-from ind_var_Gen import abstract_df
-from ind_var_Gen import pubtype_eppi_df
+from ind_var_functions import ind_var_Gen
 
 datafile = sys.argv[1]
 
 def make_dataframe_1(save_file=True, clean_cols=True, verbose=True):
 
-    from ind_var_Gen import publication_type_df
-    from ind_var_Gen import country_df
-    from ind_var_Gen import educational_setting_df
-    from ind_var_Gen import study_realism_df
-    from ind_var_Gen import student_age
-    from ind_var_Gen import number_of_schools_df
-    from ind_var_Gen import number_of_classes_df
-    from ind_var_Gen import treatment_group_df
-    from ind_var_Gen import participant_assignment_df
-    from ind_var_Gen import level_of_assignment_df
-    from ind_var_Gen import study_design_df
-    from ind_var_Gen import randomisation_df
-    from ind_var_Gen import other_outcomes_df
+    eppiid_df = ind_var_Gen.eppi()
+    author_df = ind_var_Gen.author()
+    year_df = ind_var_Gen.date()
+    abstract_df = ind_var_Gen.abstract()
+    admin_strand_df = ind_var_Gen.admin_strand()
+    pubtype_eppi_df = ind_var_Gen.pubeppi()
+    publication_type_df = ind_var_Gen.pub_type()
+    country_df = ind_var_Gen.country()
+    educational_setting_df = ind_var_Gen.edu_setting()
+    study_realism_df = ind_var_Gen.study_realism()
+    student_age = ind_var_Gen.student_age()
+    number_of_schools_df = ind_var_Gen.number_of_schools()
+    number_of_classes_df = ind_var_Gen.number_of_classes()
+    treatment_group_df = ind_var_Gen.treat_group()
+    participant_assignment_df = ind_var_Gen.part_assign()
+    level_of_assignment_df = ind_var_Gen.level_assign()
+    study_design_df = ind_var_Gen.study_design()
+    randomisation_df = ind_var_Gen.randomisation()
+    other_outcomes_df = ind_var_Gen.other_outcomes()
 
     all_variables = pd.concat([
         eppiid_df,
@@ -89,10 +95,7 @@ def make_dataframe_1(save_file=True, clean_cols=True, verbose=True):
         all_variables.insert(83, 'part_other_CLEAN', '')
 
     # remove problematic text from outputs
-    all_variables.replace('\r', ' ', regex=True, inplace=True)
-    all_variables.replace('\n', ' ', regex=True, inplace=True)
-    all_variables.replace(':', ' ',  regex=True, inplace=True)
-    all_variables.replace(';', ' ',  regex=True, inplace=True)
+    clean_up(all_variables)
 
     if verbose:
         verbose_display(all_variables)
@@ -100,29 +103,32 @@ def make_dataframe_1(save_file=True, clean_cols=True, verbose=True):
     if save_file:
         save_dataframe(all_variables, "_DataFrame1.csv")
 
-
 def make_dataframe_2(save_file=True, clean_cols=True, verbose=True):
 
-    from ind_var_Gen import intervention_name_df
-    from ind_var_Gen import intervention_description_df
-    from ind_var_Gen import intervention_objectives_df
-    from ind_var_Gen import intervention_training_provided_df
-    from ind_var_Gen import intervention_org_type
-    from ind_var_Gen import intervention_focus_df
-    from ind_var_Gen import intervention_teaching_approach_df
-    from ind_var_Gen import intervention_inclusion_df
-    from ind_var_Gen import intervention_time_df
-    from ind_var_Gen import intervention_delivery_df
-    from ind_var_Gen import intervention_duration_df
-    from ind_var_Gen import intervention_frequency_df
-    from ind_var_Gen import intervention_session_length_df
-    from ind_var_Gen import intervention_detail_df
-    from ind_var_Gen import intervention_costs_df
-    from ind_var_Gen import intervention_evaluation_df
-    from ind_var_Gen import baseline_differences_df
-    from ind_var_Gen import comparability_df
-    from ind_var_Gen import comparability_vars_reported_df
-    from ind_var_Gen import clustering_df
+    eppiid_df = ind_var_Gen.eppi()
+    author_df = ind_var_Gen.author()
+    year_df = ind_var_Gen.date()
+    admin_strand_df = ind_var_Gen.admin_strand()
+    intervention_name_df = ind_var_Gen.intervention_name()
+    intervention_description_df = ind_var_Gen.intervention_desc()
+    intervention_objectives_df = ind_var_Gen.intervention_objec()
+    intervention_org_type = ind_var_Gen.int_org_type()
+    intervention_training_provided_df = ind_var_Gen.int_train_prov()
+    intervention_focus_df = ind_var_Gen.intervention_focus()
+    intervention_teaching_approach_df = ind_var_Gen.int_teach_appr()
+    intervention_inclusion_df = ind_var_Gen.int_inclusion()
+    intervention_time_df = ind_var_Gen.int_time()
+    intervention_delivery_df = ind_var_Gen.int_delivery()
+    intervention_duration_df = ind_var_Gen.int_duration()
+    intervention_frequency_df = ind_var_Gen.int_frequency()
+    intervention_session_length_df = ind_var_Gen.int_sess_len()
+    intervention_detail_df = ind_var_Gen.int_detail()
+    intervention_costs_df = ind_var_Gen.int_costs()
+    intervention_evaluation_df = ind_var_Gen.int_eval()
+    baseline_differences_df = ind_var_Gen.baseline_diff()
+    comparability_df = ind_var_Gen.comparability()
+    comparability_vars_reported_df = ind_var_Gen.com_var_rep()
+    clustering_df = ind_var_Gen.clustering()
 
     all_variables = pd.concat([
         eppiid_df,
@@ -179,10 +185,7 @@ def make_dataframe_2(save_file=True, clean_cols=True, verbose=True):
         all_variables.insert(89, 'clust_anal_CLEAN', '')
 
     # remove problematic text from outputs
-    all_variables.replace('\r', ' ', regex=True, inplace=True)
-    all_variables.replace('\n', ' ', regex=True, inplace=True)
-    all_variables.replace(':', ' ',  regex=True, inplace=True)
-    all_variables.replace(';', ' ',  regex=True, inplace=True)
+    clean_up(all_variables)
     all_variables.replace(r'^\s*$', "NA", regex=True)
 
     if verbose:
@@ -193,12 +196,16 @@ def make_dataframe_2(save_file=True, clean_cols=True, verbose=True):
         
 def make_dataframe_3(save_file=True, clean_cols=True, verbose=True):
 
-    from ind_var_Gen.SampleSize import sample_size_df
-    from ind_var_Gen.Gender import gender_df
-    from ind_var_Gen.ses_fsm import ses_fsm_df
-    from ind_var_Gen.Sample_Size_Initial import initial_sample_size_df
-    from ind_var_Gen.Sample_Size_Analyzed import analyzed_sample_size_df
-    from ind_var_Gen.Attrition import attrition_df
+    eppiid_df = ind_var_Gen.eppi()
+    author_df = ind_var_Gen.author()
+    year_df = ind_var_Gen.date()
+    admin_strand_df = ind_var_Gen.admin_strand()
+    sample_size_df = ind_var_Gen.samp_size()
+    gender_df = ind_var_Gen.gender()
+    ses_fsm_df = ind_var_Gen.ses_fm()
+    initial_sample_size_df = ind_var_Gen.samp_size_init()
+    analyzed_sample_size_df = ind_var_Gen.samp_size_anal()
+    attrition_df = ind_var_Gen.attrition()
 
     all_variables = pd.concat([
         eppiid_df,
@@ -244,16 +251,17 @@ def make_dataframe_3(save_file=True, clean_cols=True, verbose=True):
     if save_file:
         save_dataframe(all_variables, "_DataFrame3_Sample_Size.csv")
 
-
-
-
 def make_dataframe_4(save_file=True, clean_cols=True, verbose=True):
 
-    from ind_var_Gen import DescStatsOutcomeReported_df
-    from ind_var_Gen import DescStatsPrimaryOutcomeReported_Intervention_df
-    from ind_var_Gen import DescStatsPrimaryOutcomeReported_Control_df
-    from ind_var_Gen import DescStatsPrimaryOutcomeReported_Intervention_TWO_df
-    from ind_var_Gen import DescStatsPrimaryOutcomeReported_Control_TWO_df
+    eppiid_df = ind_var_Gen.eppi()
+    author_df = ind_var_Gen.author()
+    year_df = ind_var_Gen.date()
+    admin_strand_df = ind_var_Gen.admin_strand()
+    DescStatsOutcomeReported_df = ind_var_Gen.desc_s_out_rep()
+    DescStatsPrimaryOutcomeReported_Intervention_df = ind_var_Gen.desc_s_p_out_rep_interv()
+    DescStatsPrimaryOutcomeReported_Control_df = ind_var_Gen.desc_s_p_out_rep_contr()
+    DescStatsPrimaryOutcomeReported_Intervention_TWO_df = ind_var_Gen.desc_s_o_out_rep_interv_2()
+    DescStatsPrimaryOutcomeReported_Control_TWO_df = ind_var_Gen.desc_s_prim_out_rep_c_two()
 
     all_variables = pd.concat([
         eppiid_df, 
@@ -304,10 +312,7 @@ def make_dataframe_4(save_file=True, clean_cols=True, verbose=True):
         all_variables.insert(104, 'out_c2_other_CLEAN', '')
         all_variables.insert(108, 'follow_up_CLEAN', '')
 
-    all_variables.replace('\r', ' ', regex=True, inplace=True)
-    all_variables.replace('\n', ' ', regex=True, inplace=True)
-    all_variables.replace(':', ' ',  regex=True, inplace=True)
-    all_variables.replace(';', ' ',  regex=True, inplace=True)
+    clean_up(all_variables)
 
     if verbose:
         verbose_display(all_variables)
@@ -315,32 +320,34 @@ def make_dataframe_4(save_file=True, clean_cols=True, verbose=True):
     if save_file:
         save_dataframe(all_variables, "_Effect_Size_A.csv")
 
-
 def make_dataframe_5(save_file=True, clean_cols=True, verbose=True):
 
     global toolkit_test_type, toolkit_es_type
-
-    from ind_var_Gen.OutcomeType import outcometype_df
-    from ind_var_Gen.smd import smd_df
-    from ind_var_Gen.sesmd import sesmd_df
-    from ind_var_Gen.OutcomeDescription import outcome_description_df
-    from ind_var_Gen.OutcomeTitle import outcome_title_df
-    from ind_var_Gen.CIlowerSMD import cilowersmd_df
-    from ind_var_Gen.CIupperSMD import ciuppersmd_df
-    from ind_var_Gen.Sample import sample_df
-    from ind_var_Gen.Outcome import outcome_df
-    from ind_var_Gen.EffectSizeType import effectsizetype_df
-    from ind_var_Gen.OutcomeComparison import out_comp_df
-    from ind_var_Gen.OutcomeMeasure import outcome_measure_df
-    from ind_var_Gen.Group1_N import group1N_df
-    from ind_var_Gen.Group2_N import group2N_df
-    from ind_var_Gen.Group1_Mean import group1mean_df
-    from ind_var_Gen.Group2_Mean import group2mean_df
-    from ind_var_Gen.Group1_SD import group1sd_df
-    from ind_var_Gen.Group2_SD import group2sd_df
-    from ind_var_Gen.TestType import testtype_outcome_df
-
     from Toolkit_Outcome_Check import outcome_num
+
+    eppiid_df = ind_var_Gen.eppi()
+    author_df = ind_var_Gen.author()
+    year_df = ind_var_Gen.date()
+    admin_strand_df = ind_var_Gen.admin_strand()
+    outcometype_df = ind_var_Gen.out_type()
+    smd_df = ind_var_Gen.smd()
+    sesmd_df = ind_var_Gen.ses_md()
+    cilowersmd_df = ind_var_Gen.cilower()
+    ciuppersmd_df = ind_var_Gen.ciupper()
+    outcome_df = ind_var_Gen.outcome()
+    sample_df = ind_var_Gen.sample()
+    out_comp_df = ind_var_Gen.out_comp()
+    effectsizetype_df = ind_var_Gen.es_type()
+    outcome_measure_df = ind_var_Gen.out_measure()
+    outcome_title_df = ind_var_Gen.out_tit()
+    group1N_df = ind_var_Gen.group1_n()
+    group2N_df = ind_var_Gen.group2_n()
+    group1mean_df = ind_var_Gen.group1_mean()
+    group2mean_df = ind_var_Gen.group2_mean()
+    group1sd_df = ind_var_Gen.group1_sd()
+    group2sd_df = ind_var_Gen.group2_sd()
+    outcome_description_df = ind_var_Gen.out_desc()
+    testtype_outcome_df = ind_var_Gen.test_type()
 
     # concatenate record detail data frames
     record_details_df = pd.concat([
@@ -984,126 +991,50 @@ def make_dataframe_5(save_file=True, clean_cols=True, verbose=True):
     all_variables = pd.concat([record_details_df, df], axis=1, sort=False)
 
     if clean_cols:
-        # insert empty columns per variable for data checkers to log changes
-        all_variables.insert(6, 'out_tit_tool_CLEAN', '')
-        all_variables.insert(8, 'out_desc_tool_CLEAN', '')
-        all_variables.insert(10, 'out_type_tool_CLEAN', '')
-        all_variables.insert(12, 'smd_tool_CLEAN', '')
-        all_variables.insert(14, 'se_tool_CLEAN', '')
-        all_variables.insert(16, 'out_measure_tool_CLEAN', '')
-        all_variables.insert(18, 'out_g1_n_tool_CLEAN', '')
-        all_variables.insert(20, 'out_g1_mean_tool_CLEAN', '')
-        all_variables.insert(22, 'out_g1_sd_tool_CLEAN', '')
-        all_variables.insert(24, 'out_g2_n_tool_CLEAN', '')
-        all_variables.insert(26, 'out_g2_mean_tool_CLEAN', '')
-        all_variables.insert(28, 'out_g2_sd_tool_CLEAN', '')
-        all_variables.insert(30, 'ci_lower_tool_CLEAN', '')
-        all_variables.insert(32, 'ci_upper_tool_CLEAN', '')
-        all_variables.insert(34, 'out_label_tool_CLEAN', '')
-        all_variables.insert(36, 'out_samp_tool_CLEAN', '')
-        all_variables.insert(38, 'out_comp_tool_CLEAN', '')
-        all_variables.insert(40, 'out_es_type_tool_CLEAN', '')
-        all_variables.insert(42, 'out_test_type_raw_tool_CLEAN', '')
+        new_cols = [
+        "out_tit_tool",
+        'out_tit_tool_CLEAN',
+        "out_desc_tool",
+        'out_desc_tool_CLEAN', 
+        "out_type_tool",
+        'out_type_tool_CLEAN',
+        "smd_tool",
+        'smd_tool_CLEAN',
+        "se_tool",
+        'se_tool_CLEAN',
+        "out_measure_tool",
+        'out_measure_tool_CLEAN',
+        "out_g1_n_tool",
+        'out_g1_n_tool_CLEAN',
+        "out_g1_mean_tool",
+        'out_g1_mean_tool_CLEAN',
+        "out_g1_sd_tool",
+        'out_g1_sd_tool_CLEAN',
+        "out_g2_n_tool",
+        'out_g2_n_tool_CLEAN',
+        "out_g2_mean_tool",
+        'out_g2_mean_tool_CLEAN',
+        "out_g2_sd_tool",
+        'out_g2_sd_tool_CLEAN',
+        "ci_lower_tool",
+        'ci_lower_tool_CLEAN', 
+        "ci_upper_tool",
+        'ci_upper_tool_CLEAN',
+        "out_label_tool",
+        'out_label_tool_CLEAN',
+        "out_samp_tool",
+        'out_samp_tool_CLEAN',
+        "out_comp_tool",
+        'out_comp_tool_CLEAN', 
+        "out_es_type_tool",
+        'out_es_type_tool_CLEAN',
+        "out_test_type_raw_tool",
+        'out_test_type_raw_tool_CLEAN'
+        ]
 
-        all_variables.insert(44, 'out_tit_red_CLEAN', '')
-        all_variables.insert(46, 'out_desc_red_CLEAN', '')
-        all_variables.insert(48, 'out_type_red_CLEAN', '')
-        all_variables.insert(50, 'smd_red_CLEAN', '')
-        all_variables.insert(52, 'se_red_CLEAN', '')
-        all_variables.insert(54, 'out_measure_red_CLEAN', '')
-        all_variables.insert(56, 'out_g1_n_red_CLEAN', '')
-        all_variables.insert(58, 'out_g1_mean_red_CLEAN', '')
-        all_variables.insert(60, 'out_g1_sd_red_CLEAN', '')
-        all_variables.insert(62, 'out_g2_n_red_CLEAN', '')
-        all_variables.insert(64, 'out_g2_mean_red_CLEAN', '')
-        all_variables.insert(66, 'out_g2_sd_red_CLEAN', '')
-        all_variables.insert(68, 'ci_lower_red_CLEAN', '')
-        all_variables.insert(70, 'ci_upper_red_CLEAN', '')
-        all_variables.insert(72, 'out_label_red_CLEAN', '')
-        all_variables.insert(74, 'out_samp_red_CLEAN', '')
-        all_variables.insert(76, 'out_comp_red_CLEAN', '')
-        all_variables.insert(78, 'out_es_type_red_CLEAN', '')
-        all_variables.insert(80, 'out_test_type_raw_red_CLEAN', '')
+        all_variables = df.reindex(columns=new_cols, fill_value='')
 
-        all_variables.insert(82, 'out_tit_wri_CLEAN', '')
-        all_variables.insert(84, 'out_desc_wri_CLEAN', '')
-        all_variables.insert(86, 'out_type_wri_CLEAN', '')
-        all_variables.insert(88, 'smd_wri_CLEAN', '')
-        all_variables.insert(90, 'se_wri_CLEAN', '')
-        all_variables.insert(92, 'out_measure_wri_CLEAN', '')
-        all_variables.insert(94, 'out_g1_n_wri_CLEAN', '')
-        all_variables.insert(96, 'out_g1_mean_wri_CLEAN', '')
-        all_variables.insert(98, 'out_g1_sd_wri_CLEAN', '')
-        all_variables.insert(100, 'out_g2_n_wri_CLEAN', '')
-        all_variables.insert(102, 'out_g2_mean_wri_CLEAN', '')
-        all_variables.insert(104, 'out_g2_sd_wri_CLEAN', '')
-        all_variables.insert(106, 'ci_lower_wri_CLEAN', '')
-        all_variables.insert(108, 'ci_upper_wri_CLEAN', '')
-        all_variables.insert(110, 'out_label_wri_CLEAN', '')
-        all_variables.insert(112, 'out_samp_wri_CLEAN', '')
-        all_variables.insert(114, 'out_comp_wri_CLEAN', '')
-        all_variables.insert(116, 'out_es_type_wri_CLEAN', '')
-        all_variables.insert(118, 'out_test_type_wri_CLEAN', '')
-
-        all_variables.insert(120, 'out_tit_math_CLEAN', '')
-        all_variables.insert(122, 'out_desc_math_CLEAN', '')
-        all_variables.insert(124, 'out_type_math_CLEAN', '')
-        all_variables.insert(126, 'smd_math_CLEAN', '')
-        all_variables.insert(128, 'se_math_CLEAN', '')
-        all_variables.insert(130, 'out_measure_math_CLEAN', '')
-        all_variables.insert(132, 'out_g1_n_math_CLEAN', '')
-        all_variables.insert(134, 'out_g1_mean_math_CLEAN', '')
-        all_variables.insert(136, 'out_g1_sd_math_CLEAN', '')
-        all_variables.insert(138, 'out_g2_n_math_CLEAN', '')
-        all_variables.insert(140, 'out_g2_mean_math_CLEAN', '')
-        all_variables.insert(142, 'out_g2_sd_math_CLEAN', '')
-        all_variables.insert(144, 'ci_lower_math_CLEAN', '')
-        all_variables.insert(146, 'ci_upper_math_CLEAN', '')
-        all_variables.insert(148, 'out_label_math_CLEAN', '')
-        all_variables.insert(150, 'out_samp_math_CLEAN', '')
-        all_variables.insert(152, 'out_comp_math_CLEAN', '')
-        all_variables.insert(154, 'out_es_type_math_CLEAN', '')
-        all_variables.insert(156, 'out_test_type_math_CLEAN', '')
-
-        all_variables.insert(158, 'out_tit_sci_CLEAN', '')
-        all_variables.insert(160, 'out_desc_sci_CLEAN', '')
-        all_variables.insert(162, 'out_type_sci_CLEAN', '')
-        all_variables.insert(164, 'smd_sci_CLEAN', '')
-        all_variables.insert(166, 'se_sci_CLEAN', '')
-        all_variables.insert(168, 'out_measure_sci_CLEAN', '')
-        all_variables.insert(170, 'out_g1_n_sci_CLEAN', '')
-        all_variables.insert(172, 'out_g1_mean_sci_CLEAN', '')
-        all_variables.insert(174, 'out_g1_sd_sci_CLEAN', '')
-        all_variables.insert(176, 'out_g2_n_sci_CLEAN', '')
-        all_variables.insert(178, 'out_g2_mean_sci_CLEAN', '')
-        all_variables.insert(180, 'out_g2_sd_sci_CLEAN', '')
-        all_variables.insert(182, 'ci_lower_sci_CLEAN', '')
-        all_variables.insert(184, 'ci_upper_sci_CLEAN', '')
-        all_variables.insert(186, 'out_label_sci_CLEAN', '')
-        all_variables.insert(188, 'out_samp_sci_CLEAN', '')
-        all_variables.insert(190, 'out_comp_sci_CLEAN', '')
-        all_variables.insert(192, 'out_es_type_sci_CLEAN', '')
-        all_variables.insert(194, 'out_test_type_sci_CLEAN', '')
-
-        all_variables.insert(196, 'out_tit_fsm_CLEAN', '')
-        all_variables.insert(198, 'out_desc_fsm_CLEAN', '')
-        all_variables.insert(200, 'out_type_fsm_CLEAN', '')
-        all_variables.insert(202, 'smd_fsm_CLEAN', '')
-        all_variables.insert(204, 'se_fsm_CLEAN', '')
-        all_variables.insert(206, 'out_measure_fsm_CLEAN', '')
-        all_variables.insert(208, 'out_g1_n_fsm_CLEAN', '')
-        all_variables.insert(210, 'out_g1_mean_fsm_CLEAN', '')
-        all_variables.insert(212, 'out_g1_sd_fsm_CLEAN', '')
-        all_variables.insert(214, 'out_g2_n_fsm_CLEAN', '')
-        all_variables.insert(216, 'out_g2_mean_fsm_CLEAN', '')
-        all_variables.insert(218, 'out_g2_sd_fsm_CLEAN', '')
-        all_variables.insert(220, 'ci_lower_fsm_CLEAN', '')
-        all_variables.insert(222, 'ci_upper_fsm_CLEAN', '')
-        all_variables.insert(224, 'out_label_fsm_CLEAN', '')
-        all_variables.insert(226, 'out_samp_fsm_CLEAN', '')
-        all_variables.insert(228, 'out_comp_fsm_CLEAN', '')
-        all_variables.insert(230, 'out_es_type_fsm_CLEAN', '')
-        all_variables.insert(232, 'out_test_type_fsm_CLEAN', '')
+        all_variables = pd.concat([record_details_df, all_variables], axis=1, sort=False)
 
     if verbose:
         verbose_display(all_variables)
@@ -1120,12 +1051,12 @@ print('''
       *  Main Toolkit  *
       ------------------
 
-      1.  Dataframe 1
-      2.  Dataframe 2
-      3.  Dataframe 3 - Sample Size
-      4.  Dataframe 4 - Effect Size A
-      5.  Dataframe 5 - Effect Size B
-      6.  All 5 dataframes
+      1. Dataframe 1   [Study, Research and Design Variables]
+      2. Dataframe 2   [Intervention Details]
+      3. Sample Size   [Sample Size Variables]
+      4. Effect Size A [Descriptive Statistics]
+      5. Effect Size B [Outcome Details]
+      6. All 5 dataframes
       '''
 )
 
@@ -1134,27 +1065,35 @@ data_cleaning_option = int(input("Enter the number corresponding to the datafram
 
 match data_cleaning_option:
     # MAIN TOOLKIT
-    case 1: 
-        print("-  Data cleaning datraframe selection: Dataframe 1")
-        make_dataframe_1(save_file=True, clean_cols=True, verbose=True)
+    case 1:
+        print("- Data cleaning selection: Dataframe 1 - Study, Research and Design Variables")
+        make_dataframe_1(save_file=True, clean_cols=True, verbose=False)
     case 2: 
-        print("-  Data cleaning datraframe selection: Dataframe 2")
-        make_dataframe_2(save_file=True, clean_cols=True, verbose=True)
+        print("- Data cleaning selection: Dataframe 2 - Intervention Details")
+        make_dataframe_2(save_file=True, clean_cols=True, verbose=False)
     case 3:
-        print("-  Data cleaning datraframe selection: Dataframe 3 - Sample Size")
-        make_dataframe_3(save_file=True, clean_cols=True, verbose=True)
+        print("- Data cleaning selection: Sample Size - Sample Size Variables")
+        make_dataframe_3(save_file=True, clean_cols=True, verbose=False)
     case 4:
-        print("-  Data cleaning datraframe selection: Dataframe 4 - Effect Size A")
-        make_dataframe_4(save_file=True, clean_cols=True, verbose=True)
+        print("- Data cleaning selection: Effect Size A - Descriptive Statistics")
+        make_dataframe_4(save_file=True, clean_cols=True, verbose=False)
     case 5:
-        print("-  Data cleaning datraframe selection: Dataframe 5 - Effect Size B")
+        print("- Data cleaning selection: Effect Size B - Outcome Details")
         make_dataframe_5(save_file=True, clean_cols=True, verbose=False)
     case 6:
-        print("-  Data cleaning datraframe selection: All 5 dataframes")
-        make_dataframe_1(save_file=True, clean_cols=True, verbose=True)
-        make_dataframe_2(save_file=True, clean_cols=True, verbose=True)
-        make_dataframe_3(save_file=True, clean_cols=True, verbose=True)
-        make_dataframe_4(save_file=True, clean_cols=True, verbose=True)
+        print('''- Data cleaning selection: 
+
+            All 5 dataframes
+
+            1) Dataframe 1 - Study, Research and Design Variables
+            2) Dataframe 2 - Intervention Details
+            3) Sample Size - Sample Size Variables
+            4) Effect Size A - Descriptive Statistics
+            5) Effect Size B - Outcome Details
+        ''')
+
+        make_dataframe_1(save_file=True, clean_cols=True, verbose=False)
+        make_dataframe_2(save_file=True, clean_cols=True, verbose=False)
+        make_dataframe_3(save_file=True, clean_cols=True, verbose=False)
+        make_dataframe_4(save_file=True, clean_cols=True, verbose=False)
         make_dataframe_5(save_file=True, clean_cols=True, verbose=False)
-
-

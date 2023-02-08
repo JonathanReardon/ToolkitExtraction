@@ -2,23 +2,23 @@
 import os
 import sys
 
-from ind_var_Gen.eppi_ID import eppiid_df
-from ind_var_Gen.Author import author_df
-from ind_var_Gen.Date import year_df
-from ind_var_Gen.AdminStrand import admin_strand_df
+from ind_var_functions.eppi_ID import eppiid_df
+from ind_var_functions.Author import author_df
+from ind_var_functions.Date import year_df
+from ind_var_functions.AdminStrand import admin_strand_df
 
-from ind_var_Gen.PublicationType import publicationtype_df
-from ind_var_Gen.ParticipantAssignment import participant_assignment_df
-from ind_var_Gen.Randomisation import randomisation_df
-from ind_var_Gen.StudyRealism import study_realism_df
-from ind_var_Gen.NumberofSchools import number_of_schools_intervention_Comments_df
-from ind_var_Gen.NumberofClasses import number_of_classes_total_Comments_df
-from ind_var_Gen.InterventionDelivery import intervention_delivery_df
-from ind_var_Gen.InterventionEvaluation import InterventionEvaluation_df
-from ind_var_Gen.Comparability import comparability_df
-from ind_var_Gen.SampleSize import sample_size_Comments_df
-from ind_var_Gen.Attrition import overall_percent_attrition_Comments_df
-from ind_var_Gen.Clustering import clustering_df
+from ind_var_functions.PublicationType import publicationtype_df
+from ind_var_functions.ParticipantAssignment import participant_assignment_df
+from ind_var_functions.Randomisation import randomisation_df
+from ind_var_functions.StudyRealism import study_realism_df
+from ind_var_functions.NumberofSchools import number_of_schools_intervention_Comments_df
+from ind_var_functions.NumberofClasses import number_of_classes_total_Comments_df
+from ind_var_functions.InterventionDelivery import intervention_delivery_df
+from ind_var_functions.InterventionEvaluation import InterventionEvaluation_df
+from ind_var_functions.Comparability import comparability_df
+from ind_var_functions.SampleSize import sample_size_Comments_df
+from ind_var_functions.Attrition import overall_percent_attrition_Comments_df
+from ind_var_functions.Clustering import clustering_df
 
 from DataFrame5 import toolkit_test_type
 from DataFrame5 import toolkit_es_type
