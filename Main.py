@@ -261,6 +261,9 @@ def verbose_display(df):
     print("\n")
 
 def clean_up(df):
+    '''
+    Replaces problematic character with empty space
+    '''
     df.replace('\r', ' ', regex=True, inplace=True)
     df.replace('\n', ' ', regex=True, inplace=True)
     df.replace(':', ' ',  regex=True, inplace=True)
