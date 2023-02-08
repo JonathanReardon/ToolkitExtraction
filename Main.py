@@ -235,12 +235,12 @@ def save_dataframe(df, df_name):
     try:
         os.mkdir("Extractions/" + outfile_name_mid)
     except OSError:
-        print("Create {} dir fail, check if it already exists or permissions".format("Extractions/" + outfile_name_mid))
+        pass
     else:
         print("Successfully created {} directory".format("Extractions/" + outfile_name_mid))
     # write to disk
-    print("Input file: {}".format(data_file))
-    print("Saving extracted output to: {}".format(outfile))
+    print("Input file: {}\n".format(data_file))
+    print("Saving extracted output to: {}\n".format(outfile))
     df.to_csv(outfile, index=False)
 
 def verbose_display(df):
@@ -259,3 +259,9 @@ def verbose_display(df):
     print("Rows: {}".format(df.shape[0]))
     print("Datapoints: {}".format(df.shape[0] * df.shape[1]))
     print("\n")
+
+def clean_up(df):
+    df.replace('\r', ' ', regex=True, inplace=True)
+    df.replace('\n', ' ', regex=True, inplace=True)
+    df.replace(':', ' ',  regex=True, inplace=True)
+    df.replace(';', ' ',  regex=True, inplace=True)
