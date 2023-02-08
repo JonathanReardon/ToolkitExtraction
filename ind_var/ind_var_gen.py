@@ -9,197 +9,220 @@ from Main import get_outcome_lvl1
 from Main import get_outcome_lvl2
 from Main import clean_up
 
+def process_data(output, data_col):
+    # get data
+    data = get_data(output)
+    data_df = pd.DataFrame(data)
+    data_df = data_df.T
+    data_df.columns = [data_col]
+    return data_df
+
+def process_ht(output, ht_col):
+    # get highlighted text
+    ht = highlighted_text(output)
+    ht_df = pd.DataFrame(ht)
+    ht_df = ht_df.T
+    ht_df.columns = [ht_col]
+    return ht_df
+
+def process_info(output, info_col):
+    # get comments
+    comms = comments(output)
+    comments_df = pd.DataFrame(comms)
+    comments_df = comments_df.T
+    comments_df.columns = [info_col]
+    return comments_df
+
+def process_metadata(output, info_col):
+    # get metadata
+    metadata = get_metadata(output)
+    metadata_df = pd.DataFrame(metadata)
+    #metadata_df = metadata_df.T
+    metadata_df.columns = [info_col]
+    return metadata_df
+
 load_json()
 
-def abstract():
-    # get abstract data
-    df = get_metadata("Abstract")
-    df = pd.DataFrame(df)
-    df.columns = ["abstract"]
-    df.fillna("NA", inplace=True)
-    clean_up(df)
-    return df
+def get_abstract_data():
+    """
+    Retrieve abstract data and return it as a cleaned up DataFrame.
 
-def admin_strand():
+    Returns:
+    -------
+    abstract_df : pandas.DataFrame
+        DataFrame containing abstract data.
+    """
+    # Get abstract data frame
+    abstract_df = process_metadata("Abstract", "abstract")
+
+    # Clean up data frame
+    clean_up(abstract_df)
+    abstract_df.fillna("NA", inplace=True)
+
+    return abstract_df
+
+def get_admin_strand_data():
+    """
+    Retrieve data about the admin strand and return it as a cleaned up DataFrame.
+
+    Returns:
+    -------
+    df : pandas.DataFrame
+        DataFrame containing the admin strand data and associated comments.
+    """
     from AttributeIDList import admin_strand_output
-    # get admin strand data
-    df_admin_strand = get_data(admin_strand_output)
-    df_admin_strand = pd.DataFrame(df_admin_strand)
-    df_admin_strand = df_admin_strand.T
-    df_admin_strand.columns = ["strand_raw"]
 
-    # Get Strand comment data
-    df_admin_strand_com = comments(admin_strand_output)
-    df_admin_strand_com = pd.DataFrame(df_admin_strand_com)
-    df_admin_strand_com = df_admin_strand_com.T
-    df_admin_strand_com.columns = ["strand_info"]
+    # Get admin strand data frame
+    admin_strand_df = process_data(admin_strand_output,"strand_raw")
 
-    # concatenate data frames
-    df = pd.concat([
-        df_admin_strand, 
-        df_admin_strand_com
-    ], axis=1, sort=False)
+    # Get admin strand user comments
+    admin_strand_df_com = process_info(admin_strand_output,"strand_info")
 
+    # Concatenate data frames
+    df = pd.concat([admin_strand_df, admin_strand_df_com], axis=1, sort=False)
+
+    # Clean up data frame
     clean_up(df)
-
-    # fill blanks with NA
     df.fillna("NA", inplace=True)
 
     return df
 
-def student_age():
+def get_student_age_data():
+    """
+    Retrieve student age data and return it as a cleaned up DataFrame.
+
+    Returns:
+    -------
+    df : pandas.DataFrame
+        DataFrame containing student age data.
+    """
     from AttributeIDList import student_age_output
-    # get age data
-    student_age = get_data(student_age_output)
-    student_age_df = pd.DataFrame(student_age)
-    student_age_df = student_age_df.T
-    student_age_df.columns = ["part_age_raw"]
 
-    # get student age highlighted text
-    student_age_HT = highlighted_text(student_age_output)
-    student_age_HT_df = pd.DataFrame(student_age_HT)
-    student_age_HT_df = student_age_HT_df.T
-    student_age_HT_df.columns = ["part_age_ht"]
+    # Get student age data
+    student_age_df = process_data(student_age_output, "part_age_raw")
 
-    # get student age user comments
-    student_age_Comments = comments(student_age_output)
-    student_age_Comments_df = pd.DataFrame(student_age_Comments)
-    student_age_Comments_df = student_age_Comments_df.T
-    student_age_Comments_df.columns = ["part_age_info"]
+    # Get student age highlighted text
+    student_age_HT_df = process_ht(student_age_output, "part_age_ht")
+
+    # Get student age user comments
+    student_age_Comments_df = process_info(student_age_output, "part_age_info")
 
     # concatenate data frames
-    df = pd.concat([
-        student_age_df, 
-        student_age_HT_df, 
-        student_age_Comments_df
-    ], axis=1, sort=False)
+    df = pd.concat([student_age_df, student_age_HT_df, student_age_Comments_df], axis=1, sort=False)
 
-    # replace problematic text
+    # Clean up data frame
     clean_up(df)
-
-    # fill blanks with NA
     df.fillna("NA", inplace=True)
+
     return df
 
-def attrition():
+def get_attrition_data():
+    """
+    Retrieve attrition data and return it as a cleaned up DataFrame.
 
+    Returns:
+    -------
+    df : pandas.DataFrame
+        DataFrame containing attrition data.
+    """
     from AttributeIDList import attrition_dropout_reported_output
-    from AttributeIDList import treatment_group_attrition
     from AttributeIDList import overall_percent_attrition
+    from AttributeIDList import treatment_group_attrition
 
-    #===========================#
+    #=============================#
     # ATTRITION DROP OUT REPORTED #
-    #===========================#
+    #=============================#
 
-    # get attrition dropout reported data
-    attrition_dropout_reported = get_data(attrition_dropout_reported_output)
-    attrition_dropout_reported_df = pd.DataFrame(attrition_dropout_reported)
-    attrition_dropout_reported_df = attrition_dropout_reported_df.T
-    attrition_dropout_reported_df.columns=["attri_raw"]
+    attrition_dropout_reported_df = process_data(attrition_dropout_reported_output, "attri_raw")
+    attrition_dropout_reported_HT_df = process_ht(attrition_dropout_reported_output, "attri_ht")
+    attrition_dropout_reported_Comments_df = process_info(attrition_dropout_reported_output, "attri_info")
 
-    # highlighted text
-    attrition_dropout_reported_HT = highlighted_text(attrition_dropout_reported_output)
-    attrition_dropout_reported_HT_df = pd.DataFrame(attrition_dropout_reported_HT)
-    attrition_dropout_reported_HT_df = attrition_dropout_reported_HT_df.T
-    attrition_dropout_reported_HT_df.columns = ["attri_ht"]
+    #=============================#
+    #  TREATMENT GROUP ATTRITION  #
+    #=============================#
 
-    # comments
-    attrition_dropout_reported_Comments = comments(attrition_dropout_reported_output)
-    attrition_dropout_reported_Comments_df = pd.DataFrame(attrition_dropout_reported_Comments)
-    attrition_dropout_reported_Comments_df = attrition_dropout_reported_Comments_df.T
-    attrition_dropout_reported_Comments_df.columns = ["attri_info"]
+    treatmentgroup_attrition_HT_df = process_ht(treatment_group_attrition, "attri_treat_ht")
+    treatmentgroup_attrition_Comments_df = process_info(treatment_group_attrition, "attri_treat_info")
 
-    #===========================#
-    # TREATMENT GROUP ATTRITION #
-    #===========================#
+    #=============================#
+    #  OVERALL PERCENT ATTRITION  #
+    #=============================#
 
-    # get treatment attrition highlighted text
-    treatmentgroup_attrition_HT = highlighted_text(treatment_group_attrition)
-    treatmentgroup_attrition_HT_df = pd.DataFrame(treatmentgroup_attrition_HT)
-    treatmentgroup_attrition_HT_df = treatmentgroup_attrition_HT_df.T
-    treatmentgroup_attrition_HT_df.columns = ["attri_treat_ht"]
+    overall_percent_attrition_HT_df = process_ht(overall_percent_attrition, "attri_perc_ht")
+    overall_percent_attrition_Comments_df = process_info(overall_percent_attrition, "attri_perc_info")
 
-    # get treatment attrition user comments
-    treatmentgroup_attrition_Comments = comments(treatment_group_attrition)
-    treatmentgroup_attrition_Comments_df = pd.DataFrame(treatmentgroup_attrition_Comments)
-    treatmentgroup_attrition_Comments_df = treatmentgroup_attrition_Comments_df.T
-    treatmentgroup_attrition_Comments_df.columns = ["attri_treat_info"]
-
-    #===========================#
-    # OVERALL PERCENT ATTRITION #
-    #===========================#
-
-    # get overall percent attrition highlighted text
-    overall_percent_attrition_HT = highlighted_text(overall_percent_attrition)
-    overall_percent_attrition_HT_df = pd.DataFrame(overall_percent_attrition_HT)
-    overall_percent_attrition_HT_df = overall_percent_attrition_HT_df.T
-    overall_percent_attrition_HT_df.columns = ["attri_perc_ht"]
-
-    # Gget overall percent attrition  user comments
-    overall_percent_attrition_Comments = comments(overall_percent_attrition)
-    overall_percent_attrition_Comments_df = pd.DataFrame(overall_percent_attrition_Comments)
-    overall_percent_attrition_Comments_df = overall_percent_attrition_Comments_df.T
-    overall_percent_attrition_Comments_df.columns = ["attri_perc_info"]
-
-    # concatenate data frames
-    df = pd.concat([
-        attrition_dropout_reported_df, 
-        attrition_dropout_reported_HT_df, 
-        attrition_dropout_reported_Comments_df,
-        treatmentgroup_attrition_HT_df, 
-        treatmentgroup_attrition_Comments_df,
-        overall_percent_attrition_HT_df, 
-        overall_percent_attrition_Comments_df], axis=1, sort=False)
-
-    # fill blank with NA
-    df.fillna("NA", inplace=True)
+    # merge dataframes
+    df = pd.concat([attrition_dropout_reported_df, attrition_dropout_reported_HT_df, 
+                    attrition_dropout_reported_Comments_df, treatmentgroup_attrition_HT_df, 
+                    treatmentgroup_attrition_Comments_df, overall_percent_attrition_HT_df, 
+                    overall_percent_attrition_Comments_df], axis=1)
 
     return df
 
 # get author data
 def author():
-    author = get_metadata("ShortTitle")
-    author_df = pd.DataFrame(author)
-    author_df.columns=["pub_author"]
+    """
+    Retrieve 'ShortTitle'' data and return it as a cleaned up DataFrame.
+
+    Returns:
+    -------
+    author_df : pandas.DataFrame
+        DataFrame containing publication author data.
+    """
+    # Get author metadata
+    author_df = process_metadata("ShortTitle", "pub_author")
+
+    # Clean up dataframe
+    clean_up(author_df)
     author_df.fillna("NA", inplace=True)
+
     return author_df
 
 def authors():
-    # get author data
-    df = get_metadata("Authors")
-    df = pd.DataFrame(df)
-    df.columns=["pub_author"]
-    df.fillna("NA", inplace=True)
-    return df
+    """
+    Retrieve Authors data and return it as a cleaned up DataFrame.
+
+    Returns:
+    -------
+    author_df : pandas.DataFrame
+        DataFrame containing publication author data.
+    """
+    # Get authors metadata
+    authors_df = process_metadata("Authors", "pub_author")
+
+    # Clean up data frame
+    authors_df.fillna("NA", inplace=True)
+
+    return authors_df
 
 def baseline_diff():
+    """
+    Retrieve baseline differences data and return it as a cleaned up DataFrame.
+
+    Returns:
+    -------
+    df : pandas.DataFrame
+        DataFrame containing baseline differences data.
+    """
     from AttributeIDList import baseline_differences_output
-    # extract baseline differences data
-    baselinedifferences = get_data(baseline_differences_output)
-    baselinedifferences_df = pd.DataFrame(baselinedifferences)
-    baselinedifferences_df = baselinedifferences_df.T
-    baselinedifferences_df.columns=["base_diff_raw"]
 
-    # Get Baseline Differences highlighted text
-    baselinedifferences_HT = highlighted_text(baseline_differences_output)
-    baselinedifferences_HT_df = pd.DataFrame(baselinedifferences_HT)
-    baselinedifferences_HT_df = baselinedifferences_HT_df.T
-    baselinedifferences_HT_df.columns = ["base_diff_ht"]
+    # Get baseline differences data
+    baselinedifferences_df = process_data(baseline_differences_output, "base_diff_raw")
 
-    # Get Educational Setting user comments
-    baselinedifferences_Comments = comments(baseline_differences_output)
-    baselinedifferences_Comments_df = pd.DataFrame(baselinedifferences_Comments)
-    baselinedifferences_Comments_df = baselinedifferences_Comments_df.T
-    baselinedifferences_Comments_df.columns = ["base_diff_info"]
+    # Get baseline differences highlighted text
+    baselinedifferences_HT_df = process_ht(baseline_differences_output, "base_diff_ht")
 
-    # concatenate data frames
+    # Get baseline differences comments
+    baselinedifferences_Comments_df = process_info(baseline_differences_output, "base_diff_info")
+
+    # Concatenate data frames
     df = pd.concat([
         baselinedifferences_df, 
         baselinedifferences_HT_df, 
         baselinedifferences_Comments_df
     ], axis=1, sort=False)
 
-    # fill blanks with NA
+    # Clean up data frame
     df.fillna("NA", inplace=True)
 
     return df
@@ -226,12 +249,21 @@ def cilower():
     return cilowersmd_df
 
 def city():
-    # get author data
-    df = get_metadata("City")
-    df = pd.DataFrame(df)
-    df.columns = ["City"]
-    df.fillna("NA", inplace=True)
-    return df
+    """
+    Retrieve city data and return it as a cleaned up DataFrame.
+
+    Returns:
+    -------
+    city_df : pandas.DataFrame
+        DataFrame containing publication author data.
+    """
+    # Get city metadata
+    city_df = process_metadata("City", "City")
+
+    # Clean up data frame
+    city_df.fillna("NA", inplace=True)
+
+    return city_df
 
 def ciupper():
     # extract confidence interval upper data
@@ -254,86 +286,64 @@ def ciupper():
     return ciuppersmd_df
 
 def clustering():
+    """
+    
+    """
     from AttributeIDList import clustering_output
-    # extract clustering data
-    clustering = get_data(clustering_output)
-    clustering_df = pd.DataFrame(clustering)
-    clustering_df = clustering_df.T
-    clustering_df.columns=["clust_anal_raw"]
 
-    # Get Baseline Differences highlighted text
-    clustering_HT = highlighted_text(clustering_output)
-    clustering_HT_df = pd.DataFrame(clustering_HT)
-    clustering_HT_df = clustering_HT_df.T
-    clustering_HT_df.columns = ["clust_anal_ht"]
+    # Get clustering data
+    clustering_df = process_data(clustering_output, "clust_anal_raw")
 
-    # Get Educational Setting user comments
-    clustering_Comments = comments(clustering_output)
-    clustering_Comments_df = pd.DataFrame(clustering_Comments)
-    clustering_Comments_df = clustering_Comments_df.T
-    clustering_Comments_df.columns = ["clust_anal_info"]
+    # Get clustering highlighted text
+    clustering_HT_df = process_ht(clustering_output, "clust_anal_ht")
 
-    # concatenate data frames
-    df = pd.concat([
-        clustering_df, 
-        clustering_HT_df, 
-        clustering_Comments_df
-    ], axis=1, sort=False)
+    # Get clustering user comments
+    clustering_Comments_df = process_info(clustering_output, "clust_anal_info")
 
-    # fill blanks with NA
+    # Concatenate data frames
+    df = pd.concat([clustering_df, 
+                    clustering_HT_df, 
+                    clustering_Comments_df], axis=1, sort=False)
+
+    # Clean up data frame
     df.fillna("NA", inplace=True)
 
     return df
 
 def com_var_rep():
+    """
+    
+    """
     from AttributeIDList import comparabiltiy_vars_reported
     from AttributeIDList import if_yes_which_comparability_variables_reported_output
 
     #====================================================#
-    # Are the variables used for comparability reported?
+    # Are the variables used for comparability reported? #
     #====================================================#
 
-    # get comparability variables reported data
-    comparability_vars_reported = get_data(comparabiltiy_vars_reported)
-    comparability_vars_reported_df = pd.DataFrame(comparability_vars_reported)
-    comparability_vars_reported_df = comparability_vars_reported_df.T
-    comparability_vars_reported_df.columns = ["comp_var_rep_raw"]
+    # Get comparability variables reported data
+    comparability_vars_reported_df = process_data(comparabiltiy_vars_reported, "comp_var_rep_raw")
 
     # Get Comparability Variables Reported highlighted text
-    comparability_vars_reported_HT = highlighted_text(comparabiltiy_vars_reported)
-    comparability_vars_reported_HT_df = pd.DataFrame(comparability_vars_reported_HT)
-    comparability_vars_reported_HT_df = comparability_vars_reported_HT_df.T
-    comparability_vars_reported_HT_df.columns = ["comp_var_rep_ht"]
+    comparability_vars_reported_HT_df = process_ht(comparabiltiy_vars_reported, "comp_var_rep_ht")
 
     # Get Comparability Variables Reported user comments
-    comparability_vars_reported_Comments = comments(comparabiltiy_vars_reported)
-    comparability_vars_reported_Comments_df = pd.DataFrame(comparability_vars_reported_Comments)
-    comparability_vars_reported_Comments_df = comparability_vars_reported_Comments_df.T
-    comparability_vars_reported_Comments_df.columns = ["comp_var_rep_info"]
+    comparability_vars_reported_Comments_df = process_info(comparabiltiy_vars_reported, "comp_var_rep_info")
 
-    #====================================================#
-    # If yes, which variables are used for comparability?
-    #====================================================#
+    #=====================================================#
+    # If yes, which variables are used for comparability? #
+    #=====================================================#
 
     # get "which" variables are used for comparability data
-    which_comparability_vars_reported = get_data(if_yes_which_comparability_variables_reported_output)
-    which_comparability_vars_reported_df = pd.DataFrame(which_comparability_vars_reported)
-    which_comparability_vars_reported_df = which_comparability_vars_reported_df.T
-    which_comparability_vars_reported_df.columns = ["comp_var_raw"]
+    which_comparability_vars_reported_df = process_data(if_yes_which_comparability_variables_reported_output, "comp_var_raw")
 
     # Get Comparability Variables Reported highlighted text
-    which_comparability_vars_reported_df_HT = highlighted_text(if_yes_which_comparability_variables_reported_output)
-    which_comparability_vars_reported_df_HT_df = pd.DataFrame(which_comparability_vars_reported_df_HT)
-    which_comparability_vars_reported_df_HT_df = which_comparability_vars_reported_df_HT_df.T
-    which_comparability_vars_reported_df_HT_df.columns = ["comp_var_ht"]
+    which_comparability_vars_reported_df_HT_df = process_ht(if_yes_which_comparability_variables_reported_output, "comp_var_ht")
 
     # Get Comparability Variables Reported user comments
-    which_comparability_vars_reported_Comments = comments(if_yes_which_comparability_variables_reported_output)
-    which_comparability_vars_reported_Comments_df = pd.DataFrame(which_comparability_vars_reported_Comments)
-    which_comparability_vars_reported_Comments_df = which_comparability_vars_reported_Comments_df.T
-    which_comparability_vars_reported_Comments_df.columns = ["comp_var_info"]
+    which_comparability_vars_reported_Comments_df = process_info(if_yes_which_comparability_variables_reported_output, "comp_var_info")
 
-    # concatenate data frames
+    # Concatenate data frames
     df = pd.concat([
         comparability_vars_reported_df, 
         comparability_vars_reported_HT_df, 
@@ -343,68 +353,58 @@ def com_var_rep():
         which_comparability_vars_reported_Comments_df
     ], axis=1, sort=False)
 
-    # fill blanks with NA
+    # Clean up data frame
     df.fillna("NA", inplace=True)
 
     return df
 
 def comparability():
+    """
+
+    """
     from AttributeIDList import comparability_output
+
     # get comparability data
-    comparability = get_data(comparability_output)
-    comparability_df = pd.DataFrame(comparability)
-    comparability_df = comparability_df.T
-    comparability_df.columns = ["comp_anal_raw"]
+    comparability_df = process_data(comparability_output, "comp_anal_raw")
 
-    # Get Baseline Differences highlighted text
-    comparability_HT = highlighted_text(comparability_output)
-    comparability_HT_df = pd.DataFrame(comparability_HT)
-    comparability_HT_df = comparability_HT_df.T
-    comparability_HT_df.columns = ["comp_anal_ht"]
+    # Get Comparability highlighted text
+    comparability_HT_df = process_ht(comparability_output, "comp_anal_ht")
 
-    # Get Educational Setting user comments
-    comparability_Comments = comments(comparability_output)
-    comparability_Comments_df = pd.DataFrame(comparability_Comments)
-    comparability_Comments_df = comparability_Comments_df.T
-    comparability_Comments_df.columns = ["comp_anal_info"]
+    # Get Comparability user comments
+    comparability_Comments_df = process_info(comparability_output, "comp_anal_info")
 
-    # concatenate data frames
+    # Concatenate data frames
     comparability = pd.concat([
         comparability_df, 
         comparability_HT_df, 
         comparability_Comments_df
     ], axis=1, sort=False)
 
-    # fill blanks with NA
+    # Clean up data frame
     comparability.fillna("NA", inplace=True)
 
     return comparability
 
 def country():
+    """
+    
+    """
     from AttributeIDList import countries
+
     # get country data
-    country = get_data(countries)
-    country_df = pd.DataFrame(country)
-    country_df = country_df.T
-    country_df.columns = ["loc_country_raw"]
+    country_df = process_data(countries, "loc_country_raw")
 
-    # get country highlighted text
-    country_HT = highlighted_text(countries)
-    country_HT_df = pd.DataFrame(country_HT)
-    country_HT_df = country_HT_df.T
-    country_HT_df.columns = ["loc_country_ht"]
+    # Get country highlighted text
+    country_HT_df = process_ht(countries, "loc_country_ht")
 
-    # get country user comments
-    country_Comments = comments(countries)
-    country_Comments_df = pd.DataFrame(country_Comments)
-    country_Comments_df = country_Comments_df.T
-    country_Comments_df.columns = ["loc_country_info"]
+    # Get country user comments
+    country_Comments_df = process_info(countries, "loc_country_info")
 
     # concatenate data frames
     """ country_df = pd.concat(
         [country_df, country_HT_df, country_Comments_df], axis=1, sort=False) """
 
-    # fill blanks with NA
+    # Clean up data frame
     country_df.fillna("NA", inplace=True)
 
     return country_df
@@ -737,12 +737,21 @@ def int_delivery():
     return intervention_delivery_df
 
 def intervention_desc():
+    """
+    
+    """
     from AttributeIDList import intervention_description_output
+
+
+
     # get intervention description highlighted text
     Intervention_DescriptionHT = highlighted_text(intervention_description_output)
     Intervention_DescriptionHT_df = pd.DataFrame(Intervention_DescriptionHT)
     Intervention_DescriptionHT_df = Intervention_DescriptionHT_df.T
     Intervention_DescriptionHT_df.columns=["int_desc_ht"]
+
+
+
 
     # get intervention description user comments
     Intervention_Description_Comments = comments(intervention_description_output)
@@ -825,6 +834,23 @@ def int_duration():
     intervention_duration_df.fillna("NA", inplace=True)
 
     return intervention_duration_df
+
+def int_duration_comm():
+    from AttributeIDList import intervention_duration_output
+
+    # get intervention duration user comments
+    InterventionDuration_Comments = comments(intervention_duration_output)
+    InterventionDuration_Comments_df = pd.DataFrame(InterventionDuration_Comments)
+    InterventionDuration_Comments_df = InterventionDuration_Comments_df.T
+    InterventionDuration_Comments_df.columns = ["int_dur_info"]
+
+    # Remove problematic text (potential escape sequences) from text input
+    clean_up(InterventionDuration_Comments_df)
+
+    # fill blanks with NA
+    InterventionDuration_Comments_df.fillna("NA", inplace=True)
+
+    return InterventionDuration_Comments_df
 
 def int_eval():
     from AttributeIDList import intervention_evaluation
@@ -932,6 +958,22 @@ def int_frequency():
 
     return intervention_frequency_df
 
+def int_frequency_comms():
+    from AttributeIDList import intervention_frequency_output
+
+    # get intervention frequency user comments
+    InterventionFrequency_Comments = comments(intervention_frequency_output)
+    InterventionFrequency_Comments_df = pd.DataFrame(InterventionFrequency_Comments)
+    InterventionFrequency_Comments_df = InterventionFrequency_Comments_df.T
+    InterventionFrequency_Comments_df.columns = ["int_freq_info"]
+
+    # Remove problematic text (potential escape sequences) from text input
+    clean_up(InterventionFrequency_Comments_df)
+
+    InterventionFrequency_Comments_df.fillna("NA", inplace=True)
+
+    return InterventionFrequency_Comments_df
+
 def int_inclusion():
     from AttributeIDList import intervention_approach_digital_technology
     from AttributeIDList import intervention_approach_parents_or_community_volunteers
@@ -984,6 +1026,87 @@ def int_inclusion():
         DigitalTechnology_df, 
         DigitalTechnology_HT_df, 
         DigitalTechnology_Comments_df,
+        Parents_or_Community_Volunteers_df,
+        Parents_or_Community_Volunteers_HT_df, 
+        Parents_or_Community_Volunteers_comments_df
+    ], axis=1, sort=False)
+
+    # Remove problematic text (potential escape sequences) from text input
+    clean_up(intervention_inclusion_df)
+
+    # fill blanks with NS
+    intervention_inclusion_df.fillna("NA", inplace=True)
+
+    return intervention_inclusion_df
+
+def int_inclusion_digit_tech():
+    from AttributeIDList import intervention_approach_digital_technology
+
+    ###########################################
+    # DIGITAL TECHNOLOGY INTERVENTION INCLUSION
+    ###########################################
+
+    # Get Digital Technology (inclusion) main data
+    DigitalTechnology = get_data(intervention_approach_digital_technology)
+    DigitalTechnology_df = pd.DataFrame(DigitalTechnology)
+    DigitalTechnology_df = DigitalTechnology_df.T
+    DigitalTechnology_df.columns = ["digit_tech_raw"]
+
+    # Get Digital Technology (inclusion) highlighted text
+    DigitalTechnology_HT = highlighted_text(intervention_approach_digital_technology)
+    DigitalTechnology_HT_df = pd.DataFrame(DigitalTechnology_HT)
+    DigitalTechnology_HT_df = DigitalTechnology_HT_df.T
+    DigitalTechnology_HT_df.columns = ["digit_tech_ht"]
+
+    # Get Digital Technology (inclusion) user comments
+    DigitalTechnology_Comments = comments(intervention_approach_digital_technology)
+    DigitalTechnology_Comments_df = pd.DataFrame(DigitalTechnology_Comments)
+    DigitalTechnology_Comments_df = DigitalTechnology_Comments_df.T
+    DigitalTechnology_Comments_df.columns = ["digit_tech_info"]
+
+    # concatenate data frames
+    intervention_inclusion_df = pd.concat([
+        DigitalTechnology_df, 
+        DigitalTechnology_HT_df, 
+        DigitalTechnology_Comments_df,
+    ], axis=1, sort=False)
+
+    # Remove problematic text (potential escape sequences) from text input
+    clean_up(intervention_inclusion_df)
+
+    # fill blanks with NS
+    intervention_inclusion_df.fillna("NA", inplace=True)
+
+    return intervention_inclusion_df
+
+def int_inclusion_par_vol():
+
+    from AttributeIDList import intervention_approach_parents_or_community_volunteers
+
+    ###########################################
+    # PARENTS OR COMMUNITY VOLUNTEERS INCLUSION
+    ###########################################
+
+    # Get Parents/Community volunteers (inclusion) main data
+    Parents_or_Community_Volunteers = get_data(intervention_approach_parents_or_community_volunteers)
+    Parents_or_Community_Volunteers_df = pd.DataFrame(Parents_or_Community_Volunteers)
+    Parents_or_Community_Volunteers_df = Parents_or_Community_Volunteers_df.T
+    Parents_or_Community_Volunteers_df.columns = ["parent_partic_raw"]
+
+    # Get Parents/Community volunteers (inclusion) highlighted text
+    Parents_or_Community_Volunteers_HT = highlighted_text(intervention_approach_parents_or_community_volunteers)
+    Parents_or_Community_Volunteers_HT_df = pd.DataFrame(Parents_or_Community_Volunteers_HT)
+    Parents_or_Community_Volunteers_HT_df  = Parents_or_Community_Volunteers_HT_df.T
+    Parents_or_Community_Volunteers_HT_df.columns = ["parent_partic_ht"]
+
+    # Get Parents/Community volunteers (inclusion) user comments
+    Parents_or_Community_Volunteers = comments(intervention_approach_parents_or_community_volunteers)
+    Parents_or_Community_Volunteers_comments_df = pd.DataFrame(Parents_or_Community_Volunteers)
+    Parents_or_Community_Volunteers_comments_df = Parents_or_Community_Volunteers_comments_df.T
+    Parents_or_Community_Volunteers_comments_df.columns = ["parent_partic_info"]
+
+    # concatenate data frames
+    intervention_inclusion_df = pd.concat([
         Parents_or_Community_Volunteers_df,
         Parents_or_Community_Volunteers_HT_df, 
         Parents_or_Community_Volunteers_comments_df
@@ -1117,6 +1240,22 @@ def int_sess_len():
     intervention_session_length_df.fillna("NA", inplace=True)
 
     return intervention_session_length_df
+
+def int_sess_len_comm():
+    from AttributeIDList import intervention_session_length_output
+
+    # get intervention session length user comments
+    InterventionSessionLength_Comments = comments(intervention_session_length_output)
+    InterventionSessionLength_Comments_df = pd.DataFrame(InterventionSessionLength_Comments)
+    InterventionSessionLength_Comments_df = InterventionSessionLength_Comments_df.T
+    InterventionSessionLength_Comments_df.columns = ["int_leng_info"]
+
+    # remove problematic text
+    clean_up(InterventionSessionLength_Comments_df)
+
+    InterventionSessionLength_Comments_df.fillna("NA", inplace=True)
+
+    return InterventionSessionLength_Comments_df
 
 def int_teach_appr():
     from AttributeIDList import intervention_teaching_approach
@@ -2580,6 +2719,23 @@ def samp_size():
 
     return sample_size_df
 
+def samp_size_comm():
+    from AttributeIDList import sample_size_output
+    # get sample size comments
+    sample_size_Comments = comments(sample_size_output)
+    sample_size_Comments_df = pd.DataFrame(sample_size_Comments)
+    sample_size_Comments_df = sample_size_Comments_df.T
+    sample_size_Comments_df.columns = ["sample_analysed_info"]
+
+    # remove problematic text
+    sample_size_Comments_df.replace('\r', ' ', regex=True, inplace=True)
+    sample_size_Comments_df.replace('\n', ' ', regex=True, inplace=True)
+
+    # fill blanks with NA
+    sample_size_Comments_df.fillna("NA", inplace=True)
+
+    return sample_size_Comments_df
+
 def ses_fm():
 
     from AttributeIDList import proportion_low_fsm_output
@@ -2669,6 +2825,20 @@ def ses_fm():
     ses_fsm_df.fillna("NA", inplace=True)
 
     return ses_fsm_df
+
+def low_ses_pc_comm():
+    from AttributeIDList import percentage_low_fsm_output
+
+    # get low ses perc info
+    low_ses_percentage_ = comments(percentage_low_fsm_output)
+    low_ses_percentage_df_info = pd.DataFrame(low_ses_percentage_)
+    low_ses_percentage_df_info = low_ses_percentage_df_info.T
+    low_ses_percentage_df_info.columns = ["fsm_perc_info"]
+
+    # remove problematic text
+    clean_up(low_ses_percentage_df_info)
+
+    return low_ses_percentage_df_info
 
 def ses_md():
     # get sesmd data
@@ -3074,6 +3244,29 @@ def number_of_schools():
 
     return number_of_schools_df
 
+def number_of_schools_total_comm():
+
+    from AttributeIDList import number_of_schools_total_output
+
+    ###########################
+    # NUMBER OF SCHOOLS TOTAL #
+    ###########################
+
+    # get total nnumber of schools comments data
+    number_of_schools_total_Comments = comments(number_of_schools_total_output)
+    number_of_schools_total_Comments_df = pd.DataFrame(number_of_schools_total_Comments)
+    number_of_schools_total_Comments_df = number_of_schools_total_Comments_df.T
+    number_of_schools_total_Comments_df.columns = ["school_total_info"]
+
+    # remove problematic text
+    number_of_schools_total_Comments_df.replace('\r', ' ', regex=True, inplace=True)
+    number_of_schools_total_Comments_df.replace('\n', ' ', regex=True, inplace=True)
+
+    # fill blanks with NA
+    number_of_schools_total_Comments_df.fillna("NA", inplace=True)
+
+    return number_of_schools_total_Comments_df
+
 def number_of_classes():
 
     from AttributeIDList import number_of_classes_intervention_output
@@ -3172,6 +3365,25 @@ def number_of_classes():
     number_of_classes_df.fillna("NA", inplace=True)
 
     return number_of_classes_df
+
+def number_of_classes_total_comm():
+
+    from AttributeIDList import number_of_classes_total_output
+
+    # get number of classes total comments data
+    number_of_classes_total_Comments = comments(number_of_classes_total_output)
+    number_of_classes_total_Comments_df = pd.DataFrame(number_of_classes_total_Comments)
+    number_of_classes_total_Comments_df = number_of_classes_total_Comments_df.T
+    number_of_classes_total_Comments_df.columns = ["class_total_info"]
+
+    # replace problematic text
+    number_of_classes_total_Comments_df.replace('\r', ' ', regex=True, inplace=True)
+    number_of_classes_total_Comments_df.replace('\n', ' ', regex=True, inplace=True)
+
+    # fill blanks with NA
+    number_of_classes_total_Comments_df.fillna("NA", inplace=True)
+
+    return number_of_classes_total_Comments_df
 
 def other_outcomes():
 
