@@ -17,31 +17,31 @@ from Main import save_dataframe
 from Main import clean_up
 
 # local imports - individual variables
-from ind_var_functions import ind_var_Gen
+from ind_var_functions import ind_var_gen
 
 datafile = sys.argv[1]
 
 def make_dataframe_1(save_file=True, clean_cols=True, verbose=True):
 
-    eppiid_df = ind_var_Gen.eppi()
-    author_df = ind_var_Gen.author()
-    year_df = ind_var_Gen.date()
-    abstract_df = ind_var_Gen.get_abstract_data()
-    admin_strand_df = ind_var_Gen.get_admin_strand_data()
-    pubtype_eppi_df = ind_var_Gen.pubeppi()
-    publication_type_df = ind_var_Gen.pub_type()
-    country_df = ind_var_Gen.country()
-    educational_setting_df = ind_var_Gen.edu_setting()
-    study_realism_df = ind_var_Gen.study_realism()
-    student_age = ind_var_Gen.get_student_age_data()
-    number_of_schools_df = ind_var_Gen.number_of_schools()
-    number_of_classes_df = ind_var_Gen.number_of_classes()
-    treatment_group_df = ind_var_Gen.treat_group()
-    participant_assignment_df = ind_var_Gen.part_assign()
-    level_of_assignment_df = ind_var_Gen.level_assign()
-    study_design_df = ind_var_Gen.study_design()
-    randomisation_df = ind_var_Gen.randomisation()
-    other_outcomes_df = ind_var_Gen.other_outcomes()
+    eppiid_df = ind_var_gen.eppi()
+    author_df = ind_var_gen.author()
+    year_df = ind_var_gen.date()
+    abstract_df = ind_var_gen.get_abstract_data()
+    admin_strand_df = ind_var_gen.get_admin_strand_data()
+    pubtype_eppi_df = ind_var_gen.pubeppi()
+    publication_type_df = ind_var_gen.pub_type()
+    country_df = ind_var_gen.country()
+    educational_setting_df = ind_var_gen.edu_setting()
+    study_realism_df = ind_var_gen.study_realism()
+    student_age = ind_var_gen.get_student_age_data()
+    number_of_schools_df = ind_var_gen.number_of_schools()
+    number_of_classes_df = ind_var_gen.number_of_classes()
+    treatment_group_df = ind_var_gen.treat_group()
+    participant_assignment_df = ind_var_gen.part_assign()
+    level_of_assignment_df = ind_var_gen.level_assign()
+    study_design_df = ind_var_gen.study_design()
+    randomisation_df = ind_var_gen.randomisation()
+    other_outcomes_df = ind_var_gen.other_outcomes()
 
     all_variables = pd.concat([
         eppiid_df,
@@ -105,30 +105,30 @@ def make_dataframe_1(save_file=True, clean_cols=True, verbose=True):
 
 def make_dataframe_2(save_file=True, clean_cols=True, verbose=True):
 
-    eppiid_df = ind_var_Gen.eppi()
-    author_df = ind_var_Gen.author()
-    year_df = ind_var_Gen.date()
-    admin_strand_df = ind_var_Gen.get_admin_strand_data()
-    intervention_name_df = ind_var_Gen.intervention_name()
-    intervention_description_df = ind_var_Gen.intervention_desc()
-    intervention_objectives_df = ind_var_Gen.intervention_objec()
-    intervention_org_type = ind_var_Gen.int_org_type()
-    intervention_training_provided_df = ind_var_Gen.int_train_prov()
-    intervention_focus_df = ind_var_Gen.intervention_focus()
-    intervention_teaching_approach_df = ind_var_Gen.int_teach_appr()
-    intervention_inclusion_df = ind_var_Gen.int_inclusion()
-    intervention_time_df = ind_var_Gen.int_time()
-    intervention_delivery_df = ind_var_Gen.int_delivery()
-    intervention_duration_df = ind_var_Gen.int_duration()
-    intervention_frequency_df = ind_var_Gen.int_frequency()
-    intervention_session_length_df = ind_var_Gen.int_sess_len()
-    intervention_detail_df = ind_var_Gen.int_detail()
-    intervention_costs_df = ind_var_Gen.int_costs()
-    intervention_evaluation_df = ind_var_Gen.int_eval()
-    baseline_differences_df = ind_var_Gen.baseline_diff()
-    comparability_df = ind_var_Gen.comparability()
-    comparability_vars_reported_df = ind_var_Gen.com_var_rep()
-    clustering_df = ind_var_Gen.clustering()
+    eppiid_df = ind_var_gen.eppi()
+    author_df = ind_var_gen.author()
+    year_df = ind_var_gen.date()
+    admin_strand_df = ind_var_gen.get_admin_strand_data()
+    intervention_name_df = ind_var_gen.intervention_name()
+    intervention_description_df = ind_var_gen.intervention_desc()
+    intervention_objectives_df = ind_var_gen.intervention_objec()
+    intervention_org_type = ind_var_gen.int_org_type()
+    intervention_training_provided_df = ind_var_gen.int_train_prov()
+    intervention_focus_df = ind_var_gen.intervention_focus()
+    intervention_teaching_approach_df = ind_var_gen.int_teach_appr()
+    intervention_inclusion_df = ind_var_gen.int_inclusion()
+    intervention_time_df = ind_var_gen.int_time()
+    intervention_delivery_df = ind_var_gen.int_delivery()
+    intervention_duration_df = ind_var_gen.int_duration()
+    intervention_frequency_df = ind_var_gen.int_frequency()
+    intervention_session_length_df = ind_var_gen.int_sess_len()
+    intervention_detail_df = ind_var_gen.int_detail()
+    intervention_costs_df = ind_var_gen.int_costs()
+    intervention_evaluation_df = ind_var_gen.int_eval()
+    baseline_differences_df = ind_var_gen.baseline_diff()
+    comparability_df = ind_var_gen.comparability()
+    comparability_vars_reported_df = ind_var_gen.com_var_rep()
+    clustering_df = ind_var_gen.clustering()
 
     all_variables = pd.concat([
         eppiid_df,
@@ -196,16 +196,16 @@ def make_dataframe_2(save_file=True, clean_cols=True, verbose=True):
         
 def make_dataframe_3(save_file=True, clean_cols=True, verbose=True):
 
-    eppiid_df = ind_var_Gen.eppi()
-    author_df = ind_var_Gen.author()
-    year_df = ind_var_Gen.date()
-    admin_strand_df = ind_var_Gen.get_admin_strand_data()
-    sample_size_df = ind_var_Gen.samp_size()
-    gender_df = ind_var_Gen.gender()
-    ses_fsm_df = ind_var_Gen.ses_fm()
-    initial_sample_size_df = ind_var_Gen.samp_size_init()
-    analyzed_sample_size_df = ind_var_Gen.samp_size_anal()
-    attrition_df = ind_var_Gen.get_attrition_data()
+    eppiid_df = ind_var_gen.eppi()
+    author_df = ind_var_gen.author()
+    year_df = ind_var_gen.date()
+    admin_strand_df = ind_var_gen.get_admin_strand_data()
+    sample_size_df = ind_var_gen.samp_size()
+    gender_df = ind_var_gen.gender()
+    ses_fsm_df = ind_var_gen.ses_fm()
+    initial_sample_size_df = ind_var_gen.samp_size_init()
+    analyzed_sample_size_df = ind_var_gen.samp_size_anal()
+    attrition_df = ind_var_gen.get_attrition_data()
 
     all_variables = pd.concat([
         eppiid_df,
@@ -253,15 +253,15 @@ def make_dataframe_3(save_file=True, clean_cols=True, verbose=True):
 
 def make_dataframe_4(save_file=True, clean_cols=True, verbose=True):
 
-    eppiid_df = ind_var_Gen.eppi()
-    author_df = ind_var_Gen.author()
-    year_df = ind_var_Gen.date()
-    admin_strand_df = ind_var_Gen.get_admin_strand_data()
-    DescStatsOutcomeReported_df = ind_var_Gen.desc_s_out_rep()
-    DescStatsPrimaryOutcomeReported_Intervention_df = ind_var_Gen.desc_s_p_out_rep_interv()
-    DescStatsPrimaryOutcomeReported_Control_df = ind_var_Gen.desc_s_p_out_rep_contr()
-    DescStatsPrimaryOutcomeReported_Intervention_TWO_df = ind_var_Gen.desc_s_o_out_rep_interv_2()
-    DescStatsPrimaryOutcomeReported_Control_TWO_df = ind_var_Gen.desc_s_prim_out_rep_c_two()
+    eppiid_df = ind_var_gen.eppi()
+    author_df = ind_var_gen.author()
+    year_df = ind_var_gen.date()
+    admin_strand_df = ind_var_gen.get_admin_strand_data()
+    DescStatsOutcomeReported_df = ind_var_gen.desc_s_out_rep()
+    DescStatsPrimaryOutcomeReported_Intervention_df = ind_var_gen.desc_s_p_out_rep_interv()
+    DescStatsPrimaryOutcomeReported_Control_df = ind_var_gen.desc_s_p_out_rep_contr()
+    DescStatsPrimaryOutcomeReported_Intervention_TWO_df = ind_var_gen.desc_s_o_out_rep_interv_2()
+    DescStatsPrimaryOutcomeReported_Control_TWO_df = ind_var_gen.desc_s_prim_out_rep_c_two()
 
     all_variables = pd.concat([
         eppiid_df, 
@@ -325,29 +325,29 @@ def make_dataframe_5(save_file=True, clean_cols=True, verbose=True):
     global toolkit_test_type, toolkit_es_type
     from Toolkit_Outcome_Check import outcome_num
 
-    eppiid_df = ind_var_Gen.eppi()
-    author_df = ind_var_Gen.author()
-    year_df = ind_var_Gen.date()
-    admin_strand_df = ind_var_Gen.get_admin_strand_data()
-    outcometype_df = ind_var_Gen.out_type()
-    smd_df = ind_var_Gen.smd()
-    sesmd_df = ind_var_Gen.ses_md()
-    cilowersmd_df = ind_var_Gen.cilower()
-    ciuppersmd_df = ind_var_Gen.ciupper()
-    outcome_df = ind_var_Gen.outcome()
-    sample_df = ind_var_Gen.sample()
-    out_comp_df = ind_var_Gen.out_comp()
-    effectsizetype_df = ind_var_Gen.es_type()
-    outcome_measure_df = ind_var_Gen.out_measure()
-    outcome_title_df = ind_var_Gen.out_tit()
-    group1N_df = ind_var_Gen.group1_n()
-    group2N_df = ind_var_Gen.group2_n()
-    group1mean_df = ind_var_Gen.group1_mean()
-    group2mean_df = ind_var_Gen.group2_mean()
-    group1sd_df = ind_var_Gen.group1_sd()
-    group2sd_df = ind_var_Gen.group2_sd()
-    outcome_description_df = ind_var_Gen.out_desc()
-    testtype_outcome_df = ind_var_Gen.test_type()
+    eppiid_df = ind_var_gen.eppi()
+    author_df = ind_var_gen.author()
+    year_df = ind_var_gen.date()
+    admin_strand_df = ind_var_gen.get_admin_strand_data()
+    outcometype_df = ind_var_gen.out_type()
+    smd_df = ind_var_gen.smd()
+    sesmd_df = ind_var_gen.ses_md()
+    cilowersmd_df = ind_var_gen.cilower()
+    ciuppersmd_df = ind_var_gen.ciupper()
+    outcome_df = ind_var_gen.outcome()
+    sample_df = ind_var_gen.sample()
+    out_comp_df = ind_var_gen.out_comp()
+    effectsizetype_df = ind_var_gen.es_type()
+    outcome_measure_df = ind_var_gen.out_measure()
+    outcome_title_df = ind_var_gen.out_tit()
+    group1N_df = ind_var_gen.group1_n()
+    group2N_df = ind_var_gen.group2_n()
+    group1mean_df = ind_var_gen.group1_mean()
+    group2mean_df = ind_var_gen.group2_mean()
+    group1sd_df = ind_var_gen.group1_sd()
+    group2sd_df = ind_var_gen.group2_sd()
+    outcome_description_df = ind_var_gen.out_desc()
+    testtype_outcome_df = ind_var_gen.test_type()
 
     # concatenate record detail data frames
     record_details_df = pd.concat([

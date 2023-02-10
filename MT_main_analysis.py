@@ -21,8 +21,8 @@ from Main import verbose_display
 from Main import save_dataframe
 
 # local imports
-from ind_var_functions import ind_var_Gen
-from ind_var_functions import ind_var_SS
+from ind_var_functions import ind_var_gen
+from ind_var_functions import ind_var_ss
 
 load_json()
 
@@ -85,164 +85,164 @@ match strand_specific_option:
     # MAIN TOOLKIT
     case 1: 
         print("- Strand specific datraframe selection: Arts Participation")
-        ap_ss_df = ind_var_SS.arts_participation_ss()
+        ap_ss_df = ind_var_ss.arts_participation_ss()
         ss_df = ap_ss_df
     case 2: 
         print("- Strand specific datraframe selection: Behaviour Interventions")
-        bi_ss_df = ind_var_SS.behaviour_int_ss()
+        bi_ss_df = ind_var_ss.behaviour_int_ss()
         ss_df = bi_ss_df
     case 3:
         print("- Strand specific datraframe selection: Collaborative Learning")
-        cl_ss_df = ind_var_SS.collab_learning_ss()
+        cl_ss_df = ind_var_ss.collab_learning_ss()
         ss_df = cl_ss_df
     case 4: 
         print("- Strand specific datraframe selection: Extending School Time")
-        est_ss_df = ind_var_SS.ext_school_time_ss()
+        est_ss_df = ind_var_ss.ext_school_time_ss()
         ss_df = est_ss_df
     case 5: 
         print("- Strand specific datraframe selection: Feedback")
-        feedback_ss_df = ind_var_SS.feedback_ss()
+        feedback_ss_df = ind_var_ss.feedback_ss()
         ss_df = feedback_ss_df
     case 6:
         print("- Strand specific datraframe selection: Homework")
-        hw_ss_df = ind_var_SS.homework_ss()
+        hw_ss_df = ind_var_ss.homework_ss()
         ss_df = hw_ss_df
     case 7: 
         print("- Strand specific datraframe selection: Individualised Instruction")
-        ii_ss_df = ind_var_SS.indiv_instr_ss()
+        ii_ss_df = ind_var_ss.indiv_instr_ss()
         ss_df = ii_ss_df
     case 8: 
         print("- Strand specific datraframe selection: Mentoring")
-        mentoring_ss_df = ind_var_SS.mentoring_ss()
+        mentoring_ss_df = ind_var_ss.mentoring_ss()
         ss_df = mentoring_ss_df
     case 9:
         print("- Strand specific datraframe selection: Mastery Learning")
-        ml_ss_df = ind_var_SS.mastery_learning_ss()
+        ml_ss_df = ind_var_ss.mastery_learning_ss()
         ss_df = ml_ss_df
     case 10: 
         print("- Strand specific datraframe selection: Metacognition & Self Regulation")
-        msr_ss_df = ind_var_SS.metacog_self_reg_ss()
+        msr_ss_df = ind_var_ss.metacog_self_reg_ss()
         ss_df = msr_ss_df
     case 11:
         print("- Strand specific datraframe selection: One to One Tuition")
-        one_to_one_ss_df = ind_var_SS.one_t_one_comp_ss()
+        one_to_one_ss_df = ind_var_ss.one_t_one_comp_ss()
         ss_df = one_to_one_ss_df
     case 12: 
         print("- Strand specific datraframe selection: Oral Language")
-        ol_ss_df = ind_var_SS.oral_lang_ss()
+        ol_ss_df = ind_var_ss.oral_lang_ss()
         ss_df = ol_ss_df
     case 13:
         print("- Strand specific datraframe selection: Physical Activity")
-        pha_ss_df = ind_var_SS.phys_activity_ss()
+        pha_ss_df = ind_var_ss.phys_activity_ss()
         ss_df = pha_ss_df
     case 14: 
         print("- Strand specific datraframe selection: Parentel Engagement")
-        pe_ss_df = ind_var_SS.parental_engagement()
+        pe_ss_df = ind_var_ss.parental_engagement()
         ss_df = pe_ss_df
     case 15: 
         print("- Strand specific datraframe selection: Phonics")
-        ph_ss_df = ind_var_SS.phonics()
+        ph_ss_df = ind_var_ss.phonics()
         ss_df = ph_ss_df
     case 16:
         print("- Strand specific datraframe selection: Performance Pay")
-        pp_ss_df = ind_var_SS.performance_pay()
+        pp_ss_df = ind_var_ss.performance_pay()
         ss_df = pp_ss_df
     case 17: 
         print("- Strand specific datraframe selection: Peer Tutoring")
-        peer_tut_ss_df = ind_var_SS.peer_tut()
+        peer_tut_ss_df = ind_var_ss.peer_tut()
         ss_df = peer_tut_ss_df
     case 18: 
         print("- Strand specific datraframe selection: Reading Comprehension")
-        rc_ss_df = ind_var_SS.read_comprehension_ss()
+        rc_ss_df = ind_var_ss.read_comprehension_ss()
         ss_df = rc_ss_df
     case 19:
         print("- Strand specific datraframe selection: Reducing Class Size")
-        redc_ss_df = ind_var_SS.red_class_size_ss()
+        redc_ss_df = ind_var_ss.red_class_size_ss()
         ss_df = redc_ss_df
     case 20: 
         print("- Strand specific datraframe selection: Repeating a Year")
-        ry_ss_df = ind_var_SS.repeat_year_ss()
+        ry_ss_df = ind_var_ss.repeat_year_ss()
         ss_df = ry_ss_df
     case 21: 
         print("- Strand specific datraframe selection: Social & Emotional Learning")
-        sel_ss_df = ind_var_SS.soc_emo_learning_ss()
+        sel_ss_df = ind_var_ss.soc_emo_learning_ss()
         ss_df = sel_ss_df
     case 22: 
         print("- Strand specific datraframe selection: Setting/Streaming")
-        sets_ss_df = ind_var_SS.setting_streaming_ss()
+        sets_ss_df = ind_var_ss.setting_streaming_ss()
         ss_df = sets_ss_df
     case 23: 
         print("- Strand specific datraframe selection: Small Group Tuition")
-        sgt_ss_df = ind_var_SS.small_group_tuit_ss()
+        sgt_ss_df = ind_var_ss.small_group_tuit_ss()
         ss_df = sgt_ss_df
     case 24: 
         print("- Strand specific datraframe selection: Summer Schools")
-        SS_ss_df = ind_var_SS.summer_school_ss()
+        SS_ss_df = ind_var_ss.summer_school_ss()
         ss_df = SS_ss_df
     case 25: 
         print("- Strand specific datraframe selection: Teaching Assistants")
-        ta_ss_df = ind_var_SS.teach_assistants_ss()
+        ta_ss_df = ind_var_ss.teach_assistants_ss()
         ss_df = ta_ss_df
     case 26: 
         print("- Strand specific datraframe selection: Within-Class Grouping")
-        wc_ss_df = ind_var_SS.within_class_grouping()
+        wc_ss_df = ind_var_ss.within_class_grouping()
         ss_df = wc_ss_df
     # EARLY YEARS
     case 27: 
         print("- Strand specific datraframe selection: Early Years - Early Literacy Approaches")
-        ela_ss_df = ind_var_SS.ey_early_lit_approaches_ss()
+        ela_ss_df = ind_var_ss.ey_early_lit_approaches_ss()
         ss_df = ela_ss_df
     case 28: 
         print("- Strand specific datraframe selection: Early Numeracy Approaches")
-        ena_ss_df = ind_var_SS.ey_early_num_approaches_ss()
+        ena_ss_df = ind_var_ss.ey_early_num_approaches_ss()
         ss_df = ena_ss_df
     case 29: 
         print("- Strand specific datraframe selection: Earlier Starting Age")
-        ey_esa_df = ind_var_SS.ey_earlier_start_age_ss()
+        ey_esa_df = ind_var_ss.ey_earlier_start_age_ss()
         ss_df = ey_esa_df
     case 30: 
         print("- Strand specific datraframe selection: Extra Hours")
-        ey_eh_df = ind_var_SS.ey_extra_hours_ss()
+        ey_eh_df = ind_var_ss.ey_extra_hours_ss()
         ss_df = ey_eh_df
     case 31: 
         print("- Strand specific datraframe selection: Play Based Learning")
-        ey_pbl_df = ind_var_SS.ey_play_based_learning_ss()
+        ey_pbl_df = ind_var_ss.ey_play_based_learning_ss()
         ss_df = ey_pbl_df
 
 def make_dataframe(save_file=True, verbose=True):
 
-    eppiid_df = ind_var_Gen.eppi()
-    author_df = ind_var_Gen.author()
-    year_df = ind_var_Gen.date()
-    publication_type_df = ind_var_Gen.pub_type()
-    toolkitstrand_df = ind_var_Gen.toolkit_strand()
-    smd_df = ind_var_Gen.smd()
-    sesmd_df = ind_var_Gen.ses_md()
-    outcome_title_df = ind_var_Gen.out_tit()
-    outcometype_df = ind_var_Gen.out_type()
-    sample_df = ind_var_Gen.sample()
-    out_comp_df = ind_var_Gen.out_comp()
-    effectsizetype_df = ind_var_Gen.es_type()
-    outcome_measure_df = ind_var_Gen.out_measure()
-    testtype_df = ind_var_Gen.test_type()
-    adminstrand_df = ind_var_Gen.get_admin_strand_data()
-    country_df = ind_var_Gen.country()
-    InterventionTrainingProvided_df = ind_var_Gen.int_train_prov()
-    InterventionTeachingApproach_df = ind_var_Gen.int_teach_appr()
-    DigitalTechnology_df = ind_var_Gen.int_inclusion_digit_tech()
-    Parents_or_Community_Volunteers_df = ind_var_Gen.int_inclusion_par_vol()
-    InterventionTime_df = ind_var_Gen.int_time()
-    interventiondelivery_df = ind_var_Gen.int_delivery()
-    InterventionDuration_Comments_df = ind_var_Gen.int_duration_comm()
-    InterventionFrequency_Comments_df = ind_var_Gen.int_frequency_comms()
-    InterventionSessionLength_Comments_df = ind_var_Gen.int_sess_len_comm()
-    edusetting_df = ind_var_Gen.edu_setting()
-    student_age_df = ind_var_Gen.get_student_age_data()
-    number_of_schools_total_Comments_df = ind_var_Gen.number_of_schools_total_comm()
-    number_of_classes_total_Comments_df = ind_var_Gen.number_of_classes_total_comm()
-    studydesign_df = ind_var_Gen.study_design()
-    sample_size_Comments_df = ind_var_Gen.samp_size_comm()
-    low_ses_percentage_Comments_df = ind_var_Gen.low_ses_pc_comm()
+    eppiid_df = ind_var_gen.eppi()
+    author_df = ind_var_gen.author()
+    year_df = ind_var_gen.date()
+    publication_type_df = ind_var_gen.pub_type()
+    toolkitstrand_df = ind_var_gen.toolkit_strand()
+    smd_df = ind_var_gen.smd()
+    sesmd_df = ind_var_gen.ses_md()
+    outcome_title_df = ind_var_gen.out_tit()
+    outcometype_df = ind_var_gen.out_type()
+    sample_df = ind_var_gen.sample()
+    out_comp_df = ind_var_gen.out_comp()
+    effectsizetype_df = ind_var_gen.es_type()
+    outcome_measure_df = ind_var_gen.out_measure()
+    testtype_df = ind_var_gen.test_type()
+    adminstrand_df = ind_var_gen.get_admin_strand_data()
+    country_df = ind_var_gen.country()
+    InterventionTrainingProvided_df = ind_var_gen.int_train_prov()
+    InterventionTeachingApproach_df = ind_var_gen.int_teach_appr()
+    DigitalTechnology_df = ind_var_gen.int_inclusion_digit_tech()
+    Parents_or_Community_Volunteers_df = ind_var_gen.int_inclusion_par_vol()
+    InterventionTime_df = ind_var_gen.int_time()
+    interventiondelivery_df = ind_var_gen.int_delivery()
+    InterventionDuration_Comments_df = ind_var_gen.int_duration_comm()
+    InterventionFrequency_Comments_df = ind_var_gen.int_frequency_comms()
+    InterventionSessionLength_Comments_df = ind_var_gen.int_sess_len_comm()
+    edusetting_df = ind_var_gen.edu_setting()
+    student_age_df = ind_var_gen.get_student_age_data()
+    number_of_schools_total_Comments_df = ind_var_gen.number_of_schools_total_comm()
+    number_of_classes_total_Comments_df = ind_var_gen.number_of_classes_total_comm()
+    studydesign_df = ind_var_gen.study_design()
+    sample_size_Comments_df = ind_var_gen.samp_size_comm()
+    low_ses_percentage_Comments_df = ind_var_gen.low_ses_pc_comm()
 
     record_details_df = pd.concat([
             eppiid_df,

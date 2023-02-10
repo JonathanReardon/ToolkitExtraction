@@ -14,7 +14,7 @@ from toolz import interleave
 
 # Local imports
 from Main import save_dataframe
-from ind_var_functions import ind_var_Gen
+from ind_var_functions import ind_var_gen
 
 data_files = sys.argv[1]
 
@@ -22,11 +22,11 @@ def make_outcomes_df(save_file=True):
 
     global outcome_num
 
-    eppiid_df = ind_var_Gen.eppi()
-    author_df = ind_var_Gen.author()
-    outcometype_df = ind_var_Gen.out_type()
-    outcome_df = ind_var_Gen.outcome()
-    outcome_title_df =  ind_var_Gen.out_tit()
+    eppiid_df = ind_var_gen.eppi()
+    author_df = ind_var_gen.author()
+    outcometype_df = ind_var_gen.out_type()
+    outcome_df = ind_var_gen.outcome()
+    outcome_title_df =  ind_var_gen.out_tit()
 
     df = pd.concat([
         outcometype_df,
