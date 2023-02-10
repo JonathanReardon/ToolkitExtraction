@@ -1,5 +1,14 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+Author: Jonathan Reardon
+"""
+
+# Third party imports
 import pandas as pd
 
+# Local imports
 from Main import load_json
 from Main import get_metadata
 from Main import comments
@@ -8,6 +17,8 @@ from Main import get_data
 from Main import get_outcome_lvl1
 from Main import get_outcome_lvl2
 from Main import clean_up
+
+# MOVE TO MAIN
 
 def process_data(output, data_col):
     # get data
@@ -108,7 +119,8 @@ def get_student_age_data():
     student_age_Comments_df = process_info(student_age_output, "part_age_info")
 
     # concatenate data frames
-    df = pd.concat([student_age_df, student_age_HT_df, student_age_Comments_df], axis=1, sort=False)
+    dataframes = [student_age_df, student_age_HT_df, student_age_Comments_df]
+    df = pd.concat(dataframes, axis=1, sort=False)
 
     # Clean up data frame
     clean_up(df)
@@ -125,37 +137,42 @@ def get_attrition_data():
     df : pandas.DataFrame
         DataFrame containing attrition data.
     """
-    from AttributeIDList import attrition_dropout_reported_output
-    from AttributeIDList import overall_percent_attrition
-    from AttributeIDList import treatment_group_attrition
+    from AttributeIDList import attr_dropout_rep_output
+    from AttributeIDList import overall_perc_attr
+    from AttributeIDList import treat_grp_attr
 
-    #=============================#
+    #-----------------------------#
     # ATTRITION DROP OUT REPORTED #
-    #=============================#
+    #-----------------------------#
 
-    attrition_dropout_reported_df = process_data(attrition_dropout_reported_output, "attri_raw")
-    attrition_dropout_reported_HT_df = process_ht(attrition_dropout_reported_output, "attri_ht")
-    attrition_dropout_reported_Comments_df = process_info(attrition_dropout_reported_output, "attri_info")
+    attr_dropout_rep_df = process_data(attr_dropout_rep_output, "attri_raw")
+    attr_dropout_rep_HT_df = process_ht(attr_dropout_rep_output, "attri_ht")
+    attr_dropout_rep_comments_df = process_info(attr_dropout_rep_output, "attri_info")
 
-    #=============================#
+    #-----------------------------#
     #  TREATMENT GROUP ATTRITION  #
-    #=============================#
+    #-----------------------------#
 
-    treatmentgroup_attrition_HT_df = process_ht(treatment_group_attrition, "attri_treat_ht")
-    treatmentgroup_attrition_Comments_df = process_info(treatment_group_attrition, "attri_treat_info")
+    treat_grp_attr_HT_df = process_ht(treat_grp_attr, "attri_treat_ht")
+    treat_grp_attr_comments_df = process_info(treat_grp_attr, "attri_treat_info")
 
-    #=============================#
+    #-----------------------------#
     #  OVERALL PERCENT ATTRITION  #
-    #=============================#
+    #-----------------------------#
 
-    overall_percent_attrition_HT_df = process_ht(overall_percent_attrition, "attri_perc_ht")
-    overall_percent_attrition_Comments_df = process_info(overall_percent_attrition, "attri_perc_info")
+    overall_perc_attr_HT_df = process_ht(overall_perc_attr, "attri_perc_ht")
+    overall_perc_attr_comments_df = process_info(overall_perc_attr, "attri_perc_info")
 
-    # merge dataframes
-    df = pd.concat([attrition_dropout_reported_df, attrition_dropout_reported_HT_df, 
-                    attrition_dropout_reported_Comments_df, treatmentgroup_attrition_HT_df, 
-                    treatmentgroup_attrition_Comments_df, overall_percent_attrition_HT_df, 
-                    overall_percent_attrition_Comments_df], axis=1)
+    # Concatenate dataframes
+    dataframes = [attr_dropout_rep_df, 
+                  attr_dropout_rep_HT_df, 
+                  attr_dropout_rep_comments_df, 
+                  treat_grp_attr_HT_df, 
+                  treat_grp_attr_comments_df, 
+                  overall_perc_attr_HT_df, 
+                  overall_perc_attr_comments_df]
+                  
+    df = pd.concat(dataframes, axis=1, sort=False)
 
     return df
 
@@ -204,22 +221,22 @@ def baseline_diff():
     df : pandas.DataFrame
         DataFrame containing baseline differences data.
     """
-    from AttributeIDList import baseline_differences_output
+    from AttributeIDList import baseline_diff_output
 
     # Get baseline differences data
-    baselinedifferences_df = process_data(baseline_differences_output, "base_diff_raw")
+    baseline_diff_df = process_data(baseline_diff_output, "base_diff_raw")
 
     # Get baseline differences highlighted text
-    baselinedifferences_HT_df = process_ht(baseline_differences_output, "base_diff_ht")
+    baseline_diff_ht_df = process_ht(baseline_diff_output, "base_diff_ht")
 
     # Get baseline differences comments
-    baselinedifferences_Comments_df = process_info(baseline_differences_output, "base_diff_info")
+    baseline_diff_comments_df = process_info(baseline_diff_output, "base_diff_info")
 
     # Concatenate data frames
     df = pd.concat([
-        baselinedifferences_df, 
-        baselinedifferences_HT_df, 
-        baselinedifferences_Comments_df
+        baseline_diff_df, 
+        baseline_diff_ht_df, 
+        baseline_diff_comments_df
     ], axis=1, sort=False)
 
     # Clean up data frame
@@ -238,7 +255,8 @@ def cilower():
 
     # name each column (number depends on outcome number)
     cilowersmd_df.columns=[
-        "ci_lower_"+'{}'.format(column+1) for column in cilowersmd_df.columns]
+        "ci_lower_"+'{}'.format(column+1) for column in cilowersmd_df.columns
+    ]
 
     # fill blanks with NA
     cilowersmd_df.fillna("NA", inplace=True)
@@ -283,6 +301,7 @@ def ciupper():
 
     # replace problematic text
     ciuppersmd_df = ciuppersmd_df.replace(r'^\s*$', "NA", regex=True)
+
     return ciuppersmd_df
 
 def clustering():
@@ -314,49 +333,46 @@ def com_var_rep():
     """
     
     """
-    from AttributeIDList import comparabiltiy_vars_reported
-    from AttributeIDList import if_yes_which_comparability_variables_reported_output
+    from AttributeIDList import comp_vars_rep
+    from AttributeIDList import which_comp_vars_rep_output
 
     #====================================================#
     # Are the variables used for comparability reported? #
     #====================================================#
 
     # Get comparability variables reported data
-    comparability_vars_reported_df = process_data(comparabiltiy_vars_reported, "comp_var_rep_raw")
+    comp_vars_rep_df = process_data(comp_vars_rep, "comp_var_rep_raw")
 
     # Get Comparability Variables Reported highlighted text
-    comparability_vars_reported_HT_df = process_ht(comparabiltiy_vars_reported, "comp_var_rep_ht")
+    comp_vars_rep_ht_df = process_ht(comp_vars_rep, "comp_var_rep_ht")
 
-    # Get Comparability Variables Reported user comments
-    comparability_vars_reported_Comments_df = process_info(comparabiltiy_vars_reported, "comp_var_rep_info")
+    # Get Comparability Variables Reported comments
+    comp_vars_rep_comments_df = process_info(comp_vars_rep, "comp_var_rep_info")
 
     #=====================================================#
     # If yes, which variables are used for comparability? #
     #=====================================================#
 
-    # get "which" variables are used for comparability data
-    which_comparability_vars_reported_df = process_data(if_yes_which_comparability_variables_reported_output, "comp_var_raw")
+    # Get "which" variables are used for comparability data
+    comp_vars_rep_df = process_data(which_comp_vars_rep_output, "comp_var_raw")
 
     # Get Comparability Variables Reported highlighted text
-    which_comparability_vars_reported_df_HT_df = process_ht(if_yes_which_comparability_variables_reported_output, "comp_var_ht")
+    comp_vars_rep_ht_df = process_ht(which_comp_vars_rep_output, "comp_var_ht")
 
-    # Get Comparability Variables Reported user comments
-    which_comparability_vars_reported_Comments_df = process_info(if_yes_which_comparability_variables_reported_output, "comp_var_info")
+    # Get Comparability Variables Reported comments
+    comp_vars_rep_comments_df = process_info(which_comp_vars_rep_output, "comp_var_info")
 
     # Concatenate data frames
-    df = pd.concat([
-        comparability_vars_reported_df, 
-        comparability_vars_reported_HT_df, 
-        comparability_vars_reported_Comments_df,
-        which_comparability_vars_reported_df, 
-        which_comparability_vars_reported_df_HT_df, 
-        which_comparability_vars_reported_Comments_df
-    ], axis=1, sort=False)
+    dataframes = [comp_vars_rep_df, comp_vars_rep_ht_df,
+                  comp_vars_rep_comments_df, comp_vars_rep_df,
+                  comp_vars_rep_ht_df, comp_vars_rep_comments_df]
+
+    comp_var_rep_df = pd.concat(dataframes, axis=1, sort=False)
 
     # Clean up data frame
-    df.fillna("NA", inplace=True)
+    comp_var_rep_df.fillna("NA", inplace=True)
 
-    return df
+    return comp_var_rep_df
 
 def comparability():
     """
@@ -368,17 +384,14 @@ def comparability():
     comparability_df = process_data(comparability_output, "comp_anal_raw")
 
     # Get Comparability highlighted text
-    comparability_HT_df = process_ht(comparability_output, "comp_anal_ht")
+    comparability_ht_df = process_ht(comparability_output, "comp_anal_ht")
 
     # Get Comparability user comments
-    comparability_Comments_df = process_info(comparability_output, "comp_anal_info")
+    comparability_comments_df = process_info(comparability_output, "comp_anal_info")
 
     # Concatenate data frames
-    comparability = pd.concat([
-        comparability_df, 
-        comparability_HT_df, 
-        comparability_Comments_df
-    ], axis=1, sort=False)
+    dataframes = [comparability_df, comparability_ht_df, comparability_comments_df]
+    comparability = pd.concat(dataframes, axis=1, sort=False)
 
     # Clean up data frame
     comparability.fillna("NA", inplace=True)
@@ -395,14 +408,14 @@ def country():
     country_df = process_data(countries, "loc_country_raw")
 
     # Get country highlighted text
-    country_HT_df = process_ht(countries, "loc_country_ht")
+    country_ht_df = process_ht(countries, "loc_country_ht")
 
     # Get country user comments
     country_Comments_df = process_info(countries, "loc_country_info")
 
     # concatenate data frames
     """ country_df = pd.concat(
-        [country_df, country_HT_df, country_Comments_df], axis=1, sort=False) """
+        [country_df, country_ht_df, country_Comments_df], axis=1, sort=False) """
 
     # Clean up data frame
     country_df.fillna("NA", inplace=True)
@@ -410,108 +423,70 @@ def country():
     return country_df
 
 def curr_sub():
-
+    """
+    
+    """
     from AttributeIDList import curriculum_subjects
     from AttributeIDList import other_outcomes_output
     from AttributeIDList import which_other_outcomes_output
     from AttributeIDList import other_participants_output
-    # get curriculum subjects data
-    curriculumsubjects = get_data(curriculum_subjects)
-    curriculumsubjects_df = pd.DataFrame(curriculumsubjects)
-    curriculumsubjects_df = curriculumsubjects_df.T
-    curriculumsubjects_df.columns = ["test_subject_raw"]
+
+    # Get curriculum subjects data
+    curric_subjects_df = process_data(curriculum_subjects, "test_subject_raw")
 
     # Get Country highlighted text
-    curriculumsubjects_HT = highlighted_text(curriculum_subjects)
-    curriculumsubjects_HT_df = pd.DataFrame(curriculumsubjects_HT)
-    curriculumsubjects_HT_df = curriculumsubjects_HT_df.T
-    curriculumsubjects_HT_df.columns = ["test_subject_ht"]
+    curric_subjects_ht_df = process_ht(curriculum_subjects, "test_subject_ht")
 
     # Get Country user comments
-    curriculumsubjects_Comments = comments(curriculum_subjects)
-    curriculumsubjects_Comments_df = pd.DataFrame(curriculumsubjects_Comments)
-    curriculumsubjects_Comments_df = curriculumsubjects_Comments_df.T
-    curriculumsubjects_Comments_df.columns = ["test_subject_info"]
+    curric_subjects_comments_df = process_info(curriculum_subjects, "test_subject_info")
 
-    ###########################
+    #-------------------------#
     # OTHER OUTCOMES REPORTED #
-    ###########################
+    #-------------------------#
 
-    # get other outcomes data
-    other_outcomes = get_data(other_outcomes_output)
-    other_outcomes_df = pd.DataFrame(other_outcomes)
-    other_outcomes_df = other_outcomes_df.T
-    other_outcomes_df.columns = ["out_other_raw"]
+    # Get other outcomes data
+    other_outcomes_df = process_data(other_outcomes_output, "out_other_raw")
 
-    # get other outcomes highlighted text
-    other_outcomes_HT = highlighted_text(other_outcomes_output)
-    other_outcomes_HT_df = pd.DataFrame(other_outcomes_HT)
-    other_outcomes_HT_df = other_outcomes_HT_df.T
-    other_outcomes_HT_df.columns = ["out_other_ht"]
+    # Get other outcomes highlighted text
+    other_outcomes_ht_df = process_ht(other_outcomes_output, "out_other_ht")
 
-    # get other outcomes comments
-    other_outcomes_comments = highlighted_text(other_outcomes_output)
-    other_outcomes_comments_df = pd.DataFrame(other_outcomes_comments)
-    other_outcomes_comments_df = other_outcomes_comments_df.T
-    other_outcomes_comments_df.columns = ["out_other_info"]
+    # Get other outcomes comments
+    other_outcomes_comments_df = process_info(other_outcomes_output, "out_other_info")
 
-    ########################
-    # WHICH OTHER OUTCOMES #
-    ########################
+    #-------------------------#
+    #   WHICH OTHER OUTCOMES  #
+    #-------------------------#
 
-    # get other outcomes data
-    which_outcomes = get_data(which_other_outcomes_output)
-    which_outcomes_df = pd.DataFrame(which_outcomes)
-    which_outcomes_df = which_outcomes_df.T
-    which_outcomes_df.columns = ["out_info_raw"]
+    # Get which other outcomes data
+    which_outcomes_df = process_data(which_other_outcomes_output, "out_info_raw")
 
-    # get other outcomes highlighted text
-    which_outcomes_HT = highlighted_text(which_other_outcomes_output)
-    which_outcomes_HT_df = pd.DataFrame(which_outcomes_HT)
-    which_outcomes_HT_df = which_outcomes_HT_df.T
-    which_outcomes_HT_df.columns = ["out_info_ht"]
+    # Get which other outcomes highlighted text
+    which_outcomes_ht_df = process_ht(which_other_outcomes_output, "out_info_ht")
 
-    # get other outcomes comments
-    which_outcomes_comments = comments(which_other_outcomes_output)
-    which_outcomes_comments_df = pd.DataFrame(which_outcomes_comments)
-    which_outcomes_comments_df = which_outcomes_comments_df.T
-    which_outcomes_comments_df.columns = ["out_info_info"]
+    # Get which other outcomes comments
+    which_outcomes_comments_df = process_info(which_other_outcomes_output, "out_info_info")
 
-    #######################
-    #  OTHER PARTICIPANTS #
-    #######################
+    #-------------------------#
+    #    OTHER PARTICIPANTS   #
+    #-------------------------#
 
-    # get other participants highlighted text
-    other_participants_HT = highlighted_text(other_participants_output)
-    other_participants_HT_df = pd.DataFrame(other_participants_HT)
-    other_participants_HT_df = other_participants_HT_df.T
-    other_participants_HT_df.columns = ["part_other_ht"]
+    # GSet other participants highlighted text
+    other_participants_HT_df = process_ht(other_participants_output, "part_other_ht")
 
-    # get other participants comments
-    other_participants_comments = comments(other_participants_output)
-    other_participants_comments_df = pd.DataFrame(other_participants_comments)
-    other_participants_comments_df = other_participants_comments_df.T
-    other_participants_comments_df.columns = ["part_other_info"]
+    # Get other participants comments
+    other_participants_comments_df = process_info(other_participants_output, "part_other_info")
 
-    # concatenate data frames
-    curriculum_subject_df = pd.concat([
-        curriculumsubjects_df, 
-        curriculumsubjects_HT_df, 
-        curriculumsubjects_Comments_df,
-        other_outcomes_df, 
-        other_outcomes_HT_df, 
-        other_outcomes_comments_df,
-        which_outcomes_df, 
-        which_outcomes_HT_df, 
-        which_outcomes_comments_df,
-        other_participants_HT_df, 
-        other_participants_comments_df
-    ], axis=1, sort=False)
+    dataframes = [curric_subjects_df, curric_subjects_ht_df, 
+                  curric_subjects_comments_df, other_outcomes_df, 
+                  other_outcomes_ht_df, other_outcomes_comments_df,
+                  which_outcomes_df, which_outcomes_ht_df, 
+                  which_outcomes_comments_df, other_participants_HT_df,
+                  other_participants_comments_df]
 
-    # fill blanks with NA
+    curriculum_subject_df = pd.concat(dataframes, axis=1, sort=False)
+
+    # Clean up dataframe
     curriculum_subject_df.fillna("NA", inplace=True)
-
-    # replace problematic text
     clean_up(curriculum_subject_df)
 
     return curriculum_subject_df
@@ -549,54 +524,53 @@ def editors():
     return editedby_df
 
 def edu_setting():
+    """
+    
+    """
     from AttributeIDList import edu_setting_output
-    # get educational setting data
-    edusetting = get_data(edu_setting_output)
-    edusetting_df = pd.DataFrame(edusetting)
-    edusetting_df = edusetting_df.T
-    edusetting_df.columns=["int_setting_raw"]
+
+    # Get educational setting data
+    edusetting_df = process_data(edu_setting_output, "int_setting_raw")
 
     # Get Educational Setting highlighted text
-    edusetting_HT = highlighted_text(edu_setting_output)
-    edusetting_HT_df = pd.DataFrame(edusetting_HT)
-    edusetting_HT_df = edusetting_HT_df.T
-    edusetting_HT_df.columns = ["int_setting_ht"]
+    edusetting_ht_df = process_ht(edu_setting_output, "int_setting_ht")
 
-    # Get Educational Setting user comments
-    edusetting_Comments = comments(edu_setting_output)
-    edusetting_Comments_df = pd.DataFrame(edusetting_Comments)
-    edusetting_Comments_df = edusetting_Comments_df.T
-    edusetting_Comments_df.columns = ["int_setting_info"]
+    # Get Educational Setting comments
+    edusetting_comments_df = process_info(edu_setting_output, "int_setting_info")
 
-    # concatenate data frames
-    educational_setting_df = pd.concat([
-        edusetting_df, 
-        edusetting_HT_df, 
-        edusetting_Comments_df
-    ], axis=1, sort=False)
+    # Goncatenate data frames
+    dataframes = [edusetting_df, edusetting_ht_df, edusetting_comments_df]
+    educational_setting_df = pd.concat(dataframes, axis=1, sort=False)
 
-    # replace blanks with NA
+    # Clean up data frame
     educational_setting_df.fillna("NA", inplace=True)
 
     return educational_setting_df
 
 def es_type():
-    from AttributeIDList import effect_size_type_output
-    # get effect size type data
-    effectsizetype = get_outcome_lvl2(effect_size_type_output)
-    effectsizetype_df = pd.DataFrame(effectsizetype)
+    """
+    
+    """
+    from AttributeIDList import es_type_output
 
-    # name each column (number depends on outcome number)
-    effectsizetype_df.columns = [
-        "out_es_type_"+'{}'.format(column+1) for column in effectsizetype_df.columns]
+    # Get effect size type data
+    es_type = get_outcome_lvl2(es_type_output)
+    es_type_df = pd.DataFrame(es_type)
 
-    # fill blanks with NA
-    effectsizetype_df.fillna("NA", inplace=True)
+    # Name each column (number depends on outcome number)
+    es_type_df.columns = [
+        "out_es_type_" + str(column + 1) for column in es_type_df.columns
+    ]
 
-    return effectsizetype_df
+    # Clean up data frame
+    es_type_df.fillna("NA", inplace=True)
+    return es_type_df
 
 # get eppiID data
 def eppi():
+    """
+
+    """
     eppi_id = get_metadata("ItemId")
     eppi_id_df = pd.DataFrame(eppi_id)
     eppi_id_df.columns = ["id"]
@@ -604,136 +578,108 @@ def eppi():
     return eppi_id_df
 
 def gender():
+    """
+    
+    """
     from AttributeIDList import student_gender
-    # get gender data
-    gender = get_data(student_gender)
-    gender_df = pd.DataFrame(gender)
-    gender_df = gender_df.T
-    gender_df.columns=["part_gen_raw"]
 
-    # Get Gender highlighted text
-    gender_HT = highlighted_text(student_gender)
-    gender_HT_df = pd.DataFrame(gender_HT)
-    gender_HT_df = gender_HT_df.T
-    gender_HT_df.columns = ["part_gen_ht"]
+    # Get educational setting data
+    gender_df = process_data(student_gender, "part_gen_raw")
 
-    # Get Gender user comments
-    gender_Comments = comments(student_gender)
-    gender_Comments_df = pd.DataFrame(gender_Comments)
-    gender_Comments_df = gender_Comments_df.T
-    gender_Comments_df.columns = ["part_gen_info"]
+    # Get Educational Setting highlighted text
+    gender_ht_df = process_ht(student_gender, "part_gen_ht")
 
-    # concatenate data frames
-    gender_df = pd.concat([gender_df, gender_HT_df, gender_Comments_df], axis=1, sort=False)
+    # Get Educational Setting comments
+    gender_comments_df = process_info(student_gender, "part_gen_info")
 
-    # fill blanks with NA
+    # Concatenate data frames
+    dataframes = [gender_df, gender_ht_df, gender_comments_df]
+    gender_df = pd.concat(dataframes, axis=1, sort=False)
+
+    # Clean up data frame
     gender_df.fillna("NA", inplace=True)
-
     return gender_df
 
 def gender_split():
+    """
+    
+    """
     from AttributeIDList import gender_split_output
-    # get gender split data
-    gender_split = comments(gender_split_output)
-    gender_split_df = pd.DataFrame(gender_split)
-    gender_split_df = gender_split_df.T
-    gender_split_df.columns = ["Gender_Split_comments"]
 
-    # get gender split highlighted text
-    gender_split_comments = highlighted_text(gender_split_output)
-    gender_split_comments_df = pd.DataFrame(gender_split_comments)
-    gender_split_comments_df = gender_split_comments_df.T
-    gender_split_comments_df.columns = ["Gender_Split_HT"]
+    # Get gender split highlighted text
+    gen_split_ht_df = process_ht(gender_split_output, "Gender_Split_HT")
 
-    # concatenate all dataframes
-    gender_split_df = pd.concat([gender_split_df, gender_split_comments_df], axis=1, sort=False)
+    # Get gender split comments data
+    gen_split_comments_df = process_info(gender_split_output, "Gender_Split_comments")
 
-    # remove problematic text
-    gender_split_df.replace('\r',' ', regex=True, inplace=True)
-    gender_split_df.replace('\n',' ', regex=True, inplace=True)
+    # Concatenate all dataframes
+    dataframes = [gen_split_ht_df, gen_split_comments_df]
+    gen_split_df = pd.concat(dataframes, axis=1, sort=False)
 
-    # fill blanks with NA
-    gender_split_df.fillna("NA", inplace=True)
-
-    return gender_split_df
+    # Clean up data frame
+    gen_split_df.replace('\r',' ', regex=True, inplace=True)
+    gen_split_df.replace('\n',' ', regex=True, inplace=True)
+    gen_split_df.fillna("NA", inplace=True)
+    return gen_split_df
 
 def inst():
-    # get author data
+    """
+
+    """
+    # Get author data
     institution = get_metadata("Institution")
     institution_df = pd.DataFrame(institution)
     institution_df.columns = ["Institution"]
     institution_df.fillna("NA", inplace=True)
-
     return institution_df
 
 def int_costs():
-    from AttributeIDList import intervention_costs_reported
-    # Get Intervention Costs Reported main data
-    InterventionCosts = get_data(intervention_costs_reported)
-    InterventionCosts_df = pd.DataFrame(InterventionCosts)
-    InterventionCosts_df = InterventionCosts_df.T
-    InterventionCosts_df.columns = ["int_cost_raw"]
+    """
+    """
+    from AttributeIDList import int_costs_reported
+
+    # Get Intervention Costs Reported data
+    int_costs_df = process_data(int_costs_reported, "int_cost_raw")
 
     # Get Intervention Costs Reported highlighted text
-    InterventionCosts_HT = highlighted_text(intervention_costs_reported)
-    InterventionCosts_HT_df = pd.DataFrame(InterventionCosts_HT)
-    InterventionCosts_HT_df = InterventionCosts_HT_df.T
-    InterventionCosts_HT_df.columns = ["int_cost_ht"]
+    int_costs_HT_df = process_ht(int_costs_reported, "int_cost_ht")
 
-    # Get Intervention Costs Reported user comments
-    InterventionCosts_Comments = comments(intervention_costs_reported)
-    InterventionCosts_Comments_df = pd.DataFrame(InterventionCosts_Comments)
-    InterventionCosts_Comments_df = InterventionCosts_Comments_df.T
-    InterventionCosts_Comments_df.columns = ["int_cost_info"]
+    # Get Intervention Costs Reported comments
+    int_costs_comments_df = process_info(int_costs_reported, "int_cost_info")
 
-    # concatenate data frames
-    intervention_costs_df = pd.concat([
-        InterventionCosts_df, 
-        InterventionCosts_HT_df, 
-        InterventionCosts_Comments_df
-    ], axis=1, sort=False)
+    # Concatenate data frames
+    dataframes = [int_costs_df, int_costs_HT_df, int_costs_comments_df]
+    intervention_costs_df = pd.concat(dataframes, axis=1, sort=False)
 
-    # Remove problematic text (potential escape sequences) from text input
+    # Clean up data frame
     clean_up(intervention_costs_df)
 
     # fill blanks with NA
     intervention_costs_df.fillna("NA", inplace=True)
-
     return intervention_costs_df
 
 def int_delivery():
+    """
+    
+    """
     from AttributeIDList import intervention_delivery_output
-    # get intervention delivery data
-    InterventionDelivery = get_data(intervention_delivery_output)
-    interventiondelivery_df = pd.DataFrame(InterventionDelivery)
-    interventiondelivery_df = interventiondelivery_df.T
-    interventiondelivery_df.columns = ["int_who_raw"]
 
-    # get intervention delivery highlighted text
-    InterventionDelivery_HT = highlighted_text(intervention_delivery_output)
-    InterventionDelivery_HT_df = pd.DataFrame(InterventionDelivery_HT)
-    InterventionDelivery_HT_df = InterventionDelivery_HT_df.T
-    InterventionDelivery_HT_df.columns = ["int_who_ht"]
+    # Get intervention delivery data
+    interventiondelivery_df = process_data(intervention_delivery_output, "int_who_raw")
 
-    # get intervention delivery user comments
-    InterventionDelivery_Comments = comments(intervention_delivery_output)
-    InterventionDelivery_Comments_df = pd.DataFrame(InterventionDelivery_Comments)
-    InterventionDelivery_Comments_df = InterventionDelivery_Comments_df.T
-    InterventionDelivery_Comments_df.columns = ["int_who_info"]
+    # Get intervention delivery highlighted text
+    InterventionDelivery_HT_df = process_ht(intervention_delivery_output, "int_who_ht")
 
-    # concatenate data frames
-    intervention_delivery_df = pd.concat([
-        interventiondelivery_df, 
-        InterventionDelivery_HT_df, 
-        InterventionDelivery_Comments_df
-    ], axis=1, sort=False)
+    # Get intervention delivery comments
+    InterventionDelivery_comments_df = process_info(intervention_delivery_output, "int_who_info")
 
-    # Remove problematic text (potential escape sequences) from text input
+    # Concatenate data frames
+    dataframes = [interventiondelivery_df, InterventionDelivery_HT_df, InterventionDelivery_comments_df]
+    intervention_delivery_df = pd.concat(dataframes, axis=1, sort=False)
+
+    # Clean up data frame
     clean_up(intervention_delivery_df)
-
-    # fill blanks with NA
     intervention_delivery_df.fillna("NA", inplace=True)
-
     return intervention_delivery_df
 
 def intervention_desc():
@@ -742,16 +688,11 @@ def intervention_desc():
     """
     from AttributeIDList import intervention_description_output
 
-
-
     # get intervention description highlighted text
     Intervention_DescriptionHT = highlighted_text(intervention_description_output)
     Intervention_DescriptionHT_df = pd.DataFrame(Intervention_DescriptionHT)
     Intervention_DescriptionHT_df = Intervention_DescriptionHT_df.T
     Intervention_DescriptionHT_df.columns=["int_desc_ht"]
-
-
-
 
     # get intervention description user comments
     Intervention_Description_Comments = comments(intervention_description_output)
@@ -804,7 +745,6 @@ def int_detail():
     clean_up(intervention_detail_df)
     # fill blanks with NA
     intervention_detail_df.fillna("NA", inplace=True)
-
     return intervention_detail_df
 
 def int_duration():
@@ -832,7 +772,6 @@ def int_duration():
 
     # fill blanks with NA
     intervention_duration_df.fillna("NA", inplace=True)
-
     return intervention_duration_df
 
 def int_duration_comm():
@@ -849,7 +788,6 @@ def int_duration_comm():
 
     # fill blanks with NA
     InterventionDuration_Comments_df.fillna("NA", inplace=True)
-
     return InterventionDuration_Comments_df
 
 def int_eval():
@@ -893,7 +831,6 @@ def int_eval():
     clean_up(intervention_evaluation_df)
 
     intervention_evaluation_df.fillna("NA", inplace=True)
-
     return intervention_evaluation_df
 
 def intervention_focus():
@@ -928,7 +865,6 @@ def intervention_focus():
 
     # fill blanks with NA
     intervention_focus_df.fillna("NA", inplace=True)
-
     return intervention_focus_df
 
 def int_frequency():
@@ -955,7 +891,6 @@ def int_frequency():
     clean_up(intervention_frequency_df)
 
     intervention_frequency_df.fillna("NA", inplace=True)
-
     return intervention_frequency_df
 
 def int_frequency_comms():
@@ -971,7 +906,6 @@ def int_frequency_comms():
     clean_up(InterventionFrequency_Comments_df)
 
     InterventionFrequency_Comments_df.fillna("NA", inplace=True)
-
     return InterventionFrequency_Comments_df
 
 def int_inclusion():
@@ -1036,7 +970,6 @@ def int_inclusion():
 
     # fill blanks with NS
     intervention_inclusion_df.fillna("NA", inplace=True)
-
     return intervention_inclusion_df
 
 def int_inclusion_digit_tech():
@@ -1810,144 +1743,87 @@ def desc_s_prim_out_rep_c_two():
 
 def desc_s_p_out_rep_contr():
 
-    from AttributeIDList import control_group_number
-    from AttributeIDList import control_group_pretest_mean
-    from AttributeIDList import control_group_pretest_sd
-    from AttributeIDList import control_group_posttest_mean
-    from AttributeIDList import control_group_posttest_sd
-    from AttributeIDList import control_group_gain_score_mean
-    from AttributeIDList import control_group_gain_score_sd
-    from AttributeIDList import control_group_any_other_info
-    from AttributeIDList import follow_up_data_reported
+    from AttributeIDList import ctrl_grp_number
+    from AttributeIDList import ctrl_grp_pretest_mean
+    from AttributeIDList import ctrl_grp_pretest_sd
+    from AttributeIDList import ctrl_grp_posttest_mean
+    from AttributeIDList import ctrl_grp_posttest_sd
+    from AttributeIDList import ctrl_grp_gain_score_mean
+    from AttributeIDList import ctrl_grp_gain_score_sd
+    from AttributeIDList import ctrl_grp_any_other_info
+    #from AttributeIDList import follow_up_data_reported
 
     ###########################
     # CONTROL GROUP NUMBER
     ###########################
 
     # Get Control Group Number highlighted text
-    ControlGroupNumber_HT = highlighted_text(control_group_number)
-    ControlGroupNumber_HT_df = pd.DataFrame(ControlGroupNumber_HT)
-    ControlGroupNumber_HT_df = ControlGroupNumber_HT_df.T
-    ControlGroupNumber_HT_df.columns = ["n_cont_ht"]
-
+    ctrl_grp_num_ht_df = process_ht(ctrl_grp_number, "n_cont_ht")
     # Get Control Group Number comments
-    ControlGroupNumber_comments = comments(control_group_number)
-    ControlGroupNumber_comments_df = pd.DataFrame(ControlGroupNumber_comments)
-    ControlGroupNumber_comments_df = ControlGroupNumber_comments_df.T
-    ControlGroupNumber_comments_df.columns = ["n_cont_info"]
+    ctrl_grp_num_comments_df = process_info(ctrl_grp_number, "n_cont_info")
 
     #################################
     # Control GROUP PRE-TEST MEAN
     #################################
 
     # Get Control Group Pre-test Mean highlighted text
-    ControlGroupPretestMean_HT = highlighted_text(control_group_pretest_mean)
-    ControlGroupPretestMean_HT_df = pd.DataFrame(ControlGroupPretestMean_HT)
-    ControlGroupPretestMean_HT_df = ControlGroupPretestMean_HT_df.T
-    ControlGroupPretestMean_HT_df.columns = ["pre_c_mean_ht"]
-
+    ctrl_grp_pretest_mean_ht_df = process_ht(ctrl_grp_pretest_mean, "pre_c_mean_ht")
     # Get Control Group Pre-test Mean comments
-    ControlGroupPretestMean_comments = comments(control_group_pretest_mean)
-    ControlGroupPretestMean_comments_df = pd.DataFrame(
-        ControlGroupPretestMean_comments)
-    ControlGroupPretestMean_comments_df = ControlGroupPretestMean_comments_df.T
-    ControlGroupPretestMean_comments_df.columns = ["pre_c_mean_info"]
+    ctrl_grp_pretest_mean_comments_df = process_info(ctrl_grp_pretest_mean, "pre_c_mean_info")
 
     ################################
     # Control GROUP PRE-TEST SD
     ################################
 
     # Get Control Group Pre-test SD highlighted text
-    ControlGroupPretestSD_HT = highlighted_text(control_group_pretest_sd)
-    ControlGroupPretestSD_HT_df = pd.DataFrame(ControlGroupPretestSD_HT)
-    ControlGroupPretestSD_HT_df = ControlGroupPretestSD_HT_df.T
-    ControlGroupPretestSD_HT_df.columns = ["pre_c_sd_ht"]
-
+    ctrl_grp_pretest_sd_ht_df = process_ht(ctrl_grp_pretest_sd, "pre_c_sd_ht")
     # Get Control Group Pre-test SD comments
-    ControlGroupPretestSD_comments = comments(control_group_pretest_sd)
-    ControlGroupPretestSD_comments_df = pd.DataFrame(ControlGroupPretestSD_comments)
-    ControlGroupPretestSD_comments_df = ControlGroupPretestSD_comments_df.T
-    ControlGroupPretestSD_comments_df.columns = ["pre_c_sd_info"]
+    ctrl_grp_pretest_sd_comments_df = process_info(ctrl_grp_pretest_sd, "pre_c_sd_info")
 
     ##################################
     # Control GROUP POST-TEST MEAN
     ###################################
 
     # Get Control Group Post-Test Mean highlighted text
-    ControlGroupPostTestMean_HT = highlighted_text(control_group_posttest_mean)
-    ControlGroupPostTestMean_HT_df = pd.DataFrame(ControlGroupPostTestMean_HT)
-    ControlGroupPostTestMean_HT_df = ControlGroupPostTestMean_HT_df.T
-    ControlGroupPostTestMean_HT_df.columns = ["post_c_mean_ht"]
-
+    ctrl_grp_post_test_mean_ht_df = process_ht(ctrl_grp_posttest_mean, "post_c_mean_ht")
     # Get Control Group Post-Test Mean comments
-    ControlGroupPostTestMean_comments = comments(control_group_posttest_mean)
-    ControlGroupPostTestMean_comments_df = pd.DataFrame(ControlGroupPostTestMean_comments)
-    ControlGroupPostTestMean_comments_df = ControlGroupPostTestMean_comments_df.T
-    ControlGroupPostTestMean_comments_df.columns = ["post_c_mean_info"]
+    ctrl_grp_post_test_mean_comments_df = process_info(ctrl_grp_posttest_mean, "post_c_mean_info")
 
     ##################################
     # Control GROUP POST-TEST SD
     ###################################
 
     # Get Control Group Post-test SD highlighted text
-    ControlGroupPostTestSD_HT = highlighted_text(control_group_posttest_sd)
-    ControlGroupPostTestSD_HT_df = pd.DataFrame(ControlGroupPostTestSD_HT)
-    ControlGroupPostTestSD_HT_df = ControlGroupPostTestSD_HT_df.T
-    ControlGroupPostTestSD_HT_df.columns = ["post_c_sd_ht"]
-
+    ctrl_grp_post_test_sd_ht_df = process_ht(ctrl_grp_posttest_sd, "post_c_sd_ht")
     # Get Control Group Post-test SD comments
-    ControlGroupPostTestSD_comments = comments(control_group_posttest_sd)
-    ControlGroupPostTestSD_comments_df = pd.DataFrame(ControlGroupPostTestSD_comments)
-    ControlGroupPostTestSD_comments_df = ControlGroupPostTestSD_comments_df.T
-    ControlGroupPostTestSD_comments_df.columns = ["post_c_sd_info"]
+    ctrl_grp_post_test_sd_comments_df = process_info(ctrl_grp_posttest_sd, "post_c_sd_info")
 
     ####################################
     # Control GROUP GAIN SCORE MEAN
     ####################################
 
-    # Get Control Group Grain Score Mean highlighted text
-    ControlGroupGainScoreMean_HT = highlighted_text(control_group_gain_score_mean)
-    ControlGroupGainScoreMean_HT_df = pd.DataFrame(ControlGroupGainScoreMean_HT)
-    ControlGroupGainScoreMean_HT_df = ControlGroupGainScoreMean_HT_df.T
-    ControlGroupGainScoreMean_HT_df.columns = ["gain_c_mean_ht"]
-
+    # Get Control Group Gain Score Mean highlighted text
+    Ctrl_grp_gain_score_mean_ht_df = process_ht(ctrl_grp_gain_score_mean, "gain_c_mean_ht")
     # Get Control Group Gain Score Mean comments
-    ControlGroupGainScoreMean_comments = comments(control_group_gain_score_mean)
-    ControlGroupGainScoreMean_comments_df = pd.DataFrame(ControlGroupGainScoreMean_comments)
-    ControlGroupGainScoreMean_comments_df = ControlGroupGainScoreMean_comments_df.T
-    ControlGroupGainScoreMean_comments_df.columns = ["gain_c_mean_info"]
+    ctrl_grp_gain_score_mean_comments_df = process_info(ctrl_grp_gain_score_mean, "gain_c_mean_info")
 
     ##################################
     # Control GROUP GAIN SCORE SD
     ##################################
 
-    # Get Control Group Grain Score SD highlighted text
-    ControlGroupGainScoreSD_HT = highlighted_text(control_group_gain_score_sd)
-    ControlGroupGainScoreSD_HT_df = pd.DataFrame(ControlGroupGainScoreSD_HT)
-    ControlGroupGainScoreSD_HT_df = ControlGroupGainScoreSD_HT_df.T
-    ControlGroupGainScoreSD_HT_df.columns = ["gain_c_sd_ht"]
-
+    # Get Control Group Gain Score SD highlighted text
+    ctrl_grp_gain_score_sd_ht_df = process_ht(ctrl_grp_gain_score_sd, "gain_c_sd_ht")
     # Get Control Group Gain Score SD comments
-    ControlGroupGainScoreSD_comments = comments(control_group_gain_score_sd)
-    ControlGroupGainScoreSD_comments_df = pd.DataFrame(ControlGroupGainScoreSD_comments)
-    ControlGroupGainScoreSD_comments_df = ControlGroupGainScoreSD_comments_df.T
-    ControlGroupGainScoreSD_comments_df.columns = ["gain_c_sd_info"]
+    ctrl_grp_gain_score_sd_comments_df = process_info(ctrl_grp_gain_score_sd, "gain_c_sd_info")
 
     ###############################
     # Control GROUP OTHER INFO
     ###############################
 
     # Get Control Group Other Information highlighted text
-    ControlGroupOtherInfo_HT = highlighted_text(control_group_any_other_info)
-    ControlGroupOtherInfo_HT_df = pd.DataFrame(ControlGroupOtherInfo_HT)
-    ControlGroupOtherInfo_HT_df = ControlGroupOtherInfo_HT_df.T
-    ControlGroupOtherInfo_HT_df.columns = ["out_c_other_ht"]
-
+    ctrl_grp_other_info_ht_df = process_ht(ctrl_grp_any_other_info, "out_c_other_ht")
     # Get Control Group Other Information comments
-    ControlGroupOtherInfo_comments = comments(control_group_any_other_info)
-    ControlGroupOtherInfo_comments_df = pd.DataFrame(ControlGroupOtherInfo_comments)
-    ControlGroupOtherInfo_comments_df = ControlGroupOtherInfo_comments_df.T
-    ControlGroupOtherInfo_comments_df.columns = ["out_c_other_info"]
+    ctrl_grp_other_info_comments_df = process_info(ctrl_grp_any_other_info, "out_c_other_info")
 
     """ ########################
     # Follow up data?
@@ -1975,395 +1851,279 @@ def desc_s_p_out_rep_contr():
     print(followupdata_df)
     """
 
-    # concatenate data frames
-    DescStatsPrimaryOutcomeReported_Control_df = pd.concat([
-        ControlGroupNumber_HT_df, 
-        ControlGroupNumber_comments_df,
-        ControlGroupPretestMean_HT_df, 
-        ControlGroupPretestMean_comments_df,
-        ControlGroupPretestSD_HT_df, 
-        ControlGroupPretestSD_comments_df,
-        ControlGroupPostTestMean_HT_df, 
-        ControlGroupPostTestMean_comments_df,
-        ControlGroupPostTestSD_HT_df, 
-        ControlGroupPostTestSD_comments_df,
-        ControlGroupGainScoreMean_HT_df, 
-        ControlGroupGainScoreMean_comments_df,
-        ControlGroupGainScoreSD_HT_df, 
-        ControlGroupGainScoreSD_comments_df,
-        ControlGroupOtherInfo_HT_df, 
-        ControlGroupOtherInfo_comments_df
-    ], axis=1, sort=False)
+    # Concatenate data frames
+    dataframes = [ctrl_grp_num_ht_df, 
+                  ctrl_grp_num_comments_df,
+                  ctrl_grp_pretest_mean_ht_df, 
+                  ctrl_grp_pretest_mean_comments_df,
+                  ctrl_grp_pretest_sd_ht_df, 
+                  ctrl_grp_pretest_sd_comments_df,
+                  ctrl_grp_post_test_mean_ht_df, 
+                  ctrl_grp_post_test_mean_comments_df,
+                  ctrl_grp_post_test_sd_ht_df, 
+                  ctrl_grp_post_test_sd_comments_df,
+                  Ctrl_grp_gain_score_mean_ht_df, 
+                  ctrl_grp_gain_score_mean_comments_df,
+                  ctrl_grp_gain_score_sd_ht_df, 
+                  ctrl_grp_gain_score_sd_comments_df,
+                  ctrl_grp_other_info_ht_df, 
+                  ctrl_grp_other_info_comments_df]
 
-    # fill blanks with NA
-    DescStatsPrimaryOutcomeReported_Control_df.fillna("NA", inplace=True)
+    desc_stats_prim_out_rep_control_df = pd.concat(dataframes, axis=1, sort=False)
 
-    return DescStatsPrimaryOutcomeReported_Control_df
+    # Clean up dataframe
+    desc_stats_prim_out_rep_control_df.fillna("NA", inplace=True)
 
-
+    return desc_stats_prim_out_rep_control_df
 
 def desc_s_o_out_rep_interv_2():
-
-    from AttributeIDList import intervention_group_two_number
-    from AttributeIDList import intervention_group_two_pretest_mean
-    from AttributeIDList import intervention_group_two_pretest_sd
-    from AttributeIDList import intervention_group_two_posttest_mean
-    from AttributeIDList import intervention_group_two_posttest_sd
-    from AttributeIDList import intervention_group_two_gain_score_mean
-    from AttributeIDList import intervention_group_two_gain_score_sd
-    from AttributeIDList import intervention_group_two_any_other_info
+    """
+    
+    """
+    from AttributeIDList import int_grp_two_number
+    from AttributeIDList import int_grp_two_pretest_mean
+    from AttributeIDList import int_grp_two_pretest_sd
+    from AttributeIDList import int_grp_two_posttest_mean
+    from AttributeIDList import int_grp_two_posttest_sd
+    from AttributeIDList import int_grp_two_gain_score_mean
+    from AttributeIDList import int_grp_two_gain_score_sd
+    from AttributeIDList import int_grp_two_any_other_info
 
     ###########################
     # INTERVENTION GROUP NUMBER
     ###########################
 
     # Get Intervention Group Number highlighted text
-    InterventionGroupNumber_HT = highlighted_text(intervention_group_two_number)
-    InterventionGroupNumber_HT_df = pd.DataFrame(InterventionGroupNumber_HT)
-    InterventionGroupNumber_HT_df = InterventionGroupNumber_HT_df.T
-    InterventionGroupNumber_HT_df.columns = ["n_treat2_ht"]
-
+    intervention_group_number_ht_df = process_ht(int_grp_two_number, "n_treat2_ht")
     # Get Intervention Group Number comments
-    InterventionGroupNumber_comments = comments(intervention_group_two_number)
-    InterventionGroupNumber_comments_df = pd.DataFrame(InterventionGroupNumber_comments)
-    InterventionGroupNumber_comments_df = InterventionGroupNumber_comments_df.T
-    InterventionGroupNumber_comments_df.columns = ["n_treat2_info"]
+    intervention_group_number_comments_df = process_info(int_grp_two_number, "n_treat2_info")
 
     #################################
     # INTERVENTION GROUP PRE-TEST MEAN
     #################################
 
     # Get Intervention Group Pre-test Mean highlighted text
-    InterventionGroupPretestMean_HT = highlighted_text(intervention_group_two_pretest_mean)
-    InterventionGroupPretestMean_HT_df = pd.DataFrame(InterventionGroupPretestMean_HT)
-    InterventionGroupPretestMean_HT_df = InterventionGroupPretestMean_HT_df.T
-    InterventionGroupPretestMean_HT_df.columns = ["pre_t2_mean_ht"]
-
+    int_grp_pretest_mean_ht_df = process_ht(int_grp_two_pretest_mean, "pre_t2_mean_ht")
     # Get Intervention Group Pre-test Mean comments
-    InterventionGroupPretestMean_comments = comments(intervention_group_two_pretest_mean)
-    InterventionGroupPretestMean_comments_df = pd.DataFrame(InterventionGroupPretestMean_comments)
-    InterventionGroupPretestMean_comments_df = InterventionGroupPretestMean_comments_df.T
-    InterventionGroupPretestMean_comments_df.columns = ["pre_t2_mean_info"]
+    int_grp_pretest_mean_comments_df = process_info(int_grp_two_pretest_mean, "pre_t2_mean_info")
 
     ################################
     # INTERVENTION GROUP PRE-TEST SD
     ################################
 
     # Get Intervention Group Pre-test SD highlighted text
-    InterventionGroupPretestSD_HT = highlighted_text(intervention_group_two_pretest_sd)
-    InterventionGroupPretestSD_HT_df = pd.DataFrame(InterventionGroupPretestSD_HT)
-    InterventionGroupPretestSD_HT_df = InterventionGroupPretestSD_HT_df.T
-    InterventionGroupPretestSD_HT_df.columns = ["pre_t2_sd_ht"]
-
+    int_grp_pretest_sd_ht_df = process_ht(int_grp_two_pretest_sd, "pre_t2_sd_ht")
     # Get Intervention Group Pre-test SD comments
-    InterventionGroupPretestSD_comments = comments(intervention_group_two_pretest_sd)
-    InterventionGroupPretestSD_comments_df = pd.DataFrame(InterventionGroupPretestSD_comments)
-    InterventionGroupPretestSD_comments_df = InterventionGroupPretestSD_comments_df.T
-    InterventionGroupPretestSD_comments_df.columns = ["pre_t2_sd_info"]
+    int_grp_pretest_sd_comments_df = process_info(int_grp_two_pretest_sd, "pre_t2_sd_info")
 
     ##################################
     # INTERVENTION GROUP POST-TEST MEAN
     ###################################
 
     # Get Intervention Group Post-Test Mean highlighted text
-    InterventionGroupPostTestMean_HT = highlighted_text(intervention_group_two_posttest_mean)
-    InterventionGroupPostTestMean_HT_df = pd.DataFrame(InterventionGroupPostTestMean_HT)
-    InterventionGroupPostTestMean_HT_df = InterventionGroupPostTestMean_HT_df.T
-    InterventionGroupPostTestMean_HT_df.columns = ["post_t2_mean_ht"]
-
+    int_grp_post_test_mean_ht_df = process_ht(int_grp_two_posttest_mean, "post_t2_mean_ht")
     # Get Intervention Group Post-Test Mean comments
-    InterventionGroupPostTestMean_comments = comments(intervention_group_two_posttest_mean)
-    InterventionGroupPostTestMean_comments_df = pd.DataFrame(InterventionGroupPostTestMean_comments)
-    InterventionGroupPostTestMean_comments_df = InterventionGroupPostTestMean_comments_df.T
-    InterventionGroupPostTestMean_comments_df.columns = ["post_t2_mean_info"]
+    int_grp_post_test_mean_comments_df = process_info(int_grp_two_posttest_mean, "post_t2_mean_info")
 
     ##################################
     # INTERVENTION GROUP POST-TEST SD
     ###################################
 
     # Get Intervention Group Post-test SD highlighted text
-    InterventionGroupPostTestSD_HT = highlighted_text(intervention_group_two_posttest_sd)
-    InterventionGroupPostTestSD_HT_df = pd.DataFrame(InterventionGroupPostTestSD_HT)
-    InterventionGroupPostTestSD_HT_df = InterventionGroupPostTestSD_HT_df.T
-    InterventionGroupPostTestSD_HT_df.columns = ["post_t2_sd_ht"]
-
+    int_grp_post_test_sd_ht_df = process_ht(int_grp_two_posttest_sd, "post_t2_sd_ht")
     # Get Intervention Group Post-test SD comments
-    InterventionGroupPostTestSD_comments = comments(intervention_group_two_posttest_sd)
-    InterventionGroupPostTestSD_comments_df = pd.DataFrame(InterventionGroupPostTestSD_comments)
-    InterventionGroupPostTestSD_comments_df = InterventionGroupPostTestSD_comments_df.T
-    InterventionGroupPostTestSD_comments_df.columns = ["post_t2_sd_info"]
+    int_grp_post_test_sd_comments_df = process_info(int_grp_two_posttest_sd, "post_t2_sd_info")
 
     ####################################
     # INTERVENTION GROUP GAIN SCORE MEAN
     ####################################
 
-    # Get Intervention Group Grain Score Mean highlighted text
-    InterventionGroupGainScoreMean_HT = highlighted_text(intervention_group_two_gain_score_mean)
-    InterventionGroupGainScoreMean_HT_df = pd.DataFrame(InterventionGroupGainScoreMean_HT)
-    InterventionGroupGainScoreMean_HT_df = InterventionGroupGainScoreMean_HT_df.T
-    InterventionGroupGainScoreMean_HT_df.columns = ["gain_t2_mean_ht"]
-
+    # Get Intervention Group Gain Score Mean highlighted text
+    int_grp_gain_score_mean_ht_df = process_ht(int_grp_two_gain_score_mean, "gain_t2_mean_ht")
     # Get Intervention Group Gain Score Mean comments
-    InterventionGroupGainScoreMean_comments = comments(intervention_group_two_gain_score_mean)
-    InterventionGroupGainScoreMean_comments_df = pd.DataFrame(InterventionGroupGainScoreMean_comments)
-    InterventionGroupGainScoreMean_comments_df = InterventionGroupGainScoreMean_comments_df.T
-    InterventionGroupGainScoreMean_comments_df.columns = ["gain_t2_mean_info"]
+    int_grp_gain_score_mean_comments_df = process_info(int_grp_two_gain_score_mean, "gain_t2_mean_info")
 
     ##################################
     # INTERVENTION GROUP GAIN SCORE SD
     ##################################
 
     # Get Intervention Group Grain Score SD highlighted text
-    InterventionGroupGainScoreSD_HT = highlighted_text(intervention_group_two_gain_score_sd)
-    InterventionGroupGainScoreSD_HT_df = pd.DataFrame(InterventionGroupGainScoreSD_HT)
-    InterventionGroupGainScoreSD_HT_df = InterventionGroupGainScoreSD_HT_df.T
-    InterventionGroupGainScoreSD_HT_df.columns = ["gain_t2_sd_ht"]
-
+    int_grp_gain_score_sd_ht_df = process_ht(int_grp_two_gain_score_sd, "gain_t2_sd_ht")
     # Get Intervention Group Gain Score SD comments
-    InterventionGroupGainScoreSD_comments = comments(intervention_group_two_gain_score_sd)
-    InterventionGroupGainScoreSD_comments_df = pd.DataFrame(InterventionGroupGainScoreSD_comments)
-    InterventionGroupGainScoreSD_comments_df = InterventionGroupGainScoreSD_comments_df.T
-    InterventionGroupGainScoreSD_comments_df.columns = ["gain_t2_sd_info"]
+    int_grp_gain_score_sd_comments_df = process_info(int_grp_two_gain_score_sd, "gain_t2_sd_info")
 
     ###############################
     # INTERVENTION GROUP OTHER INFO
     ###############################
 
     # Get Intervention Group Other Information highlighted text
-    InterventionGroupOtherInfo_HT = highlighted_text(intervention_group_two_any_other_info)
-    InterventionGroupOtherInfo_HT_df = pd.DataFrame(InterventionGroupOtherInfo_HT)
-    InterventionGroupOtherInfo_HT_df = InterventionGroupOtherInfo_HT_df.T
-    InterventionGroupOtherInfo_HT_df.columns = ["out_t2_other_ht"]
-
+    int_grp_other_info_ht_df = process_ht(int_grp_two_any_other_info, "out_t2_other_ht")
     # Get Intervention Group Other Information comments
-    InterventionGroupOtherInfo_comments = comments(intervention_group_two_any_other_info)
-    InterventionGroupOtherInfo_comments_df = pd.DataFrame(InterventionGroupOtherInfo_comments)
-    InterventionGroupOtherInfo_comments_df = InterventionGroupOtherInfo_comments_df.T
-    InterventionGroupOtherInfo_comments_df.columns = ["out_t2_other_info"]
+    int_grp_other_info_comments_df = process_info(int_grp_two_any_other_info, "out_t2_other_info")
 
-    # concatenate data frames
-    DescStatsPrimaryOutcomeReported_Intervention_TWO_df = pd.concat([
-        InterventionGroupNumber_HT_df, 
-        InterventionGroupNumber_comments_df,
-        InterventionGroupPretestMean_HT_df, 
-        InterventionGroupPretestMean_comments_df,
-        InterventionGroupPretestSD_HT_df,
-        InterventionGroupPretestSD_comments_df,
-        InterventionGroupPostTestMean_HT_df, 
-        InterventionGroupPostTestMean_comments_df,
-        InterventionGroupPostTestSD_HT_df, 
-        InterventionGroupPostTestSD_comments_df,
-        InterventionGroupGainScoreMean_HT_df, 
-        InterventionGroupGainScoreMean_comments_df,
-        InterventionGroupGainScoreSD_HT_df, 
-        InterventionGroupGainScoreSD_comments_df,
-        InterventionGroupOtherInfo_HT_df, 
-        InterventionGroupOtherInfo_comments_df
-    ], axis=1, sort=False)
+    # Concatenate data frames
+    dataframes = [intervention_group_number_ht_df, 
+                  intervention_group_number_comments_df,
+                  int_grp_pretest_mean_ht_df, 
+                  int_grp_pretest_mean_comments_df,
+                  int_grp_pretest_sd_ht_df,
+                  int_grp_pretest_sd_comments_df,
+                  int_grp_post_test_mean_ht_df, 
+                  int_grp_post_test_mean_comments_df,
+                  int_grp_post_test_sd_ht_df, 
+                  int_grp_post_test_sd_comments_df,
+                  int_grp_gain_score_mean_ht_df, 
+                  int_grp_gain_score_mean_comments_df,
+                  int_grp_gain_score_sd_ht_df, 
+                  int_grp_gain_score_sd_comments_df,
+                  int_grp_other_info_ht_df, 
+                  int_grp_other_info_comments_df]
 
-    # fill blanks with NA
-    DescStatsPrimaryOutcomeReported_Intervention_TWO_df.fillna("NA", inplace=True)
+    desc_stats_prim_out_rep_int_two_df = pd.concat(dataframes, axis=1, sort=False)
 
-    return DescStatsPrimaryOutcomeReported_Intervention_TWO_df
+    # Cleanup data frame
+    desc_stats_prim_out_rep_int_two_df.fillna("NA", inplace=True)
+
+    return desc_stats_prim_out_rep_int_two_df
 
 def desc_s_p_out_rep_interv():
+    """
+    
+    """
+    from AttributeIDList import int_grp_number
+    from AttributeIDList import int_grp_pretest_mean
+    from AttributeIDList import int_grp_pretest_sd
+    from AttributeIDList import intn_grp_posttest_mean
+    from AttributeIDList import int_grp_posttest_sd
+    from AttributeIDList import int_grp_gain_score_mean
+    from AttributeIDList import int_grp_gain_score_sd
+    from AttributeIDList import int_grp_any_other_info
 
-    from AttributeIDList import intervention_group_number
-    from AttributeIDList import intervention_group_pretest_mean
-    from AttributeIDList import intervention_group_pretest_sd
-    from AttributeIDList import intervention_group_posttest_mean
-    from AttributeIDList import intervention_group_posttest_sd
-    from AttributeIDList import intervention_group_gain_score_mean
-    from AttributeIDList import intervention_group_gain_score_sd
-    from AttributeIDList import intervention_group_any_other_info
-
-    ###########################
-    # INTERVENTION GROUP NUMBER
-    ###########################
+    #---------------------------#
+    # INTERVENTION GROUP NUMBER #
+    #---------------------------#
 
     # Get Intervention Group Number highlighted text
-    InterventionGroupNumber_HT = highlighted_text(intervention_group_number)
-    InterventionGroupNumber_HT_df = pd.DataFrame(InterventionGroupNumber_HT)
-    InterventionGroupNumber_HT_df = InterventionGroupNumber_HT_df.T
-    InterventionGroupNumber_HT_df.columns = ["n_treat_ht"]
-
+    int_grp_num_ht_df = process_ht(int_grp_number, "n_treat_ht")
     # Get Intervention Group Number comments
-    InterventionGroupNumber_comments = comments(intervention_group_number)
-    InterventionGroupNumber_comments_df = pd.DataFrame(InterventionGroupNumber_comments)
-    InterventionGroupNumber_comments_df = InterventionGroupNumber_comments_df.T
-    InterventionGroupNumber_comments_df.columns = ["n_treat_info"]
+    int_grp_number_comments_df = process_info(int_grp_number, "n_treat_info")
 
-    ##################################
-    # INTERVENTION GROUP PRE-TEST MEAN
-    ##################################
+    #------------------------------------#
+    #  INTERVENTION GROUP PRE-TEST MEAN  #
+    #------------------------------------#
 
     # Get Intervention Group Pre-test Mean highlighted text
-    InterventionGroupPretestMean_HT = highlighted_text(intervention_group_pretest_mean)
-    InterventionGroupPretestMean_HT_df = pd.DataFrame(InterventionGroupPretestMean_HT)
-    InterventionGroupPretestMean_HT_df = InterventionGroupPretestMean_HT_df.T
-    InterventionGroupPretestMean_HT_df.columns = ["pre_t_mean_ht"]
-
+    int_grp_pretest_mean_ht_df = process_ht(int_grp_pretest_mean, "pre_t_mean_ht")
     # Get Intervention Group Pre-test Mean comments
-    InterventionGroupPretestMean_comments = comments(intervention_group_pretest_mean)
-    InterventionGroupPretestMean_comments_df = pd.DataFrame(InterventionGroupPretestMean_comments)
-    InterventionGroupPretestMean_comments_df = InterventionGroupPretestMean_comments_df.T
-    InterventionGroupPretestMean_comments_df.columns = ["pre_t_mean_info"]
+    int_grp_pretest_mean_comments_df = process_info(int_grp_pretest_mean, "pre_t_mean_info")
 
-    ################################
-    # INTERVENTION GROUP PRE-TEST SD
-    ################################
+    #--------------------------------#
+    # INTERVENTION GROUP PRE-TEST SD #
+    #--------------------------------#
 
     # Get Intervention Group Pre-test SD highlighted text
-    InterventionGroupPretestSD_HT = highlighted_text(intervention_group_pretest_sd)
-    InterventionGroupPretestSD_HT_df = pd.DataFrame(InterventionGroupPretestSD_HT)
-    InterventionGroupPretestSD_HT_df = InterventionGroupPretestSD_HT_df.T
-    InterventionGroupPretestSD_HT_df.columns = ["pre_t_sd_ht"]
-
+    int_group_pretest_sd_ht_df = process_ht(int_grp_pretest_sd, "pre_t_sd_ht")
     # Get Intervention Group Pre-test SD comments
-    InterventionGroupPretestSD_comments = comments(intervention_group_pretest_sd)
-    InterventionGroupPretestSD_comments_df = pd.DataFrame(InterventionGroupPretestSD_comments)
-    InterventionGroupPretestSD_comments_df = InterventionGroupPretestSD_comments_df.T
-    InterventionGroupPretestSD_comments_df.columns = ["pre_t_sd_info"]
+    int_group_pretest_sd_comments_df = process_info(int_grp_pretest_sd, "pre_t_sd_info")
 
-    ##################################
-    # INTERVENTION GROUP POST-TEST MEAN
-    ###################################
+    #-----------------------------------#
+    # INTERVENTION GROUP POST-TEST MEAN #
+    #-----------------------------------#
 
     # Get Intervention Group Post-Test Mean highlighted text
-    InterventionGroupPostTestMean_HT = highlighted_text(intervention_group_posttest_mean)
-    InterventionGroupPostTestMean_HT_df = pd.DataFrame(InterventionGroupPostTestMean_HT)
-    InterventionGroupPostTestMean_HT_df = InterventionGroupPostTestMean_HT_df.T
-    InterventionGroupPostTestMean_HT_df.columns = ["post_t_mean_ht"]
-
+    int_group_posttest_mean_ht_df = process_ht(intn_grp_posttest_mean, "prepost_t_mean_ht_t_sd_ht")
     # Get Intervention Group Post-Test Mean comments
-    InterventionGroupPostTestMean_comments = comments(intervention_group_posttest_mean)
-    InterventionGroupPostTestMean_comments_df = pd.DataFrame(InterventionGroupPostTestMean_comments)
-    InterventionGroupPostTestMean_comments_df = InterventionGroupPostTestMean_comments_df.T
-    InterventionGroupPostTestMean_comments_df.columns = ["post_t_mean_info"]
+    int_grp_posttest_mean_comments_df = process_info(intn_grp_posttest_mean, "post_t_mean_info")
 
-    #################################
-    # INTERVENTION GROUP POST-TEST SD
-    ##################################
+    #---------------------------------#
+    # INTERVENTION GROUP POST-TEST SD #
+    #---------------------------------#
 
     # Get Intervention Group Post-test SD highlighted text
-    InterventionGroupPostTestSD_HT = highlighted_text(intervention_group_posttest_sd)
-    InterventionGroupPostTestSD_HT_df = pd.DataFrame(InterventionGroupPostTestSD_HT)
-    InterventionGroupPostTestSD_HT_df = InterventionGroupPostTestSD_HT_df.T
-    InterventionGroupPostTestSD_HT_df.columns = ["post_t_sd_ht"]
-
+    int_grp_posttest_sd_ht_df = process_ht(int_grp_posttest_sd, "post_t_sd_ht")
     # Get Intervention Group Post-test SD comments
-    InterventionGroupPostTestSD_comments = comments(intervention_group_posttest_sd)
-    InterventionGroupPostTestSD_comments_df = pd.DataFrame(InterventionGroupPostTestSD_comments)
-    InterventionGroupPostTestSD_comments_df = InterventionGroupPostTestSD_comments_df.T
-    InterventionGroupPostTestSD_comments_df.columns = ["post_t_sd_info"]
+    int_grp_posttest_sd_comments_df = process_info(int_grp_posttest_sd, "post_t_sd_info")
 
-    ####################################
-    # INTERVENTION GROUP GAIN SCORE MEAN
-    ####################################
+    #------------------------------------#
+    # INTERVENTION GROUP GAIN SCORE MEAN #
+    #------------------------------------#
 
     # Get Intervention Group Grain Score Mean highlighted text
-    InterventionGroupGainScoreMean_HT = highlighted_text(intervention_group_gain_score_mean)
-    InterventionGroupGainScoreMean_HT_df = pd.DataFrame(InterventionGroupGainScoreMean_HT)
-    InterventionGroupGainScoreMean_HT_df = InterventionGroupGainScoreMean_HT_df.T
-    InterventionGroupGainScoreMean_HT_df.columns = ["gain_t_mean_ht"]
-
+    int_group_gain_score_mean_ht_df = process_ht(int_grp_gain_score_mean, "gain_t_mean_ht")
     # Get Intervention Group Gain Score Mean comments
-    InterventionGroupGainScoreMean_comments = comments(intervention_group_gain_score_mean)
-    InterventionGroupGainScoreMean_comments_df = pd.DataFrame(InterventionGroupGainScoreMean_comments)
-    InterventionGroupGainScoreMean_comments_df = InterventionGroupGainScoreMean_comments_df.T
-    InterventionGroupGainScoreMean_comments_df.columns = ["gain_t_mean_info"]
+    int_group_gain_score_mean_comments_df = process_info(int_grp_gain_score_mean, "gain_t_mean_info")
+    
 
-    ##################################
-    # INTERVENTION GROUP GAIN SCORE SD
-    ##################################
+    #----------------------------------#
+    # INTERVENTION GROUP GAIN SCORE SD #
+    #----------------------------------#
 
     # Get Intervention Group Grain Score SD highlighted text
-    InterventionGroupGainScoreSD_HT = highlighted_text(intervention_group_gain_score_sd)
-    InterventionGroupGainScoreSD_HT_df = pd.DataFrame(InterventionGroupGainScoreSD_HT)
-    InterventionGroupGainScoreSD_HT_df = InterventionGroupGainScoreSD_HT_df.T
-    InterventionGroupGainScoreSD_HT_df.columns = ["gain_t_sd_ht"]
-
+    int_grp_gain_score_sd_ht_df = process_ht(int_grp_gain_score_sd, "gain_t_sd_ht")
     # Get Intervention Group Gain Score SD comments
-    InterventionGroupGainScoreSD_comments = comments(intervention_group_gain_score_sd)
-    InterventionGroupGainScoreSD_comments_df = pd.DataFrame(InterventionGroupGainScoreSD_comments)
-    InterventionGroupGainScoreSD_comments_df = InterventionGroupGainScoreSD_comments_df.T
-    InterventionGroupGainScoreSD_comments_df.columns = ["gain_t_sd_info"]
+    int_grp_gain_score_sd_comments_df = process_info(int_grp_gain_score_sd, "gain_t_sd_info")
 
-    ###############################
-    # INTERVENTION GROUP OTHER INFO
-    ###############################
+    #-------------------------------#
+    # INTERVENTION GROUP OTHER INFO #
+    #-------------------------------#
 
     # Get Intervention Group Other Information highlighted text
-    InterventionGroupOtherInfo_HT = highlighted_text(intervention_group_any_other_info)
-    InterventionGroupOtherInfo_HT_df = pd.DataFrame(InterventionGroupOtherInfo_HT)
-    InterventionGroupOtherInfo_HT_df = InterventionGroupOtherInfo_HT_df.T
-    InterventionGroupOtherInfo_HT_df.columns = ["out_t_other_ht"]
-
+    int_grp_other_info_ht_df = process_ht(int_grp_any_other_info, "out_t_other_ht")
     # Get Intervention Group Other Information comments
-    InterventionGroupOtherInfo_comments = comments(intervention_group_any_other_info)
-    InterventionGroupOtherInfo_comments_df = pd.DataFrame(InterventionGroupOtherInfo_comments)
-    InterventionGroupOtherInfo_comments_df = InterventionGroupOtherInfo_comments_df.T
-    InterventionGroupOtherInfo_comments_df.columns = ["out_t_other_info"]
+    int_grp_other_info_comments_df = process_info(int_grp_any_other_info, "out_t_other_info")
 
-    # concatenate data frames
-    DescStatsPrimaryOutcomeReported_Intervention_df = pd.concat([
-        InterventionGroupNumber_HT_df, 
-        InterventionGroupNumber_comments_df,
-        InterventionGroupPretestMean_HT_df, 
-        InterventionGroupPretestMean_comments_df,
-        InterventionGroupPretestSD_HT_df, 
-        InterventionGroupPretestSD_comments_df,
-        InterventionGroupPostTestMean_HT_df, 
-        InterventionGroupPostTestMean_comments_df,
-        InterventionGroupPostTestSD_HT_df, 
-        InterventionGroupPostTestSD_comments_df,
-        InterventionGroupGainScoreMean_HT_df, 
-        InterventionGroupGainScoreMean_comments_df,
-        InterventionGroupGainScoreSD_HT_df, 
-        InterventionGroupGainScoreSD_comments_df,
-        InterventionGroupOtherInfo_HT_df, 
-        InterventionGroupOtherInfo_comments_df
-    ], axis=1, sort=False)
+    # Concatenate data frames
+    dataframes = [int_grp_num_ht_df, 
+                  int_grp_number_comments_df,
+                  int_grp_pretest_mean_ht_df, 
+                  int_grp_pretest_mean_comments_df,
+                  int_group_pretest_sd_ht_df, 
+                  int_group_pretest_sd_comments_df,
+                  int_group_posttest_mean_ht_df, 
+                  int_grp_posttest_mean_comments_df,
+                  int_grp_posttest_sd_ht_df, 
+                  int_grp_posttest_sd_comments_df,
+                  int_group_gain_score_mean_ht_df, 
+                  int_group_gain_score_mean_comments_df,
+                  int_grp_gain_score_sd_ht_df, 
+                  int_grp_gain_score_sd_comments_df,
+                  int_grp_other_info_ht_df, 
+                  int_grp_other_info_comments_df]
 
-    # fill blanks with NA
-    DescStatsPrimaryOutcomeReported_Intervention_df.fillna("NA", inplace=True)
+    desc_stats_prim_outc_rep_int_df = pd.concat(dataframes, axis=1, sort=False)
 
-    return DescStatsPrimaryOutcomeReported_Intervention_df
+    # Clean up dataframe
+    desc_stats_prim_outc_rep_int_df.fillna("NA", inplace=True)
+
+    return desc_stats_prim_outc_rep_int_df
 
 def desc_s_out_rep():
-    ###########################
-    # PRIMARY OUTCOME REPORTED
-    ###########################
+    """
+    """
     from AttributeIDList import desc_stats_primary_outcome
-    # Get Descriptive Stats (Primary Outcome) Reported main data
-    DescStatsPrimaryOutcomeReported = get_data(desc_stats_primary_outcome)
-    DescStatsPrimaryOutcomeReported_df = pd.DataFrame(DescStatsPrimaryOutcomeReported)
-    DescStatsPrimaryOutcomeReported_df = DescStatsPrimaryOutcomeReported_df.T
-    DescStatsPrimaryOutcomeReported_df.columns = ["desc_stats_raw"]
 
+    #--------------------------#
+    # PRIMARY OUTCOME REPORTED #
+    #--------------------------#
+
+    # Get Descriptive Stats (Primary Outcome) Reported data
+    desc_stats_prim_out_rep_df = process_data(desc_stats_primary_outcome, "desc_stats_raw")
     # Get Descriptive Stats (Primary Outcome) Reported highlighted text
-    DescStatsPrimaryOutcomeReported_HT = highlighted_text(desc_stats_primary_outcome)
-    DescStatsPrimaryOutcomeReported_HT_df = pd.DataFrame(DescStatsPrimaryOutcomeReported_HT)
-    DescStatsPrimaryOutcomeReported_HT_df = DescStatsPrimaryOutcomeReported_HT_df.T
-    DescStatsPrimaryOutcomeReported_HT_df.columns = ["desc_stats_ht"]
+    desc_stats_prim_out_rep_ht_df = process_ht(desc_stats_primary_outcome, "desc_stats_ht")
+    # Get Descriptive Stats (Primary Outcome) Reported comments
+    descs_tats_prim_out_rep_comments_df = process_info(desc_stats_primary_outcome, "desc_stats_info")
 
-    # Get Descriptive Stats (Primary Outcome) Reported user comments
-    DescStatsPrimaryOutcomeReported_Comments = comments(desc_stats_primary_outcome)
-    DescStatsPrimaryOutcomeReported_Comments_df = pd.DataFrame(DescStatsPrimaryOutcomeReported_Comments)
-    DescStatsPrimaryOutcomeReported_Comments_df = DescStatsPrimaryOutcomeReported_Comments_df.T
-    DescStatsPrimaryOutcomeReported_Comments_df.columns = ["desc_stats_info"]
+    # Concatenate data frames
+    dataframes = [desc_stats_prim_out_rep_df, 
+                  desc_stats_prim_out_rep_ht_df, 
+                  descs_tats_prim_out_rep_comments_df]
 
-    # concatenate data frames
-    DescStatsOutcomeReported_df = pd.concat([
-        DescStatsPrimaryOutcomeReported_df, 
-        DescStatsPrimaryOutcomeReported_HT_df, 
-        DescStatsPrimaryOutcomeReported_Comments_df
-    ], axis=1, sort=False)
+    desc_stats_out_rep_df = pd.concat(dataframes, axis=1, sort=False)
 
-    # fill blanks with NA
-    DescStatsOutcomeReported_df.fillna("NA", inplace=True)
+    # Clean data frame
+    desc_stats_out_rep_df.fillna("NA", inplace=True)
 
-    return DescStatsOutcomeReported_df
+    return desc_stats_out_rep_df
 
 def pubeppi():
     # get pubtype eppi data

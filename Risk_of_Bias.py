@@ -1,24 +1,30 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+Author: Jonathan Reardon
+"""
+
 import os
 import sys
 
-from ind_var.eppi_ID import eppiid_df
-from ind_var.Author import author_df
-from ind_var.Date import year_df
-from ind_var.AdminStrand import admin_strand_df
+from ind_var_functions.eppi_ID import eppiid_df
+from ind_var_functions.Author import author_df
+from ind_var_functions.Date import year_df
+from ind_var_functions.AdminStrand import admin_strand_df
 
-from ind_var.PublicationType import publicationtype_df
-from ind_var.ParticipantAssignment import participant_assignment_df
-from ind_var.Randomisation import randomisation_df
-from ind_var.StudyRealism import study_realism_df
-from ind_var.NumberofSchools import number_of_schools_intervention_Comments_df
-from ind_var.NumberofClasses import number_of_classes_total_Comments_df
-from ind_var.InterventionDelivery import intervention_delivery_df
-from ind_var.InterventionEvaluation import InterventionEvaluation_df
-from ind_var.Comparability import comparability_df
-from ind_var.SampleSize import sample_size_Comments_df
-from ind_var.Attrition import overall_percent_attrition_Comments_df
-from ind_var.Clustering import clustering_df
+from ind_var_functions.PublicationType import publicationtype_df
+from ind_var_functions.ParticipantAssignment import participant_assignment_df
+from ind_var_functions.Randomisation import randomisation_df
+from ind_var_functions.StudyRealism import study_realism_df
+from ind_var_functions.NumberofSchools import number_of_schools_intervention_Comments_df
+from ind_var_functions.NumberofClasses import number_of_classes_total_Comments_df
+from ind_var_functions.InterventionDelivery import intervention_delivery_df
+from ind_var_functions.InterventionEvaluation import InterventionEvaluation_df
+from ind_var_functions.Comparability import comparability_df
+from ind_var_functions.SampleSize import sample_size_Comments_df
+from ind_var_functions.Attrition import overall_percent_attrition_Comments_df
+from ind_var_functions.Clustering import clustering_df
 
 from DataFrame5 import toolkit_test_type
 from DataFrame5 import toolkit_es_type

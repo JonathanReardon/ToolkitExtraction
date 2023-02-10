@@ -1,19 +1,32 @@
-from ind_var.eppi_ID import eppiid_df
-from ind_var.Author import author_df
-from ind_var.OutcomeType import outcometype_df
-from ind_var.Outcome import outcome_df
-from ind_var.OutcomeTitle import outcome_title_df
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
+"""
+Author: Jonathan Reardon
+"""
+
+import os
+import sys
+
+# Third party imports
 import pandas as pd
 from toolz import interleave
 
-import os, sys
+# Local imports
+from Main import save_dataframe
+from ind_var_functions import ind_var_Gen
 
 data_files = sys.argv[1]
 
 def make_outcomes_df(save_file=True):
 
     global outcome_num
+
+    eppiid_df = ind_var_Gen.eppi()
+    author_df = ind_var_Gen.author()
+    outcometype_df = ind_var_Gen.out_type()
+    outcome_df = ind_var_Gen.outcome()
+    outcome_title_df =  ind_var_Gen.out_tit()
 
     df = pd.concat([
         outcometype_df,
@@ -38,27 +51,7 @@ def make_outcomes_df(save_file=True):
     outcome_num = int(outcome_num)
 
     if save_file:
-        # get current wd
-        cw = os.getcwd()
-
-        # get file name for output
-        outfile_name_pre = data_files.rsplit('/')[-1]
-        outfile_name_mid = outfile_name_pre.rsplit('.')[0]
-        outfile_name = outfile_name_mid + "_Outcomes.csv"
-        outfile = os.path.join(cw + "/" + outfile_name_mid, outfile_name)
-
-        # create dir (filename)
-        """ try:
-            os.mkdir(outfile_name_mid)
-        except OSError:
-            print("Create {} dir fail, already exists or permission error".format(outfile_name_mid))
-        else:
-            print("Successfully created {} directory".format(outfile_name_mid))
-
-        # write to disk
-        print("Input file: {}".format(data_files))
-        print("Saving extracted output to: {}".format(outfile))
-        all_variables.to_csv(outfile, index=False, header=True) """
+        save_dataframe(all_variables, "_Outcomes.csv")
 
 make_outcomes_df(save_file=True)
 

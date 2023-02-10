@@ -1,3 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+Author: Jonathan Reardon
+"""
+
 # START: FOR SOMEONE ELSE'S STUDY #
 
 #  STUDY PLACE
@@ -1975,14 +1982,14 @@ clustering_output = [{
     5407160: "Unclear"
 }]
 
-comparabiltiy_vars_reported = [{  
+comp_vars_rep = [{  
     # Are the variables used for comparability reported?"
     5406859: 'Yes',
     5406862: 'No',
     5406863: 'N/A'
 }]
 
-if_yes_which_comparability_variables_reported_output = [{  
+which_comp_vars_rep_output = [{  
     # If yes, which variables are used for comparability?
     5407122: 'Educational attainment',
     5407123: 'Gender',
@@ -1998,25 +2005,25 @@ comparability_output = [{
     5406864: 'No'
 }]
 
-baseline_differences_output = [{  
+baseline_diff_output = [{  
     # Does the study report any group differences at baseline?
     5406860: 'No/Unclear',
     5406866: 'Yes'
 }]
 
-attrition_dropout_reported_output = [{ 
+attr_dropout_rep_output = [{ 
      # Is attrition or drop out reported?
     5407034: 'Yes',
     5407035: 'No',
     5407036: 'Unclear (please add notes)'
 }]
 
-treatment_group_attrition = [{  
+treat_grp_attr = [{  
     # What is the attrition in the treatment group?
     5407037: ''
 }]
 
-overall_percent_attrition = [{  
+overall_perc_attr = [{  
     # What is the total or overall percentage attrition?
     5407038: ''
 }]
@@ -2062,134 +2069,134 @@ desc_stats_primary_outcome = [{
 
 # INTERVENTION (TREATMENT) GROUP
 
-intervention_group_number = [{  
+int_grp_number = [{  
     # intervention group Number (n}
     5406980: ''
 }]
 
-intervention_group_pretest_mean = [{  
+int_grp_pretest_mean = [{  
     # intervention group Pre-test mean
     5406981: ''
 }]
 
-intervention_group_pretest_sd = [{  
+int_grp_pretest_sd = [{  
     # intervention* group Pre-test SD
     5406982: ''
 }]
 
-intervention_group_posttest_mean = [{  
+intn_grp_posttest_mean = [{  
     # intervention* group Post-test mean
     5406983: ''
 }]
 
-intervention_group_posttest_sd = [{ 
+int_grp_posttest_sd = [{ 
     # intervention* group Post-test SD
     5406989: ''
 }]
 
-intervention_group_gain_score_mean = [{  
+int_grp_gain_score_mean = [{  
     # intervention gain score mean
     5407130: ''
 }]
 
-intervention_group_gain_score_sd = [{ 
+int_grp_gain_score_sd = [{ 
      # intervention gain score sd
     5407131: ''
 }]
 
-intervention_group_any_other_info = [{  
+int_grp_any_other_info = [{  
     # intervention -  any other info}]
     5406990: ''
 }]
 
 # control group
 
-control_group_number = [{  
+ctrl_grp_number = [{  
     # control* group Number (n}
     5406985: ''
 }]
 
-control_group_pretest_mean = [{  
+ctrl_grp_pretest_mean = [{  
     # control group Pre-test mean
     5406986: ''
 }]
 
-control_group_pretest_sd = [{  
+ctrl_grp_pretest_sd = [{  
     # control group Pre-test SD
     5406987: ''
 }]
 
-control_group_posttest_mean = [{  
+ctrl_grp_posttest_mean = [{  
     # control group Post-test mean
     5406988: ''
 }]
 
-control_group_posttest_sd = [{  
+ctrl_grp_posttest_sd = [{  
     # control group Post-test SD
     5406984: ''
 }]
 
-control_group_gain_score_mean = [{ 
+ctrl_grp_gain_score_mean = [{ 
      # control gain score mean
     5407132: ''
 }]
 
-control_group_gain_score_sd = [{  
+ctrl_grp_gain_score_sd = [{  
     # control gain score sd
     5407133: ''
 }]
 
-control_group_any_other_info = [{  
-    # control -  any other info}]
+ctrl_grp_any_other_info = [{  
+    # control -  any other info
     5406991: ''
 }]
 
 # intervention (treatment) group two
 
-intervention_group_two_number = [{  
-    # intervention group Number (n}
+int_grp_two_number = [{  
+    # intervention group Number (n)
     5407135: ''
 }]
 
-intervention_group_two_pretest_mean = [{  
+int_grp_two_pretest_mean = [{  
     # intervention group Pre-test mean
     5407136: ''
 }]
 
-intervention_group_two_pretest_sd = [{  
+int_grp_two_pretest_sd = [{  
     # intervention* group Pre-test SD
     5407137: ''
 }]
 
-intervention_group_two_posttest_mean = [{  
+int_grp_two_posttest_mean = [{  
     # intervention* group Post-test mean
     5407138: ''
 }]
 
-intervention_group_two_posttest_sd = [{  
+int_grp_two_posttest_sd = [{  
     # intervention* group Post-test SD
     5407139: ''
 }]
 
-intervention_group_two_gain_score_mean = [{  
+int_grp_two_gain_score_mean = [{  
     # intervention gain score mean
     5407141: ''
 }]
 
-intervention_group_two_gain_score_sd = [{  
+int_grp_two_gain_score_sd = [{  
     # intervention gain score sd
     5407142: ''
 }]
 
-intervention_group_two_any_other_info = [{  
-    # intervention -  any other info}]
+int_grp_two_any_other_info = [{  
+    # intervention - any other info
     5407140: ''
 }]
 
 # control group two
 
 control_group_two_number = [{  
-    # control* group Number (n}
+    # control* group Number (n)
     5447053: ''
 }]
 
@@ -2352,7 +2359,7 @@ intervention_implementation_details = [{  # Are implementation details and/or fi
     5215523: "No implementation details provided."
 }]
 
-intervention_costs_reported = [{  # Are the costs reported?
+int_costs_reported = [{  # Are the costs reported?
     5215528: "Yes (Please add details)",
     5215529: "No"
 }]
@@ -2723,7 +2730,7 @@ test_type_main = [{
     5215541: 'International tests'
 }]
 
-effect_size_type_output = [{  
+es_type_output = [{  
     # Effect size calculation (select one from this group)
     5407010: 'Post-test unadjusted (select one from this group)',
     5407011: 'Post-test adjusted for baseline attainment',

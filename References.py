@@ -1,27 +1,32 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+Author: Jonathan Reardon
+"""
 
 from Main import get_metadata, get_data, get_outcome_lvl1, get_outcome_lvl2, data_files
 
-from ind_var.eppi_ID import eppiid_df
-from ind_var.AdminStrand import admin_strand_df
-from ind_var.Author import author_df
-from ind_var.Authors import authors_df
-from ind_var.Date import year_df
-from ind_var.Title import title_df
-from ind_var.ParentTitle import parentittle_df
-from ind_var.Parent_Authors import parentauthors_df
-from ind_var.TypeName import typename_df
-from ind_var.Abstract import abstract_df
+from ind_var_functions.eppi_ID import eppiid_df
+from ind_var_functions.AdminStrand import admin_strand_df
+from ind_var_functions.Author import author_df
+from ind_var_functions.Authors import authors_df
+from ind_var_functions.Date import year_df
+from ind_var_functions.Title import title_df
+from ind_var_functions.ParentTitle import parentittle_df
+from ind_var_functions.Parent_Authors import parentauthors_df
+from ind_var_functions.TypeName import typename_df
+from ind_var_functions.Abstract import abstract_df
 
-from ind_var.Volume import volume_df
-from ind_var.Issue import issue_df
-from ind_var.Pages import pages_df
-from ind_var.DOI import doi_df
-from ind_var.URL import url_df
-from ind_var.Publisher import publisher_df
-from ind_var.City import city_df
-from ind_var.Institution import institution_df
-from ind_var.Editors import editedby_df
+from ind_var_functions.Volume import volume_df
+from ind_var_functions.Issue import issue_df
+from ind_var_functions.Pages import pages_df
+from ind_var_functions.DOI import doi_df
+from ind_var_functions.URL import url_df
+from ind_var_functions.Publisher import publisher_df
+from ind_var_functions.City import city_df
+from ind_var_functions.Institution import institution_df
+from ind_var_functions.Editors import editedby_df
 
 # standard imports
 import os, sys
