@@ -271,7 +271,7 @@ def get_outfile_dir(df, df_name):
     Gets output file directory
     '''
     # Get current working dir
-    cw = os.getcwd() + "/Extractions"
+    cw = os.getcwd() + "/output"
     # get file name for output
     outfile_name_pre = data_file.rsplit('/')[-1] # 
     outfile_name_mid = outfile_name_pre.rsplit('.')[0]  # use for dir name
@@ -282,10 +282,10 @@ def get_outfile_dir(df, df_name):
 
 def save_dataframe(df, df_name):
     '''
-    Saves a .csv of the dataframe to Extractions/
+    Saves a .csv of the dataframe to output/
     '''
     # Get current working dir
-    cw = os.getcwd() + "/Extractions"
+    cw = os.getcwd() + "/output"
     # get file name for output
     outfile_name_pre = data_file.rsplit('/')[-1] # 
     outfile_name_mid = outfile_name_pre.rsplit('.')[0]  # use for dir name
@@ -293,11 +293,11 @@ def save_dataframe(df, df_name):
     outfile = os.path.join(cw + "/" + outfile_name_mid, outfile_name)
     # Create dir (filename)
     try:
-        os.mkdir("Extractions/" + outfile_name_mid)
+        os.mkdir("output/" + outfile_name_mid)
     except OSError:
         pass
     else:
-        print("Successfully created {} directory".format("Extractions/" + outfile_name_mid))
+        print("Successfully created {} directory".format("output/" + outfile_name_mid))
     # write to disk
     #print("Input file: {}\n".format(data_file))
     #print("Saving extracted output to: {}\n".format(outfile))
