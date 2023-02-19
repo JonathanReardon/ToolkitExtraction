@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-Author: Jonathan Reardon
-"""
+__Author__ = "Jonathan Reardon"
 
 # START: FOR SOMEONE ELSE'S STUDY #
 
@@ -1924,13 +1922,13 @@ other_outcomes_output = [{
     5215573: 'No'
 }]   
 
-additional_outcomes_output = [{ 
+addit_out_output = [{ 
     # If yes, which other outcomes are reported? 
     5215575: 'Cognitive outcomes measured (Please specify)',
     5215576: 'Other types of student outcomes (Please specify)'
 }] 
 
-other_participants_output = [{ 
+other_part_output = [{ 
     # Other participants (i.e. not students) outcomes
     5215577: 'Other participants (i.e. not students) outcomes (Please specify)'
 }]
@@ -1955,22 +1953,22 @@ sample_size_third_intervention_output = [{
     5407121: ''
 }]
 
-sample_size_analyzed_intervention_output = [{  
+samp_size_anal_int_output = [{  
     # intervention group Number (n}
     5406980: ''
 }]
 
-sample_size_analyzed_control_output = [{  
+samp_size_anal_cont_output = [{  
     # control* group Number (n}
     5406985: ''
 }]
 
-sample_size_analyzed_second_intervention_output = [{  
+samp_size_anal_sec_int_output = [{  
     # If yes, please add for a second intervention* group (if needed)
     5407135: ''
 }]
 
-sample_size_analyzed_second_control_output = [{  
+samp_size_anal_sec_cont_output = [{  
     # If needed, please add for the control group
     5447053: ''
 }]
@@ -2245,7 +2243,7 @@ follow_up_data_reported = [{
 # INTERVENTION INFORMATION
 ###########################
 
-intervention_name_output = [{  
+int_name_output = [{  
     # "What is the intervention name?"
     5215238: ''
 }]
@@ -2260,7 +2258,7 @@ intervention_objectives_output = [{
     5215564: ''
 }]
 
-intervention_organisation_type_output = [{  
+int_org_type_output = [{  
     # What type of organisation was responsible for providing the intervention?
     5215491: "School or group of schools",
     5215492: "Charity or voluntary organisation",
@@ -2270,14 +2268,14 @@ intervention_organisation_type_output = [{
     5215496: "Other (please provide details)"
 }]
 
-intervention_training_provided_output = [{  
+int_training_provided_output = [{  
     # Was training for the intervention provided?
     5215498: "Yes (Please specify)",
     5215499: "No",
     5215500: "Unclear/ Not specified"
 }]
 
-intervention_focus_output = [{  
+int_focus_output = [{  
     # Who is the focus of the intervention? (Select ALL that apply)
     5215502: "Students",
     5215503: "Teachers",
@@ -2300,14 +2298,14 @@ intervention_teaching_approach = [{
 }]
 
 # intervention approach inclusion
-intervention_approach_digital_technology = [{  
+int_appr_dig_tech = [{  
     # Were any of the following involved in the intervention or approach?
     # Digital Technology
     5216718: "Yes",
     5216719: "No"
 }]
 
-intervention_approach_parents_or_community_volunteers = [{  
+int_appr_par_or_comm_vol = [{  
     # Were any of the following involved in the intervention or approach?
     # Parents or community volunteers
     5216720: "Yes",
@@ -2338,12 +2336,12 @@ intervention_delivery_output = [{
     5215562: "Unclear/not specified"
 }]
 
-intervention_duration_output = [{  
+int_dur_output = [{  
     # What was the duration of the intervention? (Please add to info box and specify units)
     5215517: ''
 }]
 
-intervention_frequency_output = [{  
+inte_freq_output = [{  
     # What was the frequency of the intervention?
     5215518: ''
 }]
@@ -2353,7 +2351,7 @@ intervention_session_length_output = [{
     5215519: ''
 }]
 
-intervention_implementation_details = [{  # Are implementation details and/or fidelity details provided?
+int_impl_details = [{  # Are implementation details and/or fidelity details provided?
     5215521: "Qualitative",
     5215522: "Quantitative",
     5215523: "No implementation details provided."
@@ -2364,7 +2362,7 @@ int_costs_reported = [{  # Are the costs reported?
     5215529: "No"
 }]
 
-intervention_evaluation = [{  # Who undertook the outcome evaluation?
+int_eval = [{  # Who undertook the outcome evaluation?
     5215533: "The developer",
     5215532: "A different organization paid by developer",
     5215531: "An organization commissioned independently to evaluate",
@@ -2398,22 +2396,22 @@ number_of_schools_not_provided_output = [{
 }]
 
 # NUMBER OF CLASSES
-number_of_classes_intervention_output = [{  
+num_of_class_int_output = [{  
     # What is the total number of classes involved in the intervention group?
     5407105: ''
 }]
 
-number_of_classes_control_output = [{  
+num_of_class_cont_output = [{  
     # What is the total number of classes involved in the control or comparison group?
     5407107: ''
 }]
 
-number_of_classes_total_output = [{  
+num_of_class_tot_output = [{  
     # What is the total number of classes involved?
     5407153: ''
 }]
 
-number_of_classes_not_provided_output = [{  
+numb_of_class_np_output = [{  
     # Not provided/ unclear / not applicable
     5407114: 'not_provided'
 }]
@@ -2523,7 +2521,7 @@ level_of_assignment_output = [{  # What was the level of assignment?
     5215249: 'Not provided/ not available'
 }]
 
-participant_assignment_output = [{  # How were participants assigned?
+part_assign_output = [{  # How were participants assigned?
     5215251: 'Random (please specify)',
     5215252: 'Non-random, but matched',
     5215253: 'Non-random, not matched prior to treatment',
@@ -2586,7 +2584,7 @@ curriculum_subjects = [{
     5215551: "Other curriculum test"
 }]
 
-other_outcomes_output = [{  
+other_out_output = [{  
     # In addition to the primary educational attainment outcome, are there other outcomes reported?
     5215572: "Yes",
     5215573: "No"

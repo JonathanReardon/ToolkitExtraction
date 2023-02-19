@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-Author: Jonathan Reardon
-"""
+__Author__ = "Jonathan Reardon"
 
+# System imports
 import os
 import sys
 
@@ -13,8 +12,7 @@ import pandas as pd
 from toolz import interleave
 
 # Local imports
-from Main import save_dataframe
-from ind_var_functions import ind_var_gen
+from src.funcs import *
 
 data_files = sys.argv[1]
 
@@ -22,11 +20,11 @@ def make_outcomes_df(save_file=True):
 
     global outcome_num
 
-    eppiid_df = ind_var_gen.eppi()
-    author_df = ind_var_gen.author()
-    outcometype_df = ind_var_gen.out_type()
-    outcome_df = ind_var_gen.outcome()
-    outcome_title_df =  ind_var_gen.out_tit()
+    eppiid_df = retrieve_metadata("ItemId", "id")
+    author_df = retrieve_metadata("ShortTitle", "pub_author")
+    outcometype_df = get_outcome_data_lvl2(outcome_type_codes, "out_type_")
+    outcome_df = get_outcome_data_lvl1("OutcomeText", "out_label_")
+    outcome_title_df = get_outcome_data_lvl1("Title", "out_tit_")
 
     df = pd.concat([
         outcometype_df,

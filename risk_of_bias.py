@@ -8,23 +8,23 @@ Author: Jonathan Reardon
 import os
 import sys
 
-from ind_var_functions.eppi_ID import eppiid_df
-from ind_var_functions.Author import author_df
-from ind_var_functions.Date import year_df
-from ind_var_functions.AdminStrand import admin_strand_df
+from src.eppi_ID import eppiid_df
+from src.Author import author_df
+from src.Date import year_df
+from src.AdminStrand import admin_strand_df
 
-from ind_var_functions.PublicationType import publicationtype_df
-from ind_var_functions.ParticipantAssignment import participant_assignment_df
-from ind_var_functions.Randomisation import randomisation_df
-from ind_var_functions.StudyRealism import study_realism_df
-from ind_var_functions.NumberofSchools import number_of_schools_intervention_Comments_df
-from ind_var_functions.NumberofClasses import number_of_classes_total_Comments_df
-from ind_var_functions.InterventionDelivery import intervention_delivery_df
-from ind_var_functions.InterventionEvaluation import InterventionEvaluation_df
-from ind_var_functions.Comparability import comparability_df
-from ind_var_functions.SampleSize import sample_size_Comments_df
-from ind_var_functions.Attrition import overall_percent_attrition_Comments_df
-from ind_var_functions.Clustering import clustering_df
+from src.PublicationType import publicationtype_df
+from src.ParticipantAssignment import participant_assignment_df
+from src.Randomisation import randomisation_df
+from src.StudyRealism import study_realism_df
+from src.NumberofSchools import number_of_schools_intervention_Comments_df
+from src.NumberofClasses import number_of_classes_total_Comments_df
+from src.InterventionDelivery import intervention_delivery_df
+from src.InterventionEvaluation import InterventionEvaluation_df
+from src.Comparability import comparability_df
+from src.SampleSize import sample_size_Comments_df
+from src.Attrition import overall_percent_attrition_Comments_df
+from src.Clustering import clustering_df
 
 from DataFrame5 import toolkit_test_type
 from DataFrame5 import toolkit_es_type
