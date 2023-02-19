@@ -1,32 +1,44 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
 __Author__ = "Jonathan Reardon"
+
 # System imports
 import os
 import sys
 import json
+
 # Third Party imports
 import pandas as pd
+import numpy as np
 from toolz import interleave
 from rich import print
 from rich import box
 from rich.console import Console
 from rich.table import Table
 from rich.progress import track
-from rich import box
+
+# Local imports
 from src.attributeIDs import *
+
 # improve for error checking
 data_file = sys.argv[1]
+
 #/****************/
 #/ CORE FUNCTIONS /
 #/****************/
+
 EXCLUDE = "NA"
+
+
 def load_json():
     global data
     script_dir = os.path.dirname(__file__)
     datafile = os.path.join(script_dir, data_file)
     with open(datafile) as f:
         data = json.load(f)
+
+
 def get_metadata(var):
     ''' """ 
     Extracts study-level metadata. """
@@ -40,6 +52,8 @@ def get_metadata(var):
         else:
             varlist.append(EXCLUDE)
     return varlist
+
+
 def get_data(codes):
     '''
     Extract study-level main data.
@@ -61,6 +75,8 @@ def get_data(codes):
                 holder.append(holderfind)
         df.append(holder)
     return df
+
+
 def comments(codes):
     ''' 
     Extracts study level "comment" data.
@@ -86,6 +102,8 @@ def comments(codes):
         all_comments.append(comments)
         comments = []
     return all_comments
+
+
 def highlighted_text(codes):
     ''' 
     Extracts Study level "highlighted text" data.
@@ -114,6 +132,8 @@ def highlighted_text(codes):
         all_highlighted_text.append(highlighted_text)
         highlighted_text = []
     return all_highlighted_text
+
+
 def get_outcome_lvl1(var):
     ''' 
     Extracts first-level outcome data.
@@ -140,6 +160,8 @@ def get_outcome_lvl1(var):
                 holder.append(EXCLUDE)
             varlist.append(holder)
     return varlist
+
+
 def get_outcome_lvl2(var):
     '''
     Extracts second-level (nested) outcome data.
@@ -170,6 +192,8 @@ def get_outcome_lvl2(var):
                     outerholder = EXCLUDE
             varlist.append(outerholder)
     return varlist
+
+
 # CEDIL Project
 """ def get_data(codes):
     '''
@@ -192,9 +216,12 @@ def get_outcome_lvl2(var):
                 holder.append(holderfind)
         df.append(holder)
     return df """
+
 #/*********************/
 #/ SECONDARY FUNCTIONS /
 #/*********************/
+
+
 def getOutcomeData(dataframe, out_label, out_container, var_names):
     '''
     Extract strand level outcome data for main analysis dataframe
@@ -212,6 +239,8 @@ def getOutcomeData(dataframe, out_label, out_container, var_names):
                 for holder in out_container:
                     holder.append("NA")
     return out_container
+
+
 def get_outcome_data_lvl1(attribute_text, column_prefix):
     outcome_data = get_outcome_lvl1(attribute_text)
     outcome_df = pd.DataFrame(outcome_data)
@@ -224,6 +253,8 @@ def get_outcome_data_lvl1(attribute_text, column_prefix):
     outcome_df.replace('\r', ' ', regex=True, inplace=True)
     outcome_df.replace('\n', ' ', regex=True, inplace=True)
     return outcome_df
+
+
 def get_outcome_data_lvl2(attribute_codes, column_prefix):
     # get outcome data
     outcome_data = get_outcome_lvl2(attribute_codes)
@@ -233,6 +264,8 @@ def get_outcome_data_lvl2(attribute_codes, column_prefix):
     # fill blanks with NA
     outcome_df.fillna("NA", inplace=True)
     return outcome_df
+
+
 def get_outfile_dir(df, df_name):
     '''
     Gets output file directory
@@ -245,6 +278,8 @@ def get_outfile_dir(df, df_name):
     outfile_name = outfile_name_mid + df_name
     outfile = os.path.join(cw + "/" + outfile_name_mid, outfile_name)  
     return outfile
+
+
 def save_dataframe(df, df_name):
     '''
     Saves a .csv of the dataframe to Extractions/
@@ -268,6 +303,8 @@ def save_dataframe(df, df_name):
     #print("Saving extracted output to: {}\n".format(outfile))
     df.to_csv(outfile, index=False)
     return outfile
+
+
 def verbose_display(df):
     '''
     Displays further info
@@ -284,6 +321,8 @@ def verbose_display(df):
     print("Rows: {}".format(df.shape[0]))
     print("Datapoints: {}".format(df.shape[0] * df.shape[1]))
     print("\n")
+
+
 def clean_up(df):
     """
     """
@@ -291,9 +330,12 @@ def clean_up(df):
     df.replace('\n', ' ', regex=True, inplace=True)
     df.replace(':', ' ',  regex=True, inplace=True)
     df.replace(';', ' ',  regex=True, inplace=True)
+
 #/***********************************************/
 #/   COMPILE DATA FRAMES FOR CHECKING/CLEANING   /
 #/***********************************************/
+
+
 def make_dataframe_1(save_file=True, clean_cols=True, verbose=True):
     """
     """
@@ -463,6 +505,8 @@ def make_dataframe_1(save_file=True, clean_cols=True, verbose=True):
     if save_file:
         outfile1 = save_dataframe(all_variables, "_DataFrame1.csv")
     return all_variables, outfile1
+
+
 def make_dataframe_2(save_file=True, clean_cols=False, verbose=True):
     """
     """
@@ -642,6 +686,8 @@ def make_dataframe_2(save_file=True, clean_cols=False, verbose=True):
     if save_file:
         outfile2 = save_dataframe(all_variables, "_DataFrame2.csv")
     return all_variables, outfile2
+
+
 def make_dataframe_3(save_file=True, clean_cols=False, verbose=False):
     """
     """
@@ -758,6 +804,8 @@ def make_dataframe_3(save_file=True, clean_cols=False, verbose=False):
     if save_file:
         outfile3 = save_dataframe(all_variables, "_DataFrame3_Sample_Size.csv")
     return all_variables, outfile3
+
+
 def make_dataframe_4(save_file=True, clean_cols=True, verbose=True):
     """
     """
@@ -962,6 +1010,8 @@ def make_dataframe_4(save_file=True, clean_cols=True, verbose=True):
     if save_file:
         outfile4 = save_dataframe(all_variables, "_DataFrame4_Effect_Size_A.csv")
     return all_variables, outfile4
+
+
 def make_dataframe_5(save_file=True, clean_cols=True, verbose=True):
     """
     """
@@ -1475,9 +1525,347 @@ def make_dataframe_5(save_file=True, clean_cols=True, verbose=True):
     if save_file:
         outfile5 = save_dataframe(all_variables, "_DataFrame5_Effect_Size_B.csv")
     return all_variables, outfile5
+
+
+def make_dataframe_6(ss_df, save_file=True, verbose=True):
+    """
+    """
+    eppiid_df = retrieve_metadata("ItemId", "id")
+    author_df = retrieve_metadata("ShortTitle", "pub_author")
+    year_df = retrieve_metadata("Year", "pub_year")
+    pub_type_data = retrieve_data(publication_type_output, "pub_type_raw")
+    toolkitstrand_df = get_outcome_data_lvl2(toolkit_strand_codes, "out_strand_")
+    smd_df = get_outcome_data_lvl1("SMD", "smd_")
+    sesmd_df = get_outcome_data_lvl1("SESMD", "se_")
+    out_title_df = get_outcome_data_lvl1("Title", "out_tit_")
+    out_type_df = get_outcome_data_lvl2(outcome_type_codes, "out_type_")
+    sample_df = get_outcome_data_lvl2(sample_output, "out_samp_")
+    out_comp_df = get_outcome_data_lvl1("ControlText", "out_comp_")
+    effectsizetype_df = get_outcome_data_lvl2(es_type_output, "out_es_type_")
+    out_measure_df = get_outcome_data_lvl1("InterventionText", "out_measure_")
+    testtype_df = get_outcome_data_lvl2(test_type_output, "out_test_type_raw_")
+    admin_strand_data = retrieve_data(admin_strand_output, "strand_raw")
+    admin_strand_info = retrieve_info(admin_strand_output, "strand_info")
+    country_df = retrieve_data(countries, "loc_country_raw")
+    intervention_training_prov_data = retrieve_data(int_training_provided_output, "int_training_raw")
+    intervention_training_prov_ht = retrieve_ht(int_training_provided_output, "int_training_ht")
+    intervention_training_prov_info = retrieve_info(int_training_provided_output, "int_training_info")
+    intervention_teaching_app_data = retrieve_data(intervention_teaching_approach, "int_approach_raw")
+    intervention_teaching_app_ht = retrieve_ht(intervention_teaching_approach, "int_approach_ht")
+    intervention_teaching_app_info = retrieve_info(intervention_teaching_approach, "int_approach_info")
+    digit_tech_data = retrieve_data(int_appr_dig_tech, "digit_tech_raw")
+    digit_tech_ht = retrieve_ht(int_appr_dig_tech, "digit_tech_ht")
+    digit_tech_info = retrieve_info(int_appr_dig_tech, "digit_tech_info")
+    par_eng_data = retrieve_data(int_appr_par_or_comm_vol, "parent_partic_raw")
+    par_eng_ht= retrieve_ht(int_appr_par_or_comm_vol, "parent_partic_ht")
+    par_eng_info = retrieve_info(int_appr_par_or_comm_vol, "parent_partic_info")
+    intervention_time_data = retrieve_data(intervention_time_output, "int_when_raw")
+    intervention_time_ht = retrieve_ht(intervention_time_output, "int_when_ht")
+    intervention_time_info = retrieve_info(intervention_time_output, "int_when_info")
+    intervention_delivery_data = retrieve_data(intervention_delivery_output, "int_who_raw")
+    intervention_delivery_ht = retrieve_ht(intervention_delivery_output, "int_who_ht")
+    intervention_delivery_info = retrieve_info(intervention_delivery_output, "int_who_info")
+    intervention_duration_info = retrieve_info(int_dur_output, "int_dur_info")
+    intervention_frequency_info = retrieve_info(inte_freq_output, "int_freq_info")
+    intervention_sess_length_info = retrieve_info(intervention_session_length_output, "int_leng_info")
+    edu_setting_data = retrieve_data(edu_setting_output, "int_setting_raw")
+    edu_setting_ht = retrieve_ht(edu_setting_output, "int_setting_ht")
+    edu_setting_info = retrieve_info(edu_setting_output, "int_setting_info")
+    student_age_data = retrieve_data(student_age_output, "part_age_raw")
+    student_age_ht = retrieve_ht(student_age_output, "part_age_ht")
+    student_age_info = retrieve_info(student_age_output, "part_age_info")
+    number_of_school_total_info = retrieve_info(number_of_schools_total_output, "school_total_info")
+    number_of_classes_total_info = retrieve_info(num_of_class_tot_output, "class_total_info")
+    study_design_data = retrieve_data(study_design_output, "int_desig_raw")
+    study_design_ht = retrieve_ht(study_design_output, "int_design_ht")
+    study_design_info = retrieve_info(study_design_output, "int_design_info")
+    sample_size_comments_df = retrieve_info(sample_size_output, "sample_analysed_info")
+    low_ses_percentage_Comments_df = retrieve_info(percentage_low_fsm_output, "fsm_perc_info")
+
+    record_details_df = pd.concat([
+            eppiid_df,
+            author_df,
+            year_df,
+            pub_type_data
+    ], axis=1)
+
+    df = pd.concat([
+            toolkitstrand_df,
+            smd_df,
+            sesmd_df,
+            out_title_df,
+            out_type_df,
+            sample_df,
+            out_comp_df,
+            effectsizetype_df,
+            out_measure_df,
+            testtype_df
+        ], axis=1, sort=False)
+
+    df = df[list(interleave([
+            toolkitstrand_df,
+            smd_df,
+            sesmd_df,
+            out_title_df,
+            out_type_df,
+            sample_df,
+            out_comp_df,
+            effectsizetype_df,
+            out_measure_df,
+            testtype_df
+        ]))]
+
+    general_df = pd.concat([
+            admin_strand_data,
+            admin_strand_info,
+            country_df,
+            intervention_training_prov_data,
+            intervention_training_prov_ht,
+            intervention_training_prov_info,
+            intervention_teaching_app_data,
+            intervention_teaching_app_ht,
+            intervention_teaching_app_info,
+            digit_tech_data,
+            digit_tech_ht,
+            digit_tech_info,
+            par_eng_data,
+            par_eng_ht,
+            par_eng_info,
+            intervention_time_data,
+            intervention_time_ht,
+            intervention_time_info,
+            intervention_delivery_data,
+            intervention_delivery_ht,
+            intervention_delivery_info,
+            intervention_duration_info,
+            intervention_frequency_info,
+            intervention_sess_length_info,
+            edu_setting_data,
+            edu_setting_ht,
+            edu_setting_info,
+            student_age_data,
+            student_age_ht,
+            student_age_info,
+            number_of_school_total_info,
+            number_of_classes_total_info,
+            study_design_data,
+            study_design_ht,
+            study_design_info,
+            sample_size_comments_df,
+            low_ses_percentage_Comments_df
+    ], axis=1)
+
+    toolkit_lists = [[] for _ in range(10)]
+
+    (toolkit_prim, 
+     toolkit_prim_smd, 
+     toolkit_prim_se, 
+     toolkit_out_tit, 
+     toolkit_prim_sample, 
+     toolkit_prim_outcomp, 
+     toolkit_es_type, 
+     toolkit_out_measure, 
+     toolkit_out_testtype, 
+     toolkit_out_strand) = toolkit_lists
+
+    outcome_vars = (
+        "out_type_",
+        "smd_",
+        "se_",
+        "out_tit_",
+        "out_samp_",
+        "out_comp_",
+        "out_es_type_",
+        "out_measure_",
+        "out_test_type_raw_",
+        "out_strand_",
+    )
+
+    getOutcomeData(df, 'Toolkit primary outcome', toolkit_lists, outcome_vars)
+
+    reading_lists = [[] for _ in range(3)]
+
+    (reading_prim, 
+     reading_prim_smd, 
+     reading_prim_se) = reading_lists
+
+    getOutcomeData(df, 'Reading primary outcome', reading_lists, outcome_vars)
+
+    writing_lists = [[] for _ in range(3)]
+
+    (Writing_and_spelling_prim,
+     Writing_and_spelling_prim_smd,
+     Writing_and_spelling_prim_se) = writing_lists
+
+    getOutcomeData(df, 'Writing and spelling primary outcome', writing_lists, outcome_vars)
+
+    mathematics_lists = [[] for _ in range(3)]
+
+    (Mathematics_prim,
+     Mathematics_prim_smd,
+     Mathematics_prim_se) = mathematics_lists
+
+    getOutcomeData(df, 'Mathematics primary outcome', mathematics_lists, outcome_vars)
+
+    science_lists = [[] for _ in range(3)]
+
+    (Science_prim, Science_prim_smd, Science_prim_se) = science_lists
+
+    getOutcomeData(df, 'Science primary outcome', science_lists, outcome_vars)
+
+    fsm_lists = [[] for _ in range(3)]
+
+    (fsm_prim, fsm_prim_smd, fsm_prim_se) = fsm_lists
+
+    getOutcomeData(df, 'FSM primary outcome', fsm_lists, outcome_vars)
+
+    df_zip = list(zip(
+        toolkit_out_strand,
+        toolkit_prim_smd,
+        toolkit_prim_se,
+        toolkit_out_tit,
+        toolkit_prim,
+        toolkit_prim_sample,
+        toolkit_prim_outcomp,
+        toolkit_es_type,
+        toolkit_out_measure,
+        toolkit_out_testtype,
+        reading_prim,
+        reading_prim_smd,
+        reading_prim_se,
+        Writing_and_spelling_prim,
+        Writing_and_spelling_prim_smd,
+        Writing_and_spelling_prim_se,
+        Mathematics_prim,
+        Mathematics_prim_smd,
+        Mathematics_prim_se,
+        Science_prim,
+        Science_prim_smd,
+        Science_prim_se,
+        fsm_prim,
+        fsm_prim_smd,
+        fsm_prim_se
+    ))
+
+    df = pd.DataFrame(df_zip)
+
+    df = df.rename(columns={
+        0: "out_strand",
+        1: "smd_tool",
+        2: "se_tool",
+        3: "out_tit",
+        4: "out_out_type_tool",
+        5: "out_samp",
+        6: "out_comp",
+        7: "out_es_type",
+        8: "out_measure",
+        9: "out_test_type_raw",
+        10: "out_out_type_red",
+        11: "smd_red",
+        12: "se_red",
+        13: "out_out_type_wri",
+        14: "smd_wri",
+        15: "se_wri",
+        16: "out_out_type_math",
+        17: "smd_math",
+        18: "se_math",
+        19: "out_out_type_sci",
+        20: "smd_sci",
+        21: "se_sci",
+        22: "out_out_type_fsm",
+        23: "smd_fsm",
+        24: "se_fsm"
+    })
+
+    df_all = pd.concat([record_details_df, df, general_df], axis=1, sort=False)
+
+    # add fsm_50 TRUE/FALSE column
+    df_all["fsm_perc_info"] = (df_all["fsm_perc_info"].str.strip('%'))
+    df_all["fsm_perc_info"] = pd.to_numeric(df_all["fsm_perc_info"], errors='coerce')
+
+    # percentage taught by research staff only
+    conditions = [
+        df_all["fsm_perc_info"] > 49,
+        df_all["fsm_perc_info"] < 50,
+    ]
+    values = ['TRUE', 'FALSE']
+
+    df_all['fsm_50'] = np.select(conditions, values)
+
+    df_all["fsm_perc_info"] = df_all["fsm_perc_info"].replace(
+        to_replace=np.nan, value="NA", regex=True
+    )
+
+    df_all['fsm_50'] = df_all['fsm_50'].replace("0", "NA", regex=True)
+
+    df_all = df_all[[
+        'id',
+        'pub_author',
+        'pub_year',
+        'pub_type_raw',
+        'strand_raw',
+        'out_out_type_tool',
+        'smd_tool',
+        'se_tool',
+        'out_es_type',
+        'out_tit',
+        'out_comp',
+        'out_samp',
+        'out_measure',
+        'out_test_type_raw',
+        'out_out_type_red',
+        'smd_red',
+        'se_red',
+        'out_out_type_wri',
+        'smd_wri',
+        'se_wri',
+        'out_out_type_math',
+        'smd_math',
+        'se_math',
+        'out_out_type_sci',
+        'smd_sci',
+        'se_sci',
+        'out_out_type_fsm',
+        'smd_fsm',
+        'se_fsm',
+        'sample_analysed_info',
+        'school_total_info',
+        'class_total_info',
+        'int_setting_raw',
+        'part_age_raw',
+        'fsm_50',
+        'fsm_perc_info',
+        'loc_country_raw',
+        'int_desig_raw',
+        'int_approach_raw',
+        'int_training_raw',
+        'digit_tech_raw',
+        'parent_partic_raw',
+        'int_when_raw',
+        'int_who_raw',
+        'int_dur_info',
+        'int_freq_info',
+        'int_leng_info',
+        'out_strand'
+    ]]
+
+    df_all_SS = pd.concat([df_all, ss_df], axis=1, sort=False)
+
+    replacements = [('\r', ' '), ('\n', ' '), (':', ' '), (';', ' ')]
+    for old, new in replacements:
+        df_all_SS.replace(old, new, regex=True, inplace=True)
+
+    if verbose:
+        verbose_display(df_all_SS)
+
+    if save_file:
+        save_dataframe(df_all_SS, "_Main_Analysis_SS.csv")
+
+
 #/**********************************************/
 #/   RETRIEVE INDIVIDUAL VARIABLE DATAFRAMES    /
 #/**********************************************/
+
 def process_data(output, data_col):
     data = get_data(output)
     data_df = pd.DataFrame(data)
@@ -1485,6 +1873,8 @@ def process_data(output, data_col):
     data_df.columns = [data_col]
     clean_up(data_df)
     return data_df
+
+
 def process_ht(output, ht_col):
     ht = highlighted_text(output)
     ht_df = pd.DataFrame(ht)
@@ -1492,6 +1882,8 @@ def process_ht(output, ht_col):
     ht_df.columns = [ht_col]
     clean_up(ht_df)
     return ht_df
+
+
 def process_info(output, info_col):
     comment = comments(output)
     comments_df = pd.DataFrame(comment)
@@ -1499,6 +1891,8 @@ def process_info(output, info_col):
     comments_df.columns = [info_col]
     clean_up(comments_df)
     return comments_df
+
+
 def process_metadata(output, info_col):
     # get metadata
     metadata = get_metadata(output)
@@ -1506,11 +1900,15 @@ def process_metadata(output, info_col):
     #metadata_df = metadata_df.T
     metadata_df.columns = [info_col]
     return metadata_df
+
+
 def retrieve_metadata(metadata_type, metadata_value):
     metadata_df = process_metadata(metadata_type, metadata_value)
     clean_up(metadata_df)
     metadata_df.fillna("NA", inplace=True)
     return metadata_df
+
+
 def group_desc_stats(attribute_text, column_prefix):
     group_data = get_outcome_lvl1(attribute_text)
     group_data_df = pd.DataFrame(group_data)
@@ -1534,6 +1932,8 @@ def group_desc_stats(attribute_text, column_prefix):
     for col in group_data_df.columns:
         group_data_df.loc[mask, col] = "NA"
     return group_data_df
+
+
 def retrieve_data(id, col_name):
     data = get_data(id)
     data_df = pd.DataFrame(data)
@@ -1541,6 +1941,8 @@ def retrieve_data(id, col_name):
     data_df.columns = [col_name]
     clean_up(data_df)
     return data_df
+
+
 def retrieve_ht(id, col_name):
     ht = highlighted_text(id)
     ht_df = pd.DataFrame(ht)
@@ -1548,6 +1950,8 @@ def retrieve_ht(id, col_name):
     ht_df.columns = [col_name]
     clean_up(ht_df)
     return ht_df
+
+
 def retrieve_info(id, col_name):
     info = comments(id)
     info_df = pd.DataFrame(info)
@@ -1555,6 +1959,8 @@ def retrieve_info(id, col_name):
     info_df.columns = [col_name]
     clean_up(info_df)
     return info_df
+
+
 def city():
     """
     Retrieve city data and return it as a cleaned up DataFrame.
@@ -1568,6 +1974,8 @@ def city():
     # Clean up data frame
     city_df.fillna("NA", inplace=True)
     return city_df
+
+
 def doi():
     # get author data
     doi = get_metadata("DOI")
@@ -1575,6 +1983,8 @@ def doi():
     doi_df.columns = ["DOI"]
     doi_df.fillna("NA", inplace=True)
     return doi_df
+
+
 def editors():
     # get abstract data
     editedby = get_metadata("EditedBy")
@@ -1582,6 +1992,8 @@ def editors():
     editedby_df.columns = ["Editor(s)"]
     editedby_df.fillna("NA", inplace=True)
     return editedby_df
+
+
 def gender_split():
     """
     """
@@ -1598,6 +2010,8 @@ def gender_split():
     gen_split_df.replace('\n',' ', regex=True, inplace=True)
     gen_split_df.fillna("NA", inplace=True)
     return gen_split_df
+
+
 def inst():
     """
     """
@@ -1607,6 +2021,8 @@ def inst():
     institution_df.columns = ["Institution"]
     institution_df.fillna("NA", inplace=True)
     return institution_df
+
+
 def int_eval():
     """
     """
@@ -1633,6 +2049,8 @@ def int_eval():
     clean_up(int_eval_df)
     int_eval_df.fillna("NA", inplace=True)
     return int_eval_df
+
+
 def issue():
     # get issue data
     issue = get_metadata("Issue")
@@ -1640,6 +2058,8 @@ def issue():
     issue_df.columns = ["Issue"]
     issue_df.fillna("NA", inplace=True)
     return issue_df
+
+
 def out_id():
     """
     """
@@ -1653,6 +2073,8 @@ def out_id():
     outcome_ID_df.fillna("NA", inplace=True)
     outcome_ID_df = outcome_ID_df.replace(r'^\s*$', "NA", regex=True)
     return outcome_ID_df
+
+
 def pages():
     # get author data
     pages = get_metadata("Pages")
@@ -1660,6 +2082,8 @@ def pages():
     pages_df.columns = ["Pages"]
     pages_df.fillna("NA", inplace=True)
     return pages_df
+
+
 def par_auth():
     # get abstract data
     parentauthors = get_metadata("ParentAuthors")
@@ -1667,6 +2091,8 @@ def par_auth():
     parentauthors_df.columns = ["Parent_Authors"]
     parentauthors_df.fillna("NA", inplace=True)
     return parentauthors_df
+
+
 def par_tit():
     # get author data
     parentittle = get_metadata("ParentTitle")
@@ -1674,6 +2100,8 @@ def par_tit():
     parentittle_df.columns = ["ParentTitle"]
     parentittle_df.fillna("NA", inplace=True)
     return parentittle_df
+
+
 def publisher():
     """
     """
@@ -1683,6 +2111,8 @@ def publisher():
     publisher_df.columns = ["Publisher"]
     publisher_df.fillna("NA", inplace=True)
     return publisher_df
+
+
 def short_tit():
     # get eppiID data
     shorttitle = get_metadata("Title")
@@ -1690,6 +2120,8 @@ def short_tit():
     shorttitle_df.columns = ["title"]
     shorttitle_df.fillna("NA", inplace=True)
     return shorttitle_df
+
+
 def source():
     from src.attributeIDs import source_output
     from src.attributeIDs import source_EEF_Report_options
@@ -1711,6 +2143,8 @@ def source():
     # fill blanks with NA
     source_all_df.fillna("NA", inplace=True)
     return source_all_df
+
+
 def study_place():
     from src.attributeIDs import location_info
     # get study place info data
@@ -1731,6 +2165,8 @@ def study_place():
     # fill blanks with NA
     study_place_df.fillna("NA", inplace=True)
     return study_place_df
+
+
 def sample_main_check():
     sample_main_check = get_data(sample_output)
     sample_main_check_df = pd.DataFrame(sample_main_check)
@@ -1738,6 +2174,8 @@ def sample_main_check():
     sample_main_check_df.columns = ["main_check"]
     sample_main_check_df.fillna("NA", inplace=True)
     return sample_main_check_df
+
+
 def title():
     # get eppiID data
     title = get_metadata("Title")
@@ -1745,6 +2183,8 @@ def title():
     title_df.columns = ["title"]
     title_df.fillna("NA", inplace=True)
     return title_df
+
+
 def toolkit_strand():
     from src.attributeIDs import toolkit_strand_codes
     # get toolkit strand data
@@ -1761,6 +2201,8 @@ def toolkit_strand():
     toolkitstrand_df.columns = [
         "out_strand_"+'{}'.format(column+1) for column in toolkitstrand_df.columns]
     return toolkitstrand_df
+
+
 def type_name():
     # get author data
     typename = get_metadata("TypeName")
@@ -1768,6 +2210,8 @@ def type_name():
     typename_df.columns = ["typename"]
     typename_df.fillna("NA", inplace=True)
     return typename_df
+
+
 def url():
     # get author data
     url = get_metadata("URL")
@@ -1775,6 +2219,8 @@ def url():
     url_df.columns = ["URL"]
     url_df.fillna("NA", inplace=True)
     return url_df
+
+
 def volume():
     # get author data
     volume = get_metadata("Volume")
@@ -1782,6 +2228,8 @@ def volume():
     volume_df.columns = ["Volume"]
     volume_df.fillna("NA", inplace=True)
     return volume_df
+
+
 def web_loc():
     from src.attributeIDs import study_loc
     from src.attributeIDs import study_loc_type
@@ -1804,6 +2252,8 @@ def web_loc():
 #/*********************************/
 #/   STRAND SPECIFIC DATAFRAMES    /
 #/*********************************/
+
+
 def arts_participation_ss():
     # get focus data
     ap_focus_df = retrieve_data(ap_focus_output, "ap_focus")
@@ -1819,6 +2269,8 @@ def arts_participation_ss():
     # fill blanks with NA
     ap_ss_df.fillna("NA", inplace=True)
     return ap_ss_df
+
+
 def behaviour_int_ss():
     bi_target_group_df = retrieve_data(bi_target_group_output, "bi_targ_group")
     bi_target_group_HT_df = retrieve_ht(bi_intervention_approach_output, "bi_targ_group_ht")
@@ -1852,6 +2304,8 @@ def behaviour_int_ss():
     # fill blanks with NA
     bi_ss_df.fillna("NA", inplace=True)
     return bi_ss_df
+
+
 def collab_learning_ss():
     cl_approach_spec_df = retrieve_data(cl_approach_spec_output, "cl_approach_spec")
     cl_grp_size_df = retrieve_data(cl_group_size_output, "cl_grp_size")
@@ -1885,6 +2339,8 @@ def collab_learning_ss():
     # fill blanks with NA
     cl_ss_df.fillna("NA", inplace=True)
     return cl_ss_df
+
+
 def ey_early_lit_approaches_ss():
     lit_act_df = retrieve_data(ela_literacy_activities, "lit_activities")
     lit_act_HT_df = retrieve_ht(ela_literacy_activities, "lit_activities_HT")
@@ -1902,6 +2358,8 @@ def ey_early_lit_approaches_ss():
         #prog_desc_HT_df,
     ], axis=1, sort=False)
     return ela_ss_df
+
+
 def ey_early_num_approaches_ss():
     math_incl_df = retrieve_data(ena_maths_included, "math_incl")
     math_incl_HT_df = retrieve_ht(ena_maths_included, "math_incl_ht")
@@ -1917,6 +2375,8 @@ def ey_early_num_approaches_ss():
     # fill blanks with NA
     ena_ss_df.fillna("NA", inplace=True)
     return ena_ss_df
+
+
 def ext_school_time_ss():
     # EXTENDED HOW?
     # get extended how? data
@@ -1972,6 +2432,8 @@ def ext_school_time_ss():
     # remove problematic text from outputs
     clean_up(est_ss_df)
     return est_ss_df
+
+
 def ey_earlier_start_age_ss():
     prev_start_age_df = retrieve_data(ey_esa_prev_starting_age, "prev_start_age")
     new_start_age_df = retrieve_data(ey_esa_new_starting_age, "new_start_age")
@@ -1992,6 +2454,8 @@ def ey_earlier_start_age_ss():
     # fill blanks with NA
     ey_esa_df.fillna("NA", inplace=True)
     return ey_esa_df
+
+
 def ey_extra_hours_ss():
     time_org_df = retrieve_data(time_organsised, "time_org")
     addit_time_struc_df = retrieve_data(addit_time_struct, "addit_time_struct")
@@ -2002,6 +2466,8 @@ def ey_extra_hours_ss():
     # fill blanks with NA
     ey_eh_df.fillna("NA", inplace=True)
     return ey_eh_df
+
+
 def ey_play_based_learning_ss():
     kind_play_df = retrieve_data(kind_of_play, "kind_of_play")
     who_invol_df = retrieve_data(who_involved, "who_involved")
@@ -2014,6 +2480,8 @@ def ey_play_based_learning_ss():
     # fill blanks with NA
     ey_pbl_df.fillna("NA", inplace=True)
     return ey_pbl_df
+
+
 def feedback_ss():
     # get feedback source data
     feedb_source_df = retrieve_data(feedback_source_output, "feedback_Source")
@@ -2108,6 +2576,8 @@ def feedback_ss():
     # remove problematic text from outputs
     clean_up(feedback_ss_df)
     return feedback_ss_df
+
+
 def homework_ss():
     hw_dur_df = retrieve_data(hw_dur_info_output, "hw_dur")
     # get hw duration information data
@@ -2134,6 +2604,8 @@ def homework_ss():
     # fill blanks with NA
     hw_ss_df.fillna("NA", inplace=True)
     return hw_ss_df
+
+
 def indiv_instr_ss():
     ii_approach_df = retrieve_data(ii_approach_output, "ii_approach_df")
     # get also included data
@@ -2148,6 +2620,8 @@ def indiv_instr_ss():
     # fill blanks with NA
     ii_ss_df.fillna("NA", inplace=True)
     return ii_ss_df
+
+
 def mentoring_ss():
     ment_ident_df = retrieve_data(mentor_identity, "m_identity_df")
     ment_ident_HT_df = retrieve_ht(mentor_identity, "m_identity_ht_df")
@@ -2191,6 +2665,8 @@ def mentoring_ss():
     # fill blanks with NA
     mentoring_ss_df.fillna("NA", inplace=True)
     return mentoring_ss_df
+
+
 def mastery_learning_ss():
     ml_theor_df = retrieve_data(ml_theor_output, "ml_theor")
     ml_age_grp_df = retrieve_data(ml_age_group_output, "ml_age_grp")
@@ -2213,6 +2689,8 @@ def mastery_learning_ss():
     # fill blanks with NA
     ml_ss_df.fillna("NA", inplace=True)
     return ml_ss_df
+
+
 def metacog_self_reg_ss():
     msr_knowl_type_df = retrieve_data(msr_knowl_type_output, "msr_knowl_type")
     msr_task_stage_df = retrieve_data(msr_task_stage_output, "msr_task_stage")
@@ -2231,6 +2709,8 @@ def metacog_self_reg_ss():
     # fill blanks with NA
     msr_ss_df.fillna("NA", inplace=True)
     return msr_ss_df
+
+
 def oral_lang_ss():
     ol_focus_df = retrieve_data(ol_focus, "ol_focus")
     ol_target_df = retrieve_data(ol_target, "ol_target")
@@ -2245,6 +2725,8 @@ def oral_lang_ss():
     # fill blanks with NA
     ol_ss_df.fillna("NA", inplace=True)
     return ol_ss_df
+
+
 def one_t_one_comp_ss():
     comp_avail_df = retrieve_data(comparisons_available, "1_1_comparisons_Available")
     comp_avail_HT_df = retrieve_ht(comparisons_available, "1_1_comparisons_Available_SS_ht")
@@ -2258,6 +2740,8 @@ def one_t_one_comp_ss():
     # remove problematic text from outputs
     clean_up(one_to_one_ss_df)
     return one_to_one_ss_df
+
+
 def peer_tut():
     tut_desc_df = retrieve_data(tutor_age_output, "pt_tut_desc")
     tut_desc_same_age_df = retrieve_data(tutor_age_same, "pt_tut_desc_same_age")
@@ -2282,6 +2766,8 @@ def peer_tut():
         tut_incentive_df,
     ], axis=1, sort=False)
     return peer_tut_ss_df
+
+
 def phys_activity_ss():
     pha_when_df = retrieve_data(pha_when_output, "pa_when")
     pha_lessons_df = retrieve_data(pha_lessons_included_output, "pa_lessons")
@@ -2296,6 +2782,8 @@ def phys_activity_ss():
     # fill blanks with NA
     pha_ss_df.fillna("NA", inplace=True)
     return pha_ss_df
+
+
 def read_comprehension_ss():
     rc_comp_df = retrieve_data(rc_components_output, "rc_comp")
     # split rc components for ind col extraction
@@ -2334,6 +2822,8 @@ def read_comprehension_ss():
         rc_txt_type_df,
     ], axis=1, sort=False)
     return rc_ss_df
+
+
 def red_class_size_ss():
     redc_avg_small_class_size_df = retrieve_info(redc_avg_small_class_size_output, "redc_avg_small_class_size_info")
     redc_avg_large_class_size_df = retrieve_info(redc_avg_large_class_size_output, "redc_avg_large_class_size_info")
@@ -2352,6 +2842,8 @@ def red_class_size_ss():
         redc_impl_all_or_most_lessons_df,
     ], axis=1, sort=False)
     return redc_ss_df
+
+
 def repeat_year_ss():
     ry_identify_ret_stu_df = retrieve_data(ry_ret_stu_identify_output, "ry_identify_ret_stu")
     ry_ret_stu_age_df = retrieve_data(ry_ret_stu_age_output, "ry_ret_stu_age")
@@ -2377,6 +2869,8 @@ def repeat_year_ss():
     # remove problematic text from outputs
     clean_up(ry_ss_df)
     return ry_ss_df
+
+
 def soc_emo_learning_ss():
     # get involvement data
     sel_involvement_df = retrieve_data(sel_involvement_output, "sel_involvement")
@@ -2416,6 +2910,8 @@ def soc_emo_learning_ss():
     # fill blanks with NA
     sel_ss_df.fillna("NA", inplace=True)
     return sel_ss_df
+
+
 def setting_streaming_ss():
     # get grouping change data
     sets_dir_grp_change_df = retrieve_data(sets_dir_grouping_change, "sets_dir_grp_change")
@@ -2464,6 +2960,8 @@ def setting_streaming_ss():
     # fill blanks with NA
     sets_ss_df.fillna("NA", inplace=True)
     return sets_ss_df
+
+
 def small_group_tuit_ss():
     # get group size data
     group_size_df = retrieve_data(group_size_output, "sgt_group_size")
@@ -2491,6 +2989,8 @@ def small_group_tuit_ss():
     # fill blanks with NA
     sgt_ss_df.fillna("NA", inplace=True)
     return sgt_ss_df
+
+
 def summer_school_ss():
     ss_aim_df = retrieve_data(ss_aim_output, "ss_aim")
     ss_aim_catch_up_df = retrieve_data(ss_aim_output_catch_up, "ss_aim_catch_up")
@@ -2524,6 +3024,8 @@ def summer_school_ss():
     ], axis=1, sort=False)
     SS_ss_df.fillna("NA", inplace=True)
     return SS_ss_df
+
+
 def teach_assistants_ss():
     # get teaching assistants description data
     ta_desc_df = retrieve_data(ta_description_output, "ta_desc")
@@ -2554,6 +3056,8 @@ def teach_assistants_ss():
     # remove problematic text from outputs
     clean_up(ta_ss_df)
     return ta_ss_df
+
+
 def parental_engagement():
     pe_involved_df = retrieve_data(pe_involved_output, "pe_involved")
     pe_act_loc_df = retrieve_data(pe_activity_location_output, "pe_act_loc")
@@ -2572,6 +3076,8 @@ def parental_engagement():
     # fill blanks with NA
     pe_ss_df.fillna("NA", inplace=True)
     return pe_ss_df
+
+
 def phonics():
     ph_tar_pop_df = retrieve_data(ph_targ_pop_output, "ph_targ_pop")
     ph_const_part_df = retrieve_data(ph_constit_part_approach_output, "ph_constit_part")
@@ -2610,6 +3116,8 @@ def phonics():
     # fill blanks with NA
     ph_ss_df.fillna("NA", inplace=True)
     return ph_ss_df
+
+
 def performance_pay():
     pp_incent_crit_df = retrieve_data(pp_incentive_criteria_output, "pp_incent_criteria")
     pp_reward_recip_df = retrieve_data(pp_reward_recipient_output, "pp_reward_recip")
@@ -2628,6 +3136,8 @@ def performance_pay():
     # fill blanks with NA
     pp_ss_df.fillna("NA", inplace=True)
     return pp_ss_df
+
+
 def within_class_grouping():
     wc_grp_dir_df = retrieve_data(wcg_dir_grouping_change_output, "wc_grp_dir")
     wc_curr_taught_att_grp_df = retrieve_data(wcg_curr_taught_attain_grp_output, "wc_curr_taught_att_grp")
@@ -2649,3 +3159,219 @@ def within_class_grouping():
     # remove problematic text from outputs
     clean_up(wc_ss_df)
     return wc_ss_df
+
+#/*************************/
+#/   COMMAND LINE TABLES   /
+#/*************************/
+
+def data_analysis_cl_table():
+    """
+    """
+    console = Console()
+
+    main_table = Table(title="\nStrand Specific Dataframe Selection",
+                       show_header=True, 
+                       box=box.HORIZONTALS,
+                       highlight=False,                     
+    )
+
+    main_table.add_column("", style="bold white")
+    main_table.add_column("Main Toolkit", header_style="bold magenta", style="white")
+
+    main_table.add_row("1",  "Arts Participation")
+    main_table.add_row("2",  "Behaviour Interventions")
+    main_table.add_row("3",  "Collaborative Learning")
+    main_table.add_row("4",  "Extending School Time")
+    main_table.add_row("5",  "Feedback")
+    main_table.add_row("6",  "Homework")
+    main_table.add_row("7",  "Individualised Instruction")
+    main_table.add_row("8",  "Mentoring")
+    main_table.add_row("9",  "Mastery Learning")
+    main_table.add_row("10",  "Metacognition & Self Regulation")
+    main_table.add_row("11",  "One to One Tution")
+    main_table.add_row("12",  "Oral Language")
+    main_table.add_row("13",  "Physical Activity")
+    main_table.add_row("14",  "Parentel Engagement")
+    main_table.add_row("15",  "Phonics")
+    main_table.add_row("16",  "Performance Pay")
+    main_table.add_row("17",  "Peer Tutoring")
+    main_table.add_row("18",  "Reading Comprehension")
+    main_table.add_row("19",  "Reducing Class Size")
+    main_table.add_row("20",  "Repeating a Year")
+    main_table.add_row("21",  "Social & Emotional Learning")
+    main_table.add_row("22",  "Setting/Streaming")
+    main_table.add_row("23",  "Small Group Tuition")
+    main_table.add_row("24",  "Summer Schools")
+    main_table.add_row("25",  "Teaching Assistants")
+    main_table.add_row("26",  "Within-Class Grouping")
+
+    console.print(main_table)
+
+     # Get user selection for strand specific dataframe (if needed)
+    ss_user_input = int(input("Enter a number from the list corresponding to the a strand specific data option from the list above: "))
+    return ss_user_input
+
+def strand_specific_df_selection(user_input):
+    match user_input:
+        # MAIN TOOLKIT
+        case 1: 
+            print("- Strand specific datraframe selection: Arts Participation")
+            ss_df = arts_participation_ss()
+        case 2: 
+            print("- Strand specific datraframe selection: Behaviour Interventions")
+            ss_df = behaviour_int_ss()
+        case 3:
+            print("- Strand specific datraframe selection: Collaborative Learning")
+            ss_df = collab_learning_ss()
+        case 4: 
+            print("- Strand specific datraframe selection: Extending School Time")
+            ss_df = ext_school_time_ss()
+        case 5: 
+            print("- Strand specific datraframe selection: Feedback")
+            ss_df = feedback_ss()
+        case 6:
+            print("- Strand specific datraframe selection: Homework")
+            ss_df = homework_ss()
+        case 7: 
+            print("- Strand specific datraframe selection: Individualised Instruction")
+            ss_df = indiv_instr_ss()
+        case 8: 
+            print("- Strand specific datraframe selection: Mentoring")
+            ss_df = mentoring_ss()
+        case 9:
+            print("- Strand specific datraframe selection: Mastery Learning")
+            ss_df = mastery_learning_ss()
+        case 10: 
+            print("- Strand specific datraframe selection: Metacognition & Self Regulation")
+            ss_df = metacog_self_reg_ss()
+        case 11:
+            print("- Strand specific datraframe selection: One to One Tuition")
+            ss_df = one_t_one_comp_ss()
+        case 12: 
+            print("- Strand specific datraframe selection: Oral Language")
+            ss_df = oral_lang_ss()
+        case 13:
+            print("- Strand specific datraframe selection: Physical Activity")
+            ss_df = phys_activity_ss()
+        case 14: 
+            print("- Strand specific datraframe selection: Parentel Engagement")
+            ss_df = parental_engagement()
+        case 15: 
+            print("- Strand specific datraframe selection: Phonics")
+            ss_df = phonics()
+        case 16:
+            print("- Strand specific datraframe selection: Performance Pay")
+            ss_df = performance_pay()
+        case 17: 
+            print("- Strand specific datraframe selection: Peer Tutoring")
+            ss_df = peer_tut()
+        case 18: 
+            print("- Strand specific datraframe selection: Reading Comprehension")
+            ss_df = read_comprehension_ss()
+        case 19:
+            print("- Strand specific datraframe selection: Reducing Class Size")
+            ss_df = red_class_size_ss()
+        case 20: 
+            print("- Strand specific datraframe selection: Repeating a Year")
+            ss_df = repeat_year_ss()
+        case 21: 
+            print("- Strand specific datraframe selection: Social & Emotional Learning")
+            ss_df = soc_emo_learning_ss()
+        case 22: 
+            print("- Strand specific datraframe selection: Setting/Streaming")
+            ss_df = setting_streaming_ss()
+        case 23: 
+            print("- Strand specific datraframe selection: Small Group Tuition")
+            ss_df = small_group_tuit_ss()
+        case 24: 
+            print("- Strand specific datraframe selection: Summer Schools")
+            ss_df = summer_school_ss()
+        case 25: 
+            print("- Strand specific datraframe selection: Teaching Assistants")
+            ss_df = teach_assistants_ss()
+        case 26: 
+            print("- Strand specific datraframe selection: Within-Class Grouping")
+            ss_df = within_class_grouping()
+        # EARLY YEARS
+        case 27: 
+            print("- Strand specific datraframe selection: Early Years - Early Literacy Approaches")
+            ss_df = ey_early_lit_approaches_ss()
+        case 28: 
+            print("- Strand specific datraframe selection: Early Numeracy Approaches")
+            ss_df = ey_early_num_approaches_ss()
+        case 29: 
+            print("- Strand specific datraframe selection: Earlier Starting Age")
+            ss_df = ey_earlier_start_age_ss()
+        case 30: 
+            print("- Strand specific datraframe selection: Extra Hours")
+            ss_df = ey_extra_hours_ss()
+        case 31: 
+            print("- Strand specific datraframe selection: Play Based Learning")
+            ss_df = ey_play_based_learning_ss()
+    return ss_df
+
+def display_table_struct(funcs): 
+            """
+            """
+            for num, func in track(enumerate(funcs), description="[green]Processing dataframes..\n[/green]"):
+                func(save_file=True, clean_cols=True, verbose=False)
+
+            table = Table(show_header=True, 
+                          header_style="bold magenta",
+                          title="Data Cleaning Dataframe Info Table",
+                          safe_box=True,
+                          box=box.MINIMAL)
+                    
+            table.add_column("", style="green")
+            table.add_column("Dataframes", header_style="bold green")
+            table.add_column("Selection", justify="center", header_style="bold red")
+            table.add_column("Save dir", justify="left", header_style="white")
+
+            return table
+
+def data_cleaning_col_breakdown():
+
+    from rich import print
+    from rich import box
+    from rich.console import Console
+    from rich.table import Table
+    from rich.progress import track
+    console = Console()
+
+    main_table = Table(show_header=True, 
+                        box=box.HORIZONTALS,
+                        highlight=False,                     
+    )
+    main_table.add_column("Dataframe 1", header_style="bold yellow", style="bold yellow")
+    main_table.add_column("Dataframe 2", header_style="bold cyan", style="bold cyan")
+    main_table.add_column("Dataframe 3", header_style="bold green", style="bold green")
+    main_table.add_column("Dataframe 4", header_style="bold purple", style="bold purple")
+    main_table.add_column("Dataframe 5", header_style="bold red", style="bold red")
+    main_table.add_row("Study ID",  "Study ID",  "Study ID",  "Study ID",  "Study ID")
+    main_table.add_row("Author",  "Author",  "Author",  "Author",  "Author")
+    main_table.add_row("Year",  "Year",  "Year",  "Year",  "Year")
+    main_table.add_row("Abstract",  "Strand",  "Strand",  "Strand",  "Strand")
+    main_table.add_row("Admin Strand",  "Int Name",  "Gender",  "Desc Stats Prim Out",  "Outcome Type")
+    main_table.add_row("Publication Type EPPI",  "Int Description",  "Sample Size",  "Int Treat Grp Number",  "Standard Mean Difference")
+    main_table.add_row("Publication Type",  "Int Objective",  "SES/FSM",  "Int Treat Grp Pre-test Mean/SD",  "Standard Error")
+    main_table.add_row("Educational Setting", "Int Organisatio Type",  "Int Treat Sample Size",  "Int Treat Grp Post-test Mean/SD",  "Confidence Interval (lb)")
+    main_table.add_row("Ecological Validity", "Int Training",  "Int Cont Sample Size",  "Int Treat Grp Gain Score Mean/SD",  "Confidence Interval (ub)")
+    main_table.add_row("Student Age",  "Int Focus",  "Int Treat Grp2 Sample Size",  "Int Treat Grp Any Other Info",  "Outcome")
+    main_table.add_row("Number of Schools",  "Int Teaching Approach",  "Int Treat Grp3 Sample Size",  "Int Cont Grp Number",  "Sample")
+    main_table.add_row("Number of Classes",  "Int Inclusion",  "Int Treat Sample Size Analyzed",  "Int Cont Grp Pre-test Mean/SD",  "Outcome Comparison")
+    main_table.add_row("Treatment Group",  "Int Time",  "Int Cont Sample Size Analyzed",  "Int Cont Grp Post-test Mean/SD",  "Effect Size Type")
+    main_table.add_row("Participant Assignment",  "Int Delivery",  "Int Treat Grp2 Sample Size Analyzed",  "Int Cont Grp Gain Score Mean/SD",  "Outcome Measure")
+    main_table.add_row("Level of Assignment", "Int Duration",  "Int Cont Grp2 Sample Size Analyzed",  "Int Cont Grp Any Other Info",  "Outcome Title")
+    main_table.add_row("Study Design", "Int Frequency",  "Attrition Reported",  "Int Treat Grp2 Number",  "Group1 N")
+    main_table.add_row( "Randomisation",  "Int Session Length",  "Attrition Treat Grp",  "Int Treat Grp2 Pre-test Mean/SD",  "Group2 N")
+    main_table.add_row("Other Outcomes",  "Int Detail",  "Attrition Total (%)",  "Int Treat Grp2 Post-test Mean/SD",  "Group1 Mean")
+    main_table.add_row("Additional Outcomes",  "Int Costs", "", "Int Treat Grp2 Gain Score Mean/SD", "Group2 Mean")
+    main_table.add_row("Other Participants Outcomes", "Int Evaluation",  "",   "Int Treat Grp2 Any Other Info", "Group1 SD")
+    main_table.add_row("",  "Baseline Differences", "",  "Int Cont Grp2 Number",  "Group2 SD")
+    main_table.add_row("", "Computational Analysis",  "", "Int Cont Grp2 Pre-test Mean/SD",  "Outcome Description")
+    main_table.add_row("",  "Comparability Variables Reported",  "", "Int Cont Grp2 Post-test Mean/SD",  "Test Type Outcome")
+    main_table.add_row("",  "Clustering",  "", "Int Cont Grp2 Gain Score Mean/SD", "")
+    main_table.add_row("",  "", "",  "Int Cont Grp2 Any Other Info", "")
+    main_table.add_row("",  "", "",  "Follow-up Information", "")
+
+    console.print(main_table)
