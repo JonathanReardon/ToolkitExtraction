@@ -45,8 +45,7 @@ class JSONDataExtractor:
         self.load_json()
 
     def load_json(self):
-        script_dir = os.path.dirname(__file__)
-        datafile = os.path.join(script_dir, self.data_file)
+        datafile = os.path.join(os.getcwd(), self.data_file)
         with open(datafile) as f:
             self.data = json.load(f)
 
