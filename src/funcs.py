@@ -3,21 +3,23 @@
 
 __Author__ = "Jonathan Reardon"
 
-# System imports
-import os
+# Standard library imports
 import json
-import glob
-
-# Third Party imports
+import os
 import readline
-import pandas as pd
+
+# Third-party imports
+import glob
 import numpy as np
-from toolz import interleave
-from rich import print
-from rich import box
+import pandas as pd
+from rich import box, print
+from rich.columns import Columns
 from rich.console import Console
-from rich.table import Table
+from rich.panel import Panel
 from rich.progress import track
+from rich.style import Style
+from rich.table import Table
+from toolz import interleave
 
 # Local imports
 from src.attributeIDs import *
@@ -1624,7 +1626,7 @@ class JSONDataExtractor:
         return all_variables, outfile5
 
 
-    def make_dataframe_6(self, ss_df, save_file=True, verbose=True):
+    def make_dataframe_6(self, ss_df, save_file=True, verbose=False):
         """
         """
         eppiid_df = self.retrieve_metadata("ItemId", "id")
@@ -1956,8 +1958,9 @@ class JSONDataExtractor:
             self.verbose_display(df_all_SS)
 
         if save_file:
-            self.save_dataframe(df_all_SS, "_Main_Analysis_SS.csv")
+            outfile6 = self.save_dataframe(df_all_SS, "_Main_Analysis_SS.csv")
 
+        return df_all_SS, outfile6
 
 
 #/**********************************************/
@@ -3198,15 +3201,16 @@ def data_analysis_cl_table():
     """
     """
     console = Console()
+    custom_style_df1 = Style(bgcolor="#282c24")
 
-    main_table = Table(title="\nStrand Specific Dataframe Selection",
-                       show_header=True, 
-                       box=box.HORIZONTALS,
-                       highlight=False,                     
-    )
+    main_table = Table(show_header=True, 
+                      style=custom_style_df1,
+                      title=None,
+                      safe_box=False,
+                      box=box.MINIMAL)
 
     main_table.add_column("", style="bold white")
-    main_table.add_column("Main Toolkit", header_style="bold magenta", style="white")
+    main_table.add_column("Main Toolkit", header_style="bold cyan", style="white")
 
     main_table.add_row("1",  "Arts Participation")
     main_table.add_row("2",  "Behaviour Interventions")
@@ -3235,10 +3239,19 @@ def data_analysis_cl_table():
     main_table.add_row("25",  "Teaching Assistants")
     main_table.add_row("26",  "Within-Class Grouping")
 
-    console.print(main_table)
+    # Create a new Panel object
+    panel = Panel(main_table, 
+                  title="Strand Specific Selection", 
+                  style=custom_style_df1,
+                  border_style="white",
+                  title_align="left",
+                  padding=(1, 2),
+                  width=80)
+
+    console.print(panel)
 
      # Get user selection for strand specific dataframe (if needed)
-    ss_user_input = int(input("Enter a number from the list corresponding to the a strand specific data option from the list above: "))
+    ss_user_input = int(input("Select strand specific option: "))
     return ss_user_input
 
 
@@ -3343,125 +3356,311 @@ def strand_specific_df_selection(user_input):
 
 
 def display_table_struct(funcs): 
-            """
-            """
-            for num, func in track(enumerate(funcs), description="[green]Processing dataframes..\n[/green]"):
-                func(save_file=True, clean_cols=True, verbose=False)
+    """
+    """
+    for num, func in track(enumerate(funcs), description="[green]Processing dataframes..\n[/green]"):
+        func(save_file=True, clean_cols=True, verbose=False)
 
-            table = Table(show_header=True, 
-                          header_style="bold magenta",
-                          title="Data Cleaning Dataframe Info Table",
-                          safe_box=True,
-                          box=box.MINIMAL)
-                    
-            table.add_column("", style="green")
-            table.add_column("Dataframes", header_style="bold green")
-            table.add_column("Selection", justify="center", header_style="bold red")
-            table.add_column("Save dir", justify="left", header_style="white")
-
-            return table
-
-
+ 
 def data_cleaning_col_breakdown():
-    console = Console()
 
-    main_table = Table(show_header=True, 
-                        box=box.HORIZONTALS,
-                        highlight=False,                     
+    table_title_style = Style(italic=False, bgcolor=None, color="blue", bold=True)
+    header_style = Style(italic=False, bgcolor=None, color="blue", bold=True)
+    column_style = Style(bgcolor=None, color="white") 
+
+    main_table2 = Table(show_header=True, 
+                        box=box.MINIMAL,
+                        highlight=False,
+                        title_style=table_title_style,
+                        title=None,                   
     )
-    main_table.add_column("Dataframe 1", header_style="bold yellow", style="white")
-    main_table.add_column("Dataframe 2", header_style="bold cyan", style="white")
-    main_table.add_column("Dataframe 3", header_style="bold green", style="white")
-    main_table.add_column("Dataframe 4", header_style="bold purple", style="white")
-    main_table.add_column("Dataframe 5", header_style="bold red", style="white")
-    main_table.add_row("Study ID",  "Study ID",  "Study ID",  "Study ID",  "Study ID")
-    main_table.add_row("Author",  "Author",  "Author",  "Author",  "Author")
-    main_table.add_row("Year",  "Year",  "Year",  "Year",  "Year")
-    main_table.add_row("Abstract",  "Strand",  "Strand",  "Strand",  "Strand")
-    main_table.add_row("Admin Strand",  "Int Name",  "Gender",  "Desc Stats Prim Out",  "Outcome Type")
-    main_table.add_row("Publication Type EPPI",  "Int Description",  "Sample Size",  "Int Treat Grp Number",  "Standard Mean Difference")
-    main_table.add_row("Publication Type",  "Int Objective",  "SES/FSM",  "Int Treat Grp Pre-test Mean/SD",  "Standard Error")
-    main_table.add_row("Educational Setting", "Int Organisatio Type",  "Int Treat Sample Size",  "Int Treat Grp Post-test Mean/SD",  "Confidence Interval (lb)")
-    main_table.add_row("Ecological Validity", "Int Training",  "Int Cont Sample Size",  "Int Treat Grp Gain Score Mean/SD",  "Confidence Interval (ub)")
-    main_table.add_row("Student Age",  "Int Focus",  "Int Treat Grp2 Sample Size",  "Int Treat Grp Any Other Info",  "Outcome")
-    main_table.add_row("Number of Schools",  "Int Teaching Approach",  "Int Treat Grp3 Sample Size",  "Int Cont Grp Number",  "Sample")
-    main_table.add_row("Number of Classes",  "Int Inclusion",  "Int Treat Sample Size Analyzed",  "Int Cont Grp Pre-test Mean/SD",  "Outcome Comparison")
-    main_table.add_row("Treatment Group",  "Int Time",  "Int Cont Sample Size Analyzed",  "Int Cont Grp Post-test Mean/SD",  "Effect Size Type")
-    main_table.add_row("Participant Assignment",  "Int Delivery",  "Int Treat Grp2 Sample Size Analyzed",  "Int Cont Grp Gain Score Mean/SD",  "Outcome Measure")
-    main_table.add_row("Level of Assignment", "Int Duration",  "Int Cont Grp2 Sample Size Analyzed",  "Int Cont Grp Any Other Info",  "Outcome Title")
-    main_table.add_row("Study Design", "Int Frequency",  "Attrition Reported",  "Int Treat Grp2 Number",  "Group1 N")
-    main_table.add_row( "Randomisation",  "Int Session Length",  "Attrition Treat Grp",  "Int Treat Grp2 Pre-test Mean/SD",  "Group2 N")
-    main_table.add_row("Other Outcomes",  "Int Detail",  "Attrition Total (%)",  "Int Treat Grp2 Post-test Mean/SD",  "Group1 Mean")
-    main_table.add_row("Additional Outcomes",  "Int Costs", "", "Int Treat Grp2 Gain Score Mean/SD", "Group2 Mean")
-    main_table.add_row("Other Participants Outcomes", "Int Evaluation",  "",   "Int Treat Grp2 Any Other Info", "Group1 SD")
-    main_table.add_row("",  "Baseline Differences", "",  "Int Cont Grp2 Number",  "Group2 SD")
-    main_table.add_row("", "Computational Analysis",  "", "Int Cont Grp2 Pre-test Mean/SD",  "Outcome Description")
-    main_table.add_row("",  "Comparability Variables Reported",  "", "Int Cont Grp2 Post-test Mean/SD",  "Test Type Outcome")
-    main_table.add_row("",  "Clustering",  "", "Int Cont Grp2 Gain Score Mean/SD", "")
-    main_table.add_row("",  "", "",  "Int Cont Grp2 Any Other Info", "")
-    main_table.add_row("",  "", "",  "Follow-up Information", "")
+    main_table2.add_column("Dataframe 1", header_style=header_style, style=column_style)
+    main_table2.add_column("Dataframe 2", header_style=header_style, style=column_style)
+    main_table2.add_column("Dataframe 3", header_style=header_style, style=column_style)
+    main_table2.add_column("Dataframe 4", header_style=header_style, style=column_style)
+    main_table2.add_column("Dataframe 5", header_style=header_style, style=column_style)
+    main_table2.add_row("Study ID",  "Study ID",  "Study ID",  "Study ID",  "Study ID")
+    main_table2.add_row("Author",  "Author",  "Author",  "Author",  "Author")
+    main_table2.add_row("Year",  "Year",  "Year",  "Year",  "Year")
+    main_table2.add_row("Abstract",  "Strand",  "Strand",  "Strand",  "Strand")
+    main_table2.add_row("Admin Strand",  "Int Name",  "Gender",  "Desc Stats Prim Out",  "Outcome Type")
+    main_table2.add_row("Publication Type EPPI",  "Int Description",  "Sample Size",  "Int Treat Grp Number",  "Standard Mean Difference")
+    main_table2.add_row("Publication Type",  "Int Objective",  "SES/FSM",  "Int Treat Grp Pre-test Mean/SD",  "Standard Error")
+    main_table2.add_row("Educational Setting", "Int Organisatio Type",  "Int Treat Sample Size",  "Int Treat Grp Post-test Mean/SD",  "Confidence Interval (lb)")
+    main_table2.add_row("Ecological Validity", "Int Training",  "Int Cont Sample Size",  "Int Treat Grp Gain Score Mean/SD",  "Confidence Interval (ub)")
+    main_table2.add_row("Student Age",  "Int Focus",  "Int Treat Grp2 Sample Size",  "Int Treat Grp Any Other Info",  "Outcome")
+    main_table2.add_row("Number of Schools",  "Int Teaching Approach",  "Int Treat Grp3 Sample Size",  "Int Cont Grp Number",  "Sample")
+    main_table2.add_row("Number of Classes",  "Int Inclusion",  "Int Treat Sample Size Analyzed",  "Int Cont Grp Pre-test Mean/SD",  "Outcome Comparison")
+    main_table2.add_row("Treatment Group",  "Int Time",  "Int Cont Sample Size Analyzed",  "Int Cont Grp Post-test Mean/SD",  "Effect Size Type")
+    main_table2.add_row("Participant Assignment",  "Int Delivery",  "Int Treat Grp2 Sample Size Analyzed",  "Int Cont Grp Gain Score Mean/SD",  "Outcome Measure")
+    main_table2.add_row("Level of Assignment", "Int Duration",  "Int Cont Grp2 Sample Size Analyzed",  "Int Cont Grp Any Other Info",  "Outcome Title")
+    main_table2.add_row("Study Design", "Int Frequency",  "Attrition Reported",  "Int Treat Grp2 Number",  "Group1 N")
+    main_table2.add_row( "Randomisation",  "Int Session Length",  "Attrition Treat Grp",  "Int Treat Grp2 Pre-test Mean/SD",  "Group2 N")
+    main_table2.add_row("Other Outcomes",  "Int Detail",  "Attrition Total (%)",  "Int Treat Grp2 Post-test Mean/SD",  "Group1 Mean")
+    main_table2.add_row("Additional Outcomes",  "Int Costs", "", "Int Treat Grp2 Gain Score Mean/SD", "Group2 Mean")
+    main_table2.add_row("Other Participants Outcomes", "Int Evaluation",  "",   "Int Treat Grp2 Any Other Info", "Group1 SD")
+    main_table2.add_row("",  "Baseline Differences", "",  "Int Cont Grp2 Number",  "Group2 SD")
+    main_table2.add_row("", "Computational Analysis",  "", "Int Cont Grp2 Pre-test Mean/SD",  "Outcome Description")
+    main_table2.add_row("",  "Comparability Variables Reported",  "", "Int Cont Grp2 Post-test Mean/SD",  "Test Type Outcome")
+    main_table2.add_row("",  "Clustering",  "", "Int Cont Grp2 Gain Score Mean/SD", "")
+    main_table2.add_row("",  "", "",  "Int Cont Grp2 Any Other Info", "")
+    main_table2.add_row("",  "", "",  "Follow-up Information", "")
+    main_table2.footer = "This is the footer."
+    return main_table2
 
-    console.print(main_table)
+
+def display_main_menu():
+    
+    table_title_style = Style(italic=False, bgcolor=None, color="magenta", bold=True)
+    header_style = Style(italic=False, bgcolor=None, color="magenta", bold=True)
+    column_style = Style(bgcolor=None, color="white") 
+
+    main_table = Table(show_header=True,
+                       highlight=False,
+                       title=None,
+                       title_style=table_title_style,
+                       box=box.MINIMAL)
+    
+    main_table.add_column("Selection", header_style=header_style, style=column_style)
+    main_table.add_column("Description", header_style=header_style, style=column_style)
+
+    main_table.add_row("1. Dataframe 1", "Study, Research & Design Variables")
+    main_table.add_row("2. Dataframe 2", "Intervention Details")
+    main_table.add_row("3. Sample Size", "Sample size variables")
+    main_table.add_row("4, Effect Size A", "Descriptive Statistics")
+    main_table.add_row("5, Effect Size B", "Outcome Details")
+    main_table.add_row("6. Data Analysis", "Key variables for data analysis")
+    main_table.add_row("7  [bold red]EXIT[/bold red]", "", style="bold")
+    
+    return main_table
 
 
 def dataframe_1_output_display(functions, outfile):
     console = Console()
-    table = display_table_struct(functions)
-    table.add_row("[bold white]1[/bold white]", "[white]Dataframe 1[/white]", "[white]✔[/white]", outfile)
-    table.add_row("[bold white]2[/bold white]", "[green]Dataframe 2[/green]", "[red]✗[/red]", "[red]✗[/red]")
-    table.add_row("[bold white]3[/bold white]", "[green]Sample Size[/green]", "[red]✗[/red]", "[red]✗[/red]")
-    table.add_row("[bold white]4[/bold white]", "[green]Effect Size A[/green]", "[red]✗[/red]", "[red]✗[/red]")
-    table.add_row("[bold white]5[/bold white]", "[green]Effect Size B[/green]", "[red]✗[/red]", "[red]✗[/red]")
-    table.add_row("[bold white]6[/bold white]", "[green]All", "[red]✗[/red]", "[red]✗[/red]")
-    console.print(table)
+    custom_style_df1 = Style(bgcolor="#282c24")
+
+    df1_table = Table(show_header=True, 
+                      style=custom_style_df1,
+                      title=None,
+                      safe_box=False,
+                      box=box.MINIMAL)
+
+    df1_table.add_column("Selection", justify="center", header_style="bold red")
+    df1_table.add_column("Output directory", justify="left", header_style="red")
+    df1_table.add_row("Dataframe 1", outfile)
+
+    return df1_table
 
 
 def dataframe_2_output_display(functions, outfile):
     console = Console()
-    table = display_table_struct(functions)
-    table.add_row("1", "[white]Dataframe 1[/white]", "[red]✗[/red]", "[red]✗[/red]")
-    table.add_row("2", "Dataframe 2", "[white]✔[/white]", outfile)
-    table.add_row("3", "Sample Size", "[red]✗[/red]", "[red]✗[/red]")
-    table.add_row("4", "Effect Size A", "[red]✗[/red]", "[red]✗[/red]")
-    table.add_row("5", "Effect Size B", "[red]✗[/red]", "[red]✗[/red]")
-    table.add_row("6", "All", "[red]✗[/red]", "[red]✗[/red]")
-    console.print(table)
+    custom_style_df1 = Style(bgcolor="#282c24")
+
+    df2_table = Table(show_header=True, 
+                      style=custom_style_df1,
+                      title=None,
+                      safe_box=False,
+                      box=box.MINIMAL)
+
+    df2_table.add_column("Selection", justify="center", header_style="bold red")
+    df2_table.add_column("Output directory", justify="left", header_style="red")
+    df2_table.add_row("Dataframe 2", outfile)
+
+    return df2_table
 
 
 def dataframe_3_output_display(functions, outfile):
     console = Console()
-    table = display_table_struct(functions)
-    table.add_row("1", "Dataframe 1", "[red]✗[/red]", "[red]✗[/red]")
-    table.add_row("2", "Dataframe 2", "[red]✗[/red]", "[red]✗[/red]")
-    table.add_row("3", "Sample Size", "[green]✔[/green]", outfile)
-    table.add_row("4", "Effect Size A", "[red]✗[/red]", "[red]✗[/red]")
-    table.add_row("5", "Effect Size B", "[red]✗[/red]", "[red]✗[/red]")
-    table.add_row("6", "All", "[red]✗[/red]", "[red]✗[/red]")
-    console.print(table)
+    custom_style_df1 = Style(bgcolor="#282c24")
+
+    df3_table = Table(show_header=True, 
+                      style=custom_style_df1,
+                      title=None,
+                      safe_box=False,
+                      box=box.MINIMAL)
+
+    df3_table.add_column("Selection", justify="center", header_style="bold red")
+    df3_table.add_column("Output directory", justify="left", header_style="red")
+    df3_table.add_row("Dataframe 3", outfile)
+
+    return df3_table
 
 
 def dataframe_4_output_display(functions, outfile):
     console = Console()
-    table = display_table_struct(functions)
-    table.add_row("1", "Dataframe 1", "[red]✗[/red]", "[red]✗[/red]")
-    table.add_row("2", "Dataframe 2", "[red]✗[/red]", "[red]✗[/red]")
-    table.add_row("3", "Sample Size", "[red]✗[/red]", "[red]✗[/red]")
-    table.add_row("4", "Effect Size A", "[green]✔[/green]", outfile)
-    table.add_row("5", "Effect Size B", "[red]✗[/red]", "[red]✗[/red]")
-    table.add_row("6", "All", "[red]✗[/red]", "[red]✗[/red]")
-    console.print(table)
+    custom_style_df1 = Style(bgcolor="#282c24")
+
+    df4_table = Table(show_header=True, 
+                      style=custom_style_df1,
+                      title=None,
+                      safe_box=False,
+                      box=box.MINIMAL)
+
+    df4_table.add_column("Selection", justify="center", header_style="bold red")
+    df4_table.add_column("Output directory", justify="left", header_style="red")
+    df4_table.add_row("Dataframe 4", outfile)
+
+    return df4_table
 
 
 def dataframe_5_output_display(functions, outfile):
     console = Console()
-    table = display_table_struct(functions)
-    table.add_row("1", "Dataframe 1", "[red]✗[/red]", "[red]✗[/red]")
-    table.add_row("2", "Dataframe 2", "[red]✗[/red]", "[red]✗[/red]")
-    table.add_row("3", "Sample Size", "[red]✗[/red]", "[red]✗[/red]")
-    table.add_row("4", "Effect Size A", "[red]✗[/red]",  "[red]✗[/red]")
-    table.add_row("5", "Effect Size B", "[green]✔[/green]", outfile)
-    table.add_row("6", "All", "[red]✗[/red]", "[red]✗[/red]")
-    console.print(table)
+    custom_style_df1 = Style(bgcolor="#282c24")
+
+    df5_table = Table(show_header=True, 
+                      style=custom_style_df1,
+                      title=None,
+                      safe_box=False,
+                      box=box.MINIMAL)
+
+    df5_table.add_column("Selection", justify="center", header_style="bold red")
+    df5_table.add_column("Output directory", justify="left", header_style="red")
+    df5_table.add_row("Dataframe 5", outfile)
+
+    return df5_table
+
+def dataframe_6_output_display(functions, outfile):
+    console = Console()
+    custom_style_df1 = Style(bgcolor="#282c24")
+
+    df6_table = Table(show_header=True, 
+                      style=custom_style_df1,
+                      title=None,
+                      safe_box=False,
+                      box=box.MINIMAL)
+
+    df6_table.add_column("Selection", justify="center", header_style="bold red")
+    df6_table.add_column("Output directory", justify="left", header_style="red")
+    df6_table.add_row("Dataframe 6", outfile)
+
+    return df6_table
+
+
+def input_file_info_display(data_file):
+
+    table_title_style = Style(italic=False, bgcolor=None, color="green", bold=True)
+    header_style = Style(italic=False, bgcolor=None, color="green", bold=True)
+    column_style = Style(bgcolor=None, color="white") 
+
+    file_info_table = Table(show_header=True,
+                       highlight=False,
+                       title=None,
+                       title_style=table_title_style,
+                       box=box.MINIMAL)
+    
+    file_info_table.add_column("Your input file", header_style=header_style, style=column_style)
+    file_info_table.add_row(data_file)
+    return file_info_table
+
+
+def main_menu_display():
+    console = Console()
+    data_cleaning_var_table = data_cleaning_col_breakdown()
+    main_menu_table = display_main_menu()
+    datafile_info_table = input_file_info_display(data_file)
+
+    custom_style_main = Style(bgcolor="#282c24")
+    custom_style_file_details = Style(bgcolor="#282c24")
+    custom_style_cleaning_info = Style(bgcolor="#282c24")
+
+    title1 = console.render_str("[bold]Main Menu[/bold]")
+    title2 = console.render_str("[bold]Data File Details[/bold]")
+
+    panel1a = Panel.fit(
+        main_menu_table,
+        title=title1,
+        border_style="magenta",
+        style=custom_style_main,
+        title_align="left",
+        padding=(1, 2),
+    )
+
+    panel1b = Panel.fit(
+        datafile_info_table,
+        title=title2,
+        border_style="green",
+        style=custom_style_file_details,
+        title_align="left",
+        padding=(1, 2),
+    )
+
+    # create the first row of columns
+    row1 = Columns([panel1a, panel1b], equal=False)
+
+    # create the layout with the panels
+    layout = Columns([row1], equal=False)
+
+    panel = Panel(
+        layout, 
+        title="EEF Teaching and Learning Toolkit Data Extractor", 
+        border_style="white", 
+        padding=(1, 2), 
+        title_align="left",
+        style=custom_style_main, height=19)
+
+    print("\n")
+    console.print(panel)
+    print("\n")
+
+
+def main_menu_display1(functions, outfile1, df_display):
+
+    console = Console()
+    output_file_info = df_display(functions, outfile1)
+    main_menu_table = display_main_menu()
+    datafile_info_table = input_file_info_display(data_file)
+
+    custom_style_main = Style(bgcolor="#282c24")
+    custom_style_file_details = Style(bgcolor="#282c24")
+    custom_style_cleaning_info = Style(bgcolor="#282c24")
+
+    title1 = console.render_str("[bold]Main Menu[/bold]")
+    title2 = console.render_str("[bold]Data File Details[/bold]")
+    title3 = console.render_str("[bold]Output Files[/bold]")
+
+    panel1a = Panel.fit(
+        main_menu_table,
+        title=title1,
+        border_style="magenta",
+        style=custom_style_main,
+        title_align="left",
+        padding=(1, 2),
+
+    )
+    panel1b = Panel.fit(
+        datafile_info_table,
+        title=title2,
+        border_style="green",
+        style=custom_style_file_details,
+        title_align="left",
+        padding=(1, 2),
+    )
+    panel2 = Panel.fit(
+        output_file_info,
+        title=title3,
+        border_style="blue",
+        style=custom_style_cleaning_info,
+        title_align="left",
+        padding=(1, 2),
+    )
+    # create the first row of columns
+    row1 = Columns([panel1a, panel1b], equal=False)
+    # create the second row of columns
+    row2 = Columns([panel2], equal=False)
+    # create the layout with the panels
+    layout = Columns([row1, row2], equal=False)
+
+    panel = Panel(
+        layout, 
+        title="EEF Teaching and Learning Toolkit Data Extractor", 
+        border_style="white", 
+        padding=(1, 2), 
+        title_align="left",
+        style=custom_style_main)
+
+    print("\n")
+    console.print(panel)
+    print("\n")
 
 
 data_file = input_file_path("Enter the path to the JSON file: ")
