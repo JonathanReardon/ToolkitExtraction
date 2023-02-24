@@ -437,70 +437,76 @@ class JSONDataExtractor:
     #/   COMPILE DATA FRAMES FOR CHECKING/CLEANING   /
     #/***********************************************/
     
-    def make_dataframe_1(self, save_file=True, clean_cols=True, verbose=True):
+class DataFrameCompilation:
+    def __init__(self, data_extractor):
+        self.data_extraction = data_extractor
+
+    def make_dataframe_1(self, save_file=True, clean_cols=False, verbose=True):
         """
         """
-        eppiid_df = self.retrieve_metadata("ItemId", "id")
-        author_df = self.retrieve_metadata("ShortTitle", "pub_author")
-        year_df = self.retrieve_metadata("Year", "pub_year")
-        abstract_df = self.retrieve_metadata("Abstract", "abstract")
-        admin_strand_data = self.retrieve_data(admin_strand_output, "strand_raw")
-        admin_strand_info = self.retrieve_info(admin_strand_output, "strand_info")
-        pubtype_eppi_df = self.retrieve_metadata("TypeName", "pub_eppi")
-        pub_type_data = self.retrieve_data(publication_type_output, "pub_type_raw")
-        pub_type_ht = self.retrieve_ht(publication_type_output, "pubtype_ht")
-        pub_type_info = self.retrieve_info(publication_type_output, "pubtype_info")
-        country_df = self.retrieve_data(countries, "loc_country_raw")
-        edu_setting_data = self.retrieve_data(edu_setting_output, "int_setting_raw")
-        edu_setting_ht = self.retrieve_ht(edu_setting_output, "int_setting_ht")
-        edu_setting_info = self.retrieve_info(edu_setting_output, "int_setting_info")
-        study_realism_data = self.retrieve_data(study_realism_output, "eco_valid_raw")
-        study_realism_ht = self.retrieve_ht(study_realism_output, "eco_valid_ht")
-        study_realism_info = self.retrieve_info(study_realism_output, "eco_valid_info")
-        student_age_data = self.retrieve_data(student_age_output, "part_age_raw")
-        student_age_ht = self.retrieve_ht(student_age_output, "part_age_ht")
-        student_age_info = self.retrieve_info(student_age_output, "part_age_info")
-        number_of_school_int_info = self.retrieve_info(number_of_schools_intervention_output, "school_treat_info")
-        number_of_school_int_ht = self.retrieve_ht(number_of_schools_intervention_output, "school_treat_ht")
-        number_of_school_control_info = self.retrieve_info(number_of_schools_control_output, "school_cont_info")
-        number_of_school_control_ht = self.retrieve_ht(number_of_schools_control_output, "school_cont_ht")
-        number_of_school_total_info = self.retrieve_info(number_of_schools_total_output, "school_total_info")
-        number_of_school_total_ht = self.retrieve_ht(number_of_schools_total_output, "school_total_ht")
-        number_of_school_na_data = self.retrieve_data(number_of_schools_not_provided_output, "school_na_raw")
-        number_of_school_na_info = self.retrieve_info(number_of_schools_not_provided_output, "school_na_info")
-        number_of_school_na_ht = self.retrieve_ht(number_of_schools_not_provided_output, "school_na_ht")
-        number_of_classes_int_info = self.retrieve_info(num_of_class_int_output, "class_treat_info")
-        number_of_classes_int_ht = self.retrieve_ht(num_of_class_int_output, "class_treat_ht")
-        number_of_classes_control_info = self.retrieve_info(num_of_class_cont_output, "class_cont_info")
-        number_of_classes_control_ht = self.retrieve_ht(num_of_class_cont_output, "class_cont_ht")
-        number_of_classes_total_info = self.retrieve_info(num_of_class_tot_output, "class_total_info")
-        number_of_classes_total_ht = self.retrieve_ht(num_of_class_tot_output, "class_total_ht")
-        number_of_classes_na_data = self.retrieve_data(numb_of_class_np_output, "class_na_raw")
-        number_of_classes_na_info = self.retrieve_info(numb_of_class_np_output, "class_na_info")
-        number_of_classes_na_ht = self.retrieve_ht(numb_of_class_np_output, "class_na_ht")
-        treatment_group_data = self.retrieve_data(treatment_group, "treat_group_raw")
-        treatment_group_ht = self.retrieve_ht(treatment_group, "treat_group_ht")
-        treatment_group_info = self.retrieve_info(treatment_group, "treat_group_info")
-        part_assig_data = self.retrieve_data(part_assign_output, "part_assig_raw")
-        part_assig_ht = self.retrieve_ht(part_assign_output, "part_assig_ht")
-        part_assig_info = self.retrieve_info(part_assign_output, "part_assig_info")
-        level_of_assign_data = self.retrieve_data(level_of_assignment_output, "level_assig_raw")
-        level_of_assign_ht = self.retrieve_ht(level_of_assignment_output, "level_assig_ht")
-        level_of_assign_info = self.retrieve_info(level_of_assignment_output, "level_assig_info")
-        study_design_data = self.retrieve_data(study_design_output, "int_desig_raw")
-        study_design_ht = self.retrieve_ht(study_design_output, "int_design_ht")
-        study_design_info = self.retrieve_info(study_design_output, "int_design_info")
-        rand_data = self.retrieve_data(randomisation_details, "rand_raw")
-        rand_ht = self.retrieve_ht(randomisation_details, "rand_ht")
-        rand_info = self.retrieve_info(randomisation_details, "rand_info")
-        other_outcomes_data = self.retrieve_data(other_out_output, "out_other_raw")
-        other_outcomes_ht = self.retrieve_ht(other_out_output, "out_other_ht")
-        other_outcomes_info = self.retrieve_info(other_out_output, "out_other_info")
-        addit_out_data = self.retrieve_data(addit_out_output, "out_info_raw")
-        addit_out_ht = self.retrieve_ht(addit_out_output, "out_info_ht")
-        addit_out_info = self.retrieve_info(addit_out_output, "out_info_info")
-        other_part_ht = self.retrieve_ht(other_part_output, "part_other_ht")
-        other_part_info = self.retrieve_info(other_part_output, "part_other_info")
+        eppiid_df = self.data_extraction.retrieve_metadata("ItemId", "id")
+        author_df = self.data_extraction.retrieve_metadata("ShortTitle", "pub_author")
+        year_df = self.data_extraction.retrieve_metadata("Year", "pub_year")
+        abstract_df = self.data_extraction.retrieve_metadata("Abstract", "abstract")
+        admin_strand_data = self.data_extraction.retrieve_data(admin_strand_output, "strand_raw")
+        admin_strand_info = self.data_extraction.retrieve_info(admin_strand_output, "strand_info")
+        toolkit_version_data = self.data_extraction.retrieve_data(toolkit_versions, "toolkit_version")
+        pubtype_eppi_df = self.data_extraction.retrieve_metadata("TypeName", "pub_eppi")
+        pub_type_data = self.data_extraction.retrieve_data(publication_type_output, "pub_type_raw")
+        pub_type_ht = self.data_extraction.retrieve_ht(publication_type_output, "pubtype_ht")
+        pub_type_info = self.data_extraction.retrieve_info(publication_type_output, "pubtype_info")
+        country_df = self.data_extraction.retrieve_data(countries, "loc_country_raw")
+        edu_setting_data = self.data_extraction.retrieve_data(edu_setting_output, "int_setting_raw")
+        edu_setting_ht = self.data_extraction.retrieve_ht(edu_setting_output, "int_setting_ht")
+        edu_setting_info = self.data_extraction.retrieve_info(edu_setting_output, "int_setting_info")
+        study_realism_data = self.data_extraction.retrieve_data(study_realism_output, "eco_valid_raw")
+        study_realism_ht = self.data_extraction.retrieve_ht(study_realism_output, "eco_valid_ht")
+        study_realism_info = self.data_extraction.retrieve_info(study_realism_output, "eco_valid_info")
+        student_age_data = self.data_extraction.retrieve_data(student_age_output, "part_age_raw")
+        student_age_ht = self.data_extraction.retrieve_ht(student_age_output, "part_age_ht")
+        student_age_info = self.data_extraction.retrieve_info(student_age_output, "part_age_info")
+        number_of_school_int_info = self.data_extraction.retrieve_info(number_of_schools_intervention_output, "school_treat_info")
+        number_of_school_int_ht = self.data_extraction.retrieve_ht(number_of_schools_intervention_output, "school_treat_ht")
+        number_of_school_control_info = self.data_extraction.retrieve_info(number_of_schools_control_output, "school_cont_info")
+        number_of_school_control_ht = self.data_extraction.retrieve_ht(number_of_schools_control_output, "school_cont_ht")
+        number_of_school_total_info = self.data_extraction.retrieve_info(number_of_schools_total_output, "school_total_info")
+        number_of_school_total_ht = self.data_extraction.retrieve_ht(number_of_schools_total_output, "school_total_ht")
+        number_of_school_na_data = self.data_extraction.retrieve_data(number_of_schools_not_provided_output, "school_na_raw")
+        number_of_school_na_info = self.data_extraction.retrieve_info(number_of_schools_not_provided_output, "school_na_info")
+        number_of_school_na_ht = self.data_extraction.retrieve_ht(number_of_schools_not_provided_output, "school_na_ht")
+        number_of_classes_int_info = self.data_extraction.retrieve_info(num_of_class_int_output, "class_treat_info")
+        number_of_classes_int_ht = self.data_extraction.retrieve_ht(num_of_class_int_output, "class_treat_ht")
+        number_of_classes_control_info = self.data_extraction.retrieve_info(num_of_class_cont_output, "class_cont_info")
+        number_of_classes_control_ht = self.data_extraction.retrieve_ht(num_of_class_cont_output, "class_cont_ht")
+        number_of_classes_total_info = self.data_extraction.retrieve_info(num_of_class_tot_output, "class_total_info")
+        number_of_classes_total_ht = self.data_extraction.retrieve_ht(num_of_class_tot_output, "class_total_ht")
+        number_of_classes_na_data = self.data_extraction.retrieve_data(numb_of_class_np_output, "class_na_raw")
+        number_of_classes_na_info = self.data_extraction.retrieve_info(numb_of_class_np_output, "class_na_info")
+        number_of_classes_na_ht = self.data_extraction.retrieve_ht(numb_of_class_np_output, "class_na_ht")
+        treatment_group_data = self.data_extraction.retrieve_data(treatment_group, "treat_group_raw")
+        treatment_group_ht = self.data_extraction.retrieve_ht(treatment_group, "treat_group_ht")
+        treatment_group_info = self.data_extraction.retrieve_info(treatment_group, "treat_group_info")
+        part_assig_data = self.data_extraction.retrieve_data(part_assign_output, "part_assig_raw")
+        part_assig_ht = self.data_extraction.retrieve_ht(part_assign_output, "part_assig_ht")
+        part_assig_info = self.data_extraction.retrieve_info(part_assign_output, "part_assig_info")
+        level_of_assign_data = self.data_extraction.retrieve_data(level_of_assignment_output, "level_assig_raw")
+        level_of_assign_ht = self.data_extraction.retrieve_ht(level_of_assignment_output, "level_assig_ht")
+        level_of_assign_info = self.data_extraction.retrieve_info(level_of_assignment_output, "level_assig_info")
+        study_design_data = self.data_extraction.retrieve_data(study_design_output, "int_desig_raw")
+        study_design_ht = self.data_extraction.retrieve_ht(study_design_output, "int_design_ht")
+        study_design_info = self.data_extraction.retrieve_info(study_design_output, "int_design_info")
+        rand_data = self.data_extraction.retrieve_data(randomisation_details, "rand_raw")
+        rand_ht = self.data_extraction.retrieve_ht(randomisation_details, "rand_ht")
+        rand_info = self.data_extraction.retrieve_info(randomisation_details, "rand_info")
+        other_outcomes_data = self.data_extraction.retrieve_data(other_out_output, "out_other_raw")
+        other_outcomes_ht = self.data_extraction.retrieve_ht(other_out_output, "out_other_ht")
+        other_outcomes_info = self.data_extraction.retrieve_info(other_out_output, "out_other_info")
+        addit_out_data = self.data_extraction.retrieve_data(addit_out_output, "out_info_raw")
+        addit_out_ht = self.data_extraction.retrieve_ht(addit_out_output, "out_info_ht")
+        addit_out_info = self.data_extraction.retrieve_info(addit_out_output, "out_info_info")
+        other_part_ht = self.data_extraction.retrieve_ht(other_part_output, "part_other_ht")
+        other_part_info = self.data_extraction.retrieve_info(other_part_output, "part_other_info")
+        
         all_variables = pd.concat([
             eppiid_df,
             author_df,
@@ -508,6 +514,7 @@ class JSONDataExtractor:
             abstract_df,
             admin_strand_data,
             admin_strand_info,
+            toolkit_version_data,
             pubtype_eppi_df,
             pub_type_data,
             pub_type_ht,
@@ -568,121 +575,128 @@ class JSONDataExtractor:
         all_variables['level_assig_raw'] = all_variables['level_assig_raw'].str[0]
         all_variables['rand_raw'] = all_variables['rand_raw'].apply(lambda x: ",".join(x) if isinstance(x, list) else x)
         all_variables['eco_valid_raw'] = all_variables['eco_valid_raw'].str[0]
+        
         if clean_cols == True:
             # Insert empty columns for each variable for data 
             # checkers to log errors prior to main analysis
             cols_to_insert = {
                 'strand_CLEAN': 6,
-                'pub_eppi_CLEAN': 8,
-                'pub_type_CLEAN': 12,
-                'loc_country_CLEAN': 14,
-                'int_Setting_CLEAN': 18,
-                'eco_valid_CLEAN': 22,
-                'part_age_CLEAN': 26,
-                'school_treat_CLEAN': 29,
-                'school_cont_CLEAN': 32,
-                'school_total_CLEAN': 35,
-                'school_na_CLEAN': 39,
-                'class_treat_CLEAN': 42,
-                'class_cont_CLEAN': 45,
-                'class_total_CLEAN': 48,
-                'class_na_CLEAN': 52,
-                'treat_group_CLEAN': 56,
-                'part_assig_CLEAN': 60,
-                'level_assig_CLEAN': 64,
-                'int_design_CLEAN': 68,
-                'rand_CLEAN': 72,
-                'out_other_CLEAN': 76,
-                'out_info_CLEAN': 80,
-                'part_other_CLEAN': 83
+                'pub_eppi_CLEAN': 9,
+                'pub_type_CLEAN': 13,
+                'loc_country_CLEAN': 15,
+                'int_Setting_CLEAN': 19,
+                'eco_valid_CLEAN': 23,
+                'part_age_CLEAN': 27,
+                'school_treat_CLEAN': 30,
+                'school_cont_CLEAN': 33,
+                'school_total_CLEAN': 36,
+                'school_na_CLEAN': 40,
+                'class_treat_CLEAN': 43,
+                'class_cont_CLEAN': 46,
+                'class_total_CLEAN': 49,
+                'class_na_CLEAN': 53,
+                'treat_group_CLEAN': 57,
+                'part_assig_CLEAN': 61,
+                'level_assig_CLEAN': 65,
+                'int_design_CLEAN': 69,
+                'rand_CLEAN': 73,
+                'out_other_CLEAN': 77,
+                'out_info_CLEAN': 81,
+                'part_other_CLEAN': 84
             }
-        # Insert empty columns at specified locations
-        for col_name, col_idx in cols_to_insert.items():
-            all_variables.insert(col_idx, col_name, '')
+            # Insert empty columns at specified locations
+            for col_name, col_idx in cols_to_insert.items():
+                all_variables.insert(col_idx, col_name, '')
+        
         # Remove problematic text from outputs
-        self.clean_up(all_variables)
+        self.data_extraction.clean_up(all_variables)
+       
         if verbose:
-            self.verbose_display(all_variables)
+            self.data_extraction.verbose_display(all_variables)
+        
         if save_file:
-            outfile1 = self.save_dataframe(all_variables, "_DataFrame1.csv")
+            outfile1 = self.data_extraction.save_dataframe(all_variables, "_DataFrame1.csv")
+        
         return all_variables, outfile1
 
 
     def make_dataframe_2(self, save_file=True, clean_cols=False, verbose=True):
         """
         """
-        eppiid_df = self.retrieve_metadata("ItemId", "id")
-        author_df = self.retrieve_metadata("ShortTitle", "pub_author")
-        year_df = self.retrieve_metadata("Year", "pub_year")
-        admin_strand_data = self.retrieve_data(admin_strand_output, "strand_raw")
-        admin_strand_info = self.retrieve_info(admin_strand_output, "strand_info")
-        intervention_name_ht = self.retrieve_ht(int_name_output, "int_name_ht")
-        intervention_name_info = self.retrieve_info(int_name_output, "int_name_info")
-        intervention_desc_ht = self.retrieve_ht(intervention_description_output, "int_desc_ht")
-        intervention_desc_info = self.retrieve_info(intervention_description_output, "int_desc_info")
-        intervention_objec_ht = self.retrieve_ht(intervention_objectives_output, "int_objec_ht")
-        intervention_objec_info = self.retrieve_info(intervention_objectives_output, "int_objec_info")
-        intervention_org_type_data = self.retrieve_data(int_org_type_output, "int_prov_raw")
-        intervention_org_type_ht = self.retrieve_ht(int_org_type_output, "int_prov_ht")
-        intervention_org_type_info = self.retrieve_info(int_org_type_output, "int_prov_info")
-        intervention_training_prov_data = self.retrieve_data(int_training_provided_output, "int_training_raw")
-        intervention_training_prov_ht = self.retrieve_ht(int_training_provided_output, "int_training_ht")
-        intervention_training_prov_info = self.retrieve_info(int_training_provided_output, "int_training_info")
-        intervention_focus_data = self.retrieve_data(int_focus_output, "int_part_raw")
-        intervention_focus_ht = self.retrieve_ht(int_focus_output, "int_part_ht")
-        intervention_focus_info= self.retrieve_info(int_focus_output, "int_part_info")
-        intervention_teaching_app_data = self.retrieve_data(intervention_teaching_approach, "int_approach_raw")
-        intervention_teaching_app_ht = self.retrieve_ht(intervention_teaching_approach, "int_approach_ht")
-        intervention_teaching_app_info = self.retrieve_info(intervention_teaching_approach, "int_approach_info")
-        digit_tech_data = self.retrieve_data(int_appr_dig_tech, "digit_tech_raw")
-        digit_tech_ht = self.retrieve_ht(int_appr_dig_tech, "digit_tech_ht")
-        digit_tech_info = self.retrieve_info(int_appr_dig_tech, "digit_tech_info")
-        par_eng_data = self.retrieve_data(int_appr_par_or_comm_vol, "parent_partic_raw")
-        par_eng_ht= self.retrieve_ht(int_appr_par_or_comm_vol, "parent_partic_ht")
-        par_eng_info = self.retrieve_info(int_appr_par_or_comm_vol, "parent_partic_info")
-        intervention_time_data = self.retrieve_data(intervention_time_output, "int_when_raw")
-        intervention_time_ht = self.retrieve_ht(intervention_time_output, "int_when_ht")
-        intervention_time_info = self.retrieve_info(intervention_time_output, "int_when_info")
-        intervention_delivery_data = self.retrieve_data(intervention_delivery_output, "int_who_raw")
-        intervention_delivery_ht = self.retrieve_ht(intervention_delivery_output, "int_who_ht")
-        intervention_delivery_info = self.retrieve_info(intervention_delivery_output, "int_who_info")
-        intervention_duration_ht = self.retrieve_ht(int_dur_output, "int_dur_ht")
-        intervention_duration_info = self.retrieve_info(int_dur_output, "int_dur_info")
-        intervention_frequency_ht = self.retrieve_ht(inte_freq_output, "int_freq_ht")
-        intervention_frequency_info = self.retrieve_info(inte_freq_output, "int_freq_info")
-        intervention_sess_length_ht = self.retrieve_ht(intervention_session_length_output, "int_leng_ht")
-        intervention_sess_length_info = self.retrieve_info(intervention_session_length_output, "int_leng_info")
-        intervention_detail_data = self.retrieve_data(int_impl_details, "int_fidel_raw")
-        intervention_detail_ht = self.retrieve_ht(int_impl_details, "int_fidel_ht")
-        intervention_detail_info = self.retrieve_info(int_impl_details, "int_fidel_info")
-        intervention_costs_data = self.retrieve_data(int_costs_reported, "int_cost_raw")
-        intervention_costs_ht = self.retrieve_ht(int_costs_reported, "int_cost_ht")
-        intervention_costs_info = self.retrieve_info(int_costs_reported, "int_cost_info")
-        #int_evaluation = self.retrieve_data(int_eval, "out_eval_raw")    
-        #int_evaluation_ht = self.retrieve_ht(int_eval, "out_eval_ht")
-        #int_evaluation_info = self.retrieve_info(int_eval, "out_eval_info")
+        eppiid_df = self.data_extraction.retrieve_metadata("ItemId", "id")
+        author_df = self.data_extraction.retrieve_metadata("ShortTitle", "pub_author")
+        year_df = self.data_extraction.retrieve_metadata("Year", "pub_year")
+        admin_strand_data = self.data_extraction.retrieve_data(admin_strand_output, "strand_raw")
+        admin_strand_info = self.data_extraction.retrieve_info(admin_strand_output, "strand_info")
+        toolkit_version_data = self.data_extraction.retrieve_data(toolkit_versions, "toolkit_version")
+        intervention_name_ht = self.data_extraction.retrieve_ht(int_name_output, "int_name_ht")
+        intervention_name_info = self.data_extraction.retrieve_info(int_name_output, "int_name_info")
+        intervention_desc_ht = self.data_extraction.retrieve_ht(intervention_description_output, "int_desc_ht")
+        intervention_desc_info = self.data_extraction.retrieve_info(intervention_description_output, "int_desc_info")
+        intervention_objec_ht = self.data_extraction.retrieve_ht(intervention_objectives_output, "int_objec_ht")
+        intervention_objec_info = self.data_extraction.retrieve_info(intervention_objectives_output, "int_objec_info")
+        intervention_org_type_data = self.data_extraction.retrieve_data(int_org_type_output, "int_prov_raw")
+        intervention_org_type_ht = self.data_extraction.retrieve_ht(int_org_type_output, "int_prov_ht")
+        intervention_org_type_info = self.data_extraction.retrieve_info(int_org_type_output, "int_prov_info")
+        intervention_training_prov_data = self.data_extraction.retrieve_data(int_training_provided_output, "int_training_raw")
+        intervention_training_prov_ht = self.data_extraction.retrieve_ht(int_training_provided_output, "int_training_ht")
+        intervention_training_prov_info = self.data_extraction.retrieve_info(int_training_provided_output, "int_training_info")
+        intervention_focus_data = self.data_extraction.retrieve_data(int_focus_output, "int_part_raw")
+        intervention_focus_ht = self.data_extraction.retrieve_ht(int_focus_output, "int_part_ht")
+        intervention_focus_info= self.data_extraction.retrieve_info(int_focus_output, "int_part_info")
+        intervention_teaching_app_data = self.data_extraction.retrieve_data(intervention_teaching_approach, "int_approach_raw")
+        intervention_teaching_app_ht = self.data_extraction.retrieve_ht(intervention_teaching_approach, "int_approach_ht")
+        intervention_teaching_app_info = self.data_extraction.retrieve_info(intervention_teaching_approach, "int_approach_info")
+        digit_tech_data = self.data_extraction.retrieve_data(int_appr_dig_tech, "digit_tech_raw")
+        digit_tech_ht = self.data_extraction.retrieve_ht(int_appr_dig_tech, "digit_tech_ht")
+        digit_tech_info = self.data_extraction.retrieve_info(int_appr_dig_tech, "digit_tech_info")
+        par_eng_data = self.data_extraction.retrieve_data(int_appr_par_or_comm_vol, "parent_partic_raw")
+        par_eng_ht= self.data_extraction.retrieve_ht(int_appr_par_or_comm_vol, "parent_partic_ht")
+        par_eng_info = self.data_extraction.retrieve_info(int_appr_par_or_comm_vol, "parent_partic_info")
+        intervention_time_data = self.data_extraction.retrieve_data(intervention_time_output, "int_when_raw")
+        intervention_time_ht = self.data_extraction.retrieve_ht(intervention_time_output, "int_when_ht")
+        intervention_time_info = self.data_extraction.retrieve_info(intervention_time_output, "int_when_info")
+        intervention_delivery_data = self.data_extraction.retrieve_data(intervention_delivery_output, "int_who_raw")
+        intervention_delivery_ht = self.data_extraction.retrieve_ht(intervention_delivery_output, "int_who_ht")
+        intervention_delivery_info = self.data_extraction.retrieve_info(intervention_delivery_output, "int_who_info")
+        intervention_duration_ht = self.data_extraction.retrieve_ht(int_dur_output, "int_dur_ht")
+        intervention_duration_info = self.data_extraction.retrieve_info(int_dur_output, "int_dur_info")
+        intervention_frequency_ht = self.data_extraction.retrieve_ht(inte_freq_output, "int_freq_ht")
+        intervention_frequency_info = self.data_extraction.retrieve_info(inte_freq_output, "int_freq_info")
+        intervention_sess_length_ht = self.data_extraction.retrieve_ht(intervention_session_length_output, "int_leng_ht")
+        intervention_sess_length_info = self.data_extraction.retrieve_info(intervention_session_length_output, "int_leng_info")
+        intervention_detail_data = self.data_extraction.retrieve_data(int_impl_details, "int_fidel_raw")
+        intervention_detail_ht = self.data_extraction.retrieve_ht(int_impl_details, "int_fidel_ht")
+        intervention_detail_info = self.data_extraction.retrieve_info(int_impl_details, "int_fidel_info")
+        intervention_costs_data = self.data_extraction.retrieve_data(int_costs_reported, "int_cost_raw")
+        intervention_costs_ht = self.data_extraction.retrieve_ht(int_costs_reported, "int_cost_ht")
+        intervention_costs_info = self.data_extraction.retrieve_info(int_costs_reported, "int_cost_info")
+        #int_evaluation = self.data_extraction.retrieve_data(int_eval, "out_eval_raw")    
+        #int_evaluation_ht = self.data_extraction.retrieve_ht(int_eval, "out_eval_ht")
+        #int_evaluation_info = self.data_extraction.retrieve_info(int_eval, "out_eval_info")
         int_evaluation = int_eval()
-        baseline_diff_data = self.retrieve_data(baseline_diff_output, "base_diff_raw")    
-        baseline_diff_ht = self.retrieve_ht(baseline_diff_output, "base_diff_ht")
-        baseline_diff_info = self.retrieve_info(baseline_diff_output, "base_diff_info")
-        comp_anal_data = self.retrieve_data(comparability_output, "comp_anal_raw")    
-        comp_anal_ht = self.retrieve_ht(comparability_output, "comp_anal_ht")
-        comp_anal_info = self.retrieve_info(comparability_output, "comp_anal_info")
-        comp_var_rep_data = self.retrieve_data(comp_vars_rep, "comp_var__raw")    
-        comp_var_rep_ht = self.retrieve_ht(comp_vars_rep, "comp_var__ht")
-        comp_var_rep_info = self.retrieve_info(comp_vars_rep, "comp_var__info")
-        comp_var_rep_which_data = self.retrieve_data(which_comp_vars_rep_output, "comp_var_rep_raw")    
-        comp_var_rep_which_ht = self.retrieve_ht(which_comp_vars_rep_output, "comp_var_rep_ht")
-        comp_var_rep_which_info = self.retrieve_info(which_comp_vars_rep_output, "comp_var_rep_info")
-        clustering_data = self.retrieve_data(clustering_output, "clust_anal_raw")    
-        clustering_ht = self.retrieve_ht(clustering_output, "clust_anal_ht")
-        clustering_info = self.retrieve_info(clustering_output, "clust_anal_info")
+        baseline_diff_data = self.data_extraction.retrieve_data(baseline_diff_output, "base_diff_raw")    
+        baseline_diff_ht = self.data_extraction.retrieve_ht(baseline_diff_output, "base_diff_ht")
+        baseline_diff_info = self.data_extraction.retrieve_info(baseline_diff_output, "base_diff_info")
+        comp_anal_data = self.data_extraction.retrieve_data(comparability_output, "comp_anal_raw")    
+        comp_anal_ht = self.data_extraction.retrieve_ht(comparability_output, "comp_anal_ht")
+        comp_anal_info = self.data_extraction.retrieve_info(comparability_output, "comp_anal_info")
+        comp_var_rep_data = self.data_extraction.retrieve_data(comp_vars_rep, "comp_var__raw")    
+        comp_var_rep_ht = self.data_extraction.retrieve_ht(comp_vars_rep, "comp_var__ht")
+        comp_var_rep_info = self.data_extraction.retrieve_info(comp_vars_rep, "comp_var__info")
+        comp_var_rep_which_data = self.data_extraction.retrieve_data(which_comp_vars_rep_output, "comp_var_rep_raw")    
+        comp_var_rep_which_ht = self.data_extraction.retrieve_ht(which_comp_vars_rep_output, "comp_var_rep_ht")
+        comp_var_rep_which_info = self.data_extraction.retrieve_info(which_comp_vars_rep_output, "comp_var_rep_info")
+        clustering_data = self.data_extraction.retrieve_data(clustering_output, "clust_anal_raw")    
+        clustering_ht = self.data_extraction.retrieve_ht(clustering_output, "clust_anal_ht")
+        clustering_info = self.data_extraction.retrieve_info(clustering_output, "clust_anal_info")
         all_variables = pd.concat([
             eppiid_df,
             author_df,
             year_df,
             admin_strand_data,
             admin_strand_info,
+            toolkit_version_data,
             intervention_name_ht,
             intervention_name_info,
             intervention_desc_ht,
@@ -749,94 +763,101 @@ class JSONDataExtractor:
                     set(["Is this an EEF evaluation?"]).issubset).astype(int)
         all_variables["eef_eval_raw"] = all_variables["eef_eval_raw"].replace(
                     to_replace=[0, 1], value=["No", "Yes"])
+        
         if clean_cols:
             # Insert empty columns per variable for data checkers to log changes
             cols_to_insert = {
                 'strand_CLEAN': 5,
-                'int_name_CLEAN': 8,
-                'int_desc_CLEAN': 11,
-                'int_objec_CLEAN': 14,
-                'int_prov_CLEAN': 18,
-                'int_training_CLEAN': 22,
-                'int_part_CLEAN': 26,
-                'int_approach_CLEAN': 30,
-                'digital_tech_CLEAN': 34,
-                'parent_partic_CLEAN': 38,
-                'int_when_CLEAN': 42,
-                'int_who_CLEAN': 46,
-                'int_dur_CLEAN': 49,
-                'int_freq_CLEAN': 52,
-                'int_leng_CLEAN': 55,
-                'int_fidel_CLEAN': 59,
-                'int_cost_CLEAN': 63,
-                'out_eval_CLEAN': 67,
-                'eef_eval_CLEAN': 69,
-                'base_diff_CLEAN': 73,
-                'comp_anal_CLEAN': 77,
-                'comp_var_rep_CLEAN': 81,
-                'comp_var_CLEAN': 85,
-                'clust_anal_CLEAN': 89
+                'int_name_CLEAN': 9,
+                'int_desc_CLEAN': 12,
+                'int_objec_CLEAN': 15,
+                'int_prov_CLEAN': 19,
+                'int_training_CLEAN': 23,
+                'int_part_CLEAN': 27,
+                'int_approach_CLEAN': 31,
+                'digital_tech_CLEAN': 35,
+                'parent_partic_CLEAN': 39,
+                'int_when_CLEAN': 43,
+                'int_who_CLEAN': 47,
+                'int_dur_CLEAN': 50,
+                'int_freq_CLEAN': 53,
+                'int_leng_CLEAN': 56,
+                'int_fidel_CLEAN': 60,
+                'int_cost_CLEAN': 64,
+                'out_eval_CLEAN': 68,
+                'eef_eval_CLEAN': 70,
+                'base_diff_CLEAN': 74,
+                'comp_anal_CLEAN': 78,
+                'comp_var_CLEAN': 82,
+                'comp_var_rep_CLEAN': 86,
+                'clust_anal_CLEAN': 90
             }
             for col_name, col_idx in cols_to_insert.items():
                 all_variables.insert(col_idx, col_name, '')
+        
         # Clean up data frame
-        self.clean_up(all_variables)
+        self.data_extraction.clean_up(all_variables)
         all_variables.replace(r'^\s*$', "NA", regex=True)
+        
         if verbose:
-            self.verbose_display(all_variables)
+            self.data_extraction.verbose_display(all_variables)
+        
         if save_file:
-            outfile2 = self.save_dataframe(all_variables, "_DataFrame2.csv")
+            outfile2 = self.data_extraction.save_dataframe(all_variables, "_DataFrame2.csv")
+        
         return all_variables, outfile2
 
 
     def make_dataframe_3(self, save_file=True, clean_cols=False, verbose=False):
         """
         """
-        eppiid_df = self.retrieve_metadata("ItemId", "id")
-        author_df = self.retrieve_metadata("ShortTitle", "pub_author")
-        year_df = self.retrieve_metadata("Year", "pub_year")
-        admin_strand_data = self.retrieve_data(admin_strand_output, "strand_raw")
-        admin_strand_info = self.retrieve_info(admin_strand_output, "strand_info")
-        gender_df = self.retrieve_data(student_gender, "part_gen_raw")
-        gender_ht_df = self.retrieve_ht(student_gender, "part_gen_ht")
-        gender_comments_df = self.retrieve_info(student_gender, "part_gen_info")
-        sample_size_comments_df = self.retrieve_info(sample_size_output, "sample_analysed_info")
-        sample_size_ht_df = self.retrieve_ht(sample_size_output, "sample_analysed_ht")
-        low_ses_percentage_Comments_df = self.retrieve_info(percentage_low_fsm_output, "fsm_perc_info")
-        low_ses_percentage_HT_df = self.retrieve_ht(percentage_low_fsm_output, "fsm_perc_ht")
-        further_ses_info_Comments_df = self.retrieve_info(further_ses_fsm_info_output, "fsm_info_info")
-        further_ses_fsm_info_HT_df = self.retrieve_ht(further_ses_fsm_info_output, "fsm_info_ht")
-        no_low_ses_fsm_info_df = self.retrieve_data(no_ses_fsm_info_provided_output, "fsm_na_raw")
-        no_low_ses_fsm_info_comments_df = self.retrieve_info(no_ses_fsm_info_provided_output, "fsm_na_info")
-        sample_size_intervention_HT_df = self.retrieve_ht(sample_size_intervention_output, "base_n_treat_ht")
-        sample_size_intervention_Comments_df = self.retrieve_info(sample_size_intervention_output, "base_n_treat_info")
-        sample_size_control_HT_df = self.retrieve_ht(sample_size_control_output,"base_n_cont_ht")
-        sample_size_control_Comments_df = self.retrieve_info(sample_size_control_output,"base_n_cont_info")
-        sample_size_second_intervention_HT_df = self.retrieve_ht(sample_size_second_intervention_output, "base_n_treat2_ht")
-        sample_size_second_intervention_Comments_df = self.retrieve_info(sample_size_second_intervention_output, "base_n_treat2_info")
-        sample_size_third_intervention_HT_df = self.retrieve_ht(sample_size_third_intervention_output, "base_n_treat3_ht")
-        sample_size_third_intervention_Comments_df = self.retrieve_info(sample_size_third_intervention_output, "base_n_treat3_info")
-        sample_size_anal_int_df = self.retrieve_ht(samp_size_anal_int_output, "n_treat_ht")
-        sample_size_anal_int_comments_df = self.retrieve_info(samp_size_anal_int_output, "n_treat_info")
-        sample_size_anal_cont_df = self.retrieve_ht(samp_size_anal_cont_output, "n_cont_ht")
-        sample_size_anal_cont_comments_df = self.retrieve_info(samp_size_anal_cont_output, "n_cont_info")
-        sample_size_anal_sec_int_df = self.retrieve_ht(samp_size_anal_sec_int_output, "n_treat2_ht")
-        sample_size_anal_sec_int_comments_df = self.retrieve_info(samp_size_anal_sec_int_output, "n_treat2_info")
-        sample_size_anal_sec_cont_df = self.retrieve_ht(samp_size_anal_sec_cont_output, "n_cont2_ht")
-        sample_size_anal_sec_cont_comments_df = self.retrieve_info(samp_size_anal_sec_cont_output, "n_cont2_info")
-        attr_dropout_rep_df = self.retrieve_data(attr_dropout_rep_output, "attri_raw")
-        attr_dropout_rep_HT_df = self.retrieve_ht(attr_dropout_rep_output, "attri_ht")
-        attr_dropout_rep_comments_df = self.retrieve_info(attr_dropout_rep_output, "attri_info")
-        treat_grp_attr_HT_df = self.retrieve_ht(treat_grp_attr, "attri_treat_ht")
-        treat_grp_attr_comments_df = self.retrieve_info(treat_grp_attr, "attri_treat_info")
-        overall_perc_attr_HT_df = self.retrieve_ht(overall_perc_attr, "attri_perc_ht")
-        overall_perc_attr_comments_df = self.retrieve_info(overall_perc_attr, "attri_perc_info")
+        eppiid_df = self.data_extraction.retrieve_metadata("ItemId", "id")
+        author_df = self.data_extraction.retrieve_metadata("ShortTitle", "pub_author")
+        year_df = self.data_extraction.retrieve_metadata("Year", "pub_year")
+        admin_strand_data = self.data_extraction.retrieve_data(admin_strand_output, "strand_raw")
+        admin_strand_info = self.data_extraction.retrieve_info(admin_strand_output, "strand_info")
+        toolkit_version_data = self.data_extraction.retrieve_data(toolkit_versions, "toolkit_version")
+        gender_df = self.data_extraction.retrieve_data(student_gender, "part_gen_raw")
+        gender_ht_df = self.data_extraction.retrieve_ht(student_gender, "part_gen_ht")
+        gender_comments_df = self.data_extraction.retrieve_info(student_gender, "part_gen_info")
+        sample_size_comments_df = self.data_extraction.retrieve_info(sample_size_output, "sample_analysed_info")
+        sample_size_ht_df = self.data_extraction.retrieve_ht(sample_size_output, "sample_analysed_ht")
+        low_ses_percentage_Comments_df = self.data_extraction.retrieve_info(percentage_low_fsm_output, "fsm_perc_info")
+        low_ses_percentage_HT_df = self.data_extraction.retrieve_ht(percentage_low_fsm_output, "fsm_perc_ht")
+        further_ses_info_Comments_df = self.data_extraction.retrieve_info(further_ses_fsm_info_output, "fsm_info_info")
+        further_ses_fsm_info_HT_df = self.data_extraction.retrieve_ht(further_ses_fsm_info_output, "fsm_info_ht")
+        no_low_ses_fsm_info_df = self.data_extraction.retrieve_data(no_ses_fsm_info_provided_output, "fsm_na_raw")
+        no_low_ses_fsm_info_comments_df = self.data_extraction.retrieve_info(no_ses_fsm_info_provided_output, "fsm_na_info")
+        sample_size_intervention_HT_df = self.data_extraction.retrieve_ht(sample_size_intervention_output, "base_n_treat_ht")
+        sample_size_intervention_Comments_df = self.data_extraction.retrieve_info(sample_size_intervention_output, "base_n_treat_info")
+        sample_size_control_HT_df = self.data_extraction.retrieve_ht(sample_size_control_output,"base_n_cont_ht")
+        sample_size_control_Comments_df = self.data_extraction.retrieve_info(sample_size_control_output,"base_n_cont_info")
+        sample_size_second_intervention_HT_df = self.data_extraction.retrieve_ht(sample_size_second_intervention_output, "base_n_treat2_ht")
+        sample_size_second_intervention_Comments_df = self.data_extraction.retrieve_info(sample_size_second_intervention_output, "base_n_treat2_info")
+        sample_size_third_intervention_HT_df = self.data_extraction.retrieve_ht(sample_size_third_intervention_output, "base_n_treat3_ht")
+        sample_size_third_intervention_Comments_df = self.data_extraction.retrieve_info(sample_size_third_intervention_output, "base_n_treat3_info")
+        sample_size_anal_int_df = self.data_extraction.retrieve_ht(samp_size_anal_int_output, "n_treat_ht")
+        sample_size_anal_int_comments_df = self.data_extraction.retrieve_info(samp_size_anal_int_output, "n_treat_info")
+        sample_size_anal_cont_df = self.data_extraction.retrieve_ht(samp_size_anal_cont_output, "n_cont_ht")
+        sample_size_anal_cont_comments_df = self.data_extraction.retrieve_info(samp_size_anal_cont_output, "n_cont_info")
+        sample_size_anal_sec_int_df = self.data_extraction.retrieve_ht(samp_size_anal_sec_int_output, "n_treat2_ht")
+        sample_size_anal_sec_int_comments_df = self.data_extraction.retrieve_info(samp_size_anal_sec_int_output, "n_treat2_info")
+        sample_size_anal_sec_cont_df = self.data_extraction.retrieve_ht(samp_size_anal_sec_cont_output, "n_cont2_ht")
+        sample_size_anal_sec_cont_comments_df = self.data_extraction.retrieve_info(samp_size_anal_sec_cont_output, "n_cont2_info")
+        attr_dropout_rep_df = self.data_extraction.retrieve_data(attr_dropout_rep_output, "attri_raw")
+        attr_dropout_rep_HT_df = self.data_extraction.retrieve_ht(attr_dropout_rep_output, "attri_ht")
+        attr_dropout_rep_comments_df = self.data_extraction.retrieve_info(attr_dropout_rep_output, "attri_info")
+        treat_grp_attr_HT_df = self.data_extraction.retrieve_ht(treat_grp_attr, "attri_treat_ht")
+        treat_grp_attr_comments_df = self.data_extraction.retrieve_info(treat_grp_attr, "attri_treat_info")
+        overall_perc_attr_HT_df = self.data_extraction.retrieve_ht(overall_perc_attr, "attri_perc_ht")
+        overall_perc_attr_comments_df = self.data_extraction.retrieve_info(overall_perc_attr, "attri_perc_info")
         all_variables = pd.concat([
             eppiid_df,
             author_df,
             year_df,
             admin_strand_data,
             admin_strand_info,
+            toolkit_version_data,
             sample_size_comments_df,
             sample_size_ht_df,
             gender_df,
@@ -872,125 +893,132 @@ class JSONDataExtractor:
             overall_perc_attr_HT_df,
             overall_perc_attr_comments_df,
         ], axis=1, sort=False)
+        
         if clean_cols:
             # Insert empty columns per variable for data checkers to log changes
             cols_to_insert = {
                 'strand_CLEAN': 5,
-                'sample_analysed_CLEAN': 8,
-                'part_gen_CLEAN': 12,
-                'fsm_perc_CLEAN': 15,
-                'fsm_info_CLEAN': 18,
-                'fsm_na_CLEAN': 21,
-                'base_n_treat_CLEAN': 24,
-                'base_n_cont_CLEAN': 27,
-                'base_n_treat2_CLEAN': 30,
-                'base_n_treat3_CLEAN': 33,
-                'n_treat_CLEAN': 36,
-                'n_cont_CLEAN': 39,
-                'n_treat2_CLEAN': 42,
-                'n_cont2_CLEAN': 45,
-                'attri_CLEAN': 49,
-                'attri_treat_CLEAN': 52,
-                'attri_perc_CLEAN': 55,
+                'sample_analysed_CLEAN': 9,
+                'part_gen_CLEAN': 13,
+                'fsm_perc_CLEAN': 16,
+                'fsm_info_CLEAN': 19,
+                'fsm_na_CLEAN': 22,
+                'base_n_treat_CLEAN': 25,
+                'base_n_cont_CLEAN': 28,
+                'base_n_treat2_CLEAN': 31,
+                'base_n_treat3_CLEAN': 34,
+                'n_treat_CLEAN': 37,
+                'n_cont_CLEAN': 40,
+                'n_treat2_CLEAN': 43,
+                'n_cont2_CLEAN': 46,
+                'attri_CLEAN': 50,
+                'attri_treat_CLEAN': 53,
+                'attri_perc_CLEAN': 56,
             }
             # Insert empty columns at specified locations
             for col_name, col_idx in cols_to_insert.items():
                 all_variables.insert(col_idx, col_name, '')
+        
         all_variables.replace('\r', ' ', regex=True, inplace=True)
         all_variables.replace('\n', ' ', regex=True, inplace=True)
         all_variables.replace(':', ' ',  regex=True, inplace=True)
         all_variables.replace(';', ' ',  regex=True, inplace=True)
+        
         if verbose:
-            self.verbose_display(all_variables)
+            self.data_extraction.verbose_display(all_variables)
+        
         if save_file:
-            outfile3 = self.save_dataframe(all_variables, "_DataFrame3_Sample_Size.csv")
+            outfile3 = self.data_extraction.save_dataframe(all_variables, "_DataFrame3_Sample_Size.csv")
+        
         return all_variables, outfile3
 
 
     def make_dataframe_4(self, save_file=True, clean_cols=True, verbose=True):
         """
         """
-        eppiid_df = self.retrieve_metadata("ItemId", "id")
-        author_df = self.retrieve_metadata("ShortTitle", "pub_author")
-        year_df = self.retrieve_metadata("Year", "pub_year")
-        admin_strand_data = self.retrieve_data(admin_strand_output, "strand_raw")
-        admin_strand_info = self.retrieve_info(admin_strand_output, "strand_info") 
-        desc_stats_prim_out_rep_df = self.retrieve_data(desc_stats_primary_outcome, "desc_stats_raw")
-        desc_stats_prim_out_rep_ht_df = self.retrieve_ht(desc_stats_primary_outcome, "desc_stats_ht")
-        descs_tats_prim_out_rep_comments_df = self.retrieve_info(desc_stats_primary_outcome, "desc_stats_info")
-        int_grp_num_ht_df = self.retrieve_ht(int_grp_number, "n_treat_ht")
-        int_grp_num_comments_df = self.process_info(int_grp_number, "n_treat_info")
-        int_grp_pretest_mean_ht_df = self.retrieve_ht(int_grp_pretest_mean, "pre_t_mean_ht")
-        int_grp_pretest_mean_comments_df = self.retrieve_info(int_grp_pretest_mean, "pre_t_mean_info")
-        int_grp_pretest_sd_ht_df = self.retrieve_ht(int_grp_pretest_sd, "pre_t_sd_ht")
-        int_grp_pretest_sd_comments_df = self.retrieve_info(int_grp_pretest_sd, "pre_t_sd_info")
-        int_grp_posttest_mean_ht_df = self.retrieve_ht(intn_grp_posttest_mean, "post_t_mean_ht_t_sd_ht")
-        int_grp_posttest_mean_comments_df = self.retrieve_info(intn_grp_posttest_mean, "post_t_mean_info")
-        int_grp_posttest_sd_ht_df = self.retrieve_ht(int_grp_posttest_sd, "post_t_sd_ht")
-        int_grp_posttest_sd_comments_df = self.retrieve_info(int_grp_posttest_sd, "post_t_sd_info")
-        int_grp_gain_score_mean_ht_df = self.retrieve_ht(int_grp_gain_score_mean, "gain_t_mean_ht")
-        int_grp_gain_score_mean_comments_df = self.retrieve_info(int_grp_gain_score_mean, "gain_t_mean_info")
-        int_grp_gain_score_sd_ht_df = self.retrieve_ht(int_grp_gain_score_sd, "gain_t_sd_ht")
-        int_grp_gain_score_sd_comments_df = self.retrieve_info(int_grp_gain_score_sd, "gain_t_sd_info")
-        int_grp_other_info_ht_df = self.retrieve_ht(int_grp_any_other_info, "out_t_other_ht")
-        int_grp_other_info_comments_df = self.retrieve_info(int_grp_any_other_info, "out_t_other_info")
-        ctrl_grp_num_ht_df = self.retrieve_ht(ctrl_grp_number, "n_cont_ht")
-        ctrl_grp_num_comments_df = self.retrieve_info(ctrl_grp_number, "n_cont_info")
-        ctrl_grp_pretest_mean_ht_df = self.retrieve_ht(ctrl_grp_pretest_mean, "pre_c_mean_ht")
-        ctrl_grp_pretest_mean_comments_df = self.retrieve_info(ctrl_grp_pretest_mean, "pre_c_mean_info")
-        ctrl_grp_pretest_sd_ht_df = self.retrieve_ht(ctrl_grp_pretest_sd, "pre_c_sd_ht")
-        ctrl_grp_pretest_sd_comments_df = self.retrieve_info(ctrl_grp_pretest_sd, "pre_c_sd_info")
-        ctrl_grp_post_test_mean_ht_df = self.retrieve_ht(ctrl_grp_posttest_mean, "post_c_mean_ht")
-        ctrl_grp_post_test_mean_comments_df = self.retrieve_info(ctrl_grp_posttest_mean, "post_c_mean_info")
-        ctrl_grp_post_test_sd_ht_df = self.retrieve_ht(ctrl_grp_posttest_sd, "post_c_sd_ht")
-        ctrl_grp_post_test_sd_comments_df = self.retrieve_info(ctrl_grp_posttest_sd, "post_c_sd_info")
-        Ctrl_grp_gain_score_mean_ht_df = self.retrieve_ht(ctrl_grp_gain_score_mean, "gain_c_mean_ht")
-        ctrl_grp_gain_score_mean_comments_df = self.retrieve_info(ctrl_grp_gain_score_mean, "gain_c_mean_info")
-        ctrl_grp_gain_score_sd_ht_df = self.retrieve_ht(ctrl_grp_gain_score_sd, "gain_c_sd_ht")
-        ctrl_grp_gain_score_sd_comments_df = self.retrieve_info(ctrl_grp_gain_score_sd, "gain_c_sd_info")
-        ctrl_grp_other_info_ht_df = self.retrieve_ht(ctrl_grp_any_other_info, "out_c_other_ht")
-        ctrl_grp_other_info_comments_df = self.retrieve_info(ctrl_grp_any_other_info, "out_c_other_info")
-        int_grp_num2_ht_df = self.retrieve_ht(int_grp_two_number, "n_treat2_ht")
-        int_grp_num2_comments_df = self.retrieve_info(int_grp_two_number, "n_treat2_info")
-        int_grp_pretest2_mean_ht_df = self.retrieve_ht(int_grp_two_pretest_mean, "pre_t2_mean_ht")
-        int_grp_pretest2_mean_comments_df = self.retrieve_info(int_grp_two_pretest_mean, "pre_t2_mean_info")
-        int_grp_pretest2_sd_ht_df = self.retrieve_ht(int_grp_two_pretest_sd, "pre_t2_sd_ht")
-        int_grp_pretest2_sd_comments_df = self.retrieve_info(int_grp_two_pretest_sd, "pre_t2_sd_info")
-        int_grp_post2_test_mean_ht_df = self.retrieve_ht(int_grp_two_posttest_mean, "post_t2_mean_ht")
-        int_grp_post2_test_mean_comments_df = self.retrieve_info(int_grp_two_posttest_mean, "post_t2_mean_info")
-        int_grp_post2_test_sd_ht_df = self.retrieve_ht(int_grp_two_posttest_sd, "post_t2_sd_ht")
-        int_grp_post2_test_sd_comments_df = self.retrieve_info(int_grp_two_posttest_sd, "post_t2_sd_info")
-        int_grp_gain2_score_mean_ht_df = self.retrieve_ht(int_grp_two_gain_score_mean, "gain_t2_mean_ht")
-        int_grp_gain2_score_mean_comments_df = self.retrieve_info(int_grp_two_gain_score_mean, "gain_t2_mean_info")
-        int_grp_gain2_score_sd_ht_df = self.retrieve_ht(int_grp_two_gain_score_sd, "gain_t2_sd_ht")
-        int_grp_gain2_score_sd_comments_df = self.retrieve_info(int_grp_two_gain_score_sd, "gain_t2_sd_info")
-        int_grp_other2_info_ht_df = self.retrieve_ht(int_grp_two_any_other_info, "out_t2_other_ht")
-        int_grp_other2_info_comments_df = self.retrieve_info(int_grp_two_any_other_info, "out_t2_other_info")
-        ctrl_grp_num2_ht_df = self.retrieve_ht(control_group_two_number, "n_cont2_ht")
-        ctrl_grp_num2_comments_df = self.retrieve_info(control_group_two_number, "n_cont2_info")
-        ctrl_grp_pretest2_mean_ht_df = self.retrieve_ht(control_group_two_pretest_mean, "pre_c2_mean_ht")
-        ctrl_grp_pretest2_mean_comments_df = self.retrieve_info(control_group_two_pretest_mean, "pre_c2_mean_info")
-        ctrl_grp_pretest2_sd_ht_df = self.retrieve_ht(control_group_two_pretest_sd, "pre_c2_sd_ht")
-        ctrl_grp_pretest2_sd_comments_df = self.retrieve_info(control_group_two_pretest_sd, "pre_c2_sd_info")
-        ctrl_grp_post2_test_mean_ht_df = self.retrieve_ht(control_group_two_posttest_mean, "post_c2_mean_ht")
-        ctrl_grp_post2_test_mean_comments_df = self.retrieve_info(control_group_two_posttest_mean, "post_c2_mean_info")
-        ctrl_grp_post2_test_sd_ht_df = self.retrieve_ht(control_group_two_posttest_sd, "post_c2_sd_ht")
-        ctrl_grp_post2_test_sd_comments_df = self.retrieve_info(control_group_two_posttest_sd, "post_c2_sd_info")
-        Ctrl_grp_gain2_score_mean_ht_df = self.retrieve_ht(control_group_two_gain_score_mean, "gain_c2_mean_ht")
-        ctrl_grp_gain2_score_mean_comments_df = self.retrieve_info(control_group_two_gain_score_mean, "gain_c2_mean_info")
-        ctrl_grp_gain2_score_sd_ht_df = self.retrieve_ht(control_group_two_gain_score_sd, "gain_c2_sd_ht")
-        ctrl_grp_gain2_score_sd_comments_df = self.retrieve_info(control_group_two_gain_score_sd, "gain_c2_sd_info")
-        ctrl_grp_other2_info_ht_df = self.retrieve_ht(control_group_two_any_other_info, "out_c2_other_ht")
-        ctrl_grp_other2_info_comments_df = self.retrieve_info(control_group_two_any_other_info, "out_c2_other_info")
-        followupdata = self.retrieve_data(follow_up_data_reported, "follow_up_raw")
-        followupdata_HT = self.retrieve_ht(follow_up_data_reported, "follow_up_ht")
-        followupdata_comments = self.retrieve_info(follow_up_data_reported, "follow_up_info")
+        eppiid_df = self.data_extraction.retrieve_metadata("ItemId", "id")
+        author_df = self.data_extraction.retrieve_metadata("ShortTitle", "pub_author")
+        year_df = self.data_extraction.retrieve_metadata("Year", "pub_year")
+        admin_strand_data = self.data_extraction.retrieve_data(admin_strand_output, "strand_raw")
+        admin_strand_info = self.data_extraction.retrieve_info(admin_strand_output, "strand_info") 
+        toolkit_version_data = self.data_extraction.retrieve_data(toolkit_versions, "toolkit_version")
+        desc_stats_prim_out_rep_df = self.data_extraction.retrieve_data(desc_stats_primary_outcome, "desc_stats_raw")
+        desc_stats_prim_out_rep_ht_df = self.data_extraction.retrieve_ht(desc_stats_primary_outcome, "desc_stats_ht")
+        descs_tats_prim_out_rep_comments_df = self.data_extraction.retrieve_info(desc_stats_primary_outcome, "desc_stats_info")
+        int_grp_num_ht_df = self.data_extraction.retrieve_ht(int_grp_number, "n_treat_ht")
+        int_grp_num_comments_df = self.data_extraction.process_info(int_grp_number, "n_treat_info")
+        int_grp_pretest_mean_ht_df = self.data_extraction.retrieve_ht(int_grp_pretest_mean, "pre_t_mean_ht")
+        int_grp_pretest_mean_comments_df = self.data_extraction.retrieve_info(int_grp_pretest_mean, "pre_t_mean_info")
+        int_grp_pretest_sd_ht_df = self.data_extraction.retrieve_ht(int_grp_pretest_sd, "pre_t_sd_ht")
+        int_grp_pretest_sd_comments_df = self.data_extraction.retrieve_info(int_grp_pretest_sd, "pre_t_sd_info")
+        int_grp_posttest_mean_ht_df = self.data_extraction.retrieve_ht(intn_grp_posttest_mean, "post_t_mean_ht_t_sd_ht")
+        int_grp_posttest_mean_comments_df = self.data_extraction.retrieve_info(intn_grp_posttest_mean, "post_t_mean_info")
+        int_grp_posttest_sd_ht_df = self.data_extraction.retrieve_ht(int_grp_posttest_sd, "post_t_sd_ht")
+        int_grp_posttest_sd_comments_df = self.data_extraction.retrieve_info(int_grp_posttest_sd, "post_t_sd_info")
+        int_grp_gain_score_mean_ht_df = self.data_extraction.retrieve_ht(int_grp_gain_score_mean, "gain_t_mean_ht")
+        int_grp_gain_score_mean_comments_df = self.data_extraction.retrieve_info(int_grp_gain_score_mean, "gain_t_mean_info")
+        int_grp_gain_score_sd_ht_df = self.data_extraction.retrieve_ht(int_grp_gain_score_sd, "gain_t_sd_ht")
+        int_grp_gain_score_sd_comments_df = self.data_extraction.retrieve_info(int_grp_gain_score_sd, "gain_t_sd_info")
+        int_grp_other_info_ht_df = self.data_extraction.retrieve_ht(int_grp_any_other_info, "out_t_other_ht")
+        int_grp_other_info_comments_df = self.data_extraction.retrieve_info(int_grp_any_other_info, "out_t_other_info")
+        ctrl_grp_num_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_number, "n_cont_ht")
+        ctrl_grp_num_comments_df = self.data_extraction.retrieve_info(ctrl_grp_number, "n_cont_info")
+        ctrl_grp_pretest_mean_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_pretest_mean, "pre_c_mean_ht")
+        ctrl_grp_pretest_mean_comments_df = self.data_extraction.retrieve_info(ctrl_grp_pretest_mean, "pre_c_mean_info")
+        ctrl_grp_pretest_sd_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_pretest_sd, "pre_c_sd_ht")
+        ctrl_grp_pretest_sd_comments_df = self.data_extraction.retrieve_info(ctrl_grp_pretest_sd, "pre_c_sd_info")
+        ctrl_grp_post_test_mean_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_posttest_mean, "post_c_mean_ht")
+        ctrl_grp_post_test_mean_comments_df = self.data_extraction.retrieve_info(ctrl_grp_posttest_mean, "post_c_mean_info")
+        ctrl_grp_post_test_sd_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_posttest_sd, "post_c_sd_ht")
+        ctrl_grp_post_test_sd_comments_df = self.data_extraction.retrieve_info(ctrl_grp_posttest_sd, "post_c_sd_info")
+        Ctrl_grp_gain_score_mean_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_gain_score_mean, "gain_c_mean_ht")
+        ctrl_grp_gain_score_mean_comments_df = self.data_extraction.retrieve_info(ctrl_grp_gain_score_mean, "gain_c_mean_info")
+        ctrl_grp_gain_score_sd_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_gain_score_sd, "gain_c_sd_ht")
+        ctrl_grp_gain_score_sd_comments_df = self.data_extraction.retrieve_info(ctrl_grp_gain_score_sd, "gain_c_sd_info")
+        ctrl_grp_other_info_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_any_other_info, "out_c_other_ht")
+        ctrl_grp_other_info_comments_df = self.data_extraction.retrieve_info(ctrl_grp_any_other_info, "out_c_other_info")
+        int_grp_num2_ht_df = self.data_extraction.retrieve_ht(int_grp_two_number, "n_treat2_ht")
+        int_grp_num2_comments_df = self.data_extraction.retrieve_info(int_grp_two_number, "n_treat2_info")
+        int_grp_pretest2_mean_ht_df = self.data_extraction.retrieve_ht(int_grp_two_pretest_mean, "pre_t2_mean_ht")
+        int_grp_pretest2_mean_comments_df = self.data_extraction.retrieve_info(int_grp_two_pretest_mean, "pre_t2_mean_info")
+        int_grp_pretest2_sd_ht_df = self.data_extraction.retrieve_ht(int_grp_two_pretest_sd, "pre_t2_sd_ht")
+        int_grp_pretest2_sd_comments_df = self.data_extraction.retrieve_info(int_grp_two_pretest_sd, "pre_t2_sd_info")
+        int_grp_post2_test_mean_ht_df = self.data_extraction.retrieve_ht(int_grp_two_posttest_mean, "post_t2_mean_ht")
+        int_grp_post2_test_mean_comments_df = self.data_extraction.retrieve_info(int_grp_two_posttest_mean, "post_t2_mean_info")
+        int_grp_post2_test_sd_ht_df = self.data_extraction.retrieve_ht(int_grp_two_posttest_sd, "post_t2_sd_ht")
+        int_grp_post2_test_sd_comments_df = self.data_extraction.retrieve_info(int_grp_two_posttest_sd, "post_t2_sd_info")
+        int_grp_gain2_score_mean_ht_df = self.data_extraction.retrieve_ht(int_grp_two_gain_score_mean, "gain_t2_mean_ht")
+        int_grp_gain2_score_mean_comments_df = self.data_extraction.retrieve_info(int_grp_two_gain_score_mean, "gain_t2_mean_info")
+        int_grp_gain2_score_sd_ht_df = self.data_extraction.retrieve_ht(int_grp_two_gain_score_sd, "gain_t2_sd_ht")
+        int_grp_gain2_score_sd_comments_df = self.data_extraction.retrieve_info(int_grp_two_gain_score_sd, "gain_t2_sd_info")
+        int_grp_other2_info_ht_df = self.data_extraction.retrieve_ht(int_grp_two_any_other_info, "out_t2_other_ht")
+        int_grp_other2_info_comments_df = self.data_extraction.retrieve_info(int_grp_two_any_other_info, "out_t2_other_info")
+        ctrl_grp_num2_ht_df = self.data_extraction.retrieve_ht(control_group_two_number, "n_cont2_ht")
+        ctrl_grp_num2_comments_df = self.data_extraction.retrieve_info(control_group_two_number, "n_cont2_info")
+        ctrl_grp_pretest2_mean_ht_df = self.data_extraction.retrieve_ht(control_group_two_pretest_mean, "pre_c2_mean_ht")
+        ctrl_grp_pretest2_mean_comments_df = self.data_extraction.retrieve_info(control_group_two_pretest_mean, "pre_c2_mean_info")
+        ctrl_grp_pretest2_sd_ht_df = self.data_extraction.retrieve_ht(control_group_two_pretest_sd, "pre_c2_sd_ht")
+        ctrl_grp_pretest2_sd_comments_df = self.data_extraction.retrieve_info(control_group_two_pretest_sd, "pre_c2_sd_info")
+        ctrl_grp_post2_test_mean_ht_df = self.data_extraction.retrieve_ht(control_group_two_posttest_mean, "post_c2_mean_ht")
+        ctrl_grp_post2_test_mean_comments_df = self.data_extraction.retrieve_info(control_group_two_posttest_mean, "post_c2_mean_info")
+        ctrl_grp_post2_test_sd_ht_df = self.data_extraction.retrieve_ht(control_group_two_posttest_sd, "post_c2_sd_ht")
+        ctrl_grp_post2_test_sd_comments_df = self.data_extraction.retrieve_info(control_group_two_posttest_sd, "post_c2_sd_info")
+        Ctrl_grp_gain2_score_mean_ht_df = self.data_extraction.retrieve_ht(control_group_two_gain_score_mean, "gain_c2_mean_ht")
+        ctrl_grp_gain2_score_mean_comments_df = self.data_extraction.retrieve_info(control_group_two_gain_score_mean, "gain_c2_mean_info")
+        ctrl_grp_gain2_score_sd_ht_df = self.data_extraction.retrieve_ht(control_group_two_gain_score_sd, "gain_c2_sd_ht")
+        ctrl_grp_gain2_score_sd_comments_df = self.data_extraction.retrieve_info(control_group_two_gain_score_sd, "gain_c2_sd_info")
+        ctrl_grp_other2_info_ht_df = self.data_extraction.retrieve_ht(control_group_two_any_other_info, "out_c2_other_ht")
+        ctrl_grp_other2_info_comments_df = self.data_extraction.retrieve_info(control_group_two_any_other_info, "out_c2_other_info")
+        followupdata = self.data_extraction.retrieve_data(follow_up_data_reported, "follow_up_raw")
+        followupdata_HT = self.data_extraction.retrieve_ht(follow_up_data_reported, "follow_up_ht")
+        followupdata_comments = self.data_extraction.retrieve_info(follow_up_data_reported, "follow_up_info")
         all_variables = pd.concat([
             eppiid_df,
             author_df,
             year_df,
             admin_strand_data,
             admin_strand_info,
+            toolkit_version_data,
             desc_stats_prim_out_rep_df,
             desc_stats_prim_out_rep_ht_df,
             descs_tats_prim_out_rep_comments_df,
@@ -1020,8 +1048,6 @@ class JSONDataExtractor:
             ctrl_grp_post_test_mean_comments_df,
             ctrl_grp_post_test_sd_ht_df,
             ctrl_grp_post_test_sd_comments_df,
-            Ctrl_grp_gain_score_mean_ht_df,
-            ctrl_grp_gain_score_mean_comments_df,
             Ctrl_grp_gain_score_mean_ht_df,
             ctrl_grp_gain_score_mean_comments_df,
             ctrl_grp_gain_score_sd_ht_df,
@@ -1067,49 +1093,49 @@ class JSONDataExtractor:
         if clean_cols:
             # Define columns to insert and their corresponding indices
             cols_to_insert = {
-                'desc_stats_CLEAN': 8,
-                'n_treat_CLEAN': 11,
-                'pre_t_mean_CLEAN': 14,
-                'pre_t_sd_CLEAN': 17,
-                'post_t_mean_CLEAN': 20,
-                'post_t_sd_CLEAN': 23,
-                'gain_t_mean_CLEAN': 26,
-                'gain_t_sd_CLEAN': 29,
-                'out_t_other_CLEAN': 32,
-                'n_cont_ht_CLEAN': 35,
-                'pre_c_mean_CLEAN': 38,
-                'pre_c_sd_CLEAN': 41,
-                'post_c_mean_CLEAN': 44,
-                'post_c_sd_CLEAN': 47,
-                'gain_c_mean_CLEAN': 50,
-                'gain_c_sd_CLEAN': 53,
-                'out_c_other_CLEAN': 56,
-                'n_treat2_CLEAN': 59,
-                'pre_t2_mean_CLEAN': 62,
-                'pre_t2_sd_CLEAN': 65,
-                'post_t2_mean_CLEAN': 68,
-                'post_t2_sd_CLEAN': 71,
-                'gain_t2_mean_CLEAN': 74,
-                'gain_t2_sd_CLEAN': 77,
-                'out_t2_other_CLEAN': 80,
-                'n_cont2_CLEAN': 83,
-                'pre_c2_mean_CLEAN': 86,
-                'pre_c2_sd_CLEAN': 89,
-                'post_c2_mean_CLEAN': 92,
-                'post_c2_sd_CLEAN': 95,
-                'gain_c2_mean_CLEAN': 98,
-                'gain_c2_sd_CLEAN': 101,
-                'out_c2_other_CLEAN': 104,
-                'follow_up_CLEAN': 108
+                'desc_stats_CLEAN': 9,
+                'n_treat_CLEAN': 12,
+                'pre_t_mean_CLEAN': 15,
+                'pre_t_sd_CLEAN': 18,
+                'post_t_mean_CLEAN': 21,
+                'post_t_sd_CLEAN': 24,
+                'gain_t_mean_CLEAN': 27,
+                'gain_t_sd_CLEAN': 30,
+                'out_t_other_CLEAN': 33,
+                'n_cont_ht_CLEAN': 36,
+                'pre_c_mean_CLEAN': 39,
+                'pre_c_sd_CLEAN': 42,
+                'post_c_mean_CLEAN': 45,
+                'post_c_sd_CLEAN': 48,
+                'gain_c_mean_CLEAN': 51,
+                'gain_c_sd_CLEAN': 54,
+                'out_c_other_CLEAN': 57,
+                'n_treat2_CLEAN': 60,
+                'pre_t2_mean_CLEAN': 63,
+                'pre_t2_sd_CLEAN': 66,
+                'post_t2_mean_CLEAN': 69,
+                'post_t2_sd_CLEAN': 72,
+                'gain_t2_mean_CLEAN': 75,
+                'gain_t2_sd_CLEAN': 78,
+                'out_t2_other_CLEAN': 81,
+                'n_cont2_CLEAN': 84,
+                'pre_c2_mean_CLEAN': 87,
+                'pre_c2_sd_CLEAN': 90,
+                'post_c2_mean_CLEAN': 93,
+                'post_c2_sd_CLEAN': 96,
+                'gain_c2_mean_CLEAN': 99,
+                'gain_c2_sd_CLEAN': 102,
+                'out_c2_other_CLEAN': 105,
+                'follow_up_CLEAN': 109
             }
             # Insert empty columns into DataFrame
             for col_name, col_idx in cols_to_insert.items():
                 all_variables.insert(col_idx, col_name, '')
-            self.clean_up(all_variables)
+            self.data_extraction.clean_up(all_variables)
         if verbose:
-            self.verbose_display(all_variables)
+            self.data_extraction.verbose_display(all_variables)
         if save_file:
-            outfile4 = self.save_dataframe(all_variables, "_DataFrame4_Effect_Size_A.csv")
+            outfile4 = self.data_extraction.save_dataframe(all_variables, "_DataFrame4_Effect_Size_A.csv")
         return all_variables, outfile4
 
 
@@ -1137,39 +1163,44 @@ class JSONDataExtractor:
             "out_desc_",
             "out_test_type_raw_"
         )
-        eppiid_df = self.retrieve_metadata("ItemId", "id")
-        author_df = self.retrieve_metadata("ShortTitle", "pub_author")
-        year_df = self.retrieve_metadata("Year", "pub_year")
-        admin_strand_data = self.retrieve_data(admin_strand_output, "strand_raw")
-        admin_strand_info = self.retrieve_info(admin_strand_output, "strand_info")
-        outcometype_df = self.get_outcome_data_lvl2(outcome_type_codes, "out_type_")
-        smd_df = self.get_outcome_data_lvl1("SMD", "smd_")
-        sesmd_df = self.get_outcome_data_lvl1("SESMD", "se_")
-        cilowersmd_df = self.get_outcome_data_lvl1("CILowerSMD", "ci_lower_")
-        ciuppersmd_df = self.get_outcome_data_lvl1("CIUpperSMD", "ci_upper_")
-        outcome_df = self.get_outcome_data_lvl1("OutcomeText", "out_label_")
-        sample_df = self.get_outcome_data_lvl2(sample_output, "out_samp_")
+       
+        eppiid_df = self.data_extraction.retrieve_metadata("ItemId", "id")
+        author_df = self.data_extraction.retrieve_metadata("ShortTitle", "pub_author")
+        year_df = self.data_extraction.retrieve_metadata("Year", "pub_year")
+        admin_strand_data = self.data_extraction.retrieve_data(admin_strand_output, "strand_raw")
+        admin_strand_info = self.data_extraction.retrieve_info(admin_strand_output, "strand_info")
+        toolkit_version_data = self.data_extraction.retrieve_data(toolkit_versions, "toolkit_version")
+        outcometype_df = self.data_extraction.get_outcome_data_lvl2(outcome_type_codes, "out_type_")
+        smd_df = self.data_extraction.get_outcome_data_lvl1("SMD", "smd_")
+        sesmd_df = self.data_extraction.get_outcome_data_lvl1("SESMD", "se_")
+        cilowersmd_df = self.data_extraction.get_outcome_data_lvl1("CILowerSMD", "ci_lower_")
+        ciuppersmd_df = self.data_extraction.get_outcome_data_lvl1("CIUpperSMD", "ci_upper_")
+        outcome_df = self.data_extraction.get_outcome_data_lvl1("OutcomeText", "out_label_")
+        sample_df = self.data_extraction.get_outcome_data_lvl2(sample_output, "out_samp_")
         sample_check = sample_main_check()
-        out_comp_df = self.get_outcome_data_lvl1("ControlText", "out_comp_")
-        effectsizetype_df = self.get_outcome_data_lvl2(es_type_output, "out_es_type_")
-        outcome_measure_df = self.get_outcome_data_lvl1("InterventionText", "out_measure_")
-        outcome_title_df = self.get_outcome_data_lvl1("Title", "out_tit_")
+        out_comp_df = self.data_extraction.get_outcome_data_lvl1("ControlText", "out_comp_")
+        effectsizetype_df = self.data_extraction.get_outcome_data_lvl2(es_type_output, "out_es_type_")
+        outcome_measure_df = self.data_extraction.get_outcome_data_lvl1("InterventionText", "out_measure_")
+        outcome_title_df = self.data_extraction.get_outcome_data_lvl1("Title", "out_tit_")
         group1N_df = group_desc_stats("Data1", "out_g1_n_")
         group2N_df = group_desc_stats("Data2", "out_g2_n_")
         group1mean_df = group_desc_stats("Data3", "out_g1_mean_")
         group2mean_df = group_desc_stats("Data4", "out_g2_mean_")
         group1sd_df = group_desc_stats("Data5", "out_g1_sd_")
         group2sd_df = group_desc_stats("Data6", "out_g2_sd_")
-        outcome_description_df = self.get_outcome_data_lvl1("OutcomeDescription", "out_desc_")
-        testtype_outcome_df = self.get_outcome_data_lvl2(test_type_output, "out_test_type_raw_")
+        outcome_description_df = self.data_extraction.get_outcome_data_lvl1("OutcomeDescription", "out_desc_")
+        testtype_outcome_df = self.data_extraction.get_outcome_data_lvl2(test_type_output, "out_test_type_raw_")
+        
         # Concatenate record detail data frames
         record_details_df = pd.concat([
             eppiid_df,
             author_df,
             year_df,
             admin_strand_data,
-            admin_strand_info
+            admin_strand_info,
+            toolkit_version_data,
         ], axis=1)
+        
         # Concatenate all main dataframes
         df = pd.concat([
             outcometype_df,
@@ -1214,8 +1245,10 @@ class JSONDataExtractor:
             outcome_description_df,
             testtype_outcome_df
         ]))]
-        toolkit_lists = [[] for _ in range(19)]
+        
         # Initialize empty lists to hold data
+        toolkit_lists = [[] for _ in range(19)]
+        
         (toolkit_prim,
         toolkit_prim_smd,
         toolkit_prim_se,
@@ -1235,8 +1268,11 @@ class JSONDataExtractor:
         toolkit_g2_sd,
         toolkit_out_desc,
         toolkit_test_type) = toolkit_lists
-        toolkit_lists = self.getOutcomeData(df, 'Toolkit primary outcome', toolkit_lists, OUTCOME_VARS)
+        
+        toolkit_lists = self.data_extraction.getOutcomeData(df, 'Toolkit primary outcome', toolkit_lists, OUTCOME_VARS)
+        
         reading_lists = [[] for _ in range(19)]
+        
         (reading_prim,
         reading_prim_smd,
         reading_prim_se,
@@ -1256,8 +1292,11 @@ class JSONDataExtractor:
         reading_prim_g2_sd,
         reading_prim_out_desc,
         reading_test_type) = reading_lists
-        reading_lists = self.getOutcomeData(df, 'Reading primary outcome', reading_lists, OUTCOME_VARS)
+        
+        reading_lists = self.data_extraction.getOutcomeData(df, 'Reading primary outcome', reading_lists, OUTCOME_VARS)
+        
         writing_and_spelling_lists = [[] for _ in range(19)]
+        
         (Writing_and_spelling_prim,
         Writing_and_spelling_prim_smd,
         Writing_and_spelling_prim_se,
@@ -1277,8 +1316,11 @@ class JSONDataExtractor:
         Writing_and_spelling_prim_g2_sd,
         Writing_and_spelling_prim_out_desc,
         Writing_and_spelling_test_type) = writing_and_spelling_lists
-        writing_and_spelling_lists = self.getOutcomeData(df, 'Writing and spelling primary outcome', writing_and_spelling_lists, OUTCOME_VARS)
+        
+        writing_and_spelling_lists = self.data_extraction.getOutcomeData(df, 'Writing and spelling primary outcome', writing_and_spelling_lists, OUTCOME_VARS)
+        
         mathematics_lists = [[] for _ in range(19)]
+        
         (Mathematics_prim,
         Mathematics_prim_smd,
         Mathematics_prim_se,
@@ -1298,8 +1340,11 @@ class JSONDataExtractor:
         Mathematics_prim_g2_sd,
         Mathematics_prim_out_desc,
         Mathematics_test_type) = mathematics_lists
-        mathematics_lists = self.getOutcomeData(df, 'Mathematics primary outcome', mathematics_lists, OUTCOME_VARS)
+        
+        mathematics_lists = self.data_extraction.getOutcomeData(df, 'Mathematics primary outcome', mathematics_lists, OUTCOME_VARS)
+        
         science_lists = [[] for _ in range(19)]
+        
         (Science_prim,
         Science_prim_smd,
         Science_prim_se,
@@ -1319,8 +1364,11 @@ class JSONDataExtractor:
         Science_prim_g2_sd,
         Science_prim_out_desc,
         Science_test_type) = science_lists
-        science_lists = self.getOutcomeData(df, 'Science primary outcome', science_lists, OUTCOME_VARS)
+        
+        science_lists = self.data_extraction.getOutcomeData(df, 'Science primary outcome', science_lists, OUTCOME_VARS)
+        
         fsm_lists = [[] for _ in range(19)]
+        
         (FSM_prim,
         FSM_prim_smd,
         FSM_prim_se,
@@ -1340,7 +1388,9 @@ class JSONDataExtractor:
         FSM_prim_g2_sd,
         FSM_prim_out_desc,
         FSM_test_type) = fsm_lists
-        science_lists = self.getOutcomeData(df, 'SES/FSM primary outcome', fsm_lists, OUTCOME_VARS)
+        
+        science_lists = self.data_extraction.getOutcomeData(df, 'SES/FSM primary outcome', fsm_lists, OUTCOME_VARS)
+        
         df_zip = list(zip(
             toolkit_out_tit,
             toolkit_out_desc,
@@ -1457,7 +1507,9 @@ class JSONDataExtractor:
             FSM_prim_es_type,
             FSM_test_type
         ))
+        
         df = pd.DataFrame(df_zip)
+        
         df.rename(columns={
             0: "out_tit_tool",
             1: "out_desc_tool",
@@ -1574,8 +1626,10 @@ class JSONDataExtractor:
             112: "out_es_type_fsm",
             113: "out_test_type_raw_fsm"
         }, inplace=True)
+        
         # Concatenate record details and main dataframes
         all_variables = pd.concat([record_details_df, df], axis=1, sort=False)
+        
         if clean_cols:
             new_cols = [
                 "out_tit_tool",
@@ -1619,67 +1673,70 @@ class JSONDataExtractor:
             ]
             all_variables = df.reindex(columns=new_cols, fill_value='')
             all_variables = pd.concat([record_details_df, all_variables], axis=1, sort=False)
+        
         if verbose:
-            self.verbose_display(all_variables)
+            self.data_extraction.verbose_display(all_variables)
+        
         if save_file:
-            outfile5 = self.save_dataframe(all_variables, "_DataFrame5_Effect_Size_B.csv")
+            outfile5 = self.data_extraction.save_dataframe(all_variables, "_DataFrame5_Effect_Size_B.csv")
+        
         return all_variables, outfile5
 
 
     def make_dataframe_6(self, ss_df, save_file=True, verbose=False):
         """
         """
-        eppiid_df = self.retrieve_metadata("ItemId", "id")
-        author_df = self.retrieve_metadata("ShortTitle", "pub_author")
-        year_df = self.retrieve_metadata("Year", "pub_year")
-        pub_type_data = self.retrieve_data(publication_type_output, "pub_type_raw")
-        toolkitstrand_df = self.get_outcome_data_lvl2(toolkit_strand_codes, "out_strand_")
-        smd_df = self.get_outcome_data_lvl1("SMD", "smd_")
-        sesmd_df = self.get_outcome_data_lvl1("SESMD", "se_")
-        out_title_df = self.get_outcome_data_lvl1("Title", "out_tit_")
-        out_type_df = self.get_outcome_data_lvl2(outcome_type_codes, "out_type_")
-        sample_df = self.get_outcome_data_lvl2(sample_output, "out_samp_")
-        out_comp_df = self.get_outcome_data_lvl1("ControlText", "out_comp_")
-        effectsizetype_df = self.get_outcome_data_lvl2(es_type_output, "out_es_type_")
-        out_measure_df = self.get_outcome_data_lvl1("InterventionText", "out_measure_")
-        testtype_df = self.get_outcome_data_lvl2(test_type_output, "out_test_type_raw_")
-        admin_strand_data = self.retrieve_data(admin_strand_output, "strand_raw")
-        admin_strand_info = self.retrieve_info(admin_strand_output, "strand_info")
-        country_df = self.retrieve_data(countries, "loc_country_raw")
-        intervention_training_prov_data = self.retrieve_data(int_training_provided_output, "int_training_raw")
-        intervention_training_prov_ht = self.retrieve_ht(int_training_provided_output, "int_training_ht")
-        intervention_training_prov_info = self.retrieve_info(int_training_provided_output, "int_training_info")
-        intervention_teaching_app_data = self.retrieve_data(intervention_teaching_approach, "int_approach_raw")
-        intervention_teaching_app_ht = self.retrieve_ht(intervention_teaching_approach, "int_approach_ht")
-        intervention_teaching_app_info = self.retrieve_info(intervention_teaching_approach, "int_approach_info")
-        digit_tech_data = self.retrieve_data(int_appr_dig_tech, "digit_tech_raw")
-        digit_tech_ht = self.retrieve_ht(int_appr_dig_tech, "digit_tech_ht")
-        digit_tech_info = self.retrieve_info(int_appr_dig_tech, "digit_tech_info")
-        par_eng_data = self.retrieve_data(int_appr_par_or_comm_vol, "parent_partic_raw")
-        par_eng_ht= self.retrieve_ht(int_appr_par_or_comm_vol, "parent_partic_ht")
-        par_eng_info = self.retrieve_info(int_appr_par_or_comm_vol, "parent_partic_info")
-        intervention_time_data = self.retrieve_data(intervention_time_output, "int_when_raw")
-        intervention_time_ht = self.retrieve_ht(intervention_time_output, "int_when_ht")
-        intervention_time_info = self.retrieve_info(intervention_time_output, "int_when_info")
-        intervention_delivery_data = self.retrieve_data(intervention_delivery_output, "int_who_raw")
-        intervention_delivery_ht = self.retrieve_ht(intervention_delivery_output, "int_who_ht")
-        intervention_delivery_info = self.retrieve_info(intervention_delivery_output, "int_who_info")
-        intervention_duration_info = self.retrieve_info(int_dur_output, "int_dur_info")
-        intervention_frequency_info = self.retrieve_info(inte_freq_output, "int_freq_info")
-        intervention_sess_length_info = self.retrieve_info(intervention_session_length_output, "int_leng_info")
-        edu_setting_data = self.retrieve_data(edu_setting_output, "int_setting_raw")
-        edu_setting_ht = self.retrieve_ht(edu_setting_output, "int_setting_ht")
-        edu_setting_info = self.retrieve_info(edu_setting_output, "int_setting_info")
-        student_age_data = self.retrieve_data(student_age_output, "part_age_raw")
-        student_age_ht = self.retrieve_ht(student_age_output, "part_age_ht")
-        student_age_info = self.retrieve_info(student_age_output, "part_age_info")
-        number_of_school_total_info = self.retrieve_info(number_of_schools_total_output, "school_total_info")
-        number_of_classes_total_info = self.retrieve_info(num_of_class_tot_output, "class_total_info")
-        study_design_data = self.retrieve_data(study_design_output, "int_desig_raw")
-        study_design_ht = self.retrieve_ht(study_design_output, "int_design_ht")
-        study_design_info = self.retrieve_info(study_design_output, "int_design_info")
-        sample_size_comments_df = self.retrieve_info(sample_size_output, "sample_analysed_info")
-        low_ses_percentage_Comments_df = self.retrieve_info(percentage_low_fsm_output, "fsm_perc_info")
+        eppiid_df = self.data_extraction.retrieve_metadata("ItemId", "id")
+        author_df = self.data_extraction.retrieve_metadata("ShortTitle", "pub_author")
+        year_df = self.data_extraction.retrieve_metadata("Year", "pub_year")
+        pub_type_data = self.data_extraction.retrieve_data(publication_type_output, "pub_type_raw")
+        toolkitstrand_df = self.data_extraction.get_outcome_data_lvl2(toolkit_strand_codes, "out_strand_")
+        smd_df = self.data_extraction.get_outcome_data_lvl1("SMD", "smd_")
+        sesmd_df = self.data_extraction.get_outcome_data_lvl1("SESMD", "se_")
+        out_title_df = self.data_extraction.get_outcome_data_lvl1("Title", "out_tit_")
+        out_type_df = self.data_extraction.get_outcome_data_lvl2(outcome_type_codes, "out_type_")
+        sample_df = self.data_extraction.get_outcome_data_lvl2(sample_output, "out_samp_")
+        out_comp_df = self.data_extraction.get_outcome_data_lvl1("ControlText", "out_comp_")
+        effectsizetype_df = self.data_extraction.get_outcome_data_lvl2(es_type_output, "out_es_type_")
+        out_measure_df = self.data_extraction.get_outcome_data_lvl1("InterventionText", "out_measure_")
+        testtype_df = self.data_extraction.get_outcome_data_lvl2(test_type_output, "out_test_type_raw_")
+        admin_strand_data = self.data_extraction.retrieve_data(admin_strand_output, "strand_raw")
+        admin_strand_info = self.data_extraction.retrieve_info(admin_strand_output, "strand_info")
+        country_df = self.data_extraction.retrieve_data(countries, "loc_country_raw")
+        intervention_training_prov_data = self.data_extraction.retrieve_data(int_training_provided_output, "int_training_raw")
+        intervention_training_prov_ht = self.data_extraction.retrieve_ht(int_training_provided_output, "int_training_ht")
+        intervention_training_prov_info = self.data_extraction.retrieve_info(int_training_provided_output, "int_training_info")
+        intervention_teaching_app_data = self.data_extraction.retrieve_data(intervention_teaching_approach, "int_approach_raw")
+        intervention_teaching_app_ht = self.data_extraction.retrieve_ht(intervention_teaching_approach, "int_approach_ht")
+        intervention_teaching_app_info = self.data_extraction.retrieve_info(intervention_teaching_approach, "int_approach_info")
+        digit_tech_data = self.data_extraction.retrieve_data(int_appr_dig_tech, "digit_tech_raw")
+        digit_tech_ht = self.data_extraction.retrieve_ht(int_appr_dig_tech, "digit_tech_ht")
+        digit_tech_info = self.data_extraction.retrieve_info(int_appr_dig_tech, "digit_tech_info")
+        par_eng_data = self.data_extraction.retrieve_data(int_appr_par_or_comm_vol, "parent_partic_raw")
+        par_eng_ht= self.data_extraction.retrieve_ht(int_appr_par_or_comm_vol, "parent_partic_ht")
+        par_eng_info = self.data_extraction.retrieve_info(int_appr_par_or_comm_vol, "parent_partic_info")
+        intervention_time_data = self.data_extraction.retrieve_data(intervention_time_output, "int_when_raw")
+        intervention_time_ht = self.data_extraction.retrieve_ht(intervention_time_output, "int_when_ht")
+        intervention_time_info = self.data_extraction.retrieve_info(intervention_time_output, "int_when_info")
+        intervention_delivery_data = self.data_extraction.retrieve_data(intervention_delivery_output, "int_who_raw")
+        intervention_delivery_ht = self.data_extraction.retrieve_ht(intervention_delivery_output, "int_who_ht")
+        intervention_delivery_info = self.data_extraction.retrieve_info(intervention_delivery_output, "int_who_info")
+        intervention_duration_info = self.data_extraction.retrieve_info(int_dur_output, "int_dur_info")
+        intervention_frequency_info = self.data_extraction.retrieve_info(inte_freq_output, "int_freq_info")
+        intervention_sess_length_info = self.data_extraction.retrieve_info(intervention_session_length_output, "int_leng_info")
+        edu_setting_data = self.data_extraction.retrieve_data(edu_setting_output, "int_setting_raw")
+        edu_setting_ht = self.data_extraction.retrieve_ht(edu_setting_output, "int_setting_ht")
+        edu_setting_info = self.data_extraction.retrieve_info(edu_setting_output, "int_setting_info")
+        student_age_data = self.data_extraction.retrieve_data(student_age_output, "part_age_raw")
+        student_age_ht = self.data_extraction.retrieve_ht(student_age_output, "part_age_ht")
+        student_age_info = self.data_extraction.retrieve_info(student_age_output, "part_age_info")
+        number_of_school_total_info = self.data_extraction.retrieve_info(number_of_schools_total_output, "school_total_info")
+        number_of_classes_total_info = self.data_extraction.retrieve_info(num_of_class_tot_output, "class_total_info")
+        study_design_data = self.data_extraction.retrieve_data(study_design_output, "int_desig_raw")
+        study_design_ht = self.data_extraction.retrieve_ht(study_design_output, "int_design_ht")
+        study_design_info = self.data_extraction.retrieve_info(study_design_output, "int_design_info")
+        sample_size_comments_df = self.data_extraction.retrieve_info(sample_size_output, "sample_analysed_info")
+        low_ses_percentage_Comments_df = self.data_extraction.retrieve_info(percentage_low_fsm_output, "fsm_perc_info")
 
         record_details_df = pd.concat([
                 eppiid_df,
@@ -1780,7 +1837,7 @@ class JSONDataExtractor:
             "out_strand_",
         )
 
-        self.getOutcomeData(df, 'Toolkit primary outcome', toolkit_lists, outcome_vars)
+        self.data_extraction.getOutcomeData(df, 'Toolkit primary outcome', toolkit_lists, outcome_vars)
 
         reading_lists = [[] for _ in range(3)]
 
@@ -1788,7 +1845,7 @@ class JSONDataExtractor:
         reading_prim_smd, 
         reading_prim_se) = reading_lists
 
-        self.getOutcomeData(df, 'Reading primary outcome', reading_lists, outcome_vars)
+        self.data_extraction.getOutcomeData(df, 'Reading primary outcome', reading_lists, outcome_vars)
 
         writing_lists = [[] for _ in range(3)]
 
@@ -1796,7 +1853,7 @@ class JSONDataExtractor:
         Writing_and_spelling_prim_smd,
         Writing_and_spelling_prim_se) = writing_lists
 
-        self.getOutcomeData(df, 'Writing and spelling primary outcome', writing_lists, outcome_vars)
+        self.data_extraction.getOutcomeData(df, 'Writing and spelling primary outcome', writing_lists, outcome_vars)
 
         mathematics_lists = [[] for _ in range(3)]
 
@@ -1804,19 +1861,19 @@ class JSONDataExtractor:
         Mathematics_prim_smd,
         Mathematics_prim_se) = mathematics_lists
 
-        self.getOutcomeData(df, 'Mathematics primary outcome', mathematics_lists, outcome_vars)
+        self.data_extraction.getOutcomeData(df, 'Mathematics primary outcome', mathematics_lists, outcome_vars)
 
         science_lists = [[] for _ in range(3)]
 
         (Science_prim, Science_prim_smd, Science_prim_se) = science_lists
 
-        self.getOutcomeData(df, 'Science primary outcome', science_lists, outcome_vars)
+        self.data_extraction.getOutcomeData(df, 'Science primary outcome', science_lists, outcome_vars)
 
         fsm_lists = [[] for _ in range(3)]
 
         (fsm_prim, fsm_prim_smd, fsm_prim_se) = fsm_lists
 
-        self.getOutcomeData(df, 'FSM primary outcome', fsm_lists, outcome_vars)
+        self.data_extraction.getOutcomeData(df, 'FSM primary outcome', fsm_lists, outcome_vars)
 
         df_zip = list(zip(
             toolkit_out_strand,
@@ -1955,10 +2012,10 @@ class JSONDataExtractor:
             df_all_SS.replace(old, new, regex=True, inplace=True)
 
         if verbose:
-            self.verbose_display(df_all_SS)
+            self.data_extraction.verbose_display(df_all_SS)
 
         if save_file:
-            outfile6 = self.save_dataframe(df_all_SS, "_Main_Analysis_SS.csv")
+            outfile6 = self.data_extraction.save_dataframe(df_all_SS, "_Main_Analysis_SS.csv")
 
         return df_all_SS, outfile6
 
@@ -3431,7 +3488,6 @@ def display_main_menu():
     main_table.add_row("5, Effect Size B", "Outcome Details")
     main_table.add_row("6. Data Analysis", "Key variables for data analysis")
     main_table.add_row("7  [bold red]EXIT[/bold red]", "", style="bold")
-    
     return main_table
 
 
@@ -3518,6 +3574,7 @@ def dataframe_5_output_display(functions, outfile):
     df5_table.add_row("Dataframe 5", outfile)
 
     return df5_table
+
 
 def dataframe_6_output_display(functions, outfile):
     console = Console()
