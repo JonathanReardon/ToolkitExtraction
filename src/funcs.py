@@ -40,6 +40,7 @@ def input_file_path(prompt):
         return input_file_path(prompt)
     return path
 
+
 class JSONDataExtractor:
     def __init__(self, data_file):
         self.data_file = data_file
@@ -437,12 +438,27 @@ class JSONDataExtractor:
     #/   COMPILE DATA FRAMES FOR CHECKING/CLEANING   /
     #/***********************************************/
     
+
 class DataFrameCompilation:
     def __init__(self, data_extractor):
         self.data_extraction = data_extractor
 
     def make_dataframe_1(self, save_file=True, clean_cols=False, verbose=True):
         """
+        Extracts data from the sources defined in the current instance of the 
+        DataExtraction class, and returns a pandas DataFrame with the relevant 
+        variables for further cleaning and analysis. 
+
+        Args:
+        - save_file (bool): Whether or not to save the resulting dataframe to a file.
+        - clean_cols (bool): Whether or not to add empty columns per variable
+          for data checkers to log changes.
+        - verbose (bool): Whether or not to display information about the extraction process.
+
+        Returns:
+        - all_variables: a pandas DataFrame with the relevant variables included.
+        - outfile1 (str or None): the name of the output CSV file, 
+          if `save_file=True`. If `save_file=False`, returns `None`.
         """
         eppiid_df = self.data_extraction.retrieve_metadata("ItemId", "id")
         author_df = self.data_extraction.retrieve_metadata("ShortTitle", "pub_author")
@@ -622,6 +638,19 @@ class DataFrameCompilation:
 
     def make_dataframe_2(self, save_file=True, clean_cols=False, verbose=True):
         """
+        Extracts data from the sources defined in the current instance of the 
+        DataExtraction class, and returns a pandas DataFrame with the relevant 
+        variables for further cleaning and analysis.
+
+        Args:
+        - save_file (bool): Whether or not to save the resulting dataframe to a file.
+        - clean_cols (bool): Whether or not to add empty columns per variable for data checkers to log changes.
+        - verbose (bool): Whether or not to display information about the extraction process.
+
+        Returns:
+        - all_variables: a pandas DataFrame with the relevant variables included.
+        - outfile2 (str or None): the name of the output CSV file, 
+          if `save_file=True`. If `save_file=False`, returns `None`.
         """
         eppiid_df = self.data_extraction.retrieve_metadata("ItemId", "id")
         author_df = self.data_extraction.retrieve_metadata("ShortTitle", "pub_author")
@@ -690,6 +719,7 @@ class DataFrameCompilation:
         clustering_data = self.data_extraction.retrieve_data(clustering_output, "clust_anal_raw")    
         clustering_ht = self.data_extraction.retrieve_ht(clustering_output, "clust_anal_ht")
         clustering_info = self.data_extraction.retrieve_info(clustering_output, "clust_anal_info")
+        
         all_variables = pd.concat([
             eppiid_df,
             author_df,
@@ -765,7 +795,6 @@ class DataFrameCompilation:
                     to_replace=[0, 1], value=["No", "Yes"])
         
         if clean_cols:
-            # Insert empty columns per variable for data checkers to log changes
             cols_to_insert = {
                 'strand_CLEAN': 5,
                 'int_name_CLEAN': 9,
@@ -795,7 +824,6 @@ class DataFrameCompilation:
             for col_name, col_idx in cols_to_insert.items():
                 all_variables.insert(col_idx, col_name, '')
         
-        # Clean up data frame
         self.data_extraction.clean_up(all_variables)
         all_variables.replace(r'^\s*$', "NA", regex=True)
         
@@ -810,6 +838,20 @@ class DataFrameCompilation:
 
     def make_dataframe_3(self, save_file=True, clean_cols=False, verbose=False):
         """
+        Extracts data from the sources defined in the current instance of the 
+        DataExtraction class, and returns a pandas DataFrame with the relevant 
+        variables for further cleaning and analysis.
+
+        Args:
+        - save_file (bool): Whether or not to save the resulting dataframe to a file.
+        - clean_cols (bool): Whether or not to add empty columns per variable 
+          for data checkers to log changes.
+        - verbose (bool): Whether or not to display information about the extraction process.
+
+        Returns:
+        - all_variables: a pandas DataFrame with the relevant variables included.
+        - outfile3 (str or None): the name of the output CSV file, 
+          if `save_file=True`. If `save_file=False`, returns `None`.
         """
         eppiid_df = self.data_extraction.retrieve_metadata("ItemId", "id")
         author_df = self.data_extraction.retrieve_metadata("ShortTitle", "pub_author")
@@ -935,6 +977,23 @@ class DataFrameCompilation:
 
     def make_dataframe_4(self, save_file=True, clean_cols=True, verbose=True):
         """
+        Extracts data from the sources defined in the current instance of the 
+        DataExtraction class, and returns a pandas DataFrame with the relevant 
+        variables for further cleaning and analysis.
+
+        Args:
+        - save_file (bool): Whether or not to save the resulting dataframe to a file.
+        - clean_cols (bool): Whether or not to add empty columns per variable for 
+          data checkers to log changes.
+        - verbose (bool): Whether or not to display information about the extraction process.
+
+        Returns:
+        - all_variables: a pandas DataFrame with the relevant variables included.
+        - outfile4 (str or None): the name of the output CSV file, 
+          if `save_file=True`. If `save_file=False`, returns `None`.
+
+        Notes:
+            The returned DataFrame has 85 columns.
         """
         eppiid_df = self.data_extraction.retrieve_metadata("ItemId", "id")
         author_df = self.data_extraction.retrieve_metadata("ShortTitle", "pub_author")
@@ -1012,6 +1071,7 @@ class DataFrameCompilation:
         followupdata = self.data_extraction.retrieve_data(follow_up_data_reported, "follow_up_raw")
         followupdata_HT = self.data_extraction.retrieve_ht(follow_up_data_reported, "follow_up_ht")
         followupdata_comments = self.data_extraction.retrieve_info(follow_up_data_reported, "follow_up_info")
+        
         all_variables = pd.concat([
             eppiid_df,
             author_df,
@@ -1090,6 +1150,7 @@ class DataFrameCompilation:
             followupdata_HT,
             followupdata_comments,
         ], axis=1, sort=False)
+        
         if clean_cols:
             # Define columns to insert and their corresponding indices
             cols_to_insert = {
@@ -1136,11 +1197,30 @@ class DataFrameCompilation:
             self.data_extraction.verbose_display(all_variables)
         if save_file:
             outfile4 = self.data_extraction.save_dataframe(all_variables, "_DataFrame4_Effect_Size_A.csv")
+        
         return all_variables, outfile4
 
 
     def make_dataframe_5(self, save_file=True, clean_cols=True, verbose=True):
         """
+        Extracts data from various sources and returns a pandas DataFrame with 
+        relevant variables for further cleaning and analysis.
+        
+        Args:
+        - self (object): An instance of the DataExtraction class.
+        - save_file (bool, optional): Whether or not to save the resulting 
+          DataFrame to a file. Defaults to True.
+        - clean_cols (bool, optional): Whether or not to add empty columns per 
+          variable for data checkers to log changes. Defaults to True.
+        - verbose (bool, optional): Whether or not to display information 
+          about the extraction process. Defaults to True.
+            
+        Returns:
+        - tuple: A tuple containing the resulting DataFrame and the name of the 
+          output CSV file, if `save_file=True`.
+            
+        Notes:
+            The returned DataFrame contains 85 columns.
         """
         OUTCOME_VARS = (
             "out_type_",
@@ -1685,6 +1765,27 @@ class DataFrameCompilation:
 
     def make_dataframe_6(self, ss_df, save_file=True, verbose=False):
         """
+        Extracts data from sources defined in the current instance of the 
+        DataExtraction class, cleans it, and combines it into a pandas DataFrame 
+        for further analysis. The resulting DataFrame is saved to a file if 
+        `save_file` is True.
+
+        Args:
+        - ss_df (pandas DataFrame): DataFrame containing data on study sample sizes.
+        - save_file (bool, optional): Whether or not to save the resulting DataFrame 
+          to a file. Default is True.
+        - verbose (bool, optional): Whether or not to display information about the 
+          extraction process. Default is False.
+
+        Returns:
+        - df_all_SS (pandas DataFrame): DataFrame containing cleaned and combined 
+          data for analysis.
+        - outfile6 (str): Name of the output CSV file, if `save_file` is True.
+
+        Note:
+        - Outcome data is extracted using `getOutcomeData()` and concatenated with other data.
+        - `fsm_50` column is added to indicate whether a study has more or less 
+          than 50% of participants eligiblefor free school meals.
         """
         eppiid_df = self.data_extraction.retrieve_metadata("ItemId", "id")
         author_df = self.data_extraction.retrieve_metadata("ShortTitle", "pub_author")
@@ -2020,6 +2121,1451 @@ class DataFrameCompilation:
         return df_all_SS, outfile6
 
 
+class StrandSpecificFrames:
+    """
+    A class for retrieving strand-specific data.
+
+    Attributes:
+    data_extractor: an instance of a data extractor class for retrieving the necessary data.
+    """
+    def __init__(self, data_extractor):
+        self.data_extraction = data_extractor
+        
+    def arts_participation_ss(self):
+        """
+        Retrieves strand-specific data related to arts participation.
+
+        Returns:
+            A pandas DataFrame containing the following data:
+                - ap_focus: focus data
+                - ap_who_invol: who involved data
+                - ap_where: where data
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        ap_focus_df = self.data_extraction.retrieve_data(ap_focus_output, "ap_focus")
+        ap_who_invol_df = self.data_extraction.retrieve_data(ap_who_output, "ap_involved")
+        ap_where_df = self.data_extraction.retrieve_data(ap_where_output, "ap_where")
+        
+        ap_ss_df = pd.concat([ap_focus_df, ap_who_invol_df, ap_where_df], axis=1, sort=False)
+        
+        ap_ss_df.fillna("NA", inplace=True)
+        return ap_ss_df
+
+
+    def behaviour_int_ss(self):
+        """
+        Retrieves strand-specific data related to behavior intervention.
+
+        Returns:
+            A pandas DataFrame containing the following data:
+                - bi_target_group: target group data
+                - bi_int_approach: intervention approach data
+                - bi_int_components: intervention components data
+                - bi_components_counselling: counseling data
+                - bi_components_monitoring: monitoring data
+                - bi_components_self: self-management data
+                - bi_components_roleplay: role-play data
+                - bi_components_parentalinv: parental involvement data
+                - bi_academic: academic focus data
+                - bi_components_digital: digital technology data
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        bi_target_group_df = self.data_extraction.retrieve_data(bi_target_group_output, "bi_targ_group")
+        bi_target_group_HT_df = self.data_extraction.retrieve_ht(bi_intervention_approach_output, "bi_targ_group_ht")
+        bi_target_group_Comments_df = self.data_extraction.retrieve_info(bi_intervention_components_output, "bi_targ_group_info")
+        bi_int_approach_df = self.data_extraction.retrieve_data(bi_intervention_approach_output, "bi_int_approach")
+        bi_int_approach_HT_df = self.data_extraction.retrieve_ht(bi_intervention_approach_output, "bi_int_approach_ht")
+        bi_int_approach_Comments_df = self.data_extraction.retrieve_info(bi_intervention_approach_output, "bi_int_approach_info")
+        bi_int_components_df = self.data_extraction.retrieve_data(bi_intervention_components_output, "bi_int_components")
+        bi_int_components_HT_df = self.data_extraction.retrieve_ht(bi_intervention_components_output, "bi_int_components_ht")
+        bi_int_components_Comments_df = self.data_extraction.retrieve_info(bi_intervention_components_output, "bi_int_components_info")
+        bi_int_comp_counselling_df = self.data_extraction.retrieve_data(ind_comp_counselling, "bi_components_counselling")
+        bi_int_comp_monitoring_df = self.data_extraction.retrieve_data(ind_comp_monitoring, "bi_components_monitoring")
+        bi_int_comp_self_man_df = self.data_extraction.retrieve_data(ind_comp_self_management, "bi_components_self")
+        bi_int_comp_role_play_df = self.data_extraction.retrieve_data(ind_comp_role_play, "bi_components_roleplay")
+        bi_int_comp_par_invol_df = self.data_extraction.retrieve_data(ind_comp_parental_involv, "bi_components_parentalinv")
+        bi_int_comp_ac_focus_df = self.data_extraction.retrieve_data(ind_comp_academic_focus, "bi_academic")
+        bi_int_comp_dig_tech_df = self.data_extraction.retrieve_data(ind_comp_digit_tech, "bi_components_digital")
+        
+        bi_ss_df = pd.concat([
+            bi_target_group_df,
+            bi_int_approach_df,
+            bi_int_components_df,
+            bi_int_comp_counselling_df,
+            bi_int_comp_monitoring_df,
+            bi_int_comp_self_man_df,
+            bi_int_comp_role_play_df,
+            bi_int_comp_par_invol_df,
+            bi_int_comp_ac_focus_df,
+            bi_int_comp_dig_tech_df
+        ], axis=1, sort=False)
+        
+        bi_ss_df.fillna("NA", inplace=True)
+        return bi_ss_df
+
+
+    def collab_learning_ss(self):
+        """
+        Retrieves strand-specific data related to collaborative learning.
+
+        Returns:
+            A pandas DataFrame containing the following data:
+                - cl_approach_spec: approach specification data
+                - cl_grp_size: group size data
+                - cl_collab_kind: collaboration kind data
+                - cl_stud_collab: student collaboration data
+                - cl_extr_rewards: extrinsic rewards data
+                - cl_if_yes_rewards: if yes rewards data
+                - cl_comp_elem: component elements data
+                - cl_teach_role_info: teacher role info data
+                - cl_pup_feedback: pupil feedback data
+                - cl_pup_feedback_who: pupil feedback who data
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        cl_approach_spec_df = self.data_extraction.retrieve_data(cl_approach_spec_output, "cl_approach_spec")
+        cl_grp_size_df = self.data_extraction.retrieve_data(cl_group_size_output, "cl_grp_size")
+        cl_collab_kind_df = self.data_extraction.retrieve_data(cl_collab_kind_output, "cl_collab_kind")
+        cl_stud_collab_df = self.data_extraction.retrieve_data(cl_stud_collab_output, "cl_stud_collab")
+        cl_stud_collab_HT_df = self.data_extraction.retrieve_ht(cl_stud_collab_output, "cl_stud_collab_HT")
+        cl_extr_rewards_df = self.data_extraction.retrieve_data(cl_extr_rewards_output, "cl_extr_rewards")
+        cl_extr_rewards_HT_df = self.data_extraction.retrieve_ht(cl_extr_rewards_output, "cl_extr_rewards_HT")
+        cl_if_yes_rewards_df = self.data_extraction.retrieve_data(cl_if_yes_rewards_output, "cl_what_rewards")
+        cl_if_yes_rewards_HT_df = self.data_extraction.retrieve_ht(cl_if_yes_rewards_output, "cl_what_rewards_HT")
+        cl_comp_elem_df = self.data_extraction.retrieve_data(cl_comp_elem_output, "cl_comp_elem")
+        cl_comp_elem_HT_df = self.data_extraction.retrieve_ht(cl_comp_elem_output, "cl_comp_elem_HT")
+        cl_teach_role_info_df = self.data_extraction.retrieve_data(cl_teacher_role_info_output, "cl_teacher_role_info")
+        cl_teach_role_info_HT_df = self.data_extraction.retrieve_ht(cl_teacher_role_info_output, "cl_teacher_role_info_HT")
+        cl_pup_feedback_df = self.data_extraction.retrieve_data(cl_pupil_feedback_output, "cl_pup_feedback")
+        cl_pup_feedback_HT_df = self.data_extraction.retrieve_ht(cl_pupil_feedback_output, "cl_pup_feedback_HT")
+        cl_pup_feedback_who_df = self.data_extraction.retrieve_data(cl_pupil_feedback_who_output, "cl_pup_feedback_who")
+        cl_pup_feedback_who_HT_df = self.data_extraction.retrieve_ht(cl_pupil_feedback_who_output, "cl_pup_feedback_who_HT")
+        
+        cl_ss_df = pd.concat([
+            cl_approach_spec_df,
+            cl_grp_size_df,
+            cl_collab_kind_df,
+            cl_stud_collab_df,
+            cl_extr_rewards_df,
+            cl_if_yes_rewards_df,
+            cl_comp_elem_df,
+            cl_teach_role_info_df,
+            cl_pup_feedback_df,
+            cl_pup_feedback_who_df,
+        ], axis=1, sort=False)
+        
+        cl_ss_df.fillna("NA", inplace=True)
+        return cl_ss_df
+
+
+    def ey_early_lit_approaches_ss(self):
+        """
+        Retrieves strand-specific data related to early literacy approaches.
+
+        Returns:
+            A pandas DataFrame containing the following data:
+                - lit_activities: literacy activities data
+                - prog_comp: program comprehensiveness data
+                - prog_desc: program description data
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        lit_act_df = self.data_extraction.retrieve_data(ela_literacy_activities, "lit_activities")
+        lit_act_HT_df = self.data_extraction.retrieve_ht(ela_literacy_activities, "lit_activities_HT")
+        prog_comp_df = self.data_extraction.retrieve_data(ela_comprehensive, "prog_comp")
+        prog_comp_HT_df = self.data_extraction.retrieve_ht(ela_comprehensive, "prog_comp_HT")
+        prog_desc_df = self.data_extraction.retrieve_data(ela_prog_desc, "prog_desc")
+        prog_desc_HT_df = self.data_extraction.retrieve_ht(ela_prog_desc, "prog_desc_HT")
+        
+        # concatenate data frames
+        ela_ss_df = pd.concat([
+            lit_act_df,
+            #lit_act_HT_df,
+            prog_comp_df,
+            #prog_comp_HT_df,
+            prog_desc_df,
+            #prog_desc_HT_df,
+        ], axis=1, sort=False)
+        
+        return ela_ss_df
+
+
+    def ey_early_num_approaches_ss(self):
+        """
+        Retrieves strand-specific data related to early numeracy approaches.
+
+        Returns:
+            A pandas DataFrame containing the following data:
+                - math_incl: math included data
+                - prog_comp: program comprehensiveness data
+                - prog_act: program activities data
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        math_incl_df = self.data_extraction.retrieve_data(ena_maths_included, "math_incl")
+        math_incl_HT_df = self.data_extraction.retrieve_ht(ena_maths_included, "math_incl_ht")
+        prog_comp_df = self.data_extraction.retrieve_data(ena_prog_comp, "prog_comp")
+        prog_act_df = self.data_extraction.retrieve_data(ena_prog_activities, "prog_act")
+        
+        ena_ss_df = pd.concat([
+            math_incl_df,
+            #math_incl_HT_df,
+            prog_comp_df,
+            prog_act_df,
+        ], axis=1, sort=False)
+        
+        ena_ss_df.fillna("NA", inplace=True)
+        return ena_ss_df
+
+
+    def ext_school_time_ss(self):
+        """
+        Retrieves strand-specific data related to extended school time.
+
+        Returns:
+            A pandas DataFrame containing the following data:
+                - est_how: extended school time data
+                - est_time_added: estimated time added data
+                - est_time_added_info: estimated time added comments data
+                - est_purpose: estimated purpose data
+                - est_target_group: estimated target group data
+                - est_pupil_participation: estimated pupil participation data
+                - est_activity_focus: estimated activity focus data
+                - est_staff_kind: estimated staff kind data
+                - est_parental_involvement: estimated parental involvement data
+                - est_digital_tech: estimated digital technology data
+                - est_attend_monitored: estimated attendance monitored data
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        extended_how = self.data_extraction.get_data(extended_how_output)
+        extended_how_df = self.data_extraction.retrieve_data(extended_how_output, "est_how")
+        extended_how_HT_df = self.data_extraction.retrieve_ht(extended_how_output, "est_how_ht")
+        extended_how_Comments_df = self.data_extraction.retrieve_info(extended_how_output, "est_how_info")
+        time_added_df = self.data_extraction.retrieve_data(time_Added_output, "est_time_added")
+        time_added_HT_df = self.data_extraction.retrieve_ht(time_Added_output, "est_time_added_ht")
+        time_added_Comments_df = self.data_extraction.retrieve_info(time_Added_output, "est_time_added_info")
+        purpose_df = self.data_extraction.retrieve_data(purpose_or_aim_output, "est_purpose")
+        purpose_HT_df = self.data_extraction.retrieve_ht(purpose_or_aim_output, "est_purpose_ht")
+        purpose_Comments_df = self.data_extraction.retrieve_info(purpose_or_aim_output, "est_purpose_info")
+        target_group_df = self.data_extraction.retrieve_data(target_group_output, "est_target_group")
+        target_group_HT_df = self.data_extraction.retrieve_ht(target_group_output, "est_target_group_ht")
+        target_group_Comments_df = self.data_extraction.retrieve_info(target_group_output, "est_target_group_info")
+        pupil_participation_df = self.data_extraction.retrieve_data(pupil_participation_output, "est_pupil_participation")
+        pupil_participation_HT_df = self.data_extraction.retrieve_ht(pupil_participation_output, "est_pupil_participation_ht")
+        pupil_participation_Comments_df = self.data_extraction.retrieve_info(pupil_participation_output, "est_pupil_participation_info")
+        activity_focus_df = self.data_extraction.retrieve_data(activity_focus_output, "est_activity_focus")
+        activity_focus_HT_df = self.data_extraction.retrieve_ht(activity_focus_output, "est_activity_focus_ht")
+        activity_focus_Comments_df = self.data_extraction.retrieve_info(activity_focus_output, "est_activity_focus_info")
+        staff_kind_df = self.data_extraction.retrieve_data(staff_kind_output, "est_staff_kind")
+        staff_kind_HT_df = self.data_extraction.retrieve_ht(staff_kind_output, "est_staff_kind_ht")
+        staff_kind_Comments_df = self.data_extraction.retrieve_info(staff_kind_output, "est_staff_kind_info")
+        parent_involved_df = self.data_extraction.retrieve_data(parental_involvement_output, "est_parental_involvement")
+        parent_involved_HT_df = self.data_extraction.retrieve_ht(parental_involvement_output, "est_parental_involvement_ht")
+        parent_involved_Comments_df = self.data_extraction.retrieve_info(parental_involvement_output, "est_parental_involvement_info")
+        digit_tech_df = self.data_extraction.retrieve_data(digital_tech_output, "est_digital_tech")
+        digit_tech_HT_df = self.data_extraction.retrieve_ht(digital_tech_output, "est_digital_tech_ht")
+        digit_tech_Comments_df = self.data_extraction.retrieve_info(digital_tech_output, "est_digital_tech_info")
+        attend_mon_df = self.data_extraction.retrieve_data(attendance_monitored_output, "est_attend_monitored")
+        attend_mon_HT_df = self.data_extraction.retrieve_ht(attendance_monitored_output, "est_attend_monitored_ht")
+        attend_mon_Comments_df = self.data_extraction.retrieve_info(attendance_monitored_output, "est_attendance_monitored_info")
+        
+        est_ss_df = pd.concat([
+            extended_how_df,
+            time_added_df,
+            time_added_Comments_df,
+            purpose_df,
+            target_group_df,
+            pupil_participation_df,
+            activity_focus_df,
+            staff_kind_df,
+            parent_involved_df,
+            digit_tech_df,
+            attend_mon_df,
+        ], axis=1, sort=False)
+        
+        self.data_extraction.clean_up(est_ss_df)
+        return est_ss_df
+
+
+    def ey_earlier_start_age_ss(self):
+        """
+        Retrieves strand-specific data related to changes in the starting age of early years education.
+
+        Returns:
+            A pandas DataFrame containing the following data:
+                - prev_start_age: previous starting age data
+                - new_start_age: new starting age data
+                - addit_time_f_pt: additional time for part-time children data
+                - addit_time_struct: additional time for structured sessions data
+                - early_child_addit_time: earlier children additional time data
+                - early_child_addit_time_info: information about earlier children additional time data
+                - setting_type: type of setting data
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        prev_start_age_df = self.data_extraction.retrieve_data(ey_esa_prev_starting_age, "prev_start_age")
+        new_start_age_df = self.data_extraction.retrieve_data(ey_esa_new_starting_age, "new_start_age")
+        addit_time_f_pt_df = self.data_extraction.retrieve_data(ey_esa_addit_time_f_pt, "addit_time_f_pt")
+        add_time_struct_df = self.data_extraction.retrieve_data(ey_esa_addit_time_struct, "addit_time_struct")
+        earl_child_addit_time_df = self.data_extraction.retrieve_data(ey_esa_earlier_child_addit_time, "early_child_addit_time")
+        earl_child_addit_time_info_df = self.data_extraction.retrieve_info(ey_esa_earlier_child_addit_time_other, "early_child_addit_time_info")
+        setting_type_df = self.data_extraction.retrieve_data(ey_esa_setting_type, "setting_type")
+        
+        ey_esa_df = pd.concat([
+            prev_start_age_df,
+            new_start_age_df,
+            addit_time_f_pt_df,
+            add_time_struct_df,
+            earl_child_addit_time_df,
+            earl_child_addit_time_info_df,
+            setting_type_df,
+        ], axis=1, sort=False)
+        
+        ey_esa_df.fillna("NA", inplace=True)
+        return ey_esa_df
+
+
+    def ey_extra_hours_ss(self):
+        """
+        Retrieves strand-specific data related to extra hours in early years education.
+
+        Returns:
+            A pandas DataFrame containing the following data:
+                - time_org: time organised data
+                - addit_time_struc: additional time structure data
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        time_org_df = self.data_extraction.retrieve_data(time_organsised, "time_org")
+        addit_time_struc_df = self.data_extraction.retrieve_data(addit_time_struct, "addit_time_struct")
+        
+        ey_eh_df = pd.concat([time_org_df,addit_time_struc_df], axis=1, sort=False)
+        
+        ey_eh_df.fillna("NA", inplace=True)
+        
+        return ey_eh_df
+
+
+    def ey_play_based_learning_ss(self):
+        """
+        Retrieves strand-specific data related to play-based learning in Early Years education.
+
+        Returns:
+            A pandas DataFrame containing the following data:
+                - kind_of_play: the kind of play used in the learning process
+                - who_involved: who is involved in the play-based learning process
+                - play_focus: the focus of the play-based learning process
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        kind_play_df = self.data_extraction.retrieve_data(kind_of_play, "kind_of_play")
+        who_invol_df = self.data_extraction.retrieve_data(who_involved, "who_involved")
+        play_foc_df = self.data_extraction.retrieve_data(play_focus, "play_focus")
+        
+        ey_pbl_df = pd.concat([
+            kind_play_df,
+            who_invol_df,
+            play_foc_df
+        ], axis=1, sort=False)
+        
+        ey_pbl_df.fillna("NA", inplace=True)
+        return ey_pbl_df
+
+
+    def feedback_ss(self):
+        """
+        Retrieves strand-specific data related to feedback.
+
+        Returns:
+            A pandas DataFrame containing the following data:
+                - feedback source data
+                - feedback source highlighted text
+                - feedback source user comments
+                - feedback source teacher data
+                - feedback source teaching assistant data
+                - feedback source volunteer data
+                - feedback source parent data
+                - feedback source researcher data
+                - feedback source peer same age data
+                - feedback source peer group data
+                - feedback source peer older data
+                - feedback source digital automated data
+                - feedback source other non-human data
+                - feedback source self data
+                - feedback source other data
+                - feedback directed data
+                - feedback directed highlighted text
+                - feedback directed user comments
+                - feedback form data
+                - feedback form highlighted text
+                - feedback form user comments
+                - feedback when data
+                - feedback when highlighted text
+                - feedback when user comments
+                - feedback kind data
+                - feedback kind "about the outcome" nested data (correct / incorrect)
+                - feedback kind highlighted text
+                - feedback kind user comments
+                - feedback emotional tone data
+                - feedback emotional tone highlighted text
+                - feedback emotional tone user comments
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        feedb_source_df = self.data_extraction.retrieve_data(feedback_source_output, "feedback_Source")
+        feedb_source_HT_df = self.data_extraction.retrieve_data(feedback_source_output, "feedback_Source_ht")
+        feedb_source_Comments_df = self.data_extraction.retrieve_data(feedback_source_output, "feedback_Source_info")
+        fsource_teacher_df = self.data_extraction.retrieve_data(fsource_teacher, "fb_source_teacher")
+        fsource_ta_df = self.data_extraction.retrieve_data(fsource_ta, "fb_source_ta")
+        fsource_volunteer_df = self.data_extraction.retrieve_data(fsource_volunteer, "fb_source_volunteer")
+        fsource_parent_df = self.data_extraction.retrieve_data(fsource_parent, "fb_source_parent")
+        fsource_researcher_df = self.data_extraction.retrieve_data(fsource_researcher, "fb_source_researcher")
+        fsource_peer_ssame_Age_df = self.data_extraction.retrieve_data(fsource_peer_sameage_class, "fb_source_peer_sameage")
+        fsource_peer_group_df = self.data_extraction.retrieve_data(fsource_peer_group, "fb_source_peer_group")
+        fsource_peer_older_df = self.data_extraction.retrieve_data(fsource_peer_older, "fb_source_peer_older")
+        fsource_digit_aut_df = self.data_extraction.retrieve_data(fsource_dig_aut, "fb_source_dig_aut")
+        fsource_non_human_df = self.data_extraction.retrieve_data(fsource_other_nonhuman, "fb_source_non_human")
+        fsource_self_df = self.data_extraction.retrieve_data(fsource_self, "fb_source_self")
+        fsource_other_df = self.data_extraction.retrieve_data(fsource_other, "fb_source_other")
+        feedb_directed_df = self.data_extraction.retrieve_data(feedback_directed_output, "fb_directed")
+        feedb_directed_df_HT_df = self.data_extraction.retrieve_data(feedback_directed_output, "fb_directed_ht")
+        feedb_directed_Comments_df = self.data_extraction.retrieve_data(feedback_directed_output, "fb_directed_info")
+        feedb_form_df = self.data_extraction.retrieve_data(feedback_form_output, "fb_form")
+        feedb_form_HT_df = self.data_extraction.retrieve_data(feedback_form_output, "fb_form_ht")
+        feedb_form_Comments_df = self.data_extraction.retrieve_data(feedback_form_output, "fb_form_info")
+        feedb_when_df = self.data_extraction.retrieve_data(feedback_when_output, "fb_when")
+        feedb_when_HT_df = self.data_extraction.retrieve_data(feedback_when_output, "fb_when_ht")
+        feedb_when_Comments_df = self.data_extraction.retrieve_data(feedback_when_output, "fb_when_info")
+        feedb_kind_df = self.data_extraction.retrieve_data(feedback_kind_output, "fb_kind")
+        feedb_kind_abt_outcome_df = self.data_extraction.retrieve_data(feedback_about_outcome_output, "fb_kind_about_outcome")
+        feedb_kind_HT_df = self.data_extraction.retrieve_data(feedback_kind_output, "fb_kind_ht")
+        feedb_kind_Comments_df = self.data_extraction.retrieve_info(feedback_kind_output, "fbkind_info")
+        feedb_emo_tone_df = self.data_extraction.retrieve_data(feedback_emo_tone, "fb_emo_tone")
+        feedb_emo_tone_HT_df = self.data_extraction.retrieve_ht(feedback_emo_tone, "fb_emo_tone_ht")
+        feedb_emo_tone_Comments_df = self.data_extraction.retrieve_info(feedback_emo_tone,"fb_emo_tone_info")
+        
+        feedback_ss_df = pd.concat([
+            feedb_source_df,
+            fsource_teacher_df,
+            fsource_ta_df,
+            fsource_volunteer_df,
+            fsource_parent_df,
+            fsource_researcher_df,
+            fsource_peer_ssame_Age_df,
+            fsource_peer_group_df,
+            fsource_peer_older_df,
+            fsource_digit_aut_df,
+            fsource_non_human_df,
+            fsource_self_df,
+            fsource_other_df,
+            feedb_directed_df,
+            feedb_form_df,
+            feedb_when_df,
+            feedb_kind_df,
+            feedb_kind_abt_outcome_df,
+            feedb_emo_tone_df,
+        ], axis=1, sort=False)
+        
+        self.data_extraction.clean_up(feedback_ss_df)
+        return feedback_ss_df
+
+
+    def homework_ss(self):
+        """
+        Retrieves data related to homework.
+
+        Returns:
+            pandas.DataFrame: A data frame containing the following columns:
+                - hw_dur: homework duration in minutes
+                - hw_dur_info: information about how homework duration was measured
+                - hw_dur_tot_time: total time spent on homework, if available
+                - hw_who_involved: who was involved in homework completion (parent, teacher, student, etc.)
+                - hw_par_role: if parents were involved, what was their role
+                - hw_where: where the homework was completed (at home, school, etc.)
+                - hw_mark_method_info: information about the method of marking
+
+            Any missing values are filled with "NA".
+        """
+        hw_dur_df = self.data_extraction.retrieve_data(hw_dur_info_output, "hw_dur")
+        # get hw duration information data
+        hw_dur_info_df = self.data_extraction.retrieve_info(hw_dur_info_output, "hw_dur_info")
+        # get hw duration total time data
+        hw_dur_tot_time_df = self.data_extraction.retrieve_info(hw_total_time, "hw_dur_tot_time")
+        # get hw who was involved data
+        hw_who_invol_df = self.data_extraction.retrieve_data(hw_who_involved_output, "hw_who_involved")
+        # get hw if parentes involved, describe role data
+        hw_par_role_df = self.data_extraction.retrieve_data(hw_if_parents_describe_role_output, "hw_par_role")
+        # get hw completed where data
+        hw_where_df = self.data_extraction.retrieve_data(hw_completed_where_output, "hw_where")
+        # get hw marking method data
+        hw_mark_method_df = self.data_extraction.retrieve_data(hw_mark_method_info_output, "hw_mark_method_info")
+        
+        hw_ss_df = pd.concat([
+            hw_dur_df,
+            hw_dur_info_df,
+            hw_dur_tot_time_df,
+            hw_who_invol_df,
+            hw_par_role_df,
+            hw_where_df,
+            hw_mark_method_df
+        ], axis=1, sort=False)
+        
+        # fill blanks with NA
+        hw_ss_df.fillna("NA", inplace=True)
+        
+        return hw_ss_df
+
+
+    def indiv_instr_ss(self):
+        """
+        Retrieves data related to individual instruction.
+
+        Returns:
+            pandas.DataFrame: A DataFrame with the following columns:
+                - 'ii_approach_df': Data on the approach used for individual instruction.
+                - 'ii_elements_included_df': Data on other elements included in the instruction.
+                - 'ii_programmes_mentioned_df': Data on other instruction programmes mentioned in the instruction.
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        ii_approach_df = self.data_extraction.retrieve_data(ii_approach_output, "ii_approach_df")
+        ii_also_included_df = self.data_extraction.retrieve_data(ii_also_included_output, "ii_elements_included_df")
+        ii_also_mentioned_df = self.data_extraction.retrieve_data(ii_also_mentioned_output, "ii_programmes_mentioned_df")
+        
+        ii_ss_df = pd.concat([ii_approach_df, ii_also_included_df, ii_also_mentioned_df,
+        ], axis=1, sort=False)
+
+        ii_ss_df.fillna("NA", inplace=True)
+        return ii_ss_df
+
+
+    def mentoring_ss(self):
+        """
+        Retrieves data related to the mentoring program.
+
+        Returns:
+            pandas.DataFrame: A data frame containing the following columns:
+                - m_identity_df: Mentor's identity
+                - m_identity_ht_df: Highlighted text for mentor's identity
+                - m_identity_info_df: User comments on mentor's identity
+                - m_pay_df: Whether the mentor was paid or compensated
+                - m_pay_ht_df: Highlighted text for payment information
+                - m_pay_info_df: User comments on payment information
+                - m_org_df: Mentor's organization
+                - m_org_ht_df: Highlighted text for mentor's organization
+                - m_org_info_df: User comments on mentor's organization
+                - m_training_df: Whether the mentor received training
+                - m_training_ht_df: Highlighted text for training information
+                - m_training_info_df: User comments on training information
+                - m_meeting_freq_df: Meeting frequency between mentor and mentee
+                - m_meeting_freq_ht_df: Highlighted text for meeting frequency
+                - m_meeting_freq_info_df: User comments on meeting frequency
+                - m_meeting_details_df: Details of mentor-mentee meetings
+                - m_meeting_details_ht_df: Highlighted text for meeting details
+                - m_meeting_details_info_df: User comments on meeting details
+                - m_meeting_location_df: Location of mentor-mentee meetings
+                - m_meeting_location_ht_df: Highlighted text for meeting location
+                - m_meeting_location_info_df: User comments on meeting location
+                - m_addit_exp_df: Additional experiences of the mentor
+                - m_addit_exp_ht_df: Highlighted text for additional experiences
+                - m_addit_exp_info_df: User comments on additional experiences
+                - m_prog_focus_df: Focus of the mentoring program
+                - m_prog_focus_ht_df: Highlighted text for program focus
+                - m_prog_focus_info_df: User comments on program focus
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        ment_ident_df = self.data_extraction.retrieve_data(mentor_identity, "m_identity_df")
+        ment_ident_HT_df = self.data_extraction.retrieve_ht(mentor_identity, "m_identity_ht_df")
+        ment_ident_Comments_df = self.data_extraction.retrieve_info(mentor_identity, "m_identity_info_df")
+        ment_pay_df = self.data_extraction.retrieve_data(mentor_paid_or_compensated, "m_pay_df")
+        ment_pay_HT_df = self.data_extraction.retrieve_ht(mentor_paid_or_compensated, "m_pay_ht_df")
+        ment_pay_Comments_df = self.data_extraction.retrieve_info(mentor_paid_or_compensated, "m_pay_info_df")
+        ment_org_df = self.data_extraction.retrieve_data(mentor_organisation, "m_org_df")
+        ment_org_HT_df = self.data_extraction.retrieve_ht(mentor_organisation, "m_org_ht_df")
+        ment_org_Comments_df = self.data_extraction.retrieve_info(mentor_organisation, "m_org_info_df")
+        ment_training_df = self.data_extraction.retrieve_data(mentor_training, "m_training_df")
+        ment_training_HT_df = self.data_extraction.retrieve_ht(mentor_training, "m_training_ht_df")
+        ment_training_Comments_df = self.data_extraction.retrieve_info(mentor_training, "m_training_info_df")
+        ment_meeting_freq_df = self.data_extraction.retrieve_data(mentor_meeting_frequency, "m_meeting_freq_df")
+        ment_meeting_freq_HT_df = self.data_extraction.retrieve_ht(mentor_meeting_frequency, "m_meeting_freq_ht_df")
+        ment_meeting_freq_Comments_df = self.data_extraction.retrieve_info(mentor_meeting_frequency, "m_meeting_freq_info_df")
+        ment_meeting_details_df = self.data_extraction.retrieve_data(mentor_meeting_details_provided, "m_meeting_details_df")
+        ment_meeting_details_HT_df = self.data_extraction.retrieve_ht(mentor_meeting_details_provided, "m_meeting_details_ht_df")
+        ment_meeting_details_Comments_df = self.data_extraction.retrieve_info(mentor_meeting_details_provided, "m_meeting_details_info_df")
+        ment_meeting_location_df = self.data_extraction.retrieve_data(mentor_meeting_location, "m_meeting_location_df")
+        ment_meeting_location_HT_df = self.data_extraction.retrieve_ht(mentor_meeting_location, "m_meeting_location_ht_df")
+        ment_meeting_location_Comments_df = self.data_extraction.retrieve_info(mentor_meeting_location, "m_meeting_location_info_df")
+        ment_addit_exp_df = self.data_extraction.retrieve_data(mentoring_additional_experiences, "m_addit_exp_df")
+        ment_addit_exp_HT_df = self.data_extraction.retrieve_ht(mentoring_additional_experiences, "m_addit_exp_ht_df")
+        ment_addit_exp_Comments_df = self.data_extraction.retrieve_info(mentoring_additional_experiences, "m_addit_exp_info_df")
+        ment_prog_focus_df = self.data_extraction.retrieve_data(mentoring_programme_focus, "m_prog_focus_df")
+        ment_prog_focus_HT_df = self.data_extraction.retrieve_ht(mentoring_programme_focus, "m_prog_focus_ht_df")
+        ment_prog_focus_Comments_df = self.data_extraction.retrieve_info(mentoring_programme_focus, "m_prog_focus_info_df")
+        
+        mentoring_ss_df = pd.concat([
+            ment_ident_df,
+            ment_pay_df,
+            ment_org_df,
+            ment_training_df,
+            ment_meeting_freq_df,
+            ment_meeting_details_df,
+            ment_meeting_location_df,
+            ment_addit_exp_df,
+            ment_prog_focus_df,
+        ], axis=1, sort=False)
+        
+        mentoring_ss_df.fillna("NA", inplace=True)
+        return mentoring_ss_df
+
+
+    def mastery_learning_ss(self):
+        """
+        Retrieves data related to mastery learning.
+        
+        Returns:
+            pandas.DataFrame: A data frame containing the following columns:
+                - ml_theor: Theoretical approach used in the mastery learning program
+                - ml_age_grp: Age group of the students participating in the mastery learning program
+                - ml_ability_grp: Ability groupings used in the mastery learning program
+                - ml_attain_grouping: Grouping method used to determine attainment level
+                - ml_goal_level: The level of the goals set for students in the mastery learning program
+                - ml_assess_det: Details on how student performance is assessed in the mastery learning program
+                - ml_fb_detail_prov: Details on how feedback is provided to students in the mastery learning program
+                - ml_mastery_lev: The level of mastery required for students to attain the set goals in the mastery learning program
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        ml_theor_df = self.data_extraction.retrieve_data(ml_theor_output, "ml_theor")
+        ml_age_grp_df = self.data_extraction.retrieve_data(ml_age_group_output, "ml_age_grp")
+        ml_ability_grp_df = self.data_extraction.retrieve_data(ml_ability_group_output, "ml_ability_grp")
+        ml_attain_group_type_df = self.data_extraction.retrieve_data(ml_if_attain_what_grouping_type_output, "ml_attain_grouping")
+        ml_goal_level_df = self.data_extraction.retrieve_data(ml_goal_level, "ml_goal_level")
+        ml_asess_det_df = self.data_extraction.retrieve_data(ml_assess_detail, "ml_assess_det")
+        ml_fb_det_prov_df = self.data_extraction.retrieve_data(ml_fb_detail_prov, "ml_fb_detail_prov")
+        ml_mast_lev_df = self.data_extraction.retrieve_data(ml_mastery_level, "ml_mastery_lev")
+        
+        ml_ss_df = pd.concat([
+            ml_theor_df,
+            ml_age_grp_df,
+            ml_ability_grp_df,
+            ml_attain_group_type_df,
+            ml_goal_level_df,
+            ml_asess_det_df,
+            ml_fb_det_prov_df,
+            ml_mast_lev_df
+        ], axis=1, sort=False)
+        
+        ml_ss_df.fillna("NA", inplace=True)
+        return ml_ss_df
+
+
+    def metacog_self_reg_ss(self):
+        """
+        Retrieves data related to metacognition and self-regulated learning.
+
+        Returns:
+            pandas.DataFrame: A data frame containing the following columns:
+                - msr_knowl_type: Type of knowledge in the task
+                - msr_task_stage: Stage of the task at which self-regulated learning occurred
+                - msr_strategy: Type of self-regulated learning strategy used
+                - msr_motiv_aspects: Motivational aspects related to self-regulated learning
+                - msr_teaching_approach: Teaching approach that encourages self-regulated learning
+                - msr_digit_tech: Digital technologies used for self-regulated learning
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        msr_knowl_type_df = self.data_extraction.retrieve_data(msr_knowl_type_output, "msr_knowl_type")
+        msr_task_stage_df = self.data_extraction.retrieve_data(msr_task_stage_output, "msr_task_stage")
+        msr_strategy_df = self.data_extraction.retrieve_data(msr_strategy_type_output, "msr_strategy")
+        msr_motiv_aspects_df = self.data_extraction.retrieve_data(msr_self_reg_mot_aspects_output, "msr_motiv_aspects")
+        msr_teaching_approach_df = self.data_extraction.retrieve_data(msr_teaching_approach_output, "msr_teaching_approach")
+        msr_digit_tech_df = self.data_extraction.retrieve_data(msr_digit_tech, "msr_digit_tech")
+        
+        msr_ss_df = pd.concat([
+            msr_knowl_type_df,
+            msr_task_stage_df,
+            msr_strategy_df,
+            msr_motiv_aspects_df,
+            msr_teaching_approach_df,
+            msr_digit_tech_df
+        ], axis=1, sort=False)
+        
+        msr_ss_df.fillna("NA", inplace=True)
+        return msr_ss_df
+
+
+    def oral_lang_ss(self):
+        """Retrieves data related to oral language activities.
+
+        Returns:
+            pandas.DataFrame: A data frame containing the following columns:
+                - ol_focus: Focus of the oral language activities
+                - ol_target: Target of the oral language activities
+                - ol_target_comp_type: Type of component targeted by the oral language activities
+                - ol_activity_invol: Involvement of the students in the oral language activities
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        ol_focus_df = self.data_extraction.retrieve_data(ol_focus, "ol_focus")
+        ol_target_df = self.data_extraction.retrieve_data(ol_target, "ol_target")
+        ol_target_comp_type_df = self.data_extraction.retrieve_data(ol_imp_comp_type, "ol_target_comp_type")
+        ol_act_invol_df = self.data_extraction.retrieve_data(ol_activity_invol, "ol_activity_invol")
+        
+        ol_ss_df = pd.concat([
+            ol_focus_df,
+            ol_target_df,
+            ol_target_comp_type_df,
+            ol_act_invol_df,
+        ], axis=1, sort=False)
+        
+        ol_ss_df.fillna("NA", inplace=True)
+        return ol_ss_df
+
+
+    def one_t_one_comp_ss(self):
+        """Extracts data related to one-to-one comparisons.
+
+        Returns:
+            pandas.DataFrame: A data frame containing the following columns:
+                - 1_1_comparisons_Available: Whether one-to-one comparisons were available
+                - 1_1_comparisons_Available_SS_ht: Highlighted text for one-to-one comparison availability
+                - 1_1_comparisons_Available_SS_info: User comments on one-to-one comparison availability
+        """
+        comp_avail_df = self.data_extraction.retrieve_data(comparisons_available, "1_1_comparisons_Available")
+        comp_avail_HT_df = self.data_extraction.retrieve_ht(comparisons_available, "1_1_comparisons_Available_SS_ht")
+        comp_avail_Comments_df = self.data_extraction.retrieve_info(comparisons_available, "1_1_comparisons_Available_SS_info")
+        
+        one_to_one_ss_df = pd.concat([comp_avail_df,], axis=1, sort=False)
+        one_to_one_ss_df.fillna("NA", inplace=True)
+        
+        self.data_extraction.clean_up(one_to_one_ss_df)
+        return one_to_one_ss_df
+
+
+    def peer_tut(self):
+        """
+        Retrieves data related to peer tutoring.
+
+        Returns:
+            pandas.DataFrame: A data frame containing the following columns:
+                - pt_tut_desc: Description of the peer tutoring program
+                - pt_tut_desc_same_age: Description of the peer tutoring program for same-age peers
+                - pt_tut_desc_cross_age: Description of the peer tutoring program for cross-age peers
+                - pt_same_age_attainment: Peer tutoring's effect on same-age peers' academic attainment
+                - pt_cross_age_attainment: Peer tutoring's effect on cross-age peers' academic attainment
+                - pt_tut_from: Where the peer tutors came from (e.g. same school, different school)
+                - pt_tut_role: Role of the peer tutors in the program
+                - pt_tutee_attain_level: Level of academic attainment of the tutees
+                - pt_digit_tech: Use of digital technology in the program
+                - pt_incentive: Incentives offered to peer tutors or tutees
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        tut_desc_df = self.data_extraction.retrieve_data(tutor_age_output, "pt_tut_desc")
+        tut_desc_same_age_df = self.data_extraction.retrieve_data(tutor_age_same, "pt_tut_desc_same_age")
+        tut_desc_cross_age_df = self.data_extraction.retrieve_data(tutor_age_cross, "pt_tut_desc_cross_age")
+        tut_same_age_df = self.data_extraction.retrieve_data(tutor_same_age_output, "pt_same_age_attainment")
+        tut_cross_age_df = self.data_extraction.retrieve_data(tutor_cross_age_output, "pt_cross_age_attainment")
+        tut_from_df = self.data_extraction.retrieve_data(tutor_from_output, "pt_tut_from")
+        tut_role_df = self.data_extraction.retrieve_data(tutor_role_output, "pt_tut_role")
+        tut_tutee_attain_lev_df = self.data_extraction.retrieve_data(tutee_attainment_output, "pt_tutee_attain_level")
+        digit_tech_df = self.data_extraction.retrieve_data(digit_tech_output, "pt_digit_tech")
+        tut_incentive_df = self.data_extraction.retrieve_data(tutor_tutee_incentive_output, "pt_incentive")
+        
+        peer_tut_ss_df = pd.concat([
+            tut_desc_df,
+            tut_desc_same_age_df,
+            tut_desc_cross_age_df,
+            tut_same_age_df,
+            tut_cross_age_df,
+            tut_from_df,
+            tut_role_df,
+            tut_tutee_attain_lev_df,
+            digit_tech_df,
+            tut_incentive_df,
+        ], axis=1, sort=False)
+        
+        return peer_tut_ss_df
+
+
+    def phys_activity_ss(self):
+        """
+        Retrieves data related to physical activity.
+
+        Returns:
+            pandas.DataFrame: A data frame containing the following columns:
+                - pa_when: When physical activity took place
+                - pa_lessons: Lessons included physical activity
+                - pa_act_type: Type of physical activity
+                - pa_exer_level: Level of exercise involved
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        pha_when_df = self.data_extraction.retrieve_data(pha_when_output, "pa_when")
+        pha_lessons_df = self.data_extraction.retrieve_data(pha_lessons_included_output, "pa_lessons")
+        pha_act_type_df = self.data_extraction.retrieve_data(pha_activity_type_output, "pa_act_type")
+        pha_exer_level_df = self.data_extraction.retrieve_data(pha_exercise_level_output, "pa_exer_level")
+        
+        pha_ss_df = pd.concat([
+            pha_when_df,
+            pha_lessons_df,
+            pha_act_type_df,
+            pha_exer_level_df,
+        ], axis=1, sort=False)
+        
+        pha_ss_df.fillna("NA", inplace=True)
+        return pha_ss_df
+
+
+    def read_comprehension_ss(self):
+        """
+        Retrieves data related to reading comprehension.
+
+        Returns:
+            pandas.DataFrame: A data frame containing the following columns:
+                - rc_comp: Comprehension components assessed
+                - rc_comp_strat: Comprehension strategies assessed
+                - rc_comp_vocab: Vocabulary instruction provided
+                - rc_comp_red_flu: Instruction on reading fluency provided
+                - rc_comp_phon: Instruction on phonics provided
+                - rc_comp_wri: Writing instruction provided
+                - rc_comp_other: Other forms of instruction provided
+                - rc_comp_unclear: Unclear forms of instruction provided
+                - rc_strat_instruc: Type of instruction provided for comprehension strategies
+                - rc_instruc_comp: Components of instruction provided for reading comprehension
+                - rc_txt_type_red_mat: Text type or material used for reading comprehension
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        rc_comp_df = self.data_extraction.retrieve_data(rc_components_output, "rc_comp")
+        rc_comp_strat_df = self.data_extraction.retrieve_data(rc_comp_strat_output, "rc_comp_strat")
+        rc_comp_vocab_df = self.data_extraction.retrieve_data(rc_comp_vocab_output, "rc_comp_vocab")
+        rc_comp_red_flu_df = self.data_extraction.retrieve_data(rc_comp_red_flu_output, "rc_comp_red_flu")
+        rc_comp_phon_df = self.data_extraction.retrieve_data(rc_comp_phon_output, "rc_comp_phon")
+        rc_comp_wri_df = self.data_extraction.retrieve_data(rc_comp_wri_output, "rc_comp_wri")
+        rc_comp_other_df = self.data_extraction.retrieve_data(rc_comp_other_output, "rc_comp_other")
+        rc_comp_unclear_df = self.data_extraction.retrieve_data(rc_comp_unclear_output, "rc_comp_unclear")
+        rc_strat_instr_df = self.data_extraction.retrieve_data(rc_strat_instruct_type_output, "rc_strat_instruc")
+        rc_instruc_comp_df = self.data_extraction.retrieve_data(rc_comp_other_output, "rc_instruc_comp")
+        rc_txt_type_df = self.data_extraction.retrieve_data(rc_txt_type_output, "rc_txt_type_red_mat")
+        
+        rc_ss_df = pd.concat([
+            rc_comp_df,
+            rc_comp_strat_df,
+            rc_comp_vocab_df,
+            rc_comp_red_flu_df,
+            rc_comp_phon_df,
+            rc_comp_wri_df,
+            rc_comp_other_df,
+            rc_comp_unclear_df,
+            rc_strat_instr_df,
+            rc_instruc_comp_df,
+            rc_txt_type_df,
+        ], axis=1, sort=False)
+        
+        return rc_ss_df
+
+
+    def red_class_size_ss(self):
+        """
+        Retrieves data related to reducing class sizes.
+
+        Returns:
+            pandas.DataFrame: A data frame containing the following columns:
+                - redc_avg_small_class_size_info: The average size of small classes.
+                - redc_avg_large_class_size_info: The average size of large classes.
+                - redc_small_class_teach_num: The number of teachers in small classes.
+                - redc_large_class_teach_num: The number of teachers in large classes.
+                - redc_large_class_adapt: Adaptations made for large classes.
+                - redc_lim_num_subj: Reduced class size for limited number of subjects.
+                - redc_impl_all_or_most_lessons: Implementation of reduced class sizes for all or most lessons.
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        redc_avg_small_class_size_df = self.data_extraction.retrieve_info(redc_avg_small_class_size_output, "redc_avg_small_class_size_info")
+        redc_avg_large_class_size_df = self.data_extraction.retrieve_info(redc_avg_large_class_size_output, "redc_avg_large_class_size_info")
+        redc_small_class_teach_num_df = self.data_extraction.retrieve_data(redc_small_class_teacher_number_output, "redc_small_class_teach_num")
+        redc_large_class_teach_num_df = self.data_extraction.retrieve_data(redc_large_class_teacher_number_output, "redc_large_class_teach_num")
+        redc_large_class_adapt_df = self.data_extraction.retrieve_data(redc_large_class_adaption_output, "redc_large_class_adapt")
+        redc_lim_num_subj_df = self.data_extraction.retrieve_data(redc_reduc_for_limited_num_sub_output, "redc_lim_num_subj")
+        redc_impl_all_or_most_lessons_df = self.data_extraction.retrieve_data(redc_impl_for_all_or_most_output, "redc_impl_all_or_most_lessons")
+        
+        redc_ss_df = pd.concat([
+            redc_avg_small_class_size_df,
+            redc_avg_large_class_size_df,
+            redc_small_class_teach_num_df,
+            redc_large_class_teach_num_df,
+            redc_large_class_adapt_df,
+            redc_lim_num_subj_df,
+            redc_impl_all_or_most_lessons_df,
+        ], axis=1, sort=False)
+        
+        return redc_ss_df
+
+
+    def repeat_year_ss(self):
+        """
+        Retrieves data related to the practice of students repeating a year.
+
+        Returns:
+            pandas.DataFrame: A data frame containing the following columns:
+                - ry_identify_ret_stu_df: How students are identified for repeating a year
+                - ry_ret_stu_age_df: Age of students who repeat a year
+                - ry_ret_basis_df: Basis for students repeating a year
+                - ry_impact_meas_df: How the impact of repeating a year is measured
+                - ry_stu_ret_num_df: Number of students who repeat a year
+                - ry_ret_stu_comparison_df: How students who repeat a year are compared with other students
+                - ry_prom_count_char_df: Characteristics of students who are promoted or retained
+                - ry_comp_df: Comparison between students who repeat a year and those who don't
+                - ry_comp_grp_school_df: Comparison between students in the same school who repeat a year and those who don't
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        ry_identify_ret_stu_df = self.data_extraction.retrieve_data(ry_ret_stu_identify_output, "ry_identify_ret_stu")
+        ry_ret_stu_age_df = self.data_extraction.retrieve_data(ry_ret_stu_age_output, "ry_ret_stu_age")
+        ry_ret_basis_df = self.data_extraction.retrieve_data(ry_ret_basis_output, "ry_ret_basis")
+        ry_impact_meas_df = self.data_extraction.retrieve_data(ry_impact_measure_delay_output, "ry_impact_meas")
+        ry_stu_ret_num_df = self.data_extraction.retrieve_data(ry_stu_ret_number_output, "ry_stu_ret_num")
+        ry_ret_stu_comparison_df = self.data_extraction.retrieve_data(ry_ret_stud_compared_with_output, "ry_ret_stud_comp")
+        ry_prom_count_char_df = self.data_extraction.retrieve_data(ry_prom_count_characteristics_output, "ry_matching_char")
+        ry_comp_df = self.data_extraction.retrieve_data(ry_comparison, "ry_comp")
+        ry_comp_grp_school_df = self.data_extraction.retrieve_data(ry_comp_grp_school, "ry_comp_grp_school")
+        
+        ry_ss_df = pd.concat([
+            ry_identify_ret_stu_df,
+            ry_ret_stu_age_df,
+            ry_ret_basis_df,
+            ry_impact_meas_df,
+            ry_stu_ret_num_df,
+            ry_ret_stu_comparison_df,
+            ry_prom_count_char_df,
+            ry_comp_df,
+            ry_comp_grp_school_df,
+        ], axis=1, sort=False)
+        
+        self.data_extraction.clean_up(ry_ss_df)
+        return ry_ss_df
+
+
+    def soc_emo_learning_ss(self):
+        """
+        Retrieves data related to social and emotional learning.
+
+        Returns:
+            pandas.DataFrame: A data frame containing the following columns:
+                - sel_involvement_df: Level of involvement of different groups in social and emotional learning
+                - sel_invol_pupils_df: Involvement of all pupils in social and emotional learning
+                - sel_invol_targ_groups_df: Involvement of targeted groups in social and emotional learning
+                - sel_invol_classes_df: Involvement of different classes in social and emotional learning
+                - sel_invol_whole_school_df: Involvement of the entire school in social and emotional learning
+                - sel_invol_class_teachers_df: Involvement of class teachers in social and emotional learning
+                - sel_invol_oth_staff_df: Involvement of other staff in social and emotional learning
+                - sel_invol_out_experts_df: Involvement of outside experts in social and emotional learning
+                - sel_invol_other_df: Other factors affecting involvement in social and emotional learning
+                - sel_focus_df: Areas of focus in social and emotional learning
+                - sel_location_df: Location of social and emotional learning activities
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        sel_involvement_df = self.data_extraction.retrieve_data(sel_involvement_output, "sel_involvement")
+        sel_invol_pupils_df = self.data_extraction.retrieve_data(sel_invol_all_pupils, "sel_invol_pupils")
+        sel_invol_targ_groups_df = self.data_extraction.retrieve_data(sel_invol_targ_grp, "sel_invol_targ_grps")
+        sel_invol_classes_df = self.data_extraction.retrieve_data(sel_invol_classes, "sel_invol_classes")
+        sel_invol_whole_school_df = self.data_extraction.retrieve_data(sel_invol_school, "sel_invol_whole_school")
+        sel_invol_class_teachers_df = self.data_extraction.retrieve_data(sel_invol_teachers, "sel_invol_class_teachers")
+        sel_invol_oth_staff_df = self.data_extraction.retrieve_data(sel_invol_other_staff, "sel_invol_oth_staff")
+        sel_invol_out_experts_df = self.data_extraction.retrieve_data(sel_invol_outside_experts, "sel_invol_out_experts")
+        sel_invol_other_df = self.data_extraction.retrieve_data(sel_invol_other, "sel_invol_other")
+        sel_focus_df = self.data_extraction.retrieve_data(sel_focus_output, "sel_focus")
+        sel_location_df = self.data_extraction.retrieve_data(sel_location_output, "sel_location")
+        
+        sel_ss_df = pd.concat([
+            sel_involvement_df,
+            sel_invol_pupils_df,
+            sel_invol_targ_groups_df,
+            sel_invol_classes_df,
+            sel_invol_whole_school_df,
+            sel_invol_class_teachers_df,
+            sel_invol_oth_staff_df,
+            sel_invol_out_experts_df,
+            sel_invol_other_df,
+            sel_focus_df,
+            sel_location_df
+        ], axis=1, sort=False)
+        
+        sel_ss_df.fillna("NA", inplace=True)
+        return sel_ss_df
+
+
+    def setting_streaming_ss(self):
+        """
+        Retrieves and returns the data related to setting and streaming.
+            
+        Returns:
+            A pandas DataFrame containing the following columns:
+                - sets_dir_grp_change: Data on grouping changes.
+                - sets_dir_grp_type_regroup: Data on regrouping type.
+                - sets_curr_taught_in_regroup: Data on curriculum taught in regrouping.
+                - sets_dir_grp_type_streaming: Data on grouping type for streaming.
+                - sets_dir_grp_type_gifted: Data on grouping type for gifted students.
+                - sets_school_groupings: Data on school groupings.
+                - sets_attain_grouping_levels: Data on attainment grouping levels.
+                - sets_follow_same_curr: Data on whether students follow the same curriculum.
+                - sets_approach_name: Data on the approach name.
+                - sets_pupil_assignment: Data on pupil assignment.
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        sets_dir_grp_change_df = self.data_extraction.retrieve_data(sets_dir_grouping_change, "sets_dir_grp_change")
+        """ # get grouping type within attainment data
+        sets_grp_type_within_attain = self.data_extraction.get_data(sets_dir_grouping_type_within_attain)
+        sets_grp_type_within_attain_df = pd.DataFrame(sets_grp_type_within_attain)
+        sets_grp_type_within_attain_df = sets_grp_type_within_attain_df.T
+        sets_grp_type_within_attain_df.columns = ["sets_grp_type_within_attain"] """
+        """ # nested within grp type within attain ^
+        # get curriculum taight within attainment data
+        sets_curr_taught_attain = get_data(sets_curr_taught_in_attain_grp)
+        sets_curr_taught_attain_df = pd.DataFrame(sets_curr_taught_attain)
+        sets_curr_taught_attain_df = sets_curr_taught_attain_df.T
+        sets_curr_taught_attain_df.columns = ["sets_curr_taught_in_attain"] """
+        # get grouping type regroup data
+        sets_dir_grp_type_regroup_df = self.data_extraction.retrieve_data(sets_dir_grouping_type_regroup, "sets_dir_grp_type_regroup")
+        # nested within grp type regroup ^
+        # get curr taught in regroup data
+        sets_curr_taught_regroup_df = self.data_extraction.retrieve_data(sets_curr_taught_in_regroup, "sets_curr_taught_in_regroup")
+        sets_dir_grp_stream_df = self.data_extraction.retrieve_data(sets_dir_grouping_stream, "sets_dir_grp_type_streaming")
+        sets_dir_grp_gifted_df = self.data_extraction.retrieve_data(sets_dir_grouping_gifted, "sets_dir_grp_type_gifted")
+        sets_schl_groupings_df = self.data_extraction.retrieve_data(sets_school_groupings, "sets_school_groupings")
+        sets_attain_grp_levels_df = self.data_extraction.retrieve_data(sets_attain_grouping_level, "sets_attain_grouping_levels")
+        sets_foll_same_curr_df = self.data_extraction.retrieve_data(sets_follow_same_curr, "sets_follow_same_curr")
+        sets_appr_name_df = self.data_extraction.retrieve_data(sets_approach_name, "sets_approach_name")
+        sets_pup_assignment_df = self.data_extraction.retrieve_data(sets_pupil_assignment, "sets_pup_assign")
+        
+        sets_ss_df = pd.concat([
+            sets_dir_grp_change_df,
+            sets_dir_grp_type_regroup_df,
+            sets_curr_taught_regroup_df,
+            sets_dir_grp_stream_df,
+            sets_dir_grp_gifted_df,
+            sets_schl_groupings_df,
+            sets_attain_grp_levels_df,
+            sets_foll_same_curr_df,
+            sets_appr_name_df,
+            sets_pup_assignment_df
+        ], axis=1, sort=False)
+        
+        sets_ss_df.fillna("NA", inplace=True)
+        return sets_ss_df
+
+
+    def small_group_tuit_ss(self):
+        """
+        Retrieves data related to small group tuition, including group size, 
+        composition, and teaching lead.
+
+        Returns:
+            A pandas dataframe containing the following information:
+                - sgt_group_size: The size of the small group.
+                - sgt_group_composition: The composition of the small group.
+                - sgt_group_lead: The teaching lead of the small group.
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        group_size_df = self.data_extraction.retrieve_data(group_size_output, "sgt_group_size")
+        group_size_HT_df = self.data_extraction.retrieve_ht(group_size_output, "sgt_group_size_ht")
+        group_size_info_df = self.data_extraction.retrieve_info(group_size_output, "sgt_group_size_info")
+        group_composition_df = self.data_extraction.retrieve_data(group_composition_output, "sgt_group_composition")
+        group_composition_HT_df = self.data_extraction.retrieve_ht(group_composition_output, "sgt_group_composition_ht")
+        group_composition_info_df = self.data_extraction.retrieve_info(group_composition_output, "sgt_group_composition_info")
+        group_lead_df = self.data_extraction.retrieve_data(group_teaching_lead_output, "sgt_group_lead")
+        group_lead_HT_df = self.data_extraction.retrieve_ht(group_teaching_lead_output, "sgt_group_lead_ht")
+        group_lead_info_df = self.data_extraction.retrieve_info(group_teaching_lead_output, "sgt_group_lead_info")
+       
+        sgt_ss_df = pd.concat([group_size_df, group_composition_df, group_lead_df,
+            ], axis=1, sort=False)
+        
+        sgt_ss_df.fillna("NA", inplace=True)
+        return sgt_ss_df
+
+
+    def summer_school_ss(self):
+        """
+        Retrieves data related to summer schools, including program aims, 
+        pupil participation, and attendance.
+
+        Returns:
+            A pandas dataframe containing the following information:
+            - ss_aim: The general aim of the summer school.
+            - ss_aim_catch_up: Whether the summer school was aimed at helping students catch up.
+            - ss_aim_enrich: Whether the summer school was aimed at enriching students' education.
+            - ss_aim_trans: Whether the summer school was aimed at helping students transition to a new school.
+            - ss_aim_gifted: Whether the summer school was aimed at serving gifted students.
+            - ss_aim_unclear: Whether the aim of the summer school was unclear.
+            - ss_pupil_part: The number and characteristics of pupils who participated in the summer school.
+            - ss_resid_comp: Whether the summer school included residential components.
+            - ss_grp_size: The size of the groups in the summer school.
+            - ss_act_focus: The focus of the activities in the summer school.
+            - ss_staff_kind: The kind of staff involved in the summer school.
+            - ss_par_invol: The involvement of parents in the summer school.
+            - ss_dig_tech: The use of digital technology in the summer school.
+            - ss_attendance: The attendance rate of the summer school.
+        """
+        ss_aim_df = self.data_extraction.retrieve_data(ss_aim_output, "ss_aim")
+        ss_aim_catch_up_df = self.data_extraction.retrieve_data(ss_aim_output_catch_up, "ss_aim_catch_up")
+        ss_aim_enrich_df = self.data_extraction.retrieve_data(ss_aim_output_enrich, "ss_aim_enrich")
+        ss_aim_trans_df = self.data_extraction.retrieve_data(ss_aim_output_school_trans, "ss_aim_trans")
+        ss_aim_gifted_df = self.data_extraction.retrieve_data(ss_aim_output_gifted, "ss_aim_gifted")
+        ss_aim_unclear_df = self.data_extraction.retrieve_data(ss_aim_output_unclear, "ss_aim_unclear")
+        ss_pupil_part_df = self.data_extraction.retrieve_data(ss_pupil_part_output, "ss_pupil_part")
+        ss_resid_comp_df = self.data_extraction.retrieve_data(ss_resid_comp_output, "ss_resid_comp")
+        ss_grp_size_df = self.data_extraction.retrieve_data(ss_group_size_output, "ss_grp_size")
+        ss_act_focus_df = self.data_extraction.retrieve_data(ss_activity_focus_output, "ss_act_focus")
+        ss_staff_kind_df = self.data_extraction.retrieve_data(ss_staff_kind_output, "ss_staff_kind")
+        ss_par_invol_df = self.data_extraction.retrieve_data(ss_parent_invol, "ss_par_invol")
+        ss_dig_tech_df = self.data_extraction.retrieve_data(ss_digit_tech, "ss_dig_tech")
+        ss_atten_df = self.data_extraction.retrieve_data(ss_attendance, "ss_attendance")
+        
+        SS_ss_df = pd.concat([
+            ss_aim_df,
+            ss_aim_catch_up_df,
+            ss_aim_enrich_df,
+            ss_aim_trans_df,
+            ss_aim_gifted_df,
+            ss_aim_unclear_df,
+            ss_pupil_part_df,
+            ss_resid_comp_df,
+            ss_grp_size_df,
+            ss_act_focus_df,
+            ss_staff_kind_df,
+            ss_par_invol_df,
+            ss_dig_tech_df,
+            ss_atten_df
+        ], axis=1, sort=False)
+        
+        SS_ss_df.fillna("NA", inplace=True)
+        return SS_ss_df
+
+
+    def teach_assistants_ss(self):
+        """
+        Retrieves data related to teaching assistants, including their role, 
+        group size, and description.
+
+        Returns:
+            A pandas dataframe containing the following information:
+                - ta_desc: A description of the teaching assistant's role.
+                - ta_role: The role of the teaching assistant.
+                - ta_group_size: The size of the group the teaching assistant is assigned to.
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        ta_desc_df = self.data_extraction.retrieve_data(ta_description_output, "ta_desc")
+        ta_desc_HT_df = self.data_extraction.retrieve_ht(ta_description_output, "ta_desc_ht")
+        ta_desc_Comments_df = self.data_extraction.retrieve_info(ta_description_output, "ta_desc_info")
+        ta_role_df = self.data_extraction.retrieve_data(ta_role_output, "ta_role")
+        ta_role_HT_df = self.data_extraction.retrieve_ht(ta_role_output, "ta_role_ht")
+        ta_role_Comments_df = self.data_extraction.retrieve_info(ta_role_output, "ta_role_info")
+        ta_group_size_df = self.data_extraction.retrieve_data(ta_group_size_output, "ta_group_size")
+        ta_group_size_HT_df = self.data_extraction.retrieve_ht(ta_group_size_output, "ta_group_size_ht")
+        ta_group_size_Comments_df = self.data_extraction.retrieve_info(ta_group_size_output, "ta_group_size_info")
+        
+        ta_ss_df = pd.concat([ta_desc_df, ta_role_df, ta_group_size_df,
+        ], axis=1, sort=False)
+        
+        self.data_extraction.clean_up(ta_ss_df)
+        return ta_ss_df
+
+
+    def parental_engagement(self):
+        """
+        Retrieves data related to parental engagement, including involvement, 
+        activities, and focus.
+
+        Returns:
+            A pandas dataframe containing the following information:
+                - pe_involved: The degree of parental involvement in the school.
+                - pe_act_loc: The location of activities involving parents.
+                - pe_prog_training: Programs offered to train parents in supporting their child's education.
+                - pe_prog_support: Programs offered to support parents in other aspects of parenting.
+                - pe_children: Opportunities for parents to work with their children in the school setting.
+                - pe_focus: The main focus of the school's parental engagement efforts.
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        pe_involved_df = self.data_extraction.retrieve_data(pe_involved_output, "pe_involved")
+        pe_act_loc_df = self.data_extraction.retrieve_data(pe_activity_location_output, "pe_act_loc")
+        pe_prog_train_df = self.data_extraction.retrieve_data(pe_prog_training_output, "pe_prog_training")
+        pe_prog_support_df = self.data_extraction.retrieve_data(pe_prog_support_output, "pe_prog_support")
+        pe_children_work_with_df = self.data_extraction.retrieve_data(pe_children_output, "pe_children")
+        pe_focus_df = self.data_extraction.retrieve_data(pe_focus_output, "pe_focus")
+        
+        pe_ss_df = pd.concat([
+            pe_involved_df,
+            pe_act_loc_df,
+            pe_prog_train_df,
+            pe_prog_support_df,
+            pe_children_work_with_df,
+            pe_focus_df,
+        ], axis=1, sort=False) 
+        
+        pe_ss_df.fillna("NA", inplace=True)
+        return pe_ss_df
+
+
+    def phonics(self):
+        """
+        Retrieves data related to phonics instruction, including target population, 
+        instructional approach, and parental involvement.
+
+        Returns:
+            A pandas dataframe containing the following information:
+            - ph_targ_pop: The target population for phonics instruction.
+            - ph_constit_part: The instructional approach used for phonics instruction.
+            - ph_constit_part_synth_phon: Whether synthetic phonics is used as part of the instructional approach.
+            - ph_constit_part_sys_phon: Whether systematic phonics is used as part of the instructional approach.
+            - ph_constit_part_analyt_phon: Whether analytic phonics is used as part of the instructional approach.
+            - ph_constit_part_analog_phon: Whether analogy phonics is used as part of the instructional approach.
+            - ph_constit_part_emb_phon: Whether embedded phonics is used as part of the instructional approach.
+            - ph_constit_part_phonem_aware: Whether phonemic awareness is included as part of the instructional approach.
+            - ph_constit_part_phonol_aware: Whether phonological awareness is included as part of the instructional approach.
+            - ph_constit_part_onset_rime: Whether onset and rime awareness is included as part of the instructional approach.
+            - ph_constit_part_syll_instr: Whether syllable instruction is included as part of the instructional approach.
+            - ph_constit_part_sight_vocab: Whether sight vocabulary is included as part of the instructional approach.
+            - ph_constit_part_whole_word: Whether whole word instruction is included as part of the instructional approach.
+            - ph_central_to_approach: The centrality of phonics instruction to the overall approach to teaching reading.
+            - ph_par_invol: The level of parental involvement in phonics instruction.
+            - ph_dig_tech: The use of digital technology in phonics instruction.
+        """
+        ph_tar_pop_df = self.data_extraction.retrieve_data(ph_targ_pop_output, "ph_targ_pop")
+        ph_const_part_df = self.data_extraction.retrieve_data(ph_constit_part_approach_output, "ph_constit_part")
+        ph_const_part_synth_df = self.data_extraction.retrieve_data(ph_constit_part_approach_synth_ph, "ph_constit_part_synth_phon")
+        ph_const_part_sys_df = self.data_extraction.retrieve_data(ph_constit_part_approach_syst_ph, "ph_constit_part_sys_phon")
+        ph_const_part_analyt_df = self.data_extraction.retrieve_data(ph_constit_part_approach_analyt_ph, "ph_constit_part_analyt_phon")
+        ph_const_part_analog_df = self.data_extraction.retrieve_data(ph_constit_part_approach_analog_ph, "ph_constit_part_analog_phon")
+        ph_const_part_emb_df = self.data_extraction.retrieve_data(ph_constit_part_approach_emb_ph, "ph_constit_part_emb_phon")
+        ph_const_part_phon_aware_df = self.data_extraction.retrieve_data(ph_constit_part_approach_phon_aware, "ph_constit_part_phonem_aware")
+        ph_const_part_phonol_aware_df = self.data_extraction.retrieve_data(ph_constit_part_approach_phonol_aware, "ph_constit_part_phonol_aware")
+        ph_const_part_onset_rime_df = self.data_extraction.retrieve_data(ph_constit_part_approach_onset_rime, "ph_constit_part_onset_rime")
+        ph_const_part_syll_instr_df = self.data_extraction.retrieve_data(ph_constit_part_approach_syll_instr, "ph_constit_part_syll_instr")
+        ph_const_part_sight_vocab_df = self.data_extraction.retrieve_data(ph_constit_part_approach_sight_vocab, "ph_constit_part_sight_vocab")
+        ph_const_part_whole_word_df = self.data_extraction.retrieve_data(ph_constit_part_approach_whole_word, "ph_constit_part_whole_word")
+        ph_central_to_approach_df = self.data_extraction.retrieve_data(ph_central_teach_lit_output, "ph_central_to_approach")
+        ph_par_invol_df = self.data_extraction.retrieve_data(ph_par_invol_output, "ph_par_invol")
+        ph_dig_tech_df = self.data_extraction.retrieve_data(ph_digit_tech_output, "ph_dig_tech")
+        
+        ph_ss_df = pd.concat([
+            ph_tar_pop_df,
+            ph_const_part_df,
+            ph_const_part_synth_df,
+            ph_const_part_sys_df,
+            ph_const_part_analyt_df,
+            ph_const_part_analog_df,
+            ph_const_part_emb_df,
+            ph_const_part_phon_aware_df,
+            ph_const_part_phonol_aware_df,
+            ph_const_part_onset_rime_df,
+            ph_const_part_syll_instr_df,
+            ph_const_part_sight_vocab_df,
+            ph_const_part_whole_word_df,
+            ph_central_to_approach_df,
+            ph_par_invol_df,
+            ph_dig_tech_df
+        ], axis=1, sort=False)
+        
+        ph_ss_df.fillna("NA", inplace=True)
+        return ph_ss_df
+
+
+    def performance_pay(self):
+        """
+        Retrieves data related to performance pay, including incentive criteria, 
+        reward recipients, incentive timing, incentive type, incentive amount, and 
+        teacher evaluation period.
+
+        Returns:
+            A pandas dataframe containing the following information:
+                - pp_incent_criteria: The criteria used to determine incentive pay.
+                - pp_reward_recip: The recipient(s) of the incentive pay.
+                - pp_incent_timing: The timing of the incentive pay.
+                - pp_incent_type: The type of incentive pay (e.g., monetary, non-monetary).
+                - pp_incent_amount: The amount of incentive pay.
+                - pp_teach_eval_per: The evaluation period for determining incentive pay.
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        pp_incent_crit_df = self.data_extraction.retrieve_data(pp_incentive_criteria_output, "pp_incent_criteria")
+        pp_reward_recip_df = self.data_extraction.retrieve_data(pp_reward_recipient_output, "pp_reward_recip")
+        pp_incent_timing_df = self.data_extraction.retrieve_data(pp_incentive_timing_output, "pp_incent_timing")
+        pp_incent_type_df = self.data_extraction.retrieve_data(pp_incentive_type_output, "pp_incent_type")
+        pp_incent_amount_df = self.data_extraction.retrieve_data(pp_incentive_amount_output, "pp_incent_amount")
+        pp_teach_eval_per_df = self.data_extraction.retrieve_data(pp_teacher_eval_period_output, "pp_teach_eval_per")
+        
+        pp_ss_df = pd.concat([
+            pp_incent_crit_df,
+            pp_reward_recip_df,
+            pp_incent_timing_df,
+            pp_incent_type_df,
+            pp_incent_amount_df,
+            pp_teach_eval_per_df,
+        ], axis=1, sort=False)
+       
+        pp_ss_df.fillna("NA", inplace=True)
+        return pp_ss_df
+
+
+    def within_class_grouping(self):
+        """
+        Retrieves data related to within-class grouping, including direction of 
+        grouping change, pupils affected by within-class grouping, attainment 
+        grouping levels, approach name, and pupil assignment.
+
+        Returns:
+            A pandas dataframe containing the following information:
+                - wc_grp_dir: The direction of grouping change.
+                - wc_curr_taught_att_grp: The current taught attainment group.
+                - wc_pup_affected: The pupils affected by within-class grouping.
+                - wc_attn_grouping_levels: The attainment grouping levels.
+                - wc_follow_same_curr: Whether pupils follow the same curriculum.
+                - wc_approach_name: The approach name for within-class grouping.
+                - wc_pup_assign: How pupils are assigned to groups.
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        wc_grp_dir_df = self.data_extraction.retrieve_data(wcg_dir_grouping_change_output, "wc_grp_dir")
+        wc_curr_taught_att_grp_df = self.data_extraction.retrieve_data(wcg_curr_taught_attain_grp_output, "wc_curr_taught_att_grp")
+        wc_pup_affected_df = self.data_extraction.retrieve_data(wcg_pupils_affected_by_wcg_output, "wc_pup_affected")
+        wc_att_grping_levels_df = self.data_extraction.retrieve_data(wcg_attain_grouping_level, "wc_attn_grouping_levels")
+        wc_follow_same_curr_df = self.data_extraction.retrieve_data(wcg_follow_same_curr, "wc_follow_same_curr")
+        wc_approach_name_df = self.data_extraction.retrieve_data(wcg_approach_name, "wc_approach_name")
+        wc_pup_assign_df = self.data_extraction.retrieve_data(wcg_pupil_assignment, "wc_pup_assign")
+        
+        wc_ss_df = pd.concat([
+            wc_grp_dir_df,
+            wc_curr_taught_att_grp_df,
+            wc_pup_affected_df,
+            wc_att_grping_levels_df,
+            wc_follow_same_curr_df,
+            wc_approach_name_df,
+            wc_pup_assign_df,
+        ], axis=1, sort=False)
+        
+        self.data_extraction.clean_up(wc_ss_df)
+        return wc_ss_df
+
+
+    def strand_specific_df_selection(self, user_input):
+        """
+        Selects a strand-specific dataframe based on user input.
+
+        Args:
+            user_input (int): An integer representing the user's selection from 
+            a list of strand-specific dataframes.
+
+        Returns:
+            A pandas dataframe containing data related to the selected strand.
+        """
+        match user_input:
+            # MAIN TOOLKIT
+            case 1: 
+                print("- Strand specific datraframe selection: Arts Participation")
+                ss_df = self.arts_participation_ss()
+            case 2: 
+                print("- Strand specific datraframe selection: Behaviour Interventions")
+                ss_df = self.behaviour_int_ss()
+            case 3:
+                print("- Strand specific datraframe selection: Collaborative Learning")
+                ss_df = self.collab_learning_ss()
+            case 4: 
+                print("- Strand specific datraframe selection: Extending School Time")
+                ss_df = self.ext_school_time_ss()
+            case 5: 
+                print("- Strand specific datraframe selection: Feedback")
+                ss_df = self.feedback_ss()
+            case 6:
+                print("- Strand specific datraframe selection: Homework")
+                ss_df = self.homework_ss()
+            case 7: 
+                print("- Strand specific datraframe selection: Individualised Instruction")
+                ss_df = self.indiv_instr_ss()
+            case 8: 
+                print("- Strand specific datraframe selection: Mentoring")
+                ss_df = self.mentoring_ss()
+            case 9:
+                print("- Strand specific datraframe selection: Mastery Learning")
+                ss_df = self.mastery_learning_ss()
+            case 10: 
+                print("- Strand specific datraframe selection: Metacognition & Self Regulation")
+                ss_df = self.metacog_self_reg_ss()
+            case 11:
+                print("- Strand specific datraframe selection: One to One Tuition")
+                ss_df = self.one_t_one_comp_ss()
+            case 12: 
+                print("- Strand specific datraframe selection: Oral Language")
+                ss_df = self.oral_lang_ss()
+            case 13:
+                print("- Strand specific datraframe selection: Physical Activity")
+                ss_df = self.phys_activity_ss()
+            case 14: 
+                print("- Strand specific datraframe selection: Parentel Engagement")
+                ss_df = self.parental_engagement()
+            case 15: 
+                print("- Strand specific datraframe selection: Phonics")
+                ss_df = self.phonics()
+            case 16:
+                print("- Strand specific datraframe selection: Performance Pay")
+                ss_df = self.performance_pay()
+            case 17: 
+                print("- Strand specific datraframe selection: Peer Tutoring")
+                ss_df = self.peer_tut()
+            case 18: 
+                print("- Strand specific datraframe selection: Reading Comprehension")
+                ss_df = self.read_comprehension_ss()
+            case 19:
+                print("- Strand specific datraframe selection: Reducing Class Size")
+                ss_df = self.red_class_size_ss()
+            case 20: 
+                print("- Strand specific datraframe selection: Repeating a Year")
+                ss_df = self.repeat_year_ss()
+            case 21: 
+                print("- Strand specific datraframe selection: Social & Emotional Learning")
+                ss_df = self.soc_emo_learning_ss()
+            case 22: 
+                print("- Strand specific datraframe selection: Setting/Streaming")
+                ss_df = self.setting_streaming_ss()
+            case 23: 
+                print("- Strand specific datraframe selection: Small Group Tuition")
+                ss_df = self.small_group_tuit_ss()
+            case 24: 
+                print("- Strand specific datraframe selection: Summer Schools")
+                ss_df = self.summer_school_ss()
+            case 25: 
+                print("- Strand specific datraframe selection: Teaching Assistants")
+                ss_df = self.teach_assistants_ss()
+            case 26: 
+                print("- Strand specific datraframe selection: Within-Class Grouping")
+                ss_df = self.within_class_grouping()
+            # EARLY YEARS TOOKLIT (overlap)
+            case 27: 
+                print("- Strand specific datraframe selection: Early Years - Early Literacy Approaches")
+                ss_df = self.ey_early_lit_approaches_ss()
+            case 28: 
+                print("- Strand specific datraframe selection: Early Numeracy Approaches")
+                ss_df = self.ey_early_num_approaches_ss()
+            case 29: 
+                print("- Strand specific datraframe selection: Earlier Starting Age")
+                ss_df = self.ey_earlier_start_age_ss()
+            case 30: 
+                print("- Strand specific datraframe selection: Extra Hours")
+                ss_df = self.ey_extra_hours_ss()
+            case 31: 
+                print("- Strand specific datraframe selection: Play Based Learning")
+                ss_df = self.ey_play_based_learning_ss()
+        return ss_df
+
 #/**********************************************/
 #/   RETRIEVE INDIVIDUAL VARIABLE DATAFRAMES    /
 #/**********************************************/
@@ -2339,916 +3885,8 @@ def web_loc():
     return loc_info
 
     
-#/*********************************/
-#/   STRAND SPECIFIC DATAFRAMES    /
-#/*********************************/
 
 
-def arts_participation_ss():
-    # get focus data
-    ap_focus_df = json_extractor.retrieve_data(ap_focus_output, "ap_focus")
-    # get who involved data
-    ap_who_invol_df = json_extractor.retrieve_data(ap_who_output, "ap_involved")
-    # get where data
-    ap_where_df = json_extractor.retrieve_data(ap_where_output, "ap_where")
-    ap_ss_df = pd.concat([
-        ap_focus_df,
-        ap_who_invol_df,
-        ap_where_df,
-    ], axis=1, sort=False)
-    # fill blanks with NA
-    ap_ss_df.fillna("NA", inplace=True)
-    return ap_ss_df
-
-
-def behaviour_int_ss():
-    bi_target_group_df = json_extractor.retrieve_data(bi_target_group_output, "bi_targ_group")
-    bi_target_group_HT_df = json_extractor.retrieve_ht(bi_intervention_approach_output, "bi_targ_group_ht")
-    bi_target_group_Comments_df = json_extractor.retrieve_info(bi_intervention_components_output, "bi_targ_group_info")
-    # BEHAVIOR INTERVENTION APPROACH
-    bi_int_approach_df = json_extractor.retrieve_data(bi_intervention_approach_output, "bi_int_approach")
-    bi_int_approach_HT_df = json_extractor.retrieve_ht(bi_intervention_approach_output, "bi_int_approach_ht")
-    bi_int_approach_Comments_df = json_extractor.retrieve_info(bi_intervention_approach_output, "bi_int_approach_info")
-    bi_int_components_df = json_extractor.retrieve_data(bi_intervention_components_output, "bi_int_components")
-    bi_int_components_HT_df = json_extractor.retrieve_ht(bi_intervention_components_output, "bi_int_components_ht")
-    bi_int_components_Comments_df = json_extractor.retrieve_info(bi_intervention_components_output, "bi_int_components_info")
-    bi_int_comp_counselling_df = json_extractor.retrieve_data(ind_comp_counselling, "bi_components_counselling")
-    bi_int_comp_monitoring_df = json_extractor.retrieve_data(ind_comp_monitoring, "bi_components_monitoring")
-    bi_int_comp_self_man_df = json_extractor.retrieve_data(ind_comp_self_management, "bi_components_self")
-    bi_int_comp_role_play_df = json_extractor.retrieve_data(ind_comp_role_play, "bi_components_roleplay")
-    bi_int_comp_par_invol_df = json_extractor.retrieve_data(ind_comp_parental_involv, "bi_components_parentalinv")
-    bi_int_comp_ac_focus_df = json_extractor.retrieve_data(ind_comp_academic_focus, "bi_academic")
-    bi_int_comp_dig_tech_df = json_extractor.retrieve_data(ind_comp_digit_tech, "bi_components_digital")
-    bi_ss_df = pd.concat([
-        bi_target_group_df,
-        bi_int_approach_df,
-        bi_int_components_df,
-        bi_int_comp_counselling_df,
-        bi_int_comp_monitoring_df,
-        bi_int_comp_self_man_df,
-        bi_int_comp_role_play_df,
-        bi_int_comp_par_invol_df,
-        bi_int_comp_ac_focus_df,
-        bi_int_comp_dig_tech_df
-    ], axis=1, sort=False)
-    # fill blanks with NA
-    bi_ss_df.fillna("NA", inplace=True)
-    return bi_ss_df
-
-
-def collab_learning_ss():
-    cl_approach_spec_df = json_extractor.retrieve_data(cl_approach_spec_output, "cl_approach_spec")
-    cl_grp_size_df = json_extractor.retrieve_data(cl_group_size_output, "cl_grp_size")
-    cl_collab_kind_df = json_extractor.retrieve_data(cl_collab_kind_output, "cl_collab_kind")
-    cl_stud_collab_df = json_extractor.retrieve_data(cl_stud_collab_output, "cl_stud_collab")
-    cl_stud_collab_HT_df = json_extractor.retrieve_ht(cl_stud_collab_output, "cl_stud_collab_HT")
-    cl_extr_rewards_df = json_extractor.retrieve_data(cl_extr_rewards_output, "cl_extr_rewards")
-    cl_extr_rewards_HT_df = json_extractor.retrieve_ht(cl_extr_rewards_output, "cl_extr_rewards_HT")
-    cl_if_yes_rewards_df = json_extractor.retrieve_data(cl_if_yes_rewards_output, "cl_what_rewards")
-    cl_if_yes_rewards_HT_df = json_extractor.retrieve_ht(cl_if_yes_rewards_output, "cl_what_rewards_HT")
-    cl_comp_elem_df = json_extractor.retrieve_data(cl_comp_elem_output, "cl_comp_elem")
-    cl_comp_elem_HT_df = json_extractor.retrieve_ht(cl_comp_elem_output, "cl_comp_elem_HT")
-    cl_teach_role_info_df = json_extractor.retrieve_data(cl_teacher_role_info_output, "cl_teacher_role_info")
-    cl_teach_role_info_HT_df = json_extractor.retrieve_ht(cl_teacher_role_info_output, "cl_teacher_role_info_HT")
-    cl_pup_feedback_df = json_extractor.retrieve_data(cl_pupil_feedback_output, "cl_pup_feedback")
-    cl_pup_feedback_HT_df = json_extractor.retrieve_ht(cl_pupil_feedback_output, "cl_pup_feedback_HT")
-    cl_pup_feedback_who_df = json_extractor.retrieve_data(cl_pupil_feedback_who_output, "cl_pup_feedback_who")
-    cl_pup_feedback_who_HT_df = json_extractor.retrieve_ht(cl_pupil_feedback_who_output, "cl_pup_feedback_who_HT")
-    cl_ss_df = pd.concat([
-        cl_approach_spec_df,
-        cl_grp_size_df,
-        cl_collab_kind_df,
-        cl_stud_collab_df,
-        cl_extr_rewards_df,
-        cl_if_yes_rewards_df,
-        cl_comp_elem_df,
-        cl_teach_role_info_df,
-        cl_pup_feedback_df,
-        cl_pup_feedback_who_df,
-    ], axis=1, sort=False)
-    # fill blanks with NA
-    cl_ss_df.fillna("NA", inplace=True)
-    return cl_ss_df
-
-
-def ey_early_lit_approaches_ss():
-    lit_act_df = json_extractor.retrieve_data(ela_literacy_activities, "lit_activities")
-    lit_act_HT_df = json_extractor.retrieve_ht(ela_literacy_activities, "lit_activities_HT")
-    prog_comp_df = json_extractor.retrieve_data(ela_comprehensive, "prog_comp")
-    prog_comp_HT_df = json_extractor.retrieve_ht(ela_comprehensive, "prog_comp_HT")
-    prog_desc_df = json_extractor.retrieve_data(ela_prog_desc, "prog_desc")
-    prog_desc_HT_df = json_extractor.retrieve_ht(ela_prog_desc, "prog_desc_HT")
-    # concatenate data frames
-    ela_ss_df = pd.concat([
-        lit_act_df,
-        #lit_act_HT_df,
-        prog_comp_df,
-        #prog_comp_HT_df,
-        prog_desc_df,
-        #prog_desc_HT_df,
-    ], axis=1, sort=False)
-    return ela_ss_df
-
-
-def ey_early_num_approaches_ss():
-    math_incl_df = json_extractor.retrieve_data(ena_maths_included, "math_incl")
-    math_incl_HT_df = json_extractor.retrieve_ht(ena_maths_included, "math_incl_ht")
-    prog_comp_df = json_extractor.retrieve_data(ena_prog_comp, "prog_comp")
-    prog_act_df = json_extractor.retrieve_data(ena_prog_activities, "prog_act")
-    # concatenate data frames
-    ena_ss_df = pd.concat([
-        math_incl_df,
-        #math_incl_HT_df,
-        prog_comp_df,
-        prog_act_df,
-    ], axis=1, sort=False)
-    # fill blanks with NA
-    ena_ss_df.fillna("NA", inplace=True)
-    return ena_ss_df
-
-
-def ext_school_time_ss():
-    # EXTENDED HOW?
-    # get extended how? data
-    extended_how = json_extractor.get_data(extended_how_output)
-    extended_how_df = json_extractor.retrieve_data(extended_how_output, "est_how")
-    # Get extended how? highlighted text
-    extended_how_HT_df = json_extractor.retrieve_ht(extended_how_output, "est_how_ht")
-    # Get extended how? user comments
-    extended_how_Comments_df = json_extractor.retrieve_info(extended_how_output, "est_how_info")
-    # TIME ADDED
-    # get time added data
-    time_added_df = json_extractor.retrieve_data(time_Added_output, "est_time_added")
-    time_added_HT_df = json_extractor.retrieve_ht(time_Added_output, "est_time_added_ht")
-    time_added_Comments_df = json_extractor.retrieve_info(time_Added_output, "est_time_added_info")
-    purpose_df = json_extractor.retrieve_data(purpose_or_aim_output, "est_purpose")
-    purpose_HT_df = json_extractor.retrieve_ht(purpose_or_aim_output, "est_purpose_ht")
-    purpose_Comments_df = json_extractor.retrieve_info(purpose_or_aim_output, "est_purpose_info")
-    target_group_df = json_extractor.retrieve_data(target_group_output, "est_target_group")
-    target_group_HT_df = json_extractor.retrieve_ht(target_group_output, "est_target_group_ht")
-    target_group_Comments_df = json_extractor.retrieve_info(target_group_output, "est_target_group_info")
-    pupil_participation_df = json_extractor.retrieve_data(pupil_participation_output, "est_pupil_participation")
-    pupil_participation_HT_df = json_extractor.retrieve_ht(pupil_participation_output, "est_pupil_participation_ht")
-    pupil_participation_Comments_df = json_extractor.retrieve_info(pupil_participation_output, "est_pupil_participation_info")
-    activity_focus_df = json_extractor.retrieve_data(activity_focus_output, "est_activity_focus")
-    activity_focus_HT_df = json_extractor.retrieve_ht(activity_focus_output, "est_activity_focus_ht")
-    activity_focus_Comments_df = json_extractor.retrieve_info(activity_focus_output, "est_activity_focus_info")
-    staff_kind_df = json_extractor.retrieve_data(staff_kind_output, "est_staff_kind")
-    staff_kind_HT_df = json_extractor.retrieve_ht(staff_kind_output, "est_staff_kind_ht")
-    staff_kind_Comments_df = json_extractor.retrieve_info(staff_kind_output, "est_staff_kind_info")
-    parent_involved_df = json_extractor.retrieve_data(parental_involvement_output, "est_parental_involvement")
-    parent_involved_HT_df = json_extractor.retrieve_ht(parental_involvement_output, "est_parental_involvement_ht")
-    parent_involved_Comments_df = json_extractor.retrieve_info(parental_involvement_output, "est_parental_involvement_info")
-    digit_tech_df = json_extractor.retrieve_data(digital_tech_output, "est_digital_tech")
-    digit_tech_HT_df = json_extractor.retrieve_ht(digital_tech_output, "est_digital_tech_ht")
-    digit_tech_Comments_df = json_extractor.retrieve_info(digital_tech_output, "est_digital_tech_info")
-    attend_mon_df = json_extractor.retrieve_data(attendance_monitored_output, "est_attend_monitored")
-    attend_mon_HT_df = json_extractor.retrieve_ht(attendance_monitored_output, "est_attend_monitored_ht")
-    attend_mon_Comments_df = json_extractor.retrieve_info(attendance_monitored_output, "est_attendance_monitored_info")
-    # concatenate data frames
-    est_ss_df = pd.concat([
-        extended_how_df,
-        time_added_df,
-        time_added_Comments_df,
-        purpose_df,
-        target_group_df,
-        pupil_participation_df,
-        activity_focus_df,
-        staff_kind_df,
-        parent_involved_df,
-        digit_tech_df,
-        attend_mon_df,
-    ], axis=1, sort=False)
-    # remove problematic text from outputs
-    json_extractor.clean_up(est_ss_df)
-    return est_ss_df
-
-
-def ey_earlier_start_age_ss():
-    prev_start_age_df = json_extractor.retrieve_data(ey_esa_prev_starting_age, "prev_start_age")
-    new_start_age_df = json_extractor.retrieve_data(ey_esa_new_starting_age, "new_start_age")
-    addit_time_f_pt_df = json_extractor.retrieve_data(ey_esa_addit_time_f_pt, "addit_time_f_pt")
-    add_time_struct_df = json_extractor.retrieve_data(ey_esa_addit_time_struct, "addit_time_struct")
-    earl_child_addit_time_df = json_extractor.retrieve_data(ey_esa_earlier_child_addit_time, "early_child_addit_time")
-    earl_child_addit_time_info_df = json_extractor.retrieve_info(ey_esa_earlier_child_addit_time_other, "early_child_addit_time_info")
-    setting_type_df = json_extractor.retrieve_data(ey_esa_setting_type, "setting_type")
-    ey_esa_df = pd.concat([
-        prev_start_age_df,
-        new_start_age_df,
-        addit_time_f_pt_df,
-        add_time_struct_df,
-        earl_child_addit_time_df,
-        earl_child_addit_time_info_df,
-        setting_type_df,
-    ], axis=1, sort=False)
-    # fill blanks with NA
-    ey_esa_df.fillna("NA", inplace=True)
-    return ey_esa_df
-
-
-def ey_extra_hours_ss():
-    time_org_df = json_extractor.retrieve_data(time_organsised, "time_org")
-    addit_time_struc_df = json_extractor.retrieve_data(addit_time_struct, "addit_time_struct")
-    ey_eh_df = pd.concat([
-        time_org_df,
-        addit_time_struc_df
-    ], axis=1, sort=False)
-    # fill blanks with NA
-    ey_eh_df.fillna("NA", inplace=True)
-    return ey_eh_df
-
-
-def ey_play_based_learning_ss():
-    kind_play_df = json_extractor.retrieve_data(kind_of_play, "kind_of_play")
-    who_invol_df = json_extractor.retrieve_data(who_involved, "who_involved")
-    play_foc_df = json_extractor.retrieve_data(play_focus, "play_focus")
-    ey_pbl_df = pd.concat([
-        kind_play_df,
-        who_invol_df,
-        play_foc_df
-    ], axis=1, sort=False)
-    # fill blanks with NA
-    ey_pbl_df.fillna("NA", inplace=True)
-    return ey_pbl_df
-
-
-def feedback_ss():
-    # get feedback source data
-    feedb_source_df = json_extractor.retrieve_data(feedback_source_output, "feedback_Source")
-    # Get feedback source highlighted text
-    feedb_source_HT_df = json_extractor.retrieve_data(feedback_source_output, "feedback_Source_ht")
-    # Get feedback source user comments
-    feedb_source_Comments_df = json_extractor.retrieve_data(feedback_source_output, "feedback_Source_info")
-    # FEEDBACK SOURCE COMPONENTS SPLIT
-    # get feedback source teacher data
-    fsource_teacher_df = json_extractor.retrieve_data(fsource_teacher, "fb_source_teacher")
-    # get feedback source teaching assistant data
-    fsource_ta_df = json_extractor.retrieve_data(fsource_ta, "fb_source_ta")
-    # get feedback source volunteer data
-    fsource_volunteer_df = json_extractor.retrieve_data(fsource_volunteer, "fb_source_volunteer")
-    # get feedback source parent data
-    fsource_parent_df = json_extractor.retrieve_data(fsource_parent, "fb_source_parent")
-    # get feedback source researcher data
-    fsource_researcher_df = json_extractor.retrieve_data(fsource_researcher, "fb_source_researcher")
-    # get feedback source peer same age data
-    fsource_peer_ssame_Age_df = json_extractor.retrieve_data(fsource_peer_sameage_class, "fb_source_peer_sameage")
-    # get feedback source peer group data
-    fsource_peer_group_df = json_extractor.retrieve_data(fsource_peer_group, "fb_source_peer_group")
-    # get feedback source peer older data
-    fsource_peer_older_df = json_extractor.retrieve_data(fsource_peer_older, "fb_source_peer_older")
-    # get feedback source digital automated data
-    fsource_digit_aut_df = json_extractor.retrieve_data(fsource_dig_aut, "fb_source_dig_aut")
-    # get feedback source other non-human data
-    fsource_non_human_df = json_extractor.retrieve_data(fsource_other_nonhuman, "fb_source_non_human")
-    # get feedback source self data
-    fsource_self_df = json_extractor.retrieve_data(fsource_self, "fb_source_self")
-    # get feedback source other data
-    fsource_other_df = json_extractor.retrieve_data(fsource_other, "fb_source_other")
-    # FEEDBACK DIRECTED OUTPUT
-    # get feedback directed data
-    feedb_directed_df = json_extractor.retrieve_data(feedback_directed_output, "fb_directed")
-    # Get feedback directed highlighted text
-    feedb_directed_df_HT_df = json_extractor.retrieve_data(feedback_directed_output, "fb_directed_ht")
-    # Get feedback directed user comments
-    feedb_directed_Comments_df = json_extractor.retrieve_data(feedback_directed_output, "fb_directed_info")
-    # FEEDBACK FORM OUTPUT
-    # get feedback form data
-    feedb_form_df = json_extractor.retrieve_data(feedback_form_output, "fb_form")
-    # Get feedback form highlighted text
-    feedb_form_HT_df = json_extractor.retrieve_data(feedback_form_output, "fb_form_ht")
-    # Get feedback form user comments
-    feedb_form_Comments_df = json_extractor.retrieve_data(feedback_form_output, "fb_form_info")
-    # FEEDBACK WHEN OUTPUT
-    # get feedback when data
-    feedb_when_df = json_extractor.retrieve_data(feedback_when_output, "fb_when")
-    # Get feedback when highlighted text
-    feedb_when_HT_df = json_extractor.retrieve_data(feedback_when_output, "fb_when_ht")
-    # Get feedback when user comments
-    feedb_when_Comments_df = json_extractor.retrieve_data(feedback_when_output, "fb_when_info")
-    # FEEDBACK KIND OUTPUT
-    # get feedback kind data
-    feedb_kind_df = json_extractor.retrieve_data(feedback_kind_output, "fb_kind")
-    # get feedback kind "about the outcome" nested data (correct / incorrect"
-    feedb_kind_abt_outcome_df = json_extractor.retrieve_data(feedback_about_outcome_output, "fb_kind_about_outcome")
-    # Get feedback kind highlighted text
-    feedb_kind_HT_df = json_extractor.retrieve_data(feedback_kind_output, "fb_kind_ht")
-    # Get feedback kind user comments
-    feedb_kind_Comments_df = json_extractor.retrieve_info(feedback_kind_output, "fbkind_info")
-    # FEEDBACK EMOTIONAL TONE OUTPUT
-    # get feedback emotional tone data
-    feedb_emo_tone_df = json_extractor.retrieve_data(feedback_emo_tone, "fb_emo_tone")
-    # Get feedback emotional tone highlighted text
-    feedb_emo_tone_HT_df = json_extractor.retrieve_ht(feedback_emo_tone, "fb_emo_tone_ht")
-    # Get feedback emotional tone user comments
-    feedb_emo_tone_Comments_df = json_extractor.retrieve_info(feedback_emo_tone,"fb_emo_tone_info")
-    # concatenate data frames
-    feedback_ss_df = pd.concat([
-        feedb_source_df,
-        fsource_teacher_df,
-        fsource_ta_df,
-        fsource_volunteer_df,
-        fsource_parent_df,
-        fsource_researcher_df,
-        fsource_peer_ssame_Age_df,
-        fsource_peer_group_df,
-        fsource_peer_older_df,
-        fsource_digit_aut_df,
-        fsource_non_human_df,
-        fsource_self_df,
-        fsource_other_df,
-        feedb_directed_df,
-        feedb_form_df,
-        feedb_when_df,
-        feedb_kind_df,
-        feedb_kind_abt_outcome_df,
-        feedb_emo_tone_df,
-    ], axis=1, sort=False)
-    # remove problematic text from outputs
-    json_extractor.clean_up(feedback_ss_df)
-    return feedback_ss_df
-
-
-def homework_ss():
-    hw_dur_df = json_extractor.retrieve_data(hw_dur_info_output, "hw_dur")
-    # get hw duration information data
-    hw_dur_info_df = json_extractor.retrieve_info(hw_dur_info_output, "hw_dur_info")
-    # get hw duration total time data
-    hw_dur_tot_time_df = json_extractor.retrieve_info(hw_total_time, "hw_dur_tot_time")
-    # get hw who was involved data
-    hw_who_invol_df = json_extractor.retrieve_data(hw_who_involved_output, "hw_who_involved")
-    # get hw if parentes involved, describe role data
-    hw_par_role_df = json_extractor.retrieve_data(hw_if_parents_describe_role_output, "hw_par_role")
-    # get hw completed where data
-    hw_where_df = json_extractor.retrieve_data(hw_completed_where_output, "hw_where")
-    # get hw marking method data
-    hw_mark_method_df = json_extractor.retrieve_data(hw_mark_method_info_output, "hw_mark_method_info")
-    hw_ss_df = pd.concat([
-        hw_dur_df,
-        hw_dur_info_df,
-        hw_dur_tot_time_df,
-        hw_who_invol_df,
-        hw_par_role_df,
-        hw_where_df,
-        hw_mark_method_df
-    ], axis=1, sort=False)
-    # fill blanks with NA
-    hw_ss_df.fillna("NA", inplace=True)
-    return hw_ss_df
-
-
-def indiv_instr_ss():
-    ii_approach_df = json_extractor.retrieve_data(ii_approach_output, "ii_approach_df")
-    # get also included data
-    ii_also_included_df = json_extractor.retrieve_data(ii_also_included_output, "ii_elements_included_df")
-    # get also mentioned data
-    ii_also_mentioned_df = json_extractor.retrieve_data(ii_also_mentioned_output, "ii_programmes_mentioned_df")
-    ii_ss_df = pd.concat([
-        ii_approach_df,
-        ii_also_included_df,
-        ii_also_mentioned_df,
-    ], axis=1, sort=False)
-    # fill blanks with NA
-    ii_ss_df.fillna("NA", inplace=True)
-    return ii_ss_df
-
-
-def mentoring_ss():
-    ment_ident_df = json_extractor.retrieve_data(mentor_identity, "m_identity_df")
-    ment_ident_HT_df = json_extractor.retrieve_ht(mentor_identity, "m_identity_ht_df")
-    ment_ident_Comments_df = json_extractor.retrieve_info(mentor_identity, "m_identity_info_df")
-    ment_pay_df = json_extractor.retrieve_data(mentor_paid_or_compensated, "m_pay_df")
-    ment_pay_HT_df = json_extractor.retrieve_ht(mentor_paid_or_compensated, "m_pay_ht_df")
-    ment_pay_Comments_df = json_extractor.retrieve_info(mentor_paid_or_compensated, "m_pay_info_df")
-    ment_org_df = json_extractor.retrieve_data(mentor_organisation, "m_org_df")
-    ment_org_HT_df = json_extractor.retrieve_ht(mentor_organisation, "m_org_ht_df")
-    ment_org_Comments_df = json_extractor.retrieve_info(mentor_organisation, "m_org_info_df")
-    ment_training_df = json_extractor.retrieve_data(mentor_training, "m_training_df")
-    ment_training_HT_df = json_extractor.retrieve_ht(mentor_training, "m_training_ht_df")
-    ment_training_Comments_df = json_extractor.retrieve_info(mentor_training, "m_training_info_df")
-    ment_meeting_freq_df = json_extractor.retrieve_data(mentor_meeting_frequency, "m_meeting_freq_df")
-    ment_meeting_freq_HT_df = json_extractor.retrieve_ht(mentor_meeting_frequency, "m_meeting_freq_ht_df")
-    ment_meeting_freq_Comments_df = json_extractor.retrieve_info(mentor_meeting_frequency, "m_meeting_freq_info_df")
-    ment_meeting_details_df = json_extractor.retrieve_data(mentor_meeting_details_provided, "m_meeting_details_df")
-    ment_meeting_details_HT_df = json_extractor.retrieve_ht(mentor_meeting_details_provided, "m_meeting_details_ht_df")
-    ment_meeting_details_Comments_df = json_extractor.retrieve_info(mentor_meeting_details_provided, "m_meeting_details_info_df")
-    ment_meeting_location_df = json_extractor.retrieve_data(mentor_meeting_location, "m_meeting_location_df")
-    ment_meeting_location_HT_df = json_extractor.retrieve_ht(mentor_meeting_location, "m_meeting_location_ht_df")
-    ment_meeting_location_Comments_df = json_extractor.retrieve_info(mentor_meeting_location, "m_meeting_location_info_df")
-    ment_addit_exp_df = json_extractor.retrieve_data(mentoring_additional_experiences, "m_addit_exp_df")
-    ment_addit_exp_HT_df = json_extractor.retrieve_ht(mentoring_additional_experiences, "m_addit_exp_ht_df")
-    ment_addit_exp_Comments_df = json_extractor.retrieve_info(mentoring_additional_experiences, "m_addit_exp_info_df")
-    ment_prog_focus_df = json_extractor.retrieve_data(mentoring_programme_focus, "m_prog_focus_df")
-    ment_prog_focus_HT_df = json_extractor.retrieve_ht(mentoring_programme_focus, "m_prog_focus_ht_df")
-    ment_prog_focus_Comments_df = json_extractor.retrieve_info(mentoring_programme_focus, "m_prog_focus_info_df")
-    # concatenate data frames
-    mentoring_ss_df = pd.concat([
-        ment_ident_df,
-        ment_pay_df,
-        ment_org_df,
-        ment_training_df,
-        ment_meeting_freq_df,
-        ment_meeting_details_df,
-        ment_meeting_location_df,
-        ment_addit_exp_df,
-        ment_prog_focus_df,
-    ], axis=1, sort=False)
-    # fill blanks with NA
-    mentoring_ss_df.fillna("NA", inplace=True)
-    return mentoring_ss_df
-
-
-def mastery_learning_ss():
-    ml_theor_df = json_extractor.retrieve_data(ml_theor_output, "ml_theor")
-    ml_age_grp_df = json_extractor.retrieve_data(ml_age_group_output, "ml_age_grp")
-    ml_ability_grp_df = json_extractor.retrieve_data(ml_ability_group_output, "ml_ability_grp")
-    ml_attain_group_type_df = json_extractor.retrieve_data(ml_if_attain_what_grouping_type_output, "ml_attain_grouping")
-    ml_goal_level_df = json_extractor.retrieve_data(ml_goal_level, "ml_goal_level")
-    ml_asess_det_df = json_extractor.retrieve_data(ml_assess_detail, "ml_assess_det")
-    ml_fb_det_prov_df = json_extractor.retrieve_data(ml_fb_detail_prov, "ml_fb_detail_prov")
-    ml_mast_lev_df = json_extractor.retrieve_data(ml_mastery_level, "ml_mastery_lev")
-    ml_ss_df = pd.concat([
-        ml_theor_df,
-        ml_age_grp_df,
-        ml_ability_grp_df,
-        ml_attain_group_type_df,
-        ml_goal_level_df,
-        ml_asess_det_df,
-        ml_fb_det_prov_df,
-        ml_mast_lev_df
-    ], axis=1, sort=False)
-    # fill blanks with NA
-    ml_ss_df.fillna("NA", inplace=True)
-    return ml_ss_df
-
-
-def metacog_self_reg_ss():
-    msr_knowl_type_df = json_extractor.retrieve_data(msr_knowl_type_output, "msr_knowl_type")
-    msr_task_stage_df = json_extractor.retrieve_data(msr_task_stage_output, "msr_task_stage")
-    msr_strategy_df = json_extractor.retrieve_data(msr_strategy_type_output, "msr_strategy")
-    msr_motiv_aspects_df = json_extractor.retrieve_data(msr_self_reg_mot_aspects_output, "msr_motiv_aspects")
-    msr_teaching_approach_df = json_extractor.retrieve_data(msr_teaching_approach_output, "msr_teaching_approach")
-    msr_digit_tech_df = json_extractor.retrieve_data(msr_digit_tech, "msr_digit_tech")
-    msr_ss_df = pd.concat([
-        msr_knowl_type_df,
-        msr_task_stage_df,
-        msr_strategy_df,
-        msr_motiv_aspects_df,
-        msr_teaching_approach_df,
-        msr_digit_tech_df
-    ], axis=1, sort=False)
-    # fill blanks with NA
-    msr_ss_df.fillna("NA", inplace=True)
-    return msr_ss_df
-
-
-def oral_lang_ss():
-    ol_focus_df = json_extractor.retrieve_data(ol_focus, "ol_focus")
-    ol_target_df = json_extractor.retrieve_data(ol_target, "ol_target")
-    ol_target_comp_type_df = json_extractor.retrieve_data(ol_imp_comp_type, "ol_target_comp_type")
-    ol_act_invol_df = json_extractor.retrieve_data(ol_activity_invol, "ol_activity_invol")
-    ol_ss_df = pd.concat([
-        ol_focus_df,
-        ol_target_df,
-        ol_target_comp_type_df,
-        ol_act_invol_df,
-    ], axis=1, sort=False)
-    # fill blanks with NA
-    ol_ss_df.fillna("NA", inplace=True)
-    return ol_ss_df
-
-
-def one_t_one_comp_ss():
-    comp_avail_df = json_extractor.retrieve_data(comparisons_available, "1_1_comparisons_Available")
-    comp_avail_HT_df = json_extractor.retrieve_ht(comparisons_available, "1_1_comparisons_Available_SS_ht")
-    comp_avail_Comments_df = json_extractor.retrieve_info(comparisons_available, "1_1_comparisons_Available_SS_info")
-    # concatenate data frames
-    one_to_one_ss_df = pd.concat([
-        comp_avail_df,
-    ], axis=1, sort=False)
-    # fill blanks with NA
-    one_to_one_ss_df.fillna("NA", inplace=True)
-    # remove problematic text from outputs
-    json_extractor.clean_up(one_to_one_ss_df)
-    return one_to_one_ss_df
-
-
-def peer_tut():
-    tut_desc_df = json_extractor.retrieve_data(tutor_age_output, "pt_tut_desc")
-    tut_desc_same_age_df = json_extractor.retrieve_data(tutor_age_same, "pt_tut_desc_same_age")
-    tut_desc_cross_age_df = json_extractor.retrieve_data(tutor_age_cross, "pt_tut_desc_cross_age")
-    tut_same_age_df = json_extractor.retrieve_data(tutor_same_age_output, "pt_same_age_attainment")
-    tut_cross_age_df = json_extractor.retrieve_data(tutor_cross_age_output, "pt_cross_age_attainment")
-    tut_from_df = json_extractor.retrieve_data(tutor_from_output, "pt_tut_from")
-    tut_role_df = json_extractor.retrieve_data(tutor_role_output, "pt_tut_role")
-    tut_tutee_attain_lev_df = json_extractor.retrieve_data(tutee_attainment_output, "pt_tutee_attain_level")
-    digit_tech_df = json_extractor.retrieve_data(digit_tech_output, "pt_digit_tech")
-    tut_incentive_df = json_extractor.retrieve_data(tutor_tutee_incentive_output, "pt_incentive")
-    peer_tut_ss_df = pd.concat([
-        tut_desc_df,
-        tut_desc_same_age_df,
-        tut_desc_cross_age_df,
-        tut_same_age_df,
-        tut_cross_age_df,
-        tut_from_df,
-        tut_role_df,
-        tut_tutee_attain_lev_df,
-        digit_tech_df,
-        tut_incentive_df,
-    ], axis=1, sort=False)
-    return peer_tut_ss_df
-
-
-def phys_activity_ss():
-    pha_when_df = json_extractor.retrieve_data(pha_when_output, "pa_when")
-    pha_lessons_df = json_extractor.retrieve_data(pha_lessons_included_output, "pa_lessons")
-    pha_act_type_df = json_extractor.retrieve_data(pha_activity_type_output, "pa_act_type")
-    pha_exer_level_df = json_extractor.retrieve_data(pha_exercise_level_output, "pa_exer_level")
-    pha_ss_df = pd.concat([
-        pha_when_df,
-        pha_lessons_df,
-        pha_act_type_df,
-        pha_exer_level_df,
-    ], axis=1, sort=False)
-    # fill blanks with NA
-    pha_ss_df.fillna("NA", inplace=True)
-    return pha_ss_df
-
-
-def read_comprehension_ss():
-    rc_comp_df = json_extractor.retrieve_data(rc_components_output, "rc_comp")
-    # split rc components for ind col extraction
-    # rc comp strat data
-    rc_comp_strat_df = json_extractor.retrieve_data(rc_comp_strat_output, "rc_comp_strat")
-    # rc comp vocab data
-    rc_comp_vocab_df = json_extractor.retrieve_data(rc_comp_vocab_output, "rc_comp_vocab")
-    # rc comp reading fluency data
-    rc_comp_red_flu_df = json_extractor.retrieve_data(rc_comp_red_flu_output, "rc_comp_red_flu")
-    # rc comp phonics fluency data
-    rc_comp_phon_df = json_extractor.retrieve_data(rc_comp_phon_output, "rc_comp_phon")
-    # rc comp writing data
-    rc_comp_wri_df = json_extractor.retrieve_data(rc_comp_wri_output, "rc_comp_wri")
-    # rc comp other data
-    rc_comp_other_df = json_extractor.retrieve_data(rc_comp_other_output, "rc_comp_other")
-    # rc comp unclear data
-    rc_comp_unclear_df = json_extractor.retrieve_data(rc_comp_unclear_output, "rc_comp_unclear")
-    # ^^ end of individual column extraction ^^*
-    # get rc strategy instruction data
-    rc_strat_instr_df = json_extractor.retrieve_data(rc_strat_instruct_type_output, "rc_strat_instruc")
-    # get rc instructional components data
-    rc_instruc_comp_df = json_extractor.retrieve_data(rc_comp_other_output, "rc_instruc_comp")
-    # get rc text type / reading materials data
-    rc_txt_type_df = json_extractor.retrieve_data(rc_txt_type_output, "rc_txt_type_red_mat")
-    rc_ss_df = pd.concat([
-        rc_comp_df,
-        rc_comp_strat_df,
-        rc_comp_vocab_df,
-        rc_comp_red_flu_df,
-        rc_comp_phon_df,
-        rc_comp_wri_df,
-        rc_comp_other_df,
-        rc_comp_unclear_df,
-        rc_strat_instr_df,
-        rc_instruc_comp_df,
-        rc_txt_type_df,
-    ], axis=1, sort=False)
-    return rc_ss_df
-
-
-def red_class_size_ss():
-    redc_avg_small_class_size_df = json_extractor.retrieve_info(redc_avg_small_class_size_output, "redc_avg_small_class_size_info")
-    redc_avg_large_class_size_df = json_extractor.retrieve_info(redc_avg_large_class_size_output, "redc_avg_large_class_size_info")
-    redc_small_class_teach_num_df = json_extractor.retrieve_data(redc_small_class_teacher_number_output, "redc_small_class_teach_num")
-    redc_large_class_teach_num_df = json_extractor.retrieve_data(redc_large_class_teacher_number_output, "redc_large_class_teach_num")
-    redc_large_class_adapt_df = json_extractor.retrieve_data(redc_large_class_adaption_output, "redc_large_class_adapt")
-    redc_lim_num_subj_df = json_extractor.retrieve_data(redc_reduc_for_limited_num_sub_output, "redc_lim_num_subj")
-    redc_impl_all_or_most_lessons_df = json_extractor.retrieve_data(redc_impl_for_all_or_most_output, "redc_impl_all_or_most_lessons")
-    redc_ss_df = pd.concat([
-        redc_avg_small_class_size_df,
-        redc_avg_large_class_size_df,
-        redc_small_class_teach_num_df,
-        redc_large_class_teach_num_df,
-        redc_large_class_adapt_df,
-        redc_lim_num_subj_df,
-        redc_impl_all_or_most_lessons_df,
-    ], axis=1, sort=False)
-    return redc_ss_df
-
-
-def repeat_year_ss():
-    ry_identify_ret_stu_df = json_extractor.retrieve_data(ry_ret_stu_identify_output, "ry_identify_ret_stu")
-    ry_ret_stu_age_df = json_extractor.retrieve_data(ry_ret_stu_age_output, "ry_ret_stu_age")
-    ry_ret_basis_df = json_extractor.retrieve_data(ry_ret_basis_output, "ry_ret_basis")
-    ry_impact_meas_df = json_extractor.retrieve_data(ry_impact_measure_delay_output, "ry_impact_meas")
-    ry_stu_ret_num_df = json_extractor.retrieve_data(ry_stu_ret_number_output, "ry_stu_ret_num")
-    ry_ret_stu_comparison_df = json_extractor.retrieve_data(ry_ret_stud_compared_with_output, "ry_ret_stud_comp")
-    ry_prom_count_char_df = json_extractor.retrieve_data(ry_prom_count_characteristics_output, "ry_matching_char")
-    ry_comp_df = json_extractor.retrieve_data(ry_comparison, "ry_comp")
-    ry_comp_grp_school_df = json_extractor.retrieve_data(ry_comp_grp_school, "ry_comp_grp_school")
-    # concatenate data frames
-    ry_ss_df = pd.concat([
-        ry_identify_ret_stu_df,
-        ry_ret_stu_age_df,
-        ry_ret_basis_df,
-        ry_impact_meas_df,
-        ry_stu_ret_num_df,
-        ry_ret_stu_comparison_df,
-        ry_prom_count_char_df,
-        ry_comp_df,
-        ry_comp_grp_school_df,
-    ], axis=1, sort=False)
-    # remove problematic text from outputs
-    json_extractor.clean_up(ry_ss_df)
-    return ry_ss_df
-
-
-def soc_emo_learning_ss():
-    # get involvement data
-    sel_involvement_df = json_extractor.retrieve_data(sel_involvement_output, "sel_involvement")
-    # get involvement pupils data
-    sel_invol_pupils_df = json_extractor.retrieve_data(sel_invol_all_pupils, "sel_invol_pupils")
-    # get involvement target groups data
-    sel_invol_targ_groups_df = json_extractor.retrieve_data(sel_invol_targ_grp, "sel_invol_targ_grps")
-    # get involvement classes data
-    sel_invol_classes_df = json_extractor.retrieve_data(sel_invol_classes, "sel_invol_classes")
-    # get involvement whole schools data
-    sel_invol_whole_school_df = json_extractor.retrieve_data(sel_invol_school, "sel_invol_whole_school")
-    # get involvement classroom teachers data
-    sel_invol_class_teachers_df = json_extractor.retrieve_data(sel_invol_teachers, "sel_invol_class_teachers")
-    # get involvement other staff data
-    sel_invol_oth_staff_df = json_extractor.retrieve_data(sel_invol_other_staff, "sel_invol_oth_staff")
-    # get involvement outside experts data
-    sel_invol_out_experts_df = json_extractor.retrieve_data(sel_invol_outside_experts, "sel_invol_out_experts")
-    # get involvement other data
-    sel_invol_other_df = json_extractor.retrieve_data(sel_invol_other, "sel_invol_other")
-    # get focus data
-    sel_focus_df = json_extractor.retrieve_data(sel_focus_output, "sel_focus")
-    # get location data
-    sel_location_df = json_extractor.retrieve_data(sel_location_output, "sel_location")
-    sel_ss_df = pd.concat([
-        sel_involvement_df,
-        sel_invol_pupils_df,
-        sel_invol_targ_groups_df,
-        sel_invol_classes_df,
-        sel_invol_whole_school_df,
-        sel_invol_class_teachers_df,
-        sel_invol_oth_staff_df,
-        sel_invol_out_experts_df,
-        sel_invol_other_df,
-        sel_focus_df,
-        sel_location_df
-    ], axis=1, sort=False)
-    # fill blanks with NA
-    sel_ss_df.fillna("NA", inplace=True)
-    return sel_ss_df
-
-
-def setting_streaming_ss():
-    # get grouping change data
-    sets_dir_grp_change_df = json_extractor.retrieve_data(sets_dir_grouping_change, "sets_dir_grp_change")
-    """ # get grouping type within attainment data
-    sets_grp_type_within_attain = json_extractor.get_data(sets_dir_grouping_type_within_attain)
-    sets_grp_type_within_attain_df = pd.DataFrame(sets_grp_type_within_attain)
-    sets_grp_type_within_attain_df = sets_grp_type_within_attain_df.T
-    sets_grp_type_within_attain_df.columns = ["sets_grp_type_within_attain"] """
-    """ # nested within grp type within attain ^
-    # get curriculum taight within attainment data
-    sets_curr_taught_attain = get_data(sets_curr_taught_in_attain_grp)
-    sets_curr_taught_attain_df = pd.DataFrame(sets_curr_taught_attain)
-    sets_curr_taught_attain_df = sets_curr_taught_attain_df.T
-    sets_curr_taught_attain_df.columns = ["sets_curr_taught_in_attain"] """
-    # get grouping type regroup data
-    sets_dir_grp_type_regroup_df = json_extractor.retrieve_data(sets_dir_grouping_type_regroup, "sets_dir_grp_type_regroup")
-    # nested within grp type regroup ^
-    # get curr taught in regroup data
-    sets_curr_taught_regroup_df = json_extractor.retrieve_data(sets_curr_taught_in_regroup, "sets_curr_taught_in_regroup")
-    # get dir grouping stream data
-    sets_dir_grp_stream_df = json_extractor.retrieve_data(sets_dir_grouping_stream, "sets_dir_grp_type_streaming")
-    # get dir grouping gifted data
-    sets_dir_grp_gifted_df = json_extractor.retrieve_data(sets_dir_grouping_gifted, "sets_dir_grp_type_gifted")
-    # get school groupings data
-    sets_schl_groupings_df = json_extractor.retrieve_data(sets_school_groupings, "sets_school_groupings")
-    # get attainment grouping levels data
-    sets_attain_grp_levels_df = json_extractor.retrieve_data(sets_attain_grouping_level, "sets_attain_grouping_levels")
-    # get attainment grouping levels data
-    sets_foll_same_curr_df = json_extractor.retrieve_data(sets_follow_same_curr, "sets_follow_same_curr")
-    # get approach name data
-    sets_appr_name_df = json_extractor.retrieve_data(sets_approach_name, "sets_approach_name")
-    # get pupil assignment data
-    sets_pup_assignment_df = json_extractor.retrieve_data(sets_pupil_assignment, "sets_pup_assign")
-    sets_ss_df = pd.concat([
-        sets_dir_grp_change_df,
-        sets_dir_grp_type_regroup_df,
-        sets_curr_taught_regroup_df,
-        sets_dir_grp_stream_df,
-        sets_dir_grp_gifted_df,
-        sets_schl_groupings_df,
-        sets_attain_grp_levels_df,
-        sets_foll_same_curr_df,
-        sets_appr_name_df,
-        sets_pup_assignment_df
-    ], axis=1, sort=False)
-    # fill blanks with NA
-    sets_ss_df.fillna("NA", inplace=True)
-    return sets_ss_df
-
-
-def small_group_tuit_ss():
-    # get group size data
-    group_size_df = json_extractor.retrieve_data(group_size_output, "sgt_group_size")
-    # Get group size highlighted text
-    group_size_HT_df = json_extractor.retrieve_ht(group_size_output, "sgt_group_size_ht")
-    # Get group size user comments
-    group_size_info_df = json_extractor.retrieve_info(group_size_output, "sgt_group_size_info")
-    # get group composition data
-    group_composition_df = json_extractor.retrieve_data(group_composition_output, "sgt_group_composition")
-    # Get group composition highlighted text
-    group_composition_HT_df = json_extractor.retrieve_ht(group_composition_output, "sgt_group_composition_ht")
-    # Get group composition user comments
-    group_composition_info_df = json_extractor.retrieve_info(group_composition_output, "sgt_group_composition_info")
-    # get group lead data
-    group_lead_df = json_extractor.retrieve_data(group_teaching_lead_output, "sgt_group_lead")
-    # Get group lead highlighted text
-    group_lead_HT_df = json_extractor.retrieve_ht(group_teaching_lead_output, "sgt_group_lead_ht")
-    # Get group lead user comments
-    group_lead_info_df = json_extractor.retrieve_info(group_teaching_lead_output, "sgt_group_lead_info")
-    sgt_ss_df = pd.concat([
-        group_size_df,
-        group_composition_df,
-        group_lead_df,
-    ], axis=1, sort=False)
-    # fill blanks with NA
-    sgt_ss_df.fillna("NA", inplace=True)
-    return sgt_ss_df
-
-
-def summer_school_ss():
-    ss_aim_df = json_extractor.retrieve_data(ss_aim_output, "ss_aim")
-    ss_aim_catch_up_df = json_extractor.retrieve_data(ss_aim_output_catch_up, "ss_aim_catch_up")
-    ss_aim_enrich_df = json_extractor.retrieve_data(ss_aim_output_enrich, "ss_aim_enrich")
-    ss_aim_trans_df = json_extractor.retrieve_data(ss_aim_output_school_trans, "ss_aim_trans")
-    ss_aim_gifted_df = json_extractor.retrieve_data(ss_aim_output_gifted, "ss_aim_gifted")
-    ss_aim_unclear_df = json_extractor.retrieve_data(ss_aim_output_unclear, "ss_aim_unclear")
-    ss_pupil_part_df = json_extractor.retrieve_data(ss_pupil_part_output, "ss_pupil_part")
-    ss_resid_comp_df = json_extractor.retrieve_data(ss_resid_comp_output, "ss_resid_comp")
-    ss_grp_size_df = json_extractor.retrieve_data(ss_group_size_output, "ss_grp_size")
-    ss_act_focus_df = json_extractor.retrieve_data(ss_activity_focus_output, "ss_act_focus")
-    ss_staff_kind_df = json_extractor.retrieve_data(ss_staff_kind_output, "ss_staff_kind")
-    ss_par_invol_df = json_extractor.retrieve_data(ss_parent_invol, "ss_par_invol")
-    ss_dig_tech_df = json_extractor.retrieve_data(ss_digit_tech, "ss_dig_tech")
-    ss_atten_df = json_extractor.retrieve_data(ss_attendance, "ss_attendance")
-    SS_ss_df = pd.concat([
-        ss_aim_df,
-        ss_aim_catch_up_df,
-        ss_aim_enrich_df,
-        ss_aim_trans_df,
-        ss_aim_gifted_df,
-        ss_aim_unclear_df,
-        ss_pupil_part_df,
-        ss_resid_comp_df,
-        ss_grp_size_df,
-        ss_act_focus_df,
-        ss_staff_kind_df,
-        ss_par_invol_df,
-        ss_dig_tech_df,
-        ss_atten_df
-    ], axis=1, sort=False)
-    SS_ss_df.fillna("NA", inplace=True)
-    return SS_ss_df
-
-
-def teach_assistants_ss():
-    # get teaching assistants description data
-    ta_desc_df = json_extractor.retrieve_data(ta_description_output, "ta_desc")
-    # Get teaching assistants description highlighted text
-    ta_desc_HT_df = json_extractor.retrieve_ht(ta_description_output, "ta_desc_ht")
-    # Get teaching assistants description user comments
-    ta_desc_Comments_df = json_extractor.retrieve_info(ta_description_output, "ta_desc_info")
-    # TEACHING ASSISTANTS ROLE
-    # get teaching assistants description data
-    ta_role_df = json_extractor.retrieve_data(ta_role_output, "ta_role")
-    # Get teaching assistants description highlighted text
-    ta_role_HT_df = json_extractor.retrieve_ht(ta_role_output, "ta_role_ht")
-    # Get teaching assistants description user comments
-    ta_role_Comments_df = json_extractor.retrieve_info(ta_role_output, "ta_role_info")
-    # TEACHING GROUP SIZE
-    # get teaching assistants group size data
-    ta_group_size_df = json_extractor.retrieve_data(ta_group_size_output, "ta_group_size")
-    # get teaching assistants group size highlighted text
-    ta_group_size_HT_df = json_extractor.retrieve_ht(ta_group_size_output, "ta_group_size_ht")
-    # get teaching assistants group size user comments
-    ta_group_size_Comments_df = json_extractor.retrieve_info(ta_group_size_output, "ta_group_size_info")
-    # concatenate data frames
-    ta_ss_df = pd.concat([
-        ta_desc_df,
-        ta_role_df,
-        ta_group_size_df,
-    ], axis=1, sort=False)
-    # remove problematic text from outputs
-    json_extractor.clean_up(ta_ss_df)
-    return ta_ss_df
-
-
-def parental_engagement():
-    pe_involved_df = json_extractor.retrieve_data(pe_involved_output, "pe_involved")
-    pe_act_loc_df = json_extractor.retrieve_data(pe_activity_location_output, "pe_act_loc")
-    pe_prog_train_df = json_extractor.retrieve_data(pe_prog_training_output, "pe_prog_training")
-    pe_prog_support_df = json_extractor.retrieve_data(pe_prog_support_output, "pe_prog_support")
-    pe_children_work_with_df = json_extractor.retrieve_data(pe_children_output, "pe_children")
-    pe_focus_df = json_extractor.retrieve_data(pe_focus_output, "pe_focus")
-    pe_ss_df = pd.concat([
-        pe_involved_df,
-        pe_act_loc_df,
-        pe_prog_train_df,
-        pe_prog_support_df,
-        pe_children_work_with_df,
-        pe_focus_df,
-    ], axis=1, sort=False) 
-    # fill blanks with NA
-    pe_ss_df.fillna("NA", inplace=True)
-    return pe_ss_df
-
-
-def phonics():
-    ph_tar_pop_df = json_extractor.retrieve_data(ph_targ_pop_output, "ph_targ_pop")
-    ph_const_part_df = json_extractor.retrieve_data(ph_constit_part_approach_output, "ph_constit_part")
-    ph_const_part_synth_df = json_extractor.retrieve_data(ph_constit_part_approach_synth_ph, "ph_constit_part_synth_phon")
-    ph_const_part_sys_df = json_extractor.retrieve_data(ph_constit_part_approach_syst_ph, "ph_constit_part_sys_phon")
-    ph_const_part_analyt_df = json_extractor.retrieve_data(ph_constit_part_approach_analyt_ph, "ph_constit_part_analyt_phon")
-    ph_const_part_analog_df = json_extractor.retrieve_data(ph_constit_part_approach_analog_ph, "ph_constit_part_analog_phon")
-    ph_const_part_emb_df = json_extractor.retrieve_data(ph_constit_part_approach_emb_ph, "ph_constit_part_emb_phon")
-    ph_const_part_phon_aware_df = json_extractor.retrieve_data(ph_constit_part_approach_phon_aware, "ph_constit_part_phonem_aware")
-    ph_const_part_phonol_aware_df = json_extractor.retrieve_data(ph_constit_part_approach_phonol_aware, "ph_constit_part_phonol_aware")
-    ph_const_part_onset_rime_df = json_extractor.retrieve_data(ph_constit_part_approach_onset_rime, "ph_constit_part_onset_rime")
-    ph_const_part_syll_instr_df = json_extractor.retrieve_data(ph_constit_part_approach_syll_instr, "ph_constit_part_syll_instr")
-    ph_const_part_sight_vocab_df = json_extractor.retrieve_data(ph_constit_part_approach_sight_vocab, "ph_constit_part_sight_vocab")
-    ph_const_part_whole_word_df = json_extractor.retrieve_data(ph_constit_part_approach_whole_word, "ph_constit_part_whole_word")
-    ph_central_to_approach_df = json_extractor.retrieve_data(ph_central_teach_lit_output, "ph_central_to_approach")
-    ph_par_invol_df = json_extractor.retrieve_data(ph_par_invol_output, "ph_par_invol")
-    ph_dig_tech_df = json_extractor.retrieve_data(ph_digit_tech_output, "ph_dig_tech")
-    ph_ss_df = pd.concat([
-        ph_tar_pop_df,
-        ph_const_part_df,
-        ph_const_part_synth_df,
-        ph_const_part_sys_df,
-        ph_const_part_analyt_df,
-        ph_const_part_analog_df,
-        ph_const_part_emb_df,
-        ph_const_part_phon_aware_df,
-        ph_const_part_phonol_aware_df,
-        ph_const_part_onset_rime_df,
-        ph_const_part_syll_instr_df,
-        ph_const_part_sight_vocab_df,
-        ph_const_part_whole_word_df,
-        ph_central_to_approach_df,
-        ph_par_invol_df,
-        ph_dig_tech_df
-    ], axis=1, sort=False)
-    # fill blanks with NA
-    ph_ss_df.fillna("NA", inplace=True)
-    return ph_ss_df
-
-
-def performance_pay():
-    pp_incent_crit_df = json_extractor.retrieve_data(pp_incentive_criteria_output, "pp_incent_criteria")
-    pp_reward_recip_df = json_extractor.retrieve_data(pp_reward_recipient_output, "pp_reward_recip")
-    pp_incent_timing_df = json_extractor.retrieve_data(pp_incentive_timing_output, "pp_incent_timing")
-    pp_incent_type_df = json_extractor.retrieve_data(pp_incentive_type_output, "pp_incent_type")
-    pp_incent_amount_df = json_extractor.retrieve_data(pp_incentive_amount_output, "pp_incent_amount")
-    pp_teach_eval_per_df = json_extractor.retrieve_data(pp_teacher_eval_period_output, "pp_teach_eval_per")
-    pp_ss_df = pd.concat([
-        pp_incent_crit_df,
-        pp_reward_recip_df,
-        pp_incent_timing_df,
-        pp_incent_type_df,
-        pp_incent_amount_df,
-        pp_teach_eval_per_df,
-    ], axis=1, sort=False)
-    # fill blanks with NA
-    pp_ss_df.fillna("NA", inplace=True)
-    return pp_ss_df
-
-
-def within_class_grouping():
-    wc_grp_dir_df = json_extractor.retrieve_data(wcg_dir_grouping_change_output, "wc_grp_dir")
-    wc_curr_taught_att_grp_df = json_extractor.retrieve_data(wcg_curr_taught_attain_grp_output, "wc_curr_taught_att_grp")
-    wc_pup_affected_df = json_extractor.retrieve_data(wcg_pupils_affected_by_wcg_output, "wc_pup_affected")
-    wc_att_grping_levels_df = json_extractor.retrieve_data(wcg_attain_grouping_level, "wc_attn_grouping_levels")
-    wc_follow_same_curr_df = json_extractor.retrieve_data(wcg_follow_same_curr, "wc_follow_same_curr")
-    wc_approach_name_df = json_extractor.retrieve_data(wcg_approach_name, "wc_approach_name")
-    wc_pup_assign_df = json_extractor.retrieve_data(wcg_pupil_assignment, "wc_pup_assign")
-    # concatenate data frames
-    wc_ss_df = pd.concat([
-        wc_grp_dir_df,
-        wc_curr_taught_att_grp_df,
-        wc_pup_affected_df,
-        wc_att_grping_levels_df,
-        wc_follow_same_curr_df,
-        wc_approach_name_df,
-        wc_pup_assign_df,
-    ], axis=1, sort=False)
-    # remove problematic text from outputs
-    json_extractor.clean_up(wc_ss_df)
-    return wc_ss_df
 
 #/*************************/
 #/   COMMAND LINE TABLES   /
@@ -3310,106 +3948,6 @@ def data_analysis_cl_table():
      # Get user selection for strand specific dataframe (if needed)
     ss_user_input = int(input("Select strand specific option: "))
     return ss_user_input
-
-
-def strand_specific_df_selection(user_input):
-    match user_input:
-        # MAIN TOOLKIT
-        case 1: 
-            print("- Strand specific datraframe selection: Arts Participation")
-            ss_df = arts_participation_ss()
-        case 2: 
-            print("- Strand specific datraframe selection: Behaviour Interventions")
-            ss_df = behaviour_int_ss()
-        case 3:
-            print("- Strand specific datraframe selection: Collaborative Learning")
-            ss_df = collab_learning_ss()
-        case 4: 
-            print("- Strand specific datraframe selection: Extending School Time")
-            ss_df = ext_school_time_ss()
-        case 5: 
-            print("- Strand specific datraframe selection: Feedback")
-            ss_df = feedback_ss()
-        case 6:
-            print("- Strand specific datraframe selection: Homework")
-            ss_df = homework_ss()
-        case 7: 
-            print("- Strand specific datraframe selection: Individualised Instruction")
-            ss_df = indiv_instr_ss()
-        case 8: 
-            print("- Strand specific datraframe selection: Mentoring")
-            ss_df = mentoring_ss()
-        case 9:
-            print("- Strand specific datraframe selection: Mastery Learning")
-            ss_df = mastery_learning_ss()
-        case 10: 
-            print("- Strand specific datraframe selection: Metacognition & Self Regulation")
-            ss_df = metacog_self_reg_ss()
-        case 11:
-            print("- Strand specific datraframe selection: One to One Tuition")
-            ss_df = one_t_one_comp_ss()
-        case 12: 
-            print("- Strand specific datraframe selection: Oral Language")
-            ss_df = oral_lang_ss()
-        case 13:
-            print("- Strand specific datraframe selection: Physical Activity")
-            ss_df = phys_activity_ss()
-        case 14: 
-            print("- Strand specific datraframe selection: Parentel Engagement")
-            ss_df = parental_engagement()
-        case 15: 
-            print("- Strand specific datraframe selection: Phonics")
-            ss_df = phonics()
-        case 16:
-            print("- Strand specific datraframe selection: Performance Pay")
-            ss_df = performance_pay()
-        case 17: 
-            print("- Strand specific datraframe selection: Peer Tutoring")
-            ss_df = peer_tut()
-        case 18: 
-            print("- Strand specific datraframe selection: Reading Comprehension")
-            ss_df = read_comprehension_ss()
-        case 19:
-            print("- Strand specific datraframe selection: Reducing Class Size")
-            ss_df = red_class_size_ss()
-        case 20: 
-            print("- Strand specific datraframe selection: Repeating a Year")
-            ss_df = repeat_year_ss()
-        case 21: 
-            print("- Strand specific datraframe selection: Social & Emotional Learning")
-            ss_df = soc_emo_learning_ss()
-        case 22: 
-            print("- Strand specific datraframe selection: Setting/Streaming")
-            ss_df = setting_streaming_ss()
-        case 23: 
-            print("- Strand specific datraframe selection: Small Group Tuition")
-            ss_df = small_group_tuit_ss()
-        case 24: 
-            print("- Strand specific datraframe selection: Summer Schools")
-            ss_df = summer_school_ss()
-        case 25: 
-            print("- Strand specific datraframe selection: Teaching Assistants")
-            ss_df = teach_assistants_ss()
-        case 26: 
-            print("- Strand specific datraframe selection: Within-Class Grouping")
-            ss_df = within_class_grouping()
-        # EARLY YEARS
-        case 27: 
-            print("- Strand specific datraframe selection: Early Years - Early Literacy Approaches")
-            ss_df = ey_early_lit_approaches_ss()
-        case 28: 
-            print("- Strand specific datraframe selection: Early Numeracy Approaches")
-            ss_df = ey_early_num_approaches_ss()
-        case 29: 
-            print("- Strand specific datraframe selection: Earlier Starting Age")
-            ss_df = ey_earlier_start_age_ss()
-        case 30: 
-            print("- Strand specific datraframe selection: Extra Hours")
-            ss_df = ey_extra_hours_ss()
-        case 31: 
-            print("- Strand specific datraframe selection: Play Based Learning")
-            ss_df = ey_play_based_learning_ss()
-    return ss_df
 
 
 def display_table_struct(funcs): 
