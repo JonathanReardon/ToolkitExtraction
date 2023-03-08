@@ -2362,7 +2362,7 @@ int_costs_reported = [{  # Are the costs reported?
     5215529: "No"
 }]
 
-int_eval = [{  # Who undertook the outcome evaluation?
+int_eval_output = [{  # Who undertook the outcome evaluation?
     5215533: "The developer",
     5215532: "A different organization paid by developer",
     5215531: "An organization commissioned independently to evaluate",
