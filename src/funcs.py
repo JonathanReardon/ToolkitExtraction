@@ -12,21 +12,18 @@ import readline
 import glob
 import numpy as np
 import pandas as pd
-from rich import box, print
-from rich.columns import Columns
 from rich.console import Console
-from rich.panel import Panel
 from rich.progress import track
 from rich.style import Style
 from rich.table import Table
+from rich.columns import Columns
+from rich.panel import Panel
+from rich import box
+from rich import print
 from toolz import interleave
 
 # Local imports
 from src.attributeIDs import *
-
-#/****************/
-#/ CORE FUNCTIONS /
-#/****************/
 
 def input_file_path(prompt):
     def complete(text, state):
@@ -46,6 +43,7 @@ class JSONDataExtractor:
         self.data_file = data_file
         self.data = None
         self.load_json()
+
 
     def load_json(self):
         datafile = os.path.join(os.getcwd(), self.data_file)
@@ -700,7 +698,7 @@ class DataFrameCompilation:
         intervention_costs_data = self.data_extraction.retrieve_data(int_costs_reported, "int_cost_raw")
         intervention_costs_ht = self.data_extraction.retrieve_ht(int_costs_reported, "int_cost_ht")
         intervention_costs_info = self.data_extraction.retrieve_info(int_costs_reported, "int_cost_info")
-        #int_evaluation = self.data_extraction.retrieve_data(int_eval, "out_eval_raw")    
+        #int_evaluation = self.data_extraction.retrieve_data(int_eval_output, "out_eval_raw")    
         #int_evaluation_ht = self.data_extraction.retrieve_ht(int_eval, "out_eval_ht")
         #int_evaluation_info = self.data_extraction.retrieve_info(int_eval, "out_eval_info")
         int_evaluation = int_eval()
@@ -1759,6 +1757,8 @@ class DataFrameCompilation:
         
         if save_file:
             outfile5 = self.data_extraction.save_dataframe(all_variables, "_DataFrame5_Effect_Size_B.csv")
+        else:
+            outfile5=None
         
         return all_variables, outfile5
 
@@ -1840,90 +1840,90 @@ class DataFrameCompilation:
         low_ses_percentage_Comments_df = self.data_extraction.retrieve_info(percentage_low_fsm_output, "fsm_perc_info")
 
         record_details_df = pd.concat([
-                eppiid_df,
-                author_df,
-                year_df,
-                pub_type_data
+            eppiid_df,
+            author_df,
+            year_df,
+            pub_type_data
         ], axis=1)
 
         df = pd.concat([
-                toolkitstrand_df,
-                smd_df,
-                sesmd_df,
-                out_title_df,
-                out_type_df,
-                sample_df,
-                out_comp_df,
-                effectsizetype_df,
-                out_measure_df,
-                testtype_df
-            ], axis=1, sort=False)
+            toolkitstrand_df,
+            smd_df,
+            sesmd_df,
+            out_title_df,
+            out_type_df,
+            sample_df,
+            out_comp_df,
+            effectsizetype_df,
+            out_measure_df,
+            testtype_df
+        ], axis=1, sort=False)
 
         df = df[list(interleave([
-                toolkitstrand_df,
-                smd_df,
-                sesmd_df,
-                out_title_df,
-                out_type_df,
-                sample_df,
-                out_comp_df,
-                effectsizetype_df,
-                out_measure_df,
-                testtype_df
-            ]))]
+            toolkitstrand_df,
+            smd_df,
+            sesmd_df,
+            out_title_df,
+            out_type_df,
+            sample_df,
+            out_comp_df,
+            effectsizetype_df,
+            out_measure_df,
+            testtype_df
+        ]))]
 
         general_df = pd.concat([
-                admin_strand_data,
-                admin_strand_info,
-                country_df,
-                intervention_training_prov_data,
-                intervention_training_prov_ht,
-                intervention_training_prov_info,
-                intervention_teaching_app_data,
-                intervention_teaching_app_ht,
-                intervention_teaching_app_info,
-                digit_tech_data,
-                digit_tech_ht,
-                digit_tech_info,
-                par_eng_data,
-                par_eng_ht,
-                par_eng_info,
-                intervention_time_data,
-                intervention_time_ht,
-                intervention_time_info,
-                intervention_delivery_data,
-                intervention_delivery_ht,
-                intervention_delivery_info,
-                intervention_duration_info,
-                intervention_frequency_info,
-                intervention_sess_length_info,
-                edu_setting_data,
-                edu_setting_ht,
-                edu_setting_info,
-                student_age_data,
-                student_age_ht,
-                student_age_info,
-                number_of_school_total_info,
-                number_of_classes_total_info,
-                study_design_data,
-                study_design_ht,
-                study_design_info,
-                sample_size_comments_df,
-                low_ses_percentage_Comments_df
+            admin_strand_data,
+            admin_strand_info,
+            country_df,
+            intervention_training_prov_data,
+            intervention_training_prov_ht,
+            intervention_training_prov_info,
+            intervention_teaching_app_data,
+            intervention_teaching_app_ht,
+            intervention_teaching_app_info,
+            digit_tech_data,
+            digit_tech_ht,
+            digit_tech_info,
+            par_eng_data,
+            par_eng_ht,
+            par_eng_info,
+            intervention_time_data,
+            intervention_time_ht,
+            intervention_time_info,
+            intervention_delivery_data,
+            intervention_delivery_ht,
+            intervention_delivery_info,
+            intervention_duration_info,
+            intervention_frequency_info,
+            intervention_sess_length_info,
+            edu_setting_data,
+            edu_setting_ht,
+            edu_setting_info,
+            student_age_data,
+            student_age_ht,
+            student_age_info,
+            number_of_school_total_info,
+            number_of_classes_total_info,
+            study_design_data,
+            study_design_ht,
+            study_design_info,
+            sample_size_comments_df,
+            low_ses_percentage_Comments_df
         ], axis=1)
 
         toolkit_lists = [[] for _ in range(10)]
 
         (toolkit_prim, 
-        toolkit_prim_smd, 
-        toolkit_prim_se, 
-        toolkit_out_tit, 
-        toolkit_prim_sample, 
-        toolkit_prim_outcomp, 
-        toolkit_es_type, 
-        toolkit_out_measure, 
-        toolkit_out_testtype, 
-        toolkit_out_strand) = toolkit_lists
+         toolkit_prim_smd, 
+         toolkit_prim_se, 
+         toolkit_out_tit, 
+         toolkit_prim_sample, 
+         toolkit_prim_outcomp, 
+         toolkit_es_type, 
+         toolkit_out_measure, 
+         toolkit_out_testtype, 
+         toolkit_out_strand) = toolkit_lists
 
         outcome_vars = (
             "out_type_",
@@ -1941,37 +1941,26 @@ class DataFrameCompilation:
         self.data_extraction.getOutcomeData(df, 'Toolkit primary outcome', toolkit_lists, outcome_vars)
 
         reading_lists = [[] for _ in range(3)]
-
-        (reading_prim, 
-        reading_prim_smd, 
-        reading_prim_se) = reading_lists
+        (reading_prim,  reading_prim_smd,  reading_prim_se) = reading_lists
 
         self.data_extraction.getOutcomeData(df, 'Reading primary outcome', reading_lists, outcome_vars)
 
         writing_lists = [[] for _ in range(3)]
-
-        (Writing_and_spelling_prim,
-        Writing_and_spelling_prim_smd,
-        Writing_and_spelling_prim_se) = writing_lists
+        (Writing_and_spelling_prim, Writing_and_spelling_prim_smd, Writing_and_spelling_prim_se) = writing_lists
 
         self.data_extraction.getOutcomeData(df, 'Writing and spelling primary outcome', writing_lists, outcome_vars)
 
         mathematics_lists = [[] for _ in range(3)]
-
-        (Mathematics_prim,
-        Mathematics_prim_smd,
-        Mathematics_prim_se) = mathematics_lists
+        (Mathematics_prim, Mathematics_prim_smd, Mathematics_prim_se) = mathematics_lists
 
         self.data_extraction.getOutcomeData(df, 'Mathematics primary outcome', mathematics_lists, outcome_vars)
 
         science_lists = [[] for _ in range(3)]
-
         (Science_prim, Science_prim_smd, Science_prim_se) = science_lists
 
         self.data_extraction.getOutcomeData(df, 'Science primary outcome', science_lists, outcome_vars)
 
         fsm_lists = [[] for _ in range(3)]
-
         (fsm_prim, fsm_prim_smd, fsm_prim_se) = fsm_lists
 
         self.data_extraction.getOutcomeData(df, 'FSM primary outcome', fsm_lists, outcome_vars)
@@ -2120,6 +2109,56 @@ class DataFrameCompilation:
 
         return df_all_SS, outfile6
 
+
+    def make_references(self, save_file=True):
+        """
+        """
+        eppiid_df = self.data_extraction.retrieve_metadata("ItemId", "ID")
+        admin_strand_df = self.data_extraction.retrieve_data(admin_strand_output, "toolkit_strand")
+        author_df = self.data_extraction.retrieve_metadata("ShortTitle", "short_title")
+        authors_df = self.data_extraction.retrieve_metadata("Authors", "main_authors")
+        year_df = self.data_extraction.retrieve_metadata("Year", "year")
+        title_df = self.data_extraction.retrieve_metadata("Title", "main_title")
+        parentittle_df = self.data_extraction.retrieve_metadata("ParentTitle", "parent_title")
+        parentauthors_df = self.data_extraction.retrieve_metadata("ParentAuthors", "parent_authors")
+        typename_df = self.data_extraction.retrieve_metadata("TypeName", "type_name")
+        abstract_df = self.data_extraction.retrieve_metadata("Abstract", "abstract")
+        volume_df = self.data_extraction.retrieve_metadata("Volume", "volume")
+        issue_df = self.data_extraction.retrieve_metadata("Issue", "issue")
+        pages_df = self.data_extraction.retrieve_metadata("Pages", "pages")
+        doi_df = self.data_extraction.retrieve_metadata("DOI", "doi")
+        url_df = self.data_extraction.retrieve_metadata("URL", "url")
+        publisher_df = self.data_extraction.retrieve_metadata("Publisher", "publisher")
+        city_df = self.data_extraction.retrieve_metadata("City", "city")
+        institution_df = self.data_extraction.retrieve_metadata("Institution", "institution")
+        #editedby_df = self.data_extraction.retrieve_metadata("EditedBy", "editor(s)")
+
+        references = pd.concat([
+            eppiid_df,
+            admin_strand_df,
+            author_df,
+            authors_df,
+            year_df,
+            title_df,
+            parentittle_df,
+            parentauthors_df,
+            typename_df,
+            abstract_df,
+            volume_df,
+            issue_df,
+            pages_df,
+            doi_df,
+            url_df,
+            publisher_df,
+            city_df,
+            institution_df,
+        ], axis=1)
+
+        if save_file:
+            outfile_7 = self.data_extraction.save_dataframe(references, "_References.csv")
+
+        return references, outfile_7
+        
 
 class StrandSpecificFrames:
     """
@@ -2669,7 +2708,7 @@ class StrandSpecificFrames:
                 - m_meeting_location_df: Location of mentor-mentee meetings
                 - m_meeting_location_ht_df: Highlighted text for meeting location
                 - m_meeting_location_info_df: User comments on meeting location
-                - m_addit_exp_df: Additional experiences of the mentor
+                - m_addit_nd_df: Additional experiences of the mentor
                 - m_addit_exp_ht_df: Highlighted text for additional experiences
                 - m_addit_exp_info_df: User comments on additional experiences
                 - m_prog_focus_df: Focus of the mentoring program
@@ -3566,6 +3605,527 @@ class StrandSpecificFrames:
                 ss_df = self.ey_play_based_learning_ss()
         return ss_df
 
+
+class RiskofBias:
+    def __init__(self, data_extractor):
+        self.data_extraction = data_extractor
+
+    def initialize_vars(self):
+        self.year_df = self.data_extraction.retrieve_metadata("Year", "pub_year")
+        self.eppiid_df = self.data_extraction.retrieve_metadata("ItemId", "id")
+        self.author_df = self.data_extraction.retrieve_metadata("ShortTitle", "pub_author")
+        self.admin_strand_df = self.data_extraction.retrieve_data(admin_strand_output, "strand_raw")
+        self.publicationtype_df = self.data_extraction.retrieve_data(publication_type_output, "pub_type_raw")
+        self.participant_assignment_df = self.data_extraction.retrieve_data(part_assign_output, "part_assig_raw")
+        self.randomisation_df = self.data_extraction.retrieve_data(randomisation_details, "rand_raw")
+        self.study_realism_df = self.data_extraction.retrieve_data(study_realism_output, "eco_valid_raw")
+        self.number_of_schools_intervention_Comments_df = self.data_extraction.retrieve_info(number_of_schools_intervention_output, "school_treat_info")
+        self.intervention_delivery_df = self.data_extraction.retrieve_data(intervention_delivery_output, "int_who_raw")
+        self.number_of_classes_total_Comments_df = self.data_extraction.retrieve_info(num_of_class_tot_output, "class_total_info")
+        self.InterventionEvaluation_df = self.data_extraction.retrieve_data(int_eval_output, "out_eval_raw")   
+    
+        self.comparability_df = self.data_extraction.retrieve_data(comparability_output, "comp_anal_raw")    
+        self.comp_anal_ht = self.data_extraction.retrieve_ht(comparability_output, "comp_anal_ht")
+        self.comp_anal_info = self.data_extraction.retrieve_info(comparability_output, "comp_anal_info")
+
+        self.sample_size_Comments_df = self.data_extraction.retrieve_info(sample_size_output, "sample_analysed_info")
+        self.overall_percent_attrition_Comments_df = self.data_extraction.retrieve_info(overall_perc_attr, "attri_perc_info")
+        self.clustering_df = self.data_extraction.retrieve_data(clustering_output, "clust_anal_raw")  
+        # from DataFrame5 import toolkit_test_type
+        self.toolkit_test_type = self.data_extraction.get_outcome_data_lvl2(test_type_output, "out_test_type_raw_")
+        # from DataFrame5 import toolkit_es_type
+        self.toolkit_es_type = self.data_extraction.get_outcome_data_lvl2(es_type_output, "out_es_type_")
+
+        all_variables, outfile5 = DataFrameCompilation.make_dataframe_5(self, save_file=True, clean_cols=False)
+        self.toolkit_es_type = all_variables.out_es_type_tool
+
+        all_variables, outfile5 = DataFrameCompilation.make_dataframe_5(self, save_file=True, clean_cols=False)
+        self.toolkit_test_type = all_variables.out_test_type_raw_tool
+
+        all_variables, outfile5 = DataFrameCompilation.make_dataframe_5(self, save_file=True, clean_cols=False)
+        self.tool_prim_es = all_variables.smd_tool
+
+        all_variables, outfile5 = DataFrameCompilation.make_dataframe_5(self, save_file=True, clean_cols=False)
+        self.tool_prim_se = all_variables.se_tool
+
+        print(self.participant_assignment_df)
+
+    def rob_year(self):
+        self.year_df["pub_year"] = self.year_df["pub_year"].apply(pd.to_numeric, errors='coerce').fillna(0)
+
+        def pub_year_risk(row):
+            if row["pub_year"] < 1980:
+                return 'High Risk'
+            if row["pub_year"] > 1979 and row["pub_year"] < 2000:
+                return 'Medium Risk'
+            if row["pub_year"] > 1999:
+                return 'Low Risk'
+            return 'NA'
+
+        self.year_df["pub_year_raw_risk"] = self.year_df.apply(
+            lambda row: pub_year_risk(row), axis=1)
+
+        conditions = [
+            (self.year_df["pub_year_raw_risk"] == 'High Risk'),
+            (self.year_df["pub_year_raw_risk"] == 'Medium Risk'),
+            (self.year_df["pub_year_raw_risk"] == 'Low Risk'),
+        ]
+        choices = [1, 2, 3]
+
+        self.year_df['pub_year_risk_value'] = np.select(conditions, choices, default="NA")
+        return self.year_df
+    
+    def rob_perc_attri(self):
+        self.overall_percent_attrition_Comments_df.replace('%', '', regex=True, inplace=True)
+
+        self.overall_percent_attrition_Comments_df["attri_perc_info"] = self.overall_percent_attrition_Comments_df["attri_perc_info"].apply(
+            pd.to_numeric, errors='coerce').fillna(0)
+
+        def perc_attrit_risk(row):
+            if row["attri_perc_info"] < 10:
+                return 'Low Risk'
+            if row["attri_perc_info"] > 10 and row["attri_perc_info"] < 20:
+                return 'Medium Risk'
+            if row["attri_perc_info"] > 19:
+                return 'High Risk'
+            return 'NA'
+
+        self.overall_percent_attrition_Comments_df["attri_perc_info_raw_risk"] = self.overall_percent_attrition_Comments_df.apply(
+            lambda row: perc_attrit_risk(row), axis=1)
+
+        conditions = [
+            (self.overall_percent_attrition_Comments_df["attri_perc_info_raw_risk"] == 'High Risk'),
+            (self.overall_percent_attrition_Comments_df["attri_perc_info_raw_risk"] == 'Medium Risk'),
+            (self.overall_percent_attrition_Comments_df["attri_perc_info_raw_risk"] == 'Low Risk'),
+        ]
+        choices = [1, 2, 3]
+
+        self.overall_percent_attrition_Comments_df['attri_perc_info_risk_value'] = np.select(conditions, choices, default="NA")
+        return self.overall_percent_attrition_Comments_df
+
+    def rob_clustering(self):
+
+        # Medium/High risk for Yes/No – the difference is usually trivial 
+        # (slightly wider confidence intervals), but reflects a less sophisticated analysis.
+
+        self.clustering_df["clust_anal_raw"] = self.clustering_df["clust_anal_raw"].apply(
+            lambda x: ",".join(x) if isinstance(x, list) else x)
+
+        conditions = [
+            (self.clustering_df['clust_anal_raw'] == "Yes"),
+            (self.clustering_df['clust_anal_raw'] == "No"),
+        ]
+
+        # GET RISK LEVELS PER PUBLICATION TYPE
+        choices = ['Medium Risk', 'High Risk', ]
+
+        self.clustering_df["clust_anal_raw_risk"] = np.select(conditions, choices, default="NA")
+
+        conditions = [
+            (self.clustering_df["clust_anal_raw_risk"] == 'Medium Risk'),
+            (self.clustering_df["clust_anal_raw_risk"] == 'High Risk'),
+        ]
+
+        choices = [2,1]
+
+        self.clustering_df["clust_anal_risk_value"] = np.select(conditions, choices, default="NA")
+        return self.clustering_df
+
+    def rob_tkit_es_type(self):
+        self.toolkit_es_type = pd.DataFrame(self.toolkit_es_type)
+
+        #if len(self.toolkit_es_type.columns) > 1:
+            #del self.toolkit_es_type[1]
+
+        self.toolkit_es_type.columns = ["out_es_type"]
+        self.toolkit_es_type["out_es_type"] = self.toolkit_es_type["out_es_type"].apply(lambda x: ",".join(x) if isinstance(x, list) else x)
+
+        conditions = [
+            (self.toolkit_es_type["out_es_type"] == "Post-test unadjusted (select one from this group)"),
+            (self.toolkit_es_type["out_es_type"] == "Post-test adjusted for baseline attainment"),
+            (self.toolkit_es_type["out_es_type"] == "Post-test adjusted for baseline attainment AND clustering"),
+            (self.toolkit_es_type["out_es_type"] == "Pre-post gain"),
+        ]
+
+        choices = ['High Risk', 'Low Risk', 'Low Risk', 'Medium Risk']
+
+        self.toolkit_es_type["out_es_type_raw_risk"] = np.select(conditions, choices, default="NA")
+
+        conditions = [
+            (self.toolkit_es_type["out_es_type_raw_risk"] == 'High Risk'),
+            (self.toolkit_es_type["out_es_type_raw_risk"] == 'Medium Risk'),
+            (self.toolkit_es_type["out_es_type_raw_risk"] == 'Low Risk'),
+        ]
+
+        choices = [1, 2, 3]
+
+        self.toolkit_es_type["out_es_type_risk_value"] = np.select(conditions, choices, default="NA")
+        return self.toolkit_es_type
+    
+    def rob_tkit_test_type(self):
+        self.toolkit_test_type = pd.DataFrame(self.toolkit_test_type)
+
+        if len(self.toolkit_test_type.columns) >1:
+            del self.toolkit_test_type[1]
+
+        self.toolkit_test_type.columns = ["out_test_type_raw"]
+        self.toolkit_test_type["out_test_type_raw"] = self.toolkit_test_type["out_test_type_raw"].apply(
+            lambda x: ",".join(x) if isinstance(x, list) else x)
+
+        conditions = [
+            (self.toolkit_test_type["out_test_type_raw"] == "Test type: Standardised test "),
+            (self.toolkit_test_type["out_test_type_raw"] == "Test type: Researcher developed test"),
+            (self.toolkit_test_type["out_test_type_raw"] == "Test type: National test"),
+            (self.toolkit_test_type["out_test_type_raw"] == "Test type: School-developed test"),
+            (self.toolkit_test_type["out_test_type_raw"] == "Test type: International tests"),
+        ]
+
+        # GET RISK LEVELS PER PUBLICATION TYPE
+        choices = ['Low Risk', 'High Risk', 'Low Risk', 'Medium Risk', 'Low Risk']
+
+        self.toolkit_test_type["out_test_type_raw_risk"] = np.select(conditions, choices, default="NA")
+
+        conditions = [
+            (self.toolkit_test_type["out_test_type_raw_risk"] == 'High Risk'),
+            (self.toolkit_test_type["out_test_type_raw_risk"] == 'Medium Risk'),
+            (self.toolkit_test_type["out_test_type_raw_risk"] == 'Low Risk'),
+        ]
+
+        choices = [1, 2, 3]
+
+        self.toolkit_test_type["out_test_type_raw_risk_value"] = np.select(
+            conditions, choices, default="NA")
+        return self.toolkit_test_type
+
+    def rob_sample_size_comments(self):
+        self.sample_size_Comments_df["sample_analysed_info"] = self.sample_size_Comments_df["sample_analysed_info"].apply(
+            pd.to_numeric, errors='coerce').fillna(0)
+
+        def sample_size_risk(row):
+            if row["sample_analysed_info"] <= 30: return 'High Risk'
+            if row["sample_analysed_info"] > 30 and row["sample_analysed_info"] < 100: return 'Medium Risk'
+            if row["sample_analysed_info"] > 100: return 'Low Risk'
+            return 'NA'
+
+        self.sample_size_Comments_df["sample_size_risk"] = self.sample_size_Comments_df.apply(lambda row: sample_size_risk(row), axis=1)
+
+        conditions = [
+            (self.sample_size_Comments_df["sample_size_risk"] == 'High Risk'),
+            (self.sample_size_Comments_df["sample_size_risk"] == 'Medium Risk'),
+            (self.sample_size_Comments_df["sample_size_risk"] == 'Low Risk'),
+        ]
+        choices = [1, 2, 3]
+
+        self.sample_size_Comments_df['sample_size_risk_value'] = np.select(
+            conditions, choices, default="NA")
+        return self.sample_size_Comments_df
+
+    def rob_pub_type(self):
+        self.publicationtype_df["pub_type_raw"] = self.publicationtype_df["pub_type_raw"].apply(lambda x: ",".join(x) if isinstance(x, list) else x)
+
+        conditions = [
+            (self.publicationtype_df['pub_type_raw'] == "Journal article"),
+            (self.publicationtype_df['pub_type_raw'] == "Dissertation or thesis"),
+            (self.publicationtype_df['pub_type_raw'] == "Technical report"),
+            (self.publicationtype_df['pub_type_raw'] == "Book or book chapter"),
+            (self.publicationtype_df['pub_type_raw'] == "Conference paper"),
+            (self.publicationtype_df['pub_type_raw'] == "Other (Please specify)"),
+        ]
+
+        # GET RISK LEVELS PER PUBLICATION TYPE
+        choices = ['Low Risk', 'Low Risk', 'Low Risk', 'Medium Risk', 'Medium Risk', 'Medium Risk']
+
+        self.publicationtype_df["pub_type_risk"] = np.select(conditions, choices, default="NA")
+
+        conditions = [
+            (self.publicationtype_df["pub_type_risk"] == 'High Risk'),
+            (self.publicationtype_df["pub_type_risk"] == 'Medium Risk'),
+            (self.publicationtype_df["pub_type_risk"] == 'Low Risk'),
+        ]
+
+        choices = [1, 2, 3]
+
+        self.publicationtype_df["pub_type_risk_value"] = np.select(conditions, choices, default="NA")
+        return self.publicationtype_df
+
+    def rob_part_assign(self):
+        conditions = [
+            (self.participant_assignment_df['part_assig_raw'] == 'Random (please specify)'),
+            (self.participant_assignment_df['part_assig_raw'] == 'Non-random, but matched'),
+            (self.participant_assignment_df['part_assig_raw'] == 'Non-random, not matched prior to treatment'),
+            (self.participant_assignment_df['part_assig_raw'] == 'Unclear'),
+            (self.participant_assignment_df['part_assig_raw'] == 'Not assigned - naturally occurring sample'),
+            (self.participant_assignment_df['part_assig_raw'] == 'Retrospective Quasi Experimental Design (QED)'),
+            (self.participant_assignment_df['part_assig_raw'] == 'Regression discontinuity'),
+        ]
+        choices = ['Low Risk', 'Medium Risk', 'Medium Risk', 'Medium Risk', 'Medium Risk', 'Medium Risk', 'Medium Risk']
+
+        self.participant_assignment_df['part_assig_risk'] = np.select(conditions, choices, default="NA")
+
+        conditions = [
+            (self.participant_assignment_df['part_assig_risk'] == 'High Risk'),
+            (self.participant_assignment_df['part_assig_risk'] == 'Medium Risk'),
+            (self.participant_assignment_df['part_assig_risk'] == 'Low Risk'),
+        ]
+        choices = [1, 2, 3]
+
+        self.participant_assignment_df['part_assig_risk_value'] = np.select(conditions, choices, default="NA")
+        return self.participant_assignment_df
+
+    def rob_randomisation(self):
+
+        conditions = [
+            (self.randomisation_df['rand_raw'] == 'Yes'),
+            (self.randomisation_df['rand_raw'] == 'Not applicable'),
+            (self.randomisation_df['rand_raw'] == 'No/Unclear'),
+        ]
+        choices = ['Low Risk', 'Medium Risk', 'Medium Risk']
+
+        self.randomisation_df['rand_risk'] = np.select(conditions, choices, default="NA")
+
+        conditions = [
+            (self.randomisation_df['rand_risk'] == 'Low Risk'),
+            (self.randomisation_df['rand_risk'] == 'Medium Risk'),
+            (self.randomisation_df['rand_risk'] == 'Medium Risk'),
+        ]
+        choices = [3, 2, 2]
+
+        self.randomisation_df['rand_risk_value'] = np.select(conditions, choices, default="NA")
+        return self.randomisation_df
+
+    def rob_eco_valid(self):
+
+        conditions = [
+            (self.study_realism_df['eco_valid_raw'] == 'High ecological validity'),
+            (self.study_realism_df['eco_valid_raw'] == 'Low ecological validity'),
+            (self.study_realism_df['eco_valid_raw'] == 'Unclear'),
+        ]
+        choices = ['Low Risk', 'High Risk', 'High Risk']
+
+        self.study_realism_df['eco_valid_risk'] = np.select(conditions, choices, default="NA")
+
+        conditions = [
+            (self.study_realism_df['eco_valid_risk'] == 'Low Risk'),
+            (self.study_realism_df['eco_valid_risk'] == 'High Risk'),
+        ]
+        choices = [3, 1]
+
+        self.study_realism_df['eco_valid_risk_value'] = np.select(conditions, choices, default="NA")
+        return self.study_realism_df
+    
+    def rob_num_schools_int(self):
+        self.number_of_schools_intervention_Comments_df["school_treat_info_new"] = self.number_of_schools_intervention_Comments_df["school_treat_info"].apply(
+            pd.to_numeric, errors='coerce').fillna(0)
+
+        def school_treat_risk(row):
+            if row['school_treat_info_new'] == 1: return 'High Risk'
+            if row['school_treat_info_new'] > 2 and row['school_treat_info_new'] < 6: return 'Medium Risk'
+            if row['school_treat_info_new'] > 5: return 'Low Risk'
+            return 'NA'
+
+        self.number_of_schools_intervention_Comments_df["school_treat_risk"] = self.number_of_schools_intervention_Comments_df.apply(
+            lambda row: school_treat_risk(row), axis=1)
+
+        conditions = [
+            (self.number_of_schools_intervention_Comments_df["school_treat_risk"] == 'High Risk'),
+            (self.number_of_schools_intervention_Comments_df["school_treat_risk"] == 'Medium Risk'),
+            (self.number_of_schools_intervention_Comments_df["school_treat_risk"] == 'Low Risk'),
+        ]
+        choices = [1, 2, 3]
+
+        self.number_of_schools_intervention_Comments_df['school_treat_risk_value'] = np.select(conditions, choices, default="NA")
+        return self.number_of_schools_intervention_Comments_df
+
+    def rob_num_classes_total(self):
+        self.number_of_classes_total_Comments_df["class_total_info_new"] = self.number_of_classes_total_Comments_df["class_total_info"].apply(
+            pd.to_numeric, errors='coerce').fillna(0)
+
+        def class_total_risk1(row):
+            if row['class_total_info_new'] == 1:
+                return 'Higher Risk'
+            if row['class_total_info_new'] > 2 and row['class_total_info_new'] < 6:
+                return 'Medium Risk'
+            if row['class_total_info_new'] > 5:
+                return 'Low Risk'
+            return 'NA'
+
+        self.number_of_classes_total_Comments_df["class_total_info_risk"] = self.number_of_classes_total_Comments_df.apply(
+            lambda row: class_total_risk1(row), axis=1)
+
+        conditions = [
+            (self.number_of_classes_total_Comments_df["class_total_info_risk"] == 'High Risk'),
+            (self.number_of_classes_total_Comments_df["class_total_info_risk"] == 'Medium Risk'),
+            (self.number_of_classes_total_Comments_df["class_total_info_risk"] == 'Low Risk'),
+            (self.number_of_classes_total_Comments_df["class_total_info_risk"] == 'NA'),
+        ]
+        choices = [1, 2, 3, np.nan]
+
+        self.number_of_classes_total_Comments_df['class_total_risk_value'] = np.select(conditions, choices, default="NA")
+        return self.number_of_classes_total_Comments_df
+    
+    def rob_int_who(self):
+        # originals
+        """ intervention_delivery_df["research staff"] = intervention_delivery_df["int_who_raw"].apply(lambda x: 'Research staff' in x) """
+        """ intervention_delivery_df["class teachers"]  = intervention_delivery_df["int_who_raw"].apply(lambda x: 'Class teachers' in x) """
+        """ intervention_delivery_df["other school staff"] = intervention_delivery_df["int_who_raw"].apply(lambda x: 'Other school staff' in x) """
+
+        self.intervention_delivery_df["peers"] = self.intervention_delivery_df["int_who_raw"].apply(lambda x: 'Peers' in x)
+        self.intervention_delivery_df["lay persons/volunteers"] = self.intervention_delivery_df["int_who_raw"].apply(lambda x: 'Lay persons/volunteers' in x)
+        self.intervention_delivery_df["digital technology"] = self.intervention_delivery_df["int_who_raw"].apply(lambda x: 'Digital technology' in x)
+        self.intervention_delivery_df["parents/carers"] = self.intervention_delivery_df["int_who_raw"].apply(lambda x: 'Parents/carers' in x)
+        self.intervention_delivery_df["external teachers"] = self.intervention_delivery_df["int_who_raw"].apply(lambda x: 'External teachers' in x)
+        self.intervention_delivery_df["teaching assistants"] = self.intervention_delivery_df["int_who_raw"].apply(lambda x: 'Teaching assistants' in x)
+        self.intervention_delivery_df["research staff"] = self.intervention_delivery_df["int_who_raw"].apply(lambda x: 'Research staff' in x)
+        self.intervention_delivery_df["class teachers"] = self.intervention_delivery_df["int_who_raw"].apply(lambda x: 'Class teachers' in x)
+        self.intervention_delivery_df["unclear/not specified"] = self.intervention_delivery_df["int_who_raw"].apply(lambda x: 'Unclear/not specified' in x)
+
+        self.intervention_delivery_df.columns = [
+            "int_who_raw", "peers", 
+            "lay persons/volunteers", 
+            "digital technology", 
+            "parents/carers", 
+            "external teachers", 
+            "teaching assistants", 
+            "research staff", 
+            "class teachers", 
+            "unclear/not specified"
+        ]
+
+        self.intervention_delivery_df.loc[self.intervention_delivery_df['int_who_raw'].map(str).str.contains('Unclear/not specified'), 'int_who_raw_risk_value'] = 1
+        self.intervention_delivery_df.loc[self.intervention_delivery_df['int_who_raw'].map(str).str.contains('Peers'), 'int_who_raw_risk_value']   = 1
+        self.intervention_delivery_df.loc[self.intervention_delivery_df['int_who_raw'].map(str).str.contains('Lay persons/volunteers'), 'int_who_raw_risk_value']  = 2
+        self.intervention_delivery_df.loc[self.intervention_delivery_df['int_who_raw'].map(str).str.contains('Digital technology'), 'int_who_raw_risk_value']   = 1
+        self.intervention_delivery_df.loc[self.intervention_delivery_df['int_who_raw'].map(str).str.contains('Teaching assistants'), 'int_who_raw_risk_value'] = 2
+        self.intervention_delivery_df.loc[self.intervention_delivery_df['int_who_raw'].map(str).str.contains('Parents/carers'), 'int_who_raw_risk_value'] = 2
+        self.intervention_delivery_df.loc[self.intervention_delivery_df['int_who_raw'].map(str).str.contains('Research staff'), 'int_who_raw_risk_value'] = 2
+        self.intervention_delivery_df.loc[self.intervention_delivery_df['int_who_raw'].map(str).str.contains('Class teachers'), 'int_who_raw_risk_value'] = 3
+        self.intervention_delivery_df.loc[self.intervention_delivery_df['int_who_raw'].map(str).str.contains('External teachers'), 'int_who_raw_risk_value'] = 2
+
+        self.intervention_delivery_df['int_who_raw_risk_value'] = self.intervention_delivery_df['int_who_raw_risk_value']
+        return self.intervention_delivery_df
+    
+    def rob_out_eval(self):
+        #del self.InterventionEvaluation_df['eef_eval_raw']
+
+        self.InterventionEvaluation_df['out_eval_raw'] = self.InterventionEvaluation_df['out_eval_raw'].str[0]
+
+        conditions = [
+            (self.InterventionEvaluation_df['out_eval_raw'] == "The developer"),
+            (self.InterventionEvaluation_df['out_eval_raw'] == "A different organization paid by developer"),
+            (self.InterventionEvaluation_df['out_eval_raw'] == "An organization commissioned independently to evaluate"),
+            (self.InterventionEvaluation_df['out_eval_raw'] == "Unclear/not stated"),
+        ]
+
+        # GET RISK LEVELS PER OUTCOME EVALUATION
+        choices = ['Medium Risk', 'Medium Risk', 'Low Risk', 'Medium Risk']
+
+        self.InterventionEvaluation_df["out_eval_risk"] = np.select(conditions, choices, default="NA")
+
+        conditions = [
+            (self.InterventionEvaluation_df["out_eval_risk"] == 'High Risk'),
+            (self.InterventionEvaluation_df["out_eval_risk"] == 'Medium Risk'),
+            (self.InterventionEvaluation_df["out_eval_risk"] == 'Low Risk'),
+        ]
+
+        choices = [1, 2, 3]
+
+        self.InterventionEvaluation_df["out_eval_risk_value"] = np.select(conditions, choices, default="NA")
+        return self.InterventionEvaluation_df
+
+    def rob_comparability(self):
+        #del self.comparability_df["comp_anal_ht"]
+        #del self.comparability_df["comp_anal_info"]
+
+        self.comparability_df['comp_anal_raw'] = self.comparability_df['comp_anal_raw'].apply(lambda x: ",".join(x) if isinstance(x, list) else x)
+
+        conditions = [
+            (self.comparability_df['comp_anal_raw'] == "Yes"),
+            (self.comparability_df['comp_anal_raw'] == "No"),
+            (self.comparability_df['comp_anal_raw'] == "Unclear or details not provided"),
+        ]
+
+        choices = ['Low Risk', 'Medium Risk', 'Medium Risk']
+
+        self.comparability_df["comp_anal_risk"] = np.select(conditions, choices, default="NA")
+
+        conditions = [
+            (self.comparability_df['comp_anal_risk'] == 'Low Risk'),
+            (self.comparability_df['comp_anal_risk'] == 'Medium Risk'),
+            (self.comparability_df['comp_anal_risk'] == 'High Risk'),
+        ]
+        choices = [3, 2, 1]
+
+        self.comparability_df["comp_anal_risk_value"] = np.select(conditions, choices, default="NA")
+        return self.comparability_df
+
+    def rob_post_process(self):
+        self.risk_of_bias_df = pd.concat([
+            self.eppiid_df, 
+            self.author_df, 
+            self.tool_prim_es,
+            self.tool_prim_se,
+            self.year_df, 
+            self.admin_strand_df,
+            self.publicationtype_df,
+            self.participant_assignment_df,
+            self.study_realism_df,
+            self.number_of_schools_intervention_Comments_df,
+            self.intervention_delivery_df,
+            self.number_of_classes_total_Comments_df,
+            self.InterventionEvaluation_df,
+            self.comparability_df,
+            self.sample_size_Comments_df,
+            self.toolkit_test_type,
+            self.toolkit_es_type,
+            self.overall_percent_attrition_Comments_df,
+            self.clustering_df,
+            self.randomisation_df
+        ], axis=1, sort=False)
+    
+        # CONVERT OBJECT COLUMNS TO FLOAT (FOR ADDITION)
+        #self.risk_of_bias_df["rand_risk_value"] = self.risk_of_bias_df["rand_risk_value"].apply(pd.to_numeric, errors='coerce')
+        #self.risk_of_bias_df["part_assig_risk_value"] = self.risk_of_bias_df["part_assig_risk_value"].apply(pd.to_numeric, errors='coerce')
+        #self.risk_of_bias_df["eco_valid_risk_value"] = self.risk_of_bias_df["eco_valid_risk_value"].apply(pd.to_numeric, errors='coerce')
+        #self.risk_of_bias_df["school_treat_risk_value"] = self.risk_of_bias_df["school_treat_risk_value"].apply(pd.to_numeric, errors='coerce')
+        #self.risk_of_bias_df["pub_type_risk_value"] = self.risk_of_bias_df["pub_type_risk_value"].apply(pd.to_numeric, errors='coerce')
+        #self.risk_of_bias_df["class_total_risk_value"] = self.risk_of_bias_df["class_total_risk_value"].apply(pd.to_numeric, errors='coerce')
+        #self.risk_of_bias_df["out_eval_risk_value"] = self.risk_of_bias_df["out_eval_risk_value"].apply(pd.to_numeric, errors='coerce')
+        #self.risk_of_bias_df["comp_anal_risk_value"] = self.risk_of_bias_df["comp_anal_risk_value"].apply(pd.to_numeric, errors='coerce')
+        #self.risk_of_bias_df["sample_size_risk_value"] = self.risk_of_bias_df["sample_size_risk_value"].apply(pd.to_numeric, errors='coerce')
+        #self.risk_of_bias_df["out_test_type_raw_risk_value"] = self.risk_of_bias_df["out_test_type_raw_risk_value"].apply(pd.to_numeric, errors='coerce')
+        #self.risk_of_bias_df["out_es_type_risk_value"] = self.risk_of_bias_df["out_es_type_risk_value"].apply(pd.to_numeric, errors='coerce')
+        #self.risk_of_bias_df["int_who_raw_risk_value"] = self.risk_of_bias_df["int_who_raw_risk_value"].apply(pd.to_numeric, errors='coerce')
+        #self.risk_of_bias_df["attri_perc_info_risk_value"] = self.risk_of_bias_df["attri_perc_info_risk_value"].apply(pd.to_numeric, errors='coerce')
+        #self.risk_of_bias_df["clust_anal_risk_value"] = self.risk_of_bias_df["clust_anal_risk_value"].apply(pd.to_numeric, errors='coerce')
+        #self.risk_of_bias_df["pub_year_risk_value"] = self.risk_of_bias_df["pub_year_risk_value"].apply(pd.to_numeric, errors='coerce')
+
+        #self.risk_of_bias_df['strand_raw'] = self.risk_of_bias_df['strand_raw'].str.join(', ')
+
+        """ self.risk_of_bias_df.replace('~', '', regex=True, inplace=True)
+        self.risk_of_bias_df.replace('<', '', regex=True, inplace=True)
+        self.risk_of_bias_df.replace('≤', '', regex=True, inplace=True)
+        self.risk_of_bias_df.replace(['NA'], 'NA', inplace=True)
+        self.risk_of_bias_df.replace(['N'], 'NA', inplace=True)
+
+        self.risk_of_bias_df.replace('\r', ' ', regex=True, inplace=True)
+        self.risk_of_bias_df.replace('\n', ' ', regex=True, inplace=True)
+        self.risk_of_bias_df.replace(':', ' ',  regex=True, inplace=True)
+        self.risk_of_bias_df.replace(';', ' ',  regex=True, inplace=True)
+
+        self.risk_of_bias_df.replace(r'^\s*$', "NA", regex=True)
+        self.risk_of_bias_df.fillna('NA', inplace=True) """
+
+        #final_score_col = self.risk_of_bias_df.pop('raw_total')
+        #self.risk_of_bias_df.insert(63, 'raw_total', final_score_col)
+        self.risk_of_bias_df.to_csv("ROB_TESTING.csv", index=False, header=True)
+        return self.risk_of_bias_df
+    
+class CustomFrames:
+    def __init__(self, data_extractor):
+        self.data_extraction = data_extractor
+
+        #eppiid_df = self.data_extraction.retrieve_metadata("ItemId", "id")
+
 #/**********************************************/
 #/   RETRIEVE INDIVIDUAL VARIABLE DATAFRAMES    /
 #/**********************************************/
@@ -3595,42 +4155,7 @@ def group_desc_stats(attribute_text, column_prefix):
     return group_data_df
 
 
-def city():
-    """
-    Retrieve city data and return it as a cleaned up DataFrame.
-    Returns:
-    -------
-    city_df : pandas.DataFrame
-        DataFrame containing publication author data.
-    """
-    # Get city metadata
-    city_df = json_extractor.process_metadata("City", "City")
-    # Clean up data frame
-    city_df.fillna("NA", inplace=True)
-    return city_df
-
-
-def doi():
-    # get author data
-    doi = json_extractor.get_metadata("DOI")
-    doi_df = pd.DataFrame(doi)
-    doi_df.columns = ["DOI"]
-    doi_df.fillna("NA", inplace=True)
-    return doi_df
-
-
-def editors():
-    # get abstract data
-    editedby = json_extractor.get_metadata("EditedBy")
-    editedby_df = pd.DataFrame(editedby)
-    editedby_df.columns = ["Editor(s)"]
-    editedby_df.fillna("NA", inplace=True)
-    return editedby_df
-
-
-def gender_split():
-    """
-    """
+""" def gender_split():
     from src.attributeIDs import gender_split_output
     # Get gender split highlighted text
     gen_split_ht_df = json_extractor.process_ht(gender_split_output, "Gender_Split_HT")
@@ -3643,60 +4168,46 @@ def gender_split():
     gen_split_df.replace('\r',' ', regex=True, inplace=True)
     gen_split_df.replace('\n',' ', regex=True, inplace=True)
     gen_split_df.fillna("NA", inplace=True)
-    return gen_split_df
-
-
-def inst():
-    """
-    """
-    # Get author data
-    institution = json_extractor.get_metadata("Institution")
-    institution_df = pd.DataFrame(institution)
-    institution_df.columns = ["Institution"]
-    institution_df.fillna("NA", inplace=True)
-    return institution_df
+    return gen_split_df """
 
 
 def int_eval():
-    """
-    """
-    from src.attributeIDs import int_eval
+
     # get intervention costs reported main data
-    int_eval_df = json_extractor.process_data(int_eval, "out_eval_raw")
+    int_eval_df = json_extractor.process_data(int_eval_output, "out_eval_raw")
+
     int_eval_df["eef_eval_raw"] = int_eval_df["out_eval_raw"].map(
                 set(["Is this an EEF evaluation?"]).issubset).astype(int)
+    
     int_eval_df["eef_eval_raw"] = int_eval_df["eef_eval_raw"].replace(
                 to_replace=[0, 1], value=["No", "Yes"])
+    
     # get intervention costs reported highlighted text
-    int_eval_ht_df = json_extractor.process_ht(int_eval, "out_eval_ht")
+    int_eval_ht_df = json_extractor.process_ht(int_eval_output, "out_eval_ht")
+
     # get intervention costs reported user comments
-    int_eval_comments_df = json_extractor.process_info(int_eval, "out_eval_info")
+    int_eval_comments_df = json_extractor.process_info(int_eval_output, "out_eval_info")
+
     # Concatenate data frames
     dataframes = [int_eval_df, int_eval_ht_df, int_eval_comments_df]
+
     int_eval_df = pd.concat(dataframes, axis=1, sort=False)
+
     int_eval_df=int_eval_df[[
         "out_eval_raw", 
         "out_eval_ht", 
         "out_eval_info", 
         "eef_eval_raw"
     ]]
+
     json_extractor.clean_up(int_eval_df)
+
     int_eval_df.fillna("NA", inplace=True)
     return int_eval_df
 
 
-def issue():
-    # get issue data
-    issue = json_extractor.get_metadata("Issue")
-    issue_df = pd.DataFrame(issue)
-    issue_df.columns = ["Issue"]
-    issue_df.fillna("NA", inplace=True)
-    return issue_df
 
-
-def out_id():
-    """
-    """
+""" def out_id():
     # Get outcome ID data
     outcome_ID = json_extractor.get_outcome_lvl1("OutcomeId")
     outcome_ID_df = pd.DataFrame(outcome_ID)
@@ -3706,57 +4217,10 @@ def out_id():
     # Clean up data frame
     outcome_ID_df.fillna("NA", inplace=True)
     outcome_ID_df = outcome_ID_df.replace(r'^\s*$', "NA", regex=True)
-    return outcome_ID_df
+    return outcome_ID_df """
 
 
-def pages():
-    # get author data
-    pages = json_extractor.get_metadata("Pages")
-    pages_df = pd.DataFrame(pages)
-    pages_df.columns = ["Pages"]
-    pages_df.fillna("NA", inplace=True)
-    return pages_df
-
-
-def par_auth():
-    # get abstract data
-    parentauthors = json_extractor.get_metadata("ParentAuthors")
-    parentauthors_df = pd.DataFrame(parentauthors)
-    parentauthors_df.columns = ["Parent_Authors"]
-    parentauthors_df.fillna("NA", inplace=True)
-    return parentauthors_df
-
-
-def par_tit():
-    # get author data
-    parentittle = json_extractor.get_metadata("ParentTitle")
-    parentittle_df = pd.DataFrame(parentittle)
-    parentittle_df.columns = ["ParentTitle"]
-    parentittle_df.fillna("NA", inplace=True)
-    return parentittle_df
-
-
-def publisher():
-    """
-    """
-    # Get author data
-    publisher = json_extractor.get_metadata("Publisher")
-    publisher_df = pd.DataFrame(publisher)
-    publisher_df.columns = ["Publisher"]
-    publisher_df.fillna("NA", inplace=True)
-    return publisher_df
-
-
-def short_tit():
-    # get eppiID data
-    shorttitle = json_extractor.get_metadata("Title")
-    shorttitle_df = pd.DataFrame(shorttitle)
-    shorttitle_df.columns = ["title"]
-    shorttitle_df.fillna("NA", inplace=True)
-    return shorttitle_df
-
-
-def source():
+""" def source():
     from src.attributeIDs import source_output
     from src.attributeIDs import source_EEF_Report_options
     # get source raw data
@@ -3776,10 +4240,10 @@ def source():
     ], axis=1, sort=False)
     # fill blanks with NA
     source_all_df.fillna("NA", inplace=True)
-    return source_all_df
+    return source_all_df """
 
 
-def study_place():
+""" def study_place():
     from src.attributeIDs import location_info
     # get study place info data
     study_place = json_extractor.get_data(location_info)
@@ -3798,7 +4262,7 @@ def study_place():
     ], axis=1, sort=False)
     # fill blanks with NA
     study_place_df.fillna("NA", inplace=True)
-    return study_place_df
+    return study_place_df """
 
 
 def sample_main_check():
@@ -3810,16 +4274,7 @@ def sample_main_check():
     return sample_main_check_df
 
 
-def title():
-    # get eppiID data
-    title = json_extractor.get_metadata("Title")
-    title_df = pd.DataFrame(title)
-    title_df.columns = ["title"]
-    title_df.fillna("NA", inplace=True)
-    return title_df
-
-
-def toolkit_strand():
+""" def toolkit_strand():
     from src.attributeIDs import toolkit_strand_codes
     # get toolkit strand data
     toolkitstrand = json_extractor.get_outcome_lvl2(toolkit_strand_codes)
@@ -3834,37 +4289,10 @@ def toolkit_strand():
     # name each column (number depends on outcome number)
     toolkitstrand_df.columns = [
         "out_strand_"+'{}'.format(column+1) for column in toolkitstrand_df.columns]
-    return toolkitstrand_df
+    return toolkitstrand_df """
 
 
-def type_name():
-    # get author data
-    typename = json_extractor.get_metadata("TypeName")
-    typename_df = pd.DataFrame(typename)
-    typename_df.columns = ["typename"]
-    typename_df.fillna("NA", inplace=True)
-    return typename_df
-
-
-def url():
-    # get author data
-    url = json_extractor.get_metadata("URL")
-    url_df = pd.DataFrame(url)
-    url_df.columns = ["URL"]
-    url_df.fillna("NA", inplace=True)
-    return url_df
-
-
-def volume():
-    # get author data
-    volume = json_extractor.get_metadata("Volume")
-    volume_df = pd.DataFrame(volume)
-    volume_df.columns = ["Volume"]
-    volume_df.fillna("NA", inplace=True)
-    return volume_df
-
-
-def web_loc():
+""" def web_loc():
     from src.attributeIDs import study_loc
     from src.attributeIDs import study_loc_type
     # get location info highlighted text
@@ -3882,11 +4310,7 @@ def web_loc():
         loc_HT_df,
         loc_type_HT_df,
     ], axis=1, sort=False)
-    return loc_info
-
-    
-
-
+    return loc_info """
 
 #/*************************/
 #/   COMMAND LINE TABLES   /
@@ -3902,7 +4326,7 @@ def data_analysis_cl_table():
                       style=custom_style_df1,
                       title=None,
                       safe_box=False,
-                      box=box.MINIMAL)
+                      box=box.SIMPLE)
 
     main_table.add_column("", style="bold white")
     main_table.add_column("Main Toolkit", header_style="bold cyan", style="white")
@@ -3943,7 +4367,9 @@ def data_analysis_cl_table():
                   padding=(1, 2),
                   width=80)
 
+    print("\n")
     console.print(panel)
+    print("\n")
 
      # Get user selection for strand specific dataframe (if needed)
     ss_user_input = int(input("Select strand specific option: "))
@@ -3957,6 +4383,29 @@ def display_table_struct(funcs):
         func(save_file=True, clean_cols=True, verbose=False)
 
  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def data_cleaning_col_breakdown():
 
     table_title_style = Style(italic=False, bgcolor=None, color="blue", bold=True)
@@ -4005,27 +4454,31 @@ def data_cleaning_col_breakdown():
 
 
 def display_main_menu():
-    
     table_title_style = Style(italic=False, bgcolor=None, color="magenta", bold=True)
     header_style = Style(italic=False, bgcolor=None, color="magenta", bold=True)
-    column_style = Style(bgcolor=None, color="white") 
+    column_style = Style(bgcolor=None, color="white", bold=True) 
 
     main_table = Table(show_header=True,
                        highlight=False,
                        title=None,
                        title_style=table_title_style,
-                       box=box.MINIMAL)
-    
-    main_table.add_column("Selection", header_style=header_style, style=column_style)
-    main_table.add_column("Description", header_style=header_style, style=column_style)
+                       box=box.SIMPLE)
 
-    main_table.add_row("1. Dataframe 1", "Study, Research & Design Variables")
-    main_table.add_row("2. Dataframe 2", "Intervention Details")
-    main_table.add_row("3. Sample Size", "Sample size variables")
-    main_table.add_row("4, Effect Size A", "Descriptive Statistics")
-    main_table.add_row("5, Effect Size B", "Outcome Details")
-    main_table.add_row("6. Data Analysis", "Key variables for data analysis")
-    main_table.add_row("7  [bold red]EXIT[/bold red]", "", style="bold")
+    selection_style = Style(italic=False, bgcolor=None, color="cyan", bold=True)
+    description_style = Style(italic=False, bgcolor=None, color="red", bold=True)
+
+    main_table.add_column("Selection", header_style=selection_style, style=column_style)
+    main_table.add_column("Description", header_style=description_style, style=column_style)
+
+    main_table.add_row("1. [bold cyan]Dataframe 1[/bold cyan]", "[red]Study, Research & Design Variables[/red]")
+    main_table.add_row("2. [bold cyan]Dataframe 2[/bold cyan]", "[red]Intervention Details[/red]")
+    main_table.add_row("3. [bold cyan]Sample Size[/bold cyan]", "[red]Sample size variables[/red]")
+    main_table.add_row("4, [bold cyan]Effect Size A[/bold cyan]", "[red]Descriptive Statistics[/red]")
+    main_table.add_row("5, [bold cyan]Effect Size B[/bold cyan]", "[red]Outcome Details[/red]")
+    main_table.add_row("6. [bold cyan]Data Analysis[/bold cyan]", "[red]Key variables for data analysis[/red]")
+    main_table.add_row("7. [bold cyan]References[/bold cyan]", "[red]Variables for constructing study references[/red]")
+    main_table.add_row("8. [bold cyan]Custom Selection[/bold cyan]", "[red]Select your own custom data frame[/red]")
+    main_table.add_row("0. [bold cyan]EXIT[/bold cyan]", "")
     return main_table
 
 
@@ -4037,7 +4490,7 @@ def dataframe_1_output_display(functions, outfile):
                       style=custom_style_df1,
                       title=None,
                       safe_box=False,
-                      box=box.MINIMAL)
+                      box=box.SIMPLE)
 
     df1_table.add_column("Selection", justify="center", header_style="bold red")
     df1_table.add_column("Output directory", justify="left", header_style="red")
@@ -4054,7 +4507,7 @@ def dataframe_2_output_display(functions, outfile):
                       style=custom_style_df1,
                       title=None,
                       safe_box=False,
-                      box=box.MINIMAL)
+                      box=box.SIMPLE)
 
     df2_table.add_column("Selection", justify="center", header_style="bold red")
     df2_table.add_column("Output directory", justify="left", header_style="red")
@@ -4071,7 +4524,7 @@ def dataframe_3_output_display(functions, outfile):
                       style=custom_style_df1,
                       title=None,
                       safe_box=False,
-                      box=box.MINIMAL)
+                      box=box.SIMPLE)
 
     df3_table.add_column("Selection", justify="center", header_style="bold red")
     df3_table.add_column("Output directory", justify="left", header_style="red")
@@ -4088,7 +4541,7 @@ def dataframe_4_output_display(functions, outfile):
                       style=custom_style_df1,
                       title=None,
                       safe_box=False,
-                      box=box.MINIMAL)
+                      box=box.SIMPLE)
 
     df4_table.add_column("Selection", justify="center", header_style="bold red")
     df4_table.add_column("Output directory", justify="left", header_style="red")
@@ -4105,7 +4558,7 @@ def dataframe_5_output_display(functions, outfile):
                       style=custom_style_df1,
                       title=None,
                       safe_box=False,
-                      box=box.MINIMAL)
+                      box=box.SIMPLE)
 
     df5_table.add_column("Selection", justify="center", header_style="bold red")
     df5_table.add_column("Output directory", justify="left", header_style="red")
@@ -4122,13 +4575,30 @@ def dataframe_6_output_display(functions, outfile):
                       style=custom_style_df1,
                       title=None,
                       safe_box=False,
-                      box=box.MINIMAL)
+                      box=box.SIMPLE)
 
     df6_table.add_column("Selection", justify="center", header_style="bold red")
     df6_table.add_column("Output directory", justify="left", header_style="red")
     df6_table.add_row("Dataframe 6", outfile)
 
     return df6_table
+
+
+def dataframe_7_output_display(functions, outfile):
+    console = Console()
+    custom_style_df1 = Style(bgcolor="#282c24")
+
+    df7_table = Table(show_header=True, 
+                      style=custom_style_df1,
+                      title=None,
+                      safe_box=False,
+                      box=box.SIMPLE)
+
+    df7_table.add_column("Selection", justify="center", header_style="bold red")
+    df7_table.add_column("Output directory", justify="left", header_style="red")
+    df7_table.add_row("Dataframe 7", outfile)
+
+    return df7_table
 
 
 def input_file_info_display(data_file):
@@ -4141,7 +4611,7 @@ def input_file_info_display(data_file):
                        highlight=False,
                        title=None,
                        title_style=table_title_style,
-                       box=box.MINIMAL)
+                       box=box.SIMPLE)
     
     file_info_table.add_column("Your input file", header_style=header_style, style=column_style)
     file_info_table.add_row(data_file)
@@ -4185,15 +4655,15 @@ def main_menu_display():
     # create the layout with the panels
     layout = Columns([row1], equal=False)
 
-    panel = Panel(
-        layout, 
-        title="EEF Teaching and Learning Toolkit Data Extractor", 
-        border_style="white", 
-        padding=(1, 2), 
-        title_align="left",
-        style=custom_style_main, height=19)
+    panel = Panel(layout, 
+                  title="EEF Teaching and Learning Toolkit Data Extractor", 
+                  border_style="white", 
+                  padding=(1, 2), 
+                  title_align="left",
+                  style=custom_style_main, 
+                  height=21)
 
-    print("\n")
+    console.clear()
     console.print(panel)
     print("\n")
 
@@ -4253,10 +4723,10 @@ def main_menu_display1(functions, outfile1, df_display):
         title_align="left",
         style=custom_style_main)
 
-    print("\n")
+    console.clear()
     console.print(panel)
     print("\n")
 
 
-data_file = input_file_path("Enter the path to the JSON file: ")
+data_file = input_file_path("Input json data file: ")
 json_extractor = JSONDataExtractor(data_file)
