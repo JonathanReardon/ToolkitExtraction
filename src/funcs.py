@@ -993,210 +993,219 @@ class DataFrameCompilation:
         Notes:
             The returned DataFrame has 85 columns.
         """
-        eppiid_df = self.data_extraction.retrieve_metadata("ItemId", "id")
-        author_df = self.data_extraction.retrieve_metadata("ShortTitle", "pub_author")
-        year_df = self.data_extraction.retrieve_metadata("Year", "pub_year")
-        admin_strand_data = self.data_extraction.retrieve_data(admin_strand_output, "strand_raw")
-        admin_strand_info = self.data_extraction.retrieve_info(admin_strand_output, "strand_info") 
-        toolkit_version_data = self.data_extraction.retrieve_data(toolkit_versions, "toolkit_version")
-        desc_stats_prim_out_rep_df = self.data_extraction.retrieve_data(desc_stats_primary_outcome, "desc_stats_raw")
-        desc_stats_prim_out_rep_ht_df = self.data_extraction.retrieve_ht(desc_stats_primary_outcome, "desc_stats_ht")
-        descs_tats_prim_out_rep_comments_df = self.data_extraction.retrieve_info(desc_stats_primary_outcome, "desc_stats_info")
-        int_grp_num_ht_df = self.data_extraction.retrieve_ht(int_grp_number, "n_treat_ht")
-        int_grp_num_comments_df = self.data_extraction.process_info(int_grp_number, "n_treat_info")
-        int_grp_pretest_mean_ht_df = self.data_extraction.retrieve_ht(int_grp_pretest_mean, "pre_t_mean_ht")
-        int_grp_pretest_mean_comments_df = self.data_extraction.retrieve_info(int_grp_pretest_mean, "pre_t_mean_info")
-        int_grp_pretest_sd_ht_df = self.data_extraction.retrieve_ht(int_grp_pretest_sd, "pre_t_sd_ht")
-        int_grp_pretest_sd_comments_df = self.data_extraction.retrieve_info(int_grp_pretest_sd, "pre_t_sd_info")
-        int_grp_posttest_mean_ht_df = self.data_extraction.retrieve_ht(intn_grp_posttest_mean, "post_t_mean_ht_t_sd_ht")
-        int_grp_posttest_mean_comments_df = self.data_extraction.retrieve_info(intn_grp_posttest_mean, "post_t_mean_info")
-        int_grp_posttest_sd_ht_df = self.data_extraction.retrieve_ht(int_grp_posttest_sd, "post_t_sd_ht")
-        int_grp_posttest_sd_comments_df = self.data_extraction.retrieve_info(int_grp_posttest_sd, "post_t_sd_info")
-        int_grp_gain_score_mean_ht_df = self.data_extraction.retrieve_ht(int_grp_gain_score_mean, "gain_t_mean_ht")
-        int_grp_gain_score_mean_comments_df = self.data_extraction.retrieve_info(int_grp_gain_score_mean, "gain_t_mean_info")
-        int_grp_gain_score_sd_ht_df = self.data_extraction.retrieve_ht(int_grp_gain_score_sd, "gain_t_sd_ht")
-        int_grp_gain_score_sd_comments_df = self.data_extraction.retrieve_info(int_grp_gain_score_sd, "gain_t_sd_info")
-        int_grp_other_info_ht_df = self.data_extraction.retrieve_ht(int_grp_any_other_info, "out_t_other_ht")
-        int_grp_other_info_comments_df = self.data_extraction.retrieve_info(int_grp_any_other_info, "out_t_other_info")
-        ctrl_grp_num_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_number, "n_cont_ht")
-        ctrl_grp_num_comments_df = self.data_extraction.retrieve_info(ctrl_grp_number, "n_cont_info")
-        ctrl_grp_pretest_mean_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_pretest_mean, "pre_c_mean_ht")
-        ctrl_grp_pretest_mean_comments_df = self.data_extraction.retrieve_info(ctrl_grp_pretest_mean, "pre_c_mean_info")
-        ctrl_grp_pretest_sd_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_pretest_sd, "pre_c_sd_ht")
-        ctrl_grp_pretest_sd_comments_df = self.data_extraction.retrieve_info(ctrl_grp_pretest_sd, "pre_c_sd_info")
-        ctrl_grp_post_test_mean_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_posttest_mean, "post_c_mean_ht")
-        ctrl_grp_post_test_mean_comments_df = self.data_extraction.retrieve_info(ctrl_grp_posttest_mean, "post_c_mean_info")
-        ctrl_grp_post_test_sd_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_posttest_sd, "post_c_sd_ht")
-        ctrl_grp_post_test_sd_comments_df = self.data_extraction.retrieve_info(ctrl_grp_posttest_sd, "post_c_sd_info")
-        Ctrl_grp_gain_score_mean_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_gain_score_mean, "gain_c_mean_ht")
-        ctrl_grp_gain_score_mean_comments_df = self.data_extraction.retrieve_info(ctrl_grp_gain_score_mean, "gain_c_mean_info")
-        ctrl_grp_gain_score_sd_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_gain_score_sd, "gain_c_sd_ht")
-        ctrl_grp_gain_score_sd_comments_df = self.data_extraction.retrieve_info(ctrl_grp_gain_score_sd, "gain_c_sd_info")
-        ctrl_grp_other_info_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_any_other_info, "out_c_other_ht")
-        ctrl_grp_other_info_comments_df = self.data_extraction.retrieve_info(ctrl_grp_any_other_info, "out_c_other_info")
-        int_grp_num2_ht_df = self.data_extraction.retrieve_ht(int_grp_two_number, "n_treat2_ht")
-        int_grp_num2_comments_df = self.data_extraction.retrieve_info(int_grp_two_number, "n_treat2_info")
-        int_grp_pretest2_mean_ht_df = self.data_extraction.retrieve_ht(int_grp_two_pretest_mean, "pre_t2_mean_ht")
-        int_grp_pretest2_mean_comments_df = self.data_extraction.retrieve_info(int_grp_two_pretest_mean, "pre_t2_mean_info")
-        int_grp_pretest2_sd_ht_df = self.data_extraction.retrieve_ht(int_grp_two_pretest_sd, "pre_t2_sd_ht")
-        int_grp_pretest2_sd_comments_df = self.data_extraction.retrieve_info(int_grp_two_pretest_sd, "pre_t2_sd_info")
-        int_grp_post2_test_mean_ht_df = self.data_extraction.retrieve_ht(int_grp_two_posttest_mean, "post_t2_mean_ht")
-        int_grp_post2_test_mean_comments_df = self.data_extraction.retrieve_info(int_grp_two_posttest_mean, "post_t2_mean_info")
-        int_grp_post2_test_sd_ht_df = self.data_extraction.retrieve_ht(int_grp_two_posttest_sd, "post_t2_sd_ht")
-        int_grp_post2_test_sd_comments_df = self.data_extraction.retrieve_info(int_grp_two_posttest_sd, "post_t2_sd_info")
-        int_grp_gain2_score_mean_ht_df = self.data_extraction.retrieve_ht(int_grp_two_gain_score_mean, "gain_t2_mean_ht")
-        int_grp_gain2_score_mean_comments_df = self.data_extraction.retrieve_info(int_grp_two_gain_score_mean, "gain_t2_mean_info")
-        int_grp_gain2_score_sd_ht_df = self.data_extraction.retrieve_ht(int_grp_two_gain_score_sd, "gain_t2_sd_ht")
-        int_grp_gain2_score_sd_comments_df = self.data_extraction.retrieve_info(int_grp_two_gain_score_sd, "gain_t2_sd_info")
-        int_grp_other2_info_ht_df = self.data_extraction.retrieve_ht(int_grp_two_any_other_info, "out_t2_other_ht")
-        int_grp_other2_info_comments_df = self.data_extraction.retrieve_info(int_grp_two_any_other_info, "out_t2_other_info")
-        ctrl_grp_num2_ht_df = self.data_extraction.retrieve_ht(control_group_two_number, "n_cont2_ht")
-        ctrl_grp_num2_comments_df = self.data_extraction.retrieve_info(control_group_two_number, "n_cont2_info")
-        ctrl_grp_pretest2_mean_ht_df = self.data_extraction.retrieve_ht(control_group_two_pretest_mean, "pre_c2_mean_ht")
-        ctrl_grp_pretest2_mean_comments_df = self.data_extraction.retrieve_info(control_group_two_pretest_mean, "pre_c2_mean_info")
-        ctrl_grp_pretest2_sd_ht_df = self.data_extraction.retrieve_ht(control_group_two_pretest_sd, "pre_c2_sd_ht")
-        ctrl_grp_pretest2_sd_comments_df = self.data_extraction.retrieve_info(control_group_two_pretest_sd, "pre_c2_sd_info")
-        ctrl_grp_post2_test_mean_ht_df = self.data_extraction.retrieve_ht(control_group_two_posttest_mean, "post_c2_mean_ht")
-        ctrl_grp_post2_test_mean_comments_df = self.data_extraction.retrieve_info(control_group_two_posttest_mean, "post_c2_mean_info")
-        ctrl_grp_post2_test_sd_ht_df = self.data_extraction.retrieve_ht(control_group_two_posttest_sd, "post_c2_sd_ht")
-        ctrl_grp_post2_test_sd_comments_df = self.data_extraction.retrieve_info(control_group_two_posttest_sd, "post_c2_sd_info")
-        Ctrl_grp_gain2_score_mean_ht_df = self.data_extraction.retrieve_ht(control_group_two_gain_score_mean, "gain_c2_mean_ht")
-        ctrl_grp_gain2_score_mean_comments_df = self.data_extraction.retrieve_info(control_group_two_gain_score_mean, "gain_c2_mean_info")
-        ctrl_grp_gain2_score_sd_ht_df = self.data_extraction.retrieve_ht(control_group_two_gain_score_sd, "gain_c2_sd_ht")
-        ctrl_grp_gain2_score_sd_comments_df = self.data_extraction.retrieve_info(control_group_two_gain_score_sd, "gain_c2_sd_info")
-        ctrl_grp_other2_info_ht_df = self.data_extraction.retrieve_ht(control_group_two_any_other_info, "out_c2_other_ht")
-        ctrl_grp_other2_info_comments_df = self.data_extraction.retrieve_info(control_group_two_any_other_info, "out_c2_other_info")
-        followupdata = self.data_extraction.retrieve_data(follow_up_data_reported, "follow_up_raw")
-        followupdata_HT = self.data_extraction.retrieve_ht(follow_up_data_reported, "follow_up_ht")
-        followupdata_comments = self.data_extraction.retrieve_info(follow_up_data_reported, "follow_up_info")
-        
-        all_variables = pd.concat([
-            eppiid_df,
-            author_df,
-            year_df,
-            admin_strand_data,
-            admin_strand_info,
-            toolkit_version_data,
-            desc_stats_prim_out_rep_df,
-            desc_stats_prim_out_rep_ht_df,
-            descs_tats_prim_out_rep_comments_df,
-            int_grp_num_ht_df,
-            int_grp_num_comments_df,
-            int_grp_pretest_mean_ht_df,
-            int_grp_pretest_mean_comments_df,
-            int_grp_pretest_sd_ht_df,
-            int_grp_pretest_sd_comments_df,
-            int_grp_posttest_mean_ht_df,
-            int_grp_posttest_mean_comments_df,
-            int_grp_posttest_sd_ht_df,
-            int_grp_posttest_sd_comments_df,
-            int_grp_gain_score_mean_ht_df,
-            int_grp_gain_score_mean_comments_df,
-            int_grp_gain_score_sd_ht_df,
-            int_grp_gain_score_sd_comments_df,
-            int_grp_other_info_ht_df,
-            int_grp_other_info_comments_df,
-            ctrl_grp_num_ht_df,
-            ctrl_grp_num_comments_df,
-            ctrl_grp_pretest_mean_ht_df,
-            ctrl_grp_pretest_mean_comments_df,
-            ctrl_grp_pretest_sd_ht_df,
-            ctrl_grp_pretest_sd_comments_df,
-            ctrl_grp_post_test_mean_ht_df,
-            ctrl_grp_post_test_mean_comments_df,
-            ctrl_grp_post_test_sd_ht_df,
-            ctrl_grp_post_test_sd_comments_df,
-            Ctrl_grp_gain_score_mean_ht_df,
-            ctrl_grp_gain_score_mean_comments_df,
-            ctrl_grp_gain_score_sd_ht_df,
-            ctrl_grp_gain_score_sd_comments_df,
-            ctrl_grp_other_info_ht_df,
-            ctrl_grp_other_info_comments_df,
-            int_grp_num2_ht_df,
-            int_grp_num2_comments_df,
-            int_grp_pretest2_mean_ht_df,
-            int_grp_pretest2_mean_comments_df,
-            int_grp_pretest2_sd_ht_df,
-            int_grp_pretest2_sd_comments_df,
-            int_grp_post2_test_mean_ht_df,
-            int_grp_post2_test_mean_comments_df,
-            int_grp_post2_test_sd_ht_df,
-            int_grp_post2_test_sd_comments_df,
-            int_grp_gain2_score_mean_ht_df,
-            int_grp_gain2_score_mean_comments_df,
-            int_grp_gain2_score_sd_ht_df,
-            int_grp_gain2_score_sd_comments_df,
-            int_grp_other2_info_ht_df,
-            int_grp_other2_info_comments_df,
-            ctrl_grp_num2_ht_df,
-            ctrl_grp_num2_comments_df,
-            ctrl_grp_pretest2_mean_ht_df,
-            ctrl_grp_pretest2_mean_comments_df,
-            ctrl_grp_pretest2_sd_ht_df,
-            ctrl_grp_pretest2_sd_comments_df,
-            ctrl_grp_post2_test_mean_ht_df,
-            ctrl_grp_post2_test_mean_comments_df,
-            ctrl_grp_post2_test_sd_ht_df,
-            ctrl_grp_post2_test_sd_comments_df,
-            Ctrl_grp_gain2_score_mean_ht_df,
-            ctrl_grp_gain2_score_mean_comments_df,
-            ctrl_grp_gain2_score_sd_ht_df,
-            ctrl_grp_gain2_score_sd_comments_df,
-            ctrl_grp_other2_info_ht_df,
-            ctrl_grp_other2_info_comments_df,
-            followupdata,
-            followupdata_HT,
-            followupdata_comments,
-        ], axis=1, sort=False)
-        
-        if clean_cols:
-            # Define columns to insert and their corresponding indices
-            cols_to_insert = {
-                'desc_stats_CLEAN': 9,
-                'n_treat_CLEAN': 12,
-                'pre_t_mean_CLEAN': 15,
-                'pre_t_sd_CLEAN': 18,
-                'post_t_mean_CLEAN': 21,
-                'post_t_sd_CLEAN': 24,
-                'gain_t_mean_CLEAN': 27,
-                'gain_t_sd_CLEAN': 30,
-                'out_t_other_CLEAN': 33,
-                'n_cont_ht_CLEAN': 36,
-                'pre_c_mean_CLEAN': 39,
-                'pre_c_sd_CLEAN': 42,
-                'post_c_mean_CLEAN': 45,
-                'post_c_sd_CLEAN': 48,
-                'gain_c_mean_CLEAN': 51,
-                'gain_c_sd_CLEAN': 54,
-                'out_c_other_CLEAN': 57,
-                'n_treat2_CLEAN': 60,
-                'pre_t2_mean_CLEAN': 63,
-                'pre_t2_sd_CLEAN': 66,
-                'post_t2_mean_CLEAN': 69,
-                'post_t2_sd_CLEAN': 72,
-                'gain_t2_mean_CLEAN': 75,
-                'gain_t2_sd_CLEAN': 78,
-                'out_t2_other_CLEAN': 81,
-                'n_cont2_CLEAN': 84,
-                'pre_c2_mean_CLEAN': 87,
-                'pre_c2_sd_CLEAN': 90,
-                'post_c2_mean_CLEAN': 93,
-                'post_c2_sd_CLEAN': 96,
-                'gain_c2_mean_CLEAN': 99,
-                'gain_c2_sd_CLEAN': 102,
-                'out_c2_other_CLEAN': 105,
-                'follow_up_CLEAN': 109
-            }
-            # Insert empty columns into DataFrame
-            for col_name, col_idx in cols_to_insert.items():
-                all_variables.insert(col_idx, col_name, '')
-            self.data_extraction.clean_up(all_variables)
-        if verbose:
-            self.data_extraction.verbose_display(all_variables)
-        if save_file:
-            outfile4 = self.data_extraction.save_dataframe(all_variables, "_DataFrame4_Effect_Size_A.csv")
-        
-        return all_variables, outfile4
+        try:
+            eppiid_df = self.data_extraction.retrieve_metadata("ItemId", "id")
+            author_df = self.data_extraction.retrieve_metadata("ShortTitle", "pub_author")
+            year_df = self.data_extraction.retrieve_metadata("Year", "pub_year")
+            admin_strand_data = self.data_extraction.retrieve_data(admin_strand_output, "strand_raw")
+            admin_strand_info = self.data_extraction.retrieve_info(admin_strand_output, "strand_info") 
+            toolkit_version_data = self.data_extraction.retrieve_data(toolkit_versions, "toolkit_version")
+            desc_stats_prim_out_rep_df = self.data_extraction.retrieve_data(desc_stats_primary_outcome, "desc_stats_raw")
+            desc_stats_prim_out_rep_ht_df = self.data_extraction.retrieve_ht(desc_stats_primary_outcome, "desc_stats_ht")
+            descs_tats_prim_out_rep_comments_df = self.data_extraction.retrieve_info(desc_stats_primary_outcome, "desc_stats_info")
+            int_grp_num_ht_df = self.data_extraction.retrieve_ht(int_grp_number, "n_treat_ht")
+            int_grp_num_comments_df = self.data_extraction.process_info(int_grp_number, "n_treat_info")
+            int_grp_pretest_mean_ht_df = self.data_extraction.retrieve_ht(int_grp_pretest_mean, "pre_t_mean_ht")
+            int_grp_pretest_mean_comments_df = self.data_extraction.retrieve_info(int_grp_pretest_mean, "pre_t_mean_info")
+            int_grp_pretest_sd_ht_df = self.data_extraction.retrieve_ht(int_grp_pretest_sd, "pre_t_sd_ht")
+            int_grp_pretest_sd_comments_df = self.data_extraction.retrieve_info(int_grp_pretest_sd, "pre_t_sd_info")
+            int_grp_posttest_mean_ht_df = self.data_extraction.retrieve_ht(intn_grp_posttest_mean, "post_t_mean_ht_t_sd_ht")
+            int_grp_posttest_mean_comments_df = self.data_extraction.retrieve_info(intn_grp_posttest_mean, "post_t_mean_info")
+            int_grp_posttest_sd_ht_df = self.data_extraction.retrieve_ht(int_grp_posttest_sd, "post_t_sd_ht")
+            int_grp_posttest_sd_comments_df = self.data_extraction.retrieve_info(int_grp_posttest_sd, "post_t_sd_info")
+            int_grp_gain_score_mean_ht_df = self.data_extraction.retrieve_ht(int_grp_gain_score_mean, "gain_t_mean_ht")
+            int_grp_gain_score_mean_comments_df = self.data_extraction.retrieve_info(int_grp_gain_score_mean, "gain_t_mean_info")
+            int_grp_gain_score_sd_ht_df = self.data_extraction.retrieve_ht(int_grp_gain_score_sd, "gain_t_sd_ht")
+            int_grp_gain_score_sd_comments_df = self.data_extraction.retrieve_info(int_grp_gain_score_sd, "gain_t_sd_info")
+            int_grp_other_info_ht_df = self.data_extraction.retrieve_ht(int_grp_any_other_info, "out_t_other_ht")
+            int_grp_other_info_comments_df = self.data_extraction.retrieve_info(int_grp_any_other_info, "out_t_other_info")
+            ctrl_grp_num_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_number, "n_cont_ht")
+            ctrl_grp_num_comments_df = self.data_extraction.retrieve_info(ctrl_grp_number, "n_cont_info")
+            ctrl_grp_pretest_mean_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_pretest_mean, "pre_c_mean_ht")
+            ctrl_grp_pretest_mean_comments_df = self.data_extraction.retrieve_info(ctrl_grp_pretest_mean, "pre_c_mean_info")
+            ctrl_grp_pretest_sd_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_pretest_sd, "pre_c_sd_ht")
+            ctrl_grp_pretest_sd_comments_df = self.data_extraction.retrieve_info(ctrl_grp_pretest_sd, "pre_c_sd_info")
+            ctrl_grp_post_test_mean_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_posttest_mean, "post_c_mean_ht")
+            ctrl_grp_post_test_mean_comments_df = self.data_extraction.retrieve_info(ctrl_grp_posttest_mean, "post_c_mean_info")
+            ctrl_grp_post_test_sd_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_posttest_sd, "post_c_sd_ht")
+            ctrl_grp_post_test_sd_comments_df = self.data_extraction.retrieve_info(ctrl_grp_posttest_sd, "post_c_sd_info")
+            Ctrl_grp_gain_score_mean_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_gain_score_mean, "gain_c_mean_ht")
+            ctrl_grp_gain_score_mean_comments_df = self.data_extraction.retrieve_info(ctrl_grp_gain_score_mean, "gain_c_mean_info")
+            ctrl_grp_gain_score_sd_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_gain_score_sd, "gain_c_sd_ht")
+            ctrl_grp_gain_score_sd_comments_df = self.data_extraction.retrieve_info(ctrl_grp_gain_score_sd, "gain_c_sd_info")
+            ctrl_grp_other_info_ht_df = self.data_extraction.retrieve_ht(ctrl_grp_any_other_info, "out_c_other_ht")
+            ctrl_grp_other_info_comments_df = self.data_extraction.retrieve_info(ctrl_grp_any_other_info, "out_c_other_info")
+            int_grp_num2_ht_df = self.data_extraction.retrieve_ht(int_grp_two_number, "n_treat2_ht")
+            int_grp_num2_comments_df = self.data_extraction.retrieve_info(int_grp_two_number, "n_treat2_info")
+            int_grp_pretest2_mean_ht_df = self.data_extraction.retrieve_ht(int_grp_two_pretest_mean, "pre_t2_mean_ht")
+            int_grp_pretest2_mean_comments_df = self.data_extraction.retrieve_info(int_grp_two_pretest_mean, "pre_t2_mean_info")
+            int_grp_pretest2_sd_ht_df = self.data_extraction.retrieve_ht(int_grp_two_pretest_sd, "pre_t2_sd_ht")
+            int_grp_pretest2_sd_comments_df = self.data_extraction.retrieve_info(int_grp_two_pretest_sd, "pre_t2_sd_info")
+            int_grp_post2_test_mean_ht_df = self.data_extraction.retrieve_ht(int_grp_two_posttest_mean, "post_t2_mean_ht")
+            int_grp_post2_test_mean_comments_df = self.data_extraction.retrieve_info(int_grp_two_posttest_mean, "post_t2_mean_info")
+            int_grp_post2_test_sd_ht_df = self.data_extraction.retrieve_ht(int_grp_two_posttest_sd, "post_t2_sd_ht")
+            int_grp_post2_test_sd_comments_df = self.data_extraction.retrieve_info(int_grp_two_posttest_sd, "post_t2_sd_info")
+            int_grp_gain2_score_mean_ht_df = self.data_extraction.retrieve_ht(int_grp_two_gain_score_mean, "gain_t2_mean_ht")
+            int_grp_gain2_score_mean_comments_df = self.data_extraction.retrieve_info(int_grp_two_gain_score_mean, "gain_t2_mean_info")
+            int_grp_gain2_score_sd_ht_df = self.data_extraction.retrieve_ht(int_grp_two_gain_score_sd, "gain_t2_sd_ht")
+            int_grp_gain2_score_sd_comments_df = self.data_extraction.retrieve_info(int_grp_two_gain_score_sd, "gain_t2_sd_info")
+            int_grp_other2_info_ht_df = self.data_extraction.retrieve_ht(int_grp_two_any_other_info, "out_t2_other_ht")
+            int_grp_other2_info_comments_df = self.data_extraction.retrieve_info(int_grp_two_any_other_info, "out_t2_other_info")
+            ctrl_grp_num2_ht_df = self.data_extraction.retrieve_ht(control_group_two_number, "n_cont2_ht")
+            ctrl_grp_num2_comments_df = self.data_extraction.retrieve_info(control_group_two_number, "n_cont2_info")
+            ctrl_grp_pretest2_mean_ht_df = self.data_extraction.retrieve_ht(control_group_two_pretest_mean, "pre_c2_mean_ht")
+            ctrl_grp_pretest2_mean_comments_df = self.data_extraction.retrieve_info(control_group_two_pretest_mean, "pre_c2_mean_info")
+            ctrl_grp_pretest2_sd_ht_df = self.data_extraction.retrieve_ht(control_group_two_pretest_sd, "pre_c2_sd_ht")
+            ctrl_grp_pretest2_sd_comments_df = self.data_extraction.retrieve_info(control_group_two_pretest_sd, "pre_c2_sd_info")
+            ctrl_grp_post2_test_mean_ht_df = self.data_extraction.retrieve_ht(control_group_two_posttest_mean, "post_c2_mean_ht")
+            ctrl_grp_post2_test_mean_comments_df = self.data_extraction.retrieve_info(control_group_two_posttest_mean, "post_c2_mean_info")
+            ctrl_grp_post2_test_sd_ht_df = self.data_extraction.retrieve_ht(control_group_two_posttest_sd, "post_c2_sd_ht")
+            ctrl_grp_post2_test_sd_comments_df = self.data_extraction.retrieve_info(control_group_two_posttest_sd, "post_c2_sd_info")
+            Ctrl_grp_gain2_score_mean_ht_df = self.data_extraction.retrieve_ht(control_group_two_gain_score_mean, "gain_c2_mean_ht")
+            ctrl_grp_gain2_score_mean_comments_df = self.data_extraction.retrieve_info(control_group_two_gain_score_mean, "gain_c2_mean_info")
+            ctrl_grp_gain2_score_sd_ht_df = self.data_extraction.retrieve_ht(control_group_two_gain_score_sd, "gain_c2_sd_ht")
+            ctrl_grp_gain2_score_sd_comments_df = self.data_extraction.retrieve_info(control_group_two_gain_score_sd, "gain_c2_sd_info")
+            ctrl_grp_other2_info_ht_df = self.data_extraction.retrieve_ht(control_group_two_any_other_info, "out_c2_other_ht")
+            ctrl_grp_other2_info_comments_df = self.data_extraction.retrieve_info(control_group_two_any_other_info, "out_c2_other_info")
+            followupdata = self.data_extraction.retrieve_data(follow_up_data_reported, "follow_up_raw")
+            followupdata_HT = self.data_extraction.retrieve_ht(follow_up_data_reported, "follow_up_ht")
+            followupdata_comments = self.data_extraction.retrieve_info(follow_up_data_reported, "follow_up_info")
+            
+            all_variables = pd.concat([
+                eppiid_df,
+                author_df,
+                year_df,
+                admin_strand_data,
+                admin_strand_info,
+                toolkit_version_data,
+                desc_stats_prim_out_rep_df,
+                desc_stats_prim_out_rep_ht_df,
+                descs_tats_prim_out_rep_comments_df,
+                int_grp_num_ht_df,
+                int_grp_num_comments_df,
+                int_grp_pretest_mean_ht_df,
+                int_grp_pretest_mean_comments_df,
+                int_grp_pretest_sd_ht_df,
+                int_grp_pretest_sd_comments_df,
+                int_grp_posttest_mean_ht_df,
+                int_grp_posttest_mean_comments_df,
+                int_grp_posttest_sd_ht_df,
+                int_grp_posttest_sd_comments_df,
+                int_grp_gain_score_mean_ht_df,
+                int_grp_gain_score_mean_comments_df,
+                int_grp_gain_score_sd_ht_df,
+                int_grp_gain_score_sd_comments_df,
+                int_grp_other_info_ht_df,
+                int_grp_other_info_comments_df,
+                ctrl_grp_num_ht_df,
+                ctrl_grp_num_comments_df,
+                ctrl_grp_pretest_mean_ht_df,
+                ctrl_grp_pretest_mean_comments_df,
+                ctrl_grp_pretest_sd_ht_df,
+                ctrl_grp_pretest_sd_comments_df,
+                ctrl_grp_post_test_mean_ht_df,
+                ctrl_grp_post_test_mean_comments_df,
+                ctrl_grp_post_test_sd_ht_df,
+                ctrl_grp_post_test_sd_comments_df,
+                Ctrl_grp_gain_score_mean_ht_df,
+                ctrl_grp_gain_score_mean_comments_df,
+                ctrl_grp_gain_score_sd_ht_df,
+                ctrl_grp_gain_score_sd_comments_df,
+                ctrl_grp_other_info_ht_df,
+                ctrl_grp_other_info_comments_df,
+                int_grp_num2_ht_df,
+                int_grp_num2_comments_df,
+                int_grp_pretest2_mean_ht_df,
+                int_grp_pretest2_mean_comments_df,
+                int_grp_pretest2_sd_ht_df,
+                int_grp_pretest2_sd_comments_df,
+                int_grp_post2_test_mean_ht_df,
+                int_grp_post2_test_mean_comments_df,
+                int_grp_post2_test_sd_ht_df,
+                int_grp_post2_test_sd_comments_df,
+                int_grp_gain2_score_mean_ht_df,
+                int_grp_gain2_score_mean_comments_df,
+                int_grp_gain2_score_sd_ht_df,
+                int_grp_gain2_score_sd_comments_df,
+                int_grp_other2_info_ht_df,
+                int_grp_other2_info_comments_df,
+                ctrl_grp_num2_ht_df,
+                ctrl_grp_num2_comments_df,
+                ctrl_grp_pretest2_mean_ht_df,
+                ctrl_grp_pretest2_mean_comments_df,
+                ctrl_grp_pretest2_sd_ht_df,
+                ctrl_grp_pretest2_sd_comments_df,
+                ctrl_grp_post2_test_mean_ht_df,
+                ctrl_grp_post2_test_mean_comments_df,
+                ctrl_grp_post2_test_sd_ht_df,
+                ctrl_grp_post2_test_sd_comments_df,
+                Ctrl_grp_gain2_score_mean_ht_df,
+                ctrl_grp_gain2_score_mean_comments_df,
+                ctrl_grp_gain2_score_sd_ht_df,
+                ctrl_grp_gain2_score_sd_comments_df,
+                ctrl_grp_other2_info_ht_df,
+                ctrl_grp_other2_info_comments_df,
+                followupdata,
+                followupdata_HT,
+                followupdata_comments,
+            ], axis=1, sort=False)
+            
+            if clean_cols:
+                # Define columns to insert and their corresponding indices
+                cols_to_insert = {
+                    'desc_stats_CLEAN': 9,
+                    'n_treat_CLEAN': 12,
+                    'pre_t_mean_CLEAN': 15,
+                    'pre_t_sd_CLEAN': 18,
+                    'post_t_mean_CLEAN': 21,
+                    'post_t_sd_CLEAN': 24,
+                    'gain_t_mean_CLEAN': 27,
+                    'gain_t_sd_CLEAN': 30,
+                    'out_t_other_CLEAN': 33,
+                    'n_cont_ht_CLEAN': 36,
+                    'pre_c_mean_CLEAN': 39,
+                    'pre_c_sd_CLEAN': 42,
+                    'post_c_mean_CLEAN': 45,
+                    'post_c_sd_CLEAN': 48,
+                    'gain_c_mean_CLEAN': 51,
+                    'gain_c_sd_CLEAN': 54,
+                    'out_c_other_CLEAN': 57,
+                    'n_treat2_CLEAN': 60,
+                    'pre_t2_mean_CLEAN': 63,
+                    'pre_t2_sd_CLEAN': 66,
+                    'post_t2_mean_CLEAN': 69,
+                    'post_t2_sd_CLEAN': 72,
+                    'gain_t2_mean_CLEAN': 75,
+                    'gain_t2_sd_CLEAN': 78,
+                    'out_t2_other_CLEAN': 81,
+                    'n_cont2_CLEAN': 84,
+                    'pre_c2_mean_CLEAN': 87,
+                    'pre_c2_sd_CLEAN': 90,
+                    'post_c2_mean_CLEAN': 93,
+                    'post_c2_sd_CLEAN': 96,
+                    'gain_c2_mean_CLEAN': 99,
+                    'gain_c2_sd_CLEAN': 102,
+                    'out_c2_other_CLEAN': 105,
+                    'follow_up_CLEAN': 109
+                }
+                
+                # Create a new dataframe with the inserted columns
+                new_columns = {col_name: pd.Series('', index=all_variables.index) for col_name in cols_to_insert.keys()}
+                new_dataframe = all_variables.assign(**new_columns)
+
+                # Reorder the columns to preserve the original order
+                all_variables = new_dataframe.reindex(columns=list(all_variables.columns) + list(cols_to_insert.keys()))
+
+                    
+                self.data_extraction.clean_up(all_variables)
+            if verbose:
+                self.data_extraction.verbose_display(all_variables)
+            if save_file:
+                outfile4 = self.data_extraction.save_dataframe(all_variables, "_DataFrame4_Effect_Size_A.csv")
+            
+            return all_variables, outfile4
+        except:
+            pass
 
 
     def make_dataframe_5(self, save_file=True, clean_cols=True, verbose=True):
@@ -4473,8 +4482,8 @@ def display_main_menu():
     main_table.add_row("1. [bold cyan]Dataframe 1[/bold cyan]", "[red]Study, Research & Design Variables[/red]")
     main_table.add_row("2. [bold cyan]Dataframe 2[/bold cyan]", "[red]Intervention Details[/red]")
     main_table.add_row("3. [bold cyan]Sample Size[/bold cyan]", "[red]Sample size variables[/red]")
-    main_table.add_row("4, [bold cyan]Effect Size A[/bold cyan]", "[red]Descriptive Statistics[/red]")
-    main_table.add_row("5, [bold cyan]Effect Size B[/bold cyan]", "[red]Outcome Details[/red]")
+    main_table.add_row("4. [bold cyan]Effect Size A[/bold cyan]", "[red]Descriptive Statistics[/red]")
+    main_table.add_row("5. [bold cyan]Effect Size B[/bold cyan]", "[red]Outcome Details[/red]")
     main_table.add_row("6. [bold cyan]Data Analysis[/bold cyan]", "[red]Key variables for data analysis[/red]")
     main_table.add_row("7. [bold cyan]References[/bold cyan]", "[red]Variables for constructing study references[/red]")
     main_table.add_row("8. [bold cyan]Custom Selection[/bold cyan]", "[red]Select your own custom data frame[/red]")

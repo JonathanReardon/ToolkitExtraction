@@ -16,6 +16,7 @@ from rich import box
 from rich.pretty import Pretty
 
 import pandas as pd
+from src.attributeIDs import *
 
 # Local imports
 from src.funcs import (
@@ -110,7 +111,20 @@ def data_cleaning_col_breakdown():
 
     return panel
 
-from src.attributeIDs import *
+def get_user_input():
+    while True:
+
+        try:
+            # Display user option prompt
+            data_cleaning_option = Prompt.ask("Enter an option from the [bold magenta]Main Menu[/bold magenta]")
+            data_cleaning_option=int(data_cleaning_option)
+            if data_cleaning_option < 0 or data_cleaning_option > 9:
+                raise ValueError
+            break
+        except ValueError:
+            print("Error: invalid input. Please enter a number from 0 to 8.\n")
+    return data_cleaning_option
+
 
 def main():
     """
@@ -128,16 +142,13 @@ def main():
     # Crate input file display table
     input_file_info_display(data_file)
 
-    # Display user option prompt
-    data_cleaning_option = Prompt.ask("Enter an option from the [bold magenta]Main Menu[/bold magenta]")
-    data_cleaning_option=int(data_cleaning_option)
-
+    data_cleaning_option = get_user_input()
     run_program = True
     while run_program:
         match data_cleaning_option:
             case 1:
 
-                all_variables, outfile1 = data_frame_compilation.make_dataframe_1(save_file=True, clean_cols=True, verbose=False)
+                _, outfile1 = data_frame_compilation.make_dataframe_1(save_file=True, clean_cols=True, verbose=False)
 
                 functions = [data_frame_compilation.make_dataframe_1]
 
@@ -147,11 +158,10 @@ def main():
                 # Crate input file display table
                 input_file_info_display(data_file)
 
-                # Display user option prompt
-                data_cleaning_option = Prompt.ask("Enter an option from the [bold magenta]Main Menu[/bold magenta]")
-                data_cleaning_option=int(data_cleaning_option)
+                data_cleaning_option = get_user_input()
+
             case 2: 
-                all_variables, outfile2 = data_frame_compilation.make_dataframe_2(save_file=True, clean_cols=True, verbose=False)
+                _, outfile2 = data_frame_compilation.make_dataframe_2(save_file=True, clean_cols=True, verbose=False)
 
                 functions = [data_frame_compilation.make_dataframe_2]
 
@@ -161,11 +171,9 @@ def main():
                 # Crate input file display table
                 input_file_info_display(data_file)
 
-                # Display user option prompt
-                data_cleaning_option = Prompt.ask("Enter an option from the [bold magenta]Main Menu[/bold magenta]")
-                data_cleaning_option=int(data_cleaning_option)
+                data_cleaning_option = get_user_input()
             case 3:
-                all_variables, outfile3 = data_frame_compilation.make_dataframe_3(save_file=True, clean_cols=True, verbose=False)
+                _, outfile3 = data_frame_compilation.make_dataframe_3(save_file=True, clean_cols=True, verbose=False)
 
                 functions = [data_frame_compilation.make_dataframe_3]
 
@@ -175,11 +183,9 @@ def main():
                 # Crate input file display table
                 input_file_info_display(data_file)
 
-                # Display user option prompt
-                data_cleaning_option = Prompt.ask("Enter an option from the [bold magenta]Main Menu[/bold magenta]")
-                data_cleaning_option=int(data_cleaning_option)
+                data_cleaning_option = get_user_input()
             case 4:
-                all_variables, outfile4 = data_frame_compilation.make_dataframe_4(save_file=True, clean_cols=True, verbose=False)
+                _, outfile4 = data_frame_compilation.make_dataframe_4(save_file=True, clean_cols=True, verbose=False)
 
                 functions = [data_frame_compilation.make_dataframe_4]
 
@@ -189,11 +195,9 @@ def main():
                 # Crate input file display table
                 input_file_info_display(data_file)
 
-                # Display user option prompt
-                data_cleaning_option = Prompt.ask("Enter an option from the [bold magenta]Main Menu[/bold magenta]")
-                data_cleaning_option=int(data_cleaning_option)
+                data_cleaning_option = get_user_input()
             case 5:
-                all_variables, outfile5 = data_frame_compilation.make_dataframe_5(save_file=True, clean_cols=True, verbose=False)
+                _, outfile5 = data_frame_compilation.make_dataframe_5(save_file=True, clean_cols=True, verbose=False)
 
                 functions = [data_frame_compilation.make_dataframe_5]
 
@@ -203,9 +207,7 @@ def main():
                 # Crate input file display table
                 input_file_info_display(data_file)
 
-                # Display user option prompt
-                data_cleaning_option = Prompt.ask("Enter an option from the [bold magenta]Main Menu[/bold magenta]")
-                data_cleaning_option=int(data_cleaning_option)
+                data_cleaning_option = get_user_input()
             case 6:
                 strand_specific_option = data_analysis_cl_table()
                 print(strand_specific_option)
@@ -223,11 +225,9 @@ def main():
                 # Crate input file display table
                 input_file_info_display(data_file)
 
-                # Display user option prompt
-                data_cleaning_option = Prompt.ask("Enter an option from the [bold magenta]Main Menu[/bold magenta]")
-                data_cleaning_option=int(data_cleaning_option)
+                data_cleaning_option = get_user_input()
             case 7:
-                references, outfile7 = data_frame_compilation.make_references(save_file=True)
+                _, outfile7 = data_frame_compilation.make_references(save_file=True)
                 functions = [data_frame_compilation.make_references]
 
                 # Display main menu
@@ -236,9 +236,7 @@ def main():
                 # Crate input file display table
                 input_file_info_display(data_file)
 
-                # Display user option prompt
-                data_cleaning_option = Prompt.ask("Enter an option from the [bold magenta]Main Menu[/bold magenta]")
-                data_cleaning_option=int(data_cleaning_option)
+                data_cleaning_option = get_user_input()
             case 8:
                 console = Console()
                 console.clear()
@@ -570,7 +568,11 @@ def main():
                     print("no objects selected, goodbye.")
                 break
             case 9:
+                print("Exiting..")
                 run_program = False
+            #case _:
+                #print("Error: test")
+                #console.clear()
 
                     
 
