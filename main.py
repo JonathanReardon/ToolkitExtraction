@@ -88,12 +88,12 @@ def data_cleaning_col_breakdown():
     main_table2.add_row("16", "Sample Size", "41","Int Organisation Type", "66", "Int Grp Gain Score Mean", "91", "Ctrl Grp 2 Gain Score SD")
     main_table2.add_row("17", "Sample Size Int", "42", "Int Training Provided", "67", "Int Grp Gain Score SD", "92", "Ctrl Grp Other Information")
     main_table2.add_row("18", "Sample Size Ctrl", "43", "Int Focus", "68", "Int Grp Other Information", "93", "Follow-up Data")
-    main_table2.add_row("19", "Sample Size 2nd Int", "44", "Int Teching Approach", "69", "Ctrl Grp N", "94", "")
-    main_table2.add_row("20", "Sample Size 3rd Int", "45", "Digital Technology", "70", "Ctrl Grp Pre-test Mean", "95", "")
-    main_table2.add_row("21", "Sample Size Analysed (Int)", "46", "Parental Engagement", "71", "Ctrl Grp Pre-test SD", "96", "")
-    main_table2.add_row("22", "Sample Size Analysed (Ctrl)",  "47", "Int Time", "72", "Ctrl Grp Post-test Mean", "97", "")
-    main_table2.add_row("23", "Sample Size Analysed (2nd Int Grp)", "48", "Int Delivery", "73", "Ctrl Grp Post-test SD", "98", "")
-    main_table2.add_row("24", "Sample Size Analysed (2nd Ctrl Grp)", "49", "Int Duration", "74", "Ctrl Grp Gain Score Mean", "99", "")
+    main_table2.add_row("19", "Sample Size 2nd Int", "44", "Int Teching Approach", "69", "Ctrl Grp N", "94", "Toolkit Outcome Title")
+    main_table2.add_row("20", "Sample Size 3rd Int", "45", "Digital Technology", "70", "Ctrl Grp Pre-test Mean", "95", "Toolkit Outcome Description")
+    main_table2.add_row("21", "Sample Size Analysed (Int)", "46", "Parental Engagement", "71", "Ctrl Grp Pre-test SD", "96", "Toolkit Outcome Type")
+    main_table2.add_row("22", "Sample Size Analysed (Ctrl)",  "47", "Int Time", "72", "Ctrl Grp Post-test Mean", "97", "Toolkit SMD")
+    main_table2.add_row("23", "Sample Size Analysed (2nd Int Grp)", "48", "Int Delivery", "73", "Ctrl Grp Post-test SD", "98", "Toolkit SE")
+    main_table2.add_row("24", "Sample Size Analysed (2nd Ctrl Grp)", "49", "Int Duration", "74", "Ctrl Grp Gain Score Mean", "99", "Toolkit Outcome Measure")
     main_table2.add_row("25", "Attrition", "50", "Int Frequency", "75", "Ctrl Grp Gain Score SD", "100", "")
 
     console = Console()
@@ -108,7 +108,6 @@ def data_cleaning_col_breakdown():
             title_align="left",
             padding=(1, 2),
         )
-
     return panel
 
 def get_user_input():
@@ -149,7 +148,6 @@ def main():
             case 1:
 
                 _, outfile1 = data_frame_compilation.make_dataframe_1(save_file=True, clean_cols=True, verbose=False)
-
                 functions = [data_frame_compilation.make_dataframe_1]
 
                 # Display main menu
@@ -162,7 +160,6 @@ def main():
 
             case 2: 
                 _, outfile2 = data_frame_compilation.make_dataframe_2(save_file=True, clean_cols=True, verbose=False)
-
                 functions = [data_frame_compilation.make_dataframe_2]
 
                 # Display main menu
@@ -174,7 +171,6 @@ def main():
                 data_cleaning_option = get_user_input()
             case 3:
                 _, outfile3 = data_frame_compilation.make_dataframe_3(save_file=True, clean_cols=True, verbose=False)
-
                 functions = [data_frame_compilation.make_dataframe_3]
 
                 # Display main menu
@@ -186,7 +182,6 @@ def main():
                 data_cleaning_option = get_user_input()
             case 4:
                 _, outfile4 = data_frame_compilation.make_dataframe_4(save_file=True, clean_cols=True, verbose=False)
-
                 functions = [data_frame_compilation.make_dataframe_4]
 
                 # Display main menu
@@ -198,7 +193,6 @@ def main():
                 data_cleaning_option = get_user_input()
             case 5:
                 _, outfile5 = data_frame_compilation.make_dataframe_5(save_file=True, clean_cols=True, verbose=False)
-
                 functions = [data_frame_compilation.make_dataframe_5]
 
                 # Display main menu
@@ -207,10 +201,13 @@ def main():
                 # Crate input file display table
                 input_file_info_display(data_file)
 
-                data_cleaning_option = get_user_input()
+                # Display user option prompt
+                data_cleaning_option = Prompt.ask("Enter an option from the [bold magenta]Main Menu[/bold magenta]")
+                data_cleaning_option=int(data_cleaning_option)
             case 6:
+                console = Console()
+                console.clear()
                 strand_specific_option = data_analysis_cl_table()
-                print(strand_specific_option)
 
                 ss = StrandSpecificFrames(json_extractor)
 
@@ -292,8 +289,7 @@ def main():
                     try:
                         console.print("[bold green]Add variables to your data frame (0=Save file and exit)[/bold green]")
                         num = int(Prompt.ask("Selection"))
-
-                        if num < 0 or num > 100:
+                        if num < 0 or num > 200:
                             raise ValueError
                     except ValueError:
                         print("Error: invalid input. Please enter a number from 0 to 5.\n")
@@ -424,12 +420,6 @@ def main():
                                 used_options.append("int_desig_raw")
                             else:
                                 print("You have already selected this option!")
-
-
-
-
-
-
                         case 16: 
                             if "sample_analysed_info" not in used_options:
                                 sample_size_comments_df = df.data_extraction.retrieve_info(sample_size_output, "sample_analysed_info")
@@ -443,22 +433,22 @@ def main():
 
                         case 17: 
                             if "base_n_treat_info" not in used_options:
-                                sample_size_intervention_Comments_df = df.data_extraction.retrieve_info(sample_size_intervention_output, "base_n_treat_info")
+                                sample_size_intervention_Comments_df = df.data_extraction.retrieve_info(sample_size_intervention_output, "base_n_treat_info")                               
                                 dataframes.append(sample_size_intervention_Comments_df)
                                 table = add_row_to_table(table, "Sample Size Int")
                                 used_options.append("base_n_treat_info")
                             else:
                                 print("You have already selected this option!")
 
-
-                        case 17: 
-                            if "base_n_treat_info" not in used_options:
-                                sample_size_intervention_Comments_df = df.data_extraction.retrieve_info(sample_size_intervention_output, "base_n_treat_info")
-                                dataframes.append(sample_size_intervention_Comments_df)
-                                table = add_row_to_table(table, "Sample Size Int")
-                                used_options.append("base_n_treat_info")
+                        case 18: 
+                            if "base_n_cont_ht" not in used_options:
+                                sample_size_control_Comments_df = df.data_extraction.retrieve_info(sample_size_control_output,"base_n_cont_info")                         
+                                dataframes.append(sample_size_control_Comments_df)
+                                table = add_row_to_table(table, "Sample Size Ctrl")
+                                used_options.append("base_n_cont_ht")
                             else:
                                 print("You have already selected this option!")
+
 
 
                         case 94:
@@ -529,6 +519,126 @@ def main():
                                     dataframes.append(df_g1_n_tool)
                                     table = add_row_to_table(table, "Toolkit Outcome Group1 N")
                                     used_options.append("out_g1_n_tool")
+                                else:
+                                    print("You have already selected this option!")
+                        case 101:
+                                if "out_g1_mean_tool" not in used_options:
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g1_mean_tool = df_out.out_g1_mean_tool
+                                    dataframes.append(df_g1_mean_tool)
+                                    table = add_row_to_table(table, "Toolkit Outcome Group1 Mean")
+                                    used_options.append("out_g1_mean_tool")
+                                else:
+                                    print("You have already selected this option!")
+                        case 102:
+                                if "out_g1_sd_tool" not in used_options:
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g1_sd_tool = df_out.out_g1_sd_tool
+                                    dataframes.append(df_g1_sd_tool)
+                                    table = add_row_to_table(table, "Toolkit Outcome Group1 SD")
+                                    used_options.append("out_g1_sd_tool")
+                                else:
+                                    print("You have already selected this option!")
+                        case 103:
+                                if "out_g2_n_tool" not in used_options:
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g2_n_tool = df_out.out_g2_n_tool
+                                    dataframes.append(df_g2_n_tool)
+                                    table = add_row_to_table(table, "Toolkit Outcome Group2 N")
+                                    used_options.append("out_g2_n_tool")
+                                else:
+                                    print("You have already selected this option!")
+                        case 104:
+                                if "out_g2_mean_tool" not in used_options:
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g2_n_tool = df_out.out_g2_mean_tool
+                                    dataframes.append(df_g2_n_tool)
+                                    table = add_row_to_table(table, "Toolkit Outcome Group2 Mean")
+                                    used_options.append("out_g2_mean_tool")
+                                else:
+                                    print("You have already selected this option!")
+                        case 106:
+                                if "out_g2_sd_tool" not in used_options:
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    out_g2_sd_tool = df_out.out_g2_sd_tool
+                                    dataframes.append(df_g2_n_tool)
+                                    table = add_row_to_table(table, "Toolkit Outcome Group2 SD")
+                                    used_options.append("out_g2_sd_tool")
+                                else:
+                                    print("You have already selected this option!")
+                        case 107:
+                                if "ci_lower_tool" not in used_options:
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    ci_lower_tool = df_out.ci_lower_tool
+                                    dataframes.append(df_g2_n_tool)
+                                    table = add_row_to_table(table, "Toolkit Outcome CI (LB)")
+                                    used_options.append("ci_lower_tool")
+                                else:
+                                    print("You have already selected this option!")
+                        case 108:
+                                if "ci_upper_tool" not in used_options:
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    ci_upper_tool = df_out.ci_upper_tool
+                                    dataframes.append(ci_upper_tool)
+                                    table = add_row_to_table(table, "Toolkit Outcome CI (UB)")
+                                    used_options.append("ci_upper_tool")
+                                else:
+                                    print("You have already selected this option!")
+                        case 109:
+                                if "out_label_tool" not in used_options:
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    out_label_tool = df_out.out_label_tool
+                                    dataframes.append(ci_upper_tool)
+                                    table = add_row_to_table(table, "Toolkit Outcome Label")
+                                    used_options.append("out_label_tool")
+                                else:
+                                    print("You have already selected this option!")
+                        case 110:
+                                if "out_samp_tool" not in used_options:
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    out_samp_tool = df_out.out_samp_tool
+                                    dataframes.append(out_samp_tool)
+                                    table = add_row_to_table(table, "Toolkit Outcome Sample")
+                                    used_options.append("out_samp_tool")
+                                else:
+                                    print("You have already selected this option!")
+                        case 111:
+                                if "out_comp_tool" not in used_options:
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    out_comp_tool = df_out.out_comp_tool
+                                    dataframes.append(out_comp_tool)
+                                    table = add_row_to_table(table, "Toolkit Outcome Comparison")
+                                    used_options.append("out_comp_tool")
+                                else:
+                                    print("You have already selected this option!")
+                        case 112:
+                                if "out_es_type_tool" not in used_options:
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    out_es_type_tool = df_out.out_es_type_tool
+                                    dataframes.append(out_es_type_tool)
+                                    table = add_row_to_table(table, "Toolkit Outcome ES Type")
+                                    used_options.append("out_es_type_tool")
+                                else:
+                                    print("You have already selected this option!")
+                        case 113:
+                                if "out_test_type_raw_tool" not in used_options:
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    out_test_type_raw_tool = df_out.out_test_type_raw_tool
+                                    dataframes.append(out_es_type_tool)
+                                    table = add_row_to_table(table, "Toolkit Outcome TEST Type")
+                                    used_options.append("out_test_type_raw_tool")
                                 else:
                                     print("You have already selected this option!")
                         case _:

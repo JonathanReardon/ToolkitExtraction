@@ -20,6 +20,7 @@ from rich.columns import Columns
 from rich.panel import Panel
 from rich import box
 from rich import print
+
 from toolz import interleave
 
 # Local imports
@@ -955,6 +956,7 @@ class DataFrameCompilation:
                 'attri_treat_CLEAN': 53,
                 'attri_perc_CLEAN': 56,
             }
+
             # Insert empty columns at specified locations
             for col_name, col_idx in cols_to_insert.items():
                 all_variables.insert(col_idx, col_name, '')
@@ -1188,16 +1190,25 @@ class DataFrameCompilation:
                     'out_c2_other_CLEAN': 105,
                     'follow_up_CLEAN': 109
                 }
+
+                # Insert empty columns at specified locations
+                for col_name, col_idx in cols_to_insert.items():
+                    all_variables.insert(col_idx, col_name, '')
                 
-                # Create a new dataframe with the inserted columns
+                """ # Create a new dataframe with the inserted columns
                 new_columns = {col_name: pd.Series('', index=all_variables.index) for col_name in cols_to_insert.keys()}
                 new_dataframe = all_variables.assign(**new_columns)
 
                 # Reorder the columns to preserve the original order
-                all_variables = new_dataframe.reindex(columns=list(all_variables.columns) + list(cols_to_insert.keys()))
-
+                all_variables = new_dataframe.reindex(columns=list(all_variables.columns) + list(cols_to_insert.keys())) """
                     
-                self.data_extraction.clean_up(all_variables)
+                #self.data_extraction.clean_up(all_variables)
+
+            all_variables.replace('\r', ' ', regex=True, inplace=True)
+            all_variables.replace('\n', ' ', regex=True, inplace=True)
+            all_variables.replace(':', ' ',  regex=True, inplace=True)
+            all_variables.replace(';', ' ',  regex=True, inplace=True)
+
             if verbose:
                 self.data_extraction.verbose_display(all_variables)
             if save_file:
@@ -4329,7 +4340,7 @@ def data_analysis_cl_table():
     """
     """
     console = Console()
-    custom_style_df1 = Style(bgcolor="#282c24")
+    custom_style_df1 = Style(bgcolor="#21241d")
 
     main_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4366,6 +4377,16 @@ def data_analysis_cl_table():
     main_table.add_row("24",  "Summer Schools")
     main_table.add_row("25",  "Teaching Assistants")
     main_table.add_row("26",  "Within-Class Grouping")
+
+    main_table.add_row("",    "")
+    main_table.add_row("",    "[bold cyan]Early Years Toolkit[/bold cyan]")
+    main_table.add_row("",    "")
+    main_table.add_row("27",  "Early Literacy Approaches")
+    main_table.add_row("28",  "Early Numeracy Approaches")
+    main_table.add_row("29",  "Earlier Starting Age")
+    main_table.add_row("30",  "Extra Hours")
+    main_table.add_row("31",  "Play-Based Learning")
+
 
     # Create a new Panel object
     panel = Panel(main_table, 
@@ -4465,7 +4486,7 @@ def data_cleaning_col_breakdown():
 def display_main_menu():
     table_title_style = Style(italic=False, bgcolor=None, color="magenta", bold=True)
     header_style = Style(italic=False, bgcolor=None, color="magenta", bold=True)
-    column_style = Style(bgcolor=None, color="white", bold=True) 
+    column_style = Style(bgcolor=None, color="white", bold=False) 
 
     main_table = Table(show_header=True,
                        highlight=False,
@@ -4473,27 +4494,27 @@ def display_main_menu():
                        title_style=table_title_style,
                        box=box.SIMPLE)
 
-    selection_style = Style(italic=False, bgcolor=None, color="cyan", bold=True)
-    description_style = Style(italic=False, bgcolor=None, color="red", bold=True)
+    selection_style = Style(italic=False, bgcolor=None, color="magenta", bold=True)
+    description_style = Style(italic=False, bgcolor=None, color="magenta", bold=True)
 
     main_table.add_column("Selection", header_style=selection_style, style=column_style)
     main_table.add_column("Description", header_style=description_style, style=column_style)
 
-    main_table.add_row("1. [bold cyan]Dataframe 1[/bold cyan]", "[red]Study, Research & Design Variables[/red]")
-    main_table.add_row("2. [bold cyan]Dataframe 2[/bold cyan]", "[red]Intervention Details[/red]")
-    main_table.add_row("3. [bold cyan]Sample Size[/bold cyan]", "[red]Sample size variables[/red]")
-    main_table.add_row("4. [bold cyan]Effect Size A[/bold cyan]", "[red]Descriptive Statistics[/red]")
-    main_table.add_row("5. [bold cyan]Effect Size B[/bold cyan]", "[red]Outcome Details[/red]")
-    main_table.add_row("6. [bold cyan]Data Analysis[/bold cyan]", "[red]Key variables for data analysis[/red]")
-    main_table.add_row("7. [bold cyan]References[/bold cyan]", "[red]Variables for constructing study references[/red]")
-    main_table.add_row("8. [bold cyan]Custom Selection[/bold cyan]", "[red]Select your own custom data frame[/red]")
-    main_table.add_row("0. [bold cyan]EXIT[/bold cyan]", "")
+    main_table.add_row("1. Dataframe 1",      "Study, Research & Design Variables")
+    main_table.add_row("2. Dataframe 2",      "Intervention Details")
+    main_table.add_row("3. Sample Size",      "Sample size variables")
+    main_table.add_row("4. Effect Size A",    "Descriptive Statistics")
+    main_table.add_row("5. Effect Size B",    "Outcome Details")
+    main_table.add_row("6. Data Analysis",    "Key variables for data analysis")
+    main_table.add_row("7. References",       "Variables for constructing study references")
+    main_table.add_row("8. Custom Selection", "Select your own custom data frame")
+    main_table.add_row("0. EXIT", "")
     return main_table
 
 
 def dataframe_1_output_display(functions, outfile):
     console = Console()
-    custom_style_df1 = Style(bgcolor="#282c24")
+    custom_style_df1 = Style(bgcolor="#21241d")
 
     df1_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4501,8 +4522,8 @@ def dataframe_1_output_display(functions, outfile):
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df1_table.add_column("Selection", justify="center", header_style="bold red")
-    df1_table.add_column("Output directory", justify="left", header_style="red")
+    df1_table.add_column("Selection", justify="center", header_style="bold blue")
+    df1_table.add_column("Output directory", justify="left", header_style="blue")
     df1_table.add_row("Dataframe 1", outfile)
 
     return df1_table
@@ -4510,7 +4531,7 @@ def dataframe_1_output_display(functions, outfile):
 
 def dataframe_2_output_display(functions, outfile):
     console = Console()
-    custom_style_df1 = Style(bgcolor="#282c24")
+    custom_style_df1 = Style(bgcolor="#21241d")
 
     df2_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4518,8 +4539,8 @@ def dataframe_2_output_display(functions, outfile):
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df2_table.add_column("Selection", justify="center", header_style="bold red")
-    df2_table.add_column("Output directory", justify="left", header_style="red")
+    df2_table.add_column("Selection", justify="center", header_style="bold blue")
+    df2_table.add_column("Output directory", justify="left", header_style="blue")
     df2_table.add_row("Dataframe 2", outfile)
 
     return df2_table
@@ -4527,7 +4548,7 @@ def dataframe_2_output_display(functions, outfile):
 
 def dataframe_3_output_display(functions, outfile):
     console = Console()
-    custom_style_df1 = Style(bgcolor="#282c24")
+    custom_style_df1 = Style(bgcolor="#21241d")
 
     df3_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4535,8 +4556,8 @@ def dataframe_3_output_display(functions, outfile):
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df3_table.add_column("Selection", justify="center", header_style="bold red")
-    df3_table.add_column("Output directory", justify="left", header_style="red")
+    df3_table.add_column("Selection", justify="center", header_style="bold blue")
+    df3_table.add_column("Output directory", justify="left", header_style="blue")
     df3_table.add_row("Dataframe 3", outfile)
 
     return df3_table
@@ -4544,7 +4565,7 @@ def dataframe_3_output_display(functions, outfile):
 
 def dataframe_4_output_display(functions, outfile):
     console = Console()
-    custom_style_df1 = Style(bgcolor="#282c24")
+    custom_style_df1 = Style(bgcolor="#21241d")
 
     df4_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4552,8 +4573,8 @@ def dataframe_4_output_display(functions, outfile):
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df4_table.add_column("Selection", justify="center", header_style="bold red")
-    df4_table.add_column("Output directory", justify="left", header_style="red")
+    df4_table.add_column("Selection", justify="center", header_style="bold blue")
+    df4_table.add_column("Output directory", justify="left", header_style="blue")
     df4_table.add_row("Dataframe 4", outfile)
 
     return df4_table
@@ -4561,7 +4582,7 @@ def dataframe_4_output_display(functions, outfile):
 
 def dataframe_5_output_display(functions, outfile):
     console = Console()
-    custom_style_df1 = Style(bgcolor="#282c24")
+    custom_style_df1 = Style(bgcolor="#21241d")
 
     df5_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4569,8 +4590,8 @@ def dataframe_5_output_display(functions, outfile):
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df5_table.add_column("Selection", justify="center", header_style="bold red")
-    df5_table.add_column("Output directory", justify="left", header_style="red")
+    df5_table.add_column("Selection", justify="center", header_style="bold blue")
+    df5_table.add_column("Output directory", justify="left", header_style="blue")
     df5_table.add_row("Dataframe 5", outfile)
 
     return df5_table
@@ -4578,7 +4599,7 @@ def dataframe_5_output_display(functions, outfile):
 
 def dataframe_6_output_display(functions, outfile):
     console = Console()
-    custom_style_df1 = Style(bgcolor="#282c24")
+    custom_style_df1 = Style(bgcolor="#21241d")
 
     df6_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4586,8 +4607,8 @@ def dataframe_6_output_display(functions, outfile):
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df6_table.add_column("Selection", justify="center", header_style="bold red")
-    df6_table.add_column("Output directory", justify="left", header_style="red")
+    df6_table.add_column("Selection", justify="center", header_style="bold blue")
+    df6_table.add_column("Output directory", justify="left", header_style="blue")
     df6_table.add_row("Dataframe 6", outfile)
 
     return df6_table
@@ -4595,7 +4616,7 @@ def dataframe_6_output_display(functions, outfile):
 
 def dataframe_7_output_display(functions, outfile):
     console = Console()
-    custom_style_df1 = Style(bgcolor="#282c24")
+    custom_style_df1 = Style(bgcolor="#21241d")
 
     df7_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4603,8 +4624,8 @@ def dataframe_7_output_display(functions, outfile):
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df7_table.add_column("Selection", justify="center", header_style="bold red")
-    df7_table.add_column("Output directory", justify="left", header_style="red")
+    df7_table.add_column("Selection", justify="center", header_style="bold blue")
+    df7_table.add_column("Output directory", justify="left", header_style="blue")
     df7_table.add_row("Dataframe 7", outfile)
 
     return df7_table
@@ -4627,18 +4648,44 @@ def input_file_info_display(data_file):
     return file_info_table
 
 
+from rich.console import Console
+from rich.panel import Panel
+from rich.layout import Layout
+from rich.style import Style
+from rich.table import Table
+from rich.columns import Columns
+from rich.box import Box
+
+
 def main_menu_display():
     console = Console()
     data_cleaning_var_table = data_cleaning_col_breakdown()
     main_menu_table = display_main_menu()
     datafile_info_table = input_file_info_display(data_file)
 
-    custom_style_main = Style(bgcolor="#282c24")
-    custom_style_file_details = Style(bgcolor="#282c24")
-    custom_style_cleaning_info = Style(bgcolor="#282c24")
+    custom_style_main = Style(bgcolor="#21241d")
+    custom_style_file_details = Style(bgcolor="#21241d")
+    custom_style_cleaning_info = Style(bgcolor="#21241d")
 
+    container_title = console.render_str("[bold white]EEF Teaching and Learning Toolkit Data Extractor[/bold white]")
+
+    top_title = console.render_str("[bold]Welcome[/bold]")
     title1 = console.render_str("[bold]Main Menu[/bold]")
     title2 = console.render_str("[bold]Data File Details[/bold]")
+
+    # Set text for top panel of main menu
+    top_panel_text = """[white]Welcome to the EEF Teaching and Learing Toolkit Data Extractor. Navigate the [/white][bold cyan]Main Menu[/bold cyan] [white]to \nproduce a variety of dataframes containing data extracted from an input [/white][bold cyan](.json format)[/bold cyan] [white]datafile \nproduced by the EEF Teaching and Learning Toolkit Database.[/white]\n\n[bold cyan]Options 1-5[/bold cyan] [white]consist of our own custom dataframes used to 'clean' the data prior to analysis.[/white]\n[bold cyan]Option 6[/bold cyan] [white]produces the final dataframe(s) we use for our meta-analyses. [/white][bold cyan]Option 7[/bold cyan] [white]compiles the \nnecessary data to construct study references. Finally, [/white][bold cyan]Option 8[/bold cyan] [white]allows you to create your own \ncustom dataframe.[/white]"""
+    top_menu_style = Style(bgcolor="#21241d")
+
+    # create the panel with the text
+    top_panel = Panel(
+        top_panel_text,
+        title=top_title, 
+        border_style="cyan",
+        title_align="left",
+        style=top_menu_style,
+        padding=(1, 2),
+    )
 
     panel1a = Panel.fit(
         main_menu_table,
@@ -4652,29 +4699,43 @@ def main_menu_display():
     panel1b = Panel.fit(
         datafile_info_table,
         title=title2,
-        border_style="green",
+        border_style="yellow",
         style=custom_style_file_details,
         title_align="left",
         padding=(1, 2),
+        width=33,
     )
 
     # create the first row of columns
     row1 = Columns([panel1a, panel1b], equal=False)
 
-    # create the layout with the panels
-    layout = Columns([row1], equal=False)
+    # combine the text panel and row1 into a new row
+    row_combined = Columns([top_panel, row1], equal=False)
 
-    panel = Panel(layout, 
-                  title="EEF Teaching and Learning Toolkit Data Extractor", 
-                  border_style="white", 
-                  padding=(1, 2), 
-                  title_align="left",
-                  style=custom_style_main, 
-                  height=21)
+    # create the layout with the combined rows
+    layout = Layout(row_combined)
+
+    panel = Panel(
+        layout,
+        title=container_title,
+        border_style="white",
+        padding=(1, 2),
+        title_align="center",
+        style=custom_style_main,
+        height=33,
+        width= 120,
+    )
 
     console.clear()
     console.print(panel)
     print("\n")
+
+
+
+
+
+
+
 
 
 def main_menu_display1(functions, outfile1, df_display):
@@ -4684,9 +4745,9 @@ def main_menu_display1(functions, outfile1, df_display):
     main_menu_table = display_main_menu()
     datafile_info_table = input_file_info_display(data_file)
 
-    custom_style_main = Style(bgcolor="#282c24")
-    custom_style_file_details = Style(bgcolor="#282c24")
-    custom_style_cleaning_info = Style(bgcolor="#282c24")
+    custom_style_main = Style(bgcolor="#21241d")
+    custom_style_file_details = Style(bgcolor="#21241d")
+    custom_style_cleaning_info = Style(bgcolor="#21241d")
 
     title1 = console.render_str("[bold]Main Menu[/bold]")
     title2 = console.render_str("[bold]Data File Details[/bold]")
@@ -4695,16 +4756,13 @@ def main_menu_display1(functions, outfile1, df_display):
     panel1a = Panel.fit(
         main_menu_table,
         title=title1,
-        border_style="magenta",
         style=custom_style_main,
         title_align="left",
         padding=(1, 2),
-
     )
     panel1b = Panel.fit(
         datafile_info_table,
         title=title2,
-        border_style="green",
         style=custom_style_file_details,
         title_align="left",
         padding=(1, 2),
@@ -4712,7 +4770,6 @@ def main_menu_display1(functions, outfile1, df_display):
     panel2 = Panel.fit(
         output_file_info,
         title=title3,
-        border_style="blue",
         style=custom_style_cleaning_info,
         title_align="left",
         padding=(1, 2),
@@ -4730,7 +4787,9 @@ def main_menu_display1(functions, outfile1, df_display):
         border_style="white", 
         padding=(1, 2), 
         title_align="left",
-        style=custom_style_main)
+        style=custom_style_main,
+        width=120,
+        height=33)
 
     console.clear()
     console.print(panel)
