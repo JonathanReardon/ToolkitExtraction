@@ -1,66 +1,66 @@
-id,pub_year,pub_author
-37671594,2013,Bennett (2013)
-38296603,2015,Biggart (2015)
-37671632,2007,Blatchford (2007)
-37671541,2005,Brown (2005)
-37671596,2008,Bunn (2008)
-37671542,2012,Burgoyne (2012)
-37671546,2017,Clarke (2017)
-37671598,2009,Cole (2009)
-37671620,2016,Cooper (2016) TA
-37671548,2015,Dockrell (2015)
-43090143,1978,Dorval (1978) TA
-37671600,2014,Duff (2014)
-37671552,2013,Fricke (2013)
-37671553,2017,Fricke (2017)
-37671623,2001,Gibbs (2001)
-37671603,2008,Goetz (2008)
-38296617,2014,Gorard (2014)
-37671634,2007,Graham (2007)
-37671557,2010,Graves (2010)
-37671558,2007,Gray (2007)
-37671515,2015,Guerrero (2015)
-37671559,2018,Gwernan-Jones (2018)
-37671520,2017,Haley (2017)
-37671562,2006,Hatcher (2006)
-40398941,2019,Hodgen (2019)
-37671521,2013,Holmes (2013)
-37671626,2008,Hund-Reid (2008)
-37671605,2013,Hund-Reid (2013)
-37671565,1994,Jason (1994)
-37671627,2016,Jones (2016)
-43100933,2002,Lapsely (2002)
-37671606,2016,Lee (2016)
-37671566,2007,MacLeod (2007)
-37671568,2016,McNally (2016) 1_1
-37671570,2015,Merrell (2015)
-37671572,2003,Miller (2003)
-37671607,2003,Muijs (2003)
-37671575,2010,Nelson (2010)
-38296657,2018,Nunes (2018)
-38296659,2017,Patel (2017)
-37671611,2009,Ratcliff (2009)
-37671612,2010,Roberts (2010)
-40398944,2019,Roy (2019)
-38296668,2014,Rutt (2014)
-38296667,2015,Rutt (2015)
-43099855,2008,Ryder (2008)
-43099897,2003,Savage (2003)
-38296671,2018,See (2018)
-38296672,2015,Sheard (2015)
-37671585,2016,Sibieta (2016)
-38296673,2016,Sibieta (2016)
-37671586,2015,Styles (2015)
-37671517,2010,Swain (2010)
-43099931,2005,Vadasy (2005)
-37671592,2006,Vadasy (2006)
-37671636,2007,Vadasy (2007)
-37671638,2008,Vadasy (2008)
-37671637,2008,Vadasy (2008) TA
-43090199,2008,Vadasy (2008) TA
-37671588,2009,Vadasy (2009)
-37671589,2010,Vadasy (2010)
-37671614,2013,Vadasy (2013)
-43090202,2008,Wang (2008) TA
-37671616,1995,Welch (1995)
-37671591,1990,Word (1990)
+id,pub_author,pub_year,out_tit_tool
+37671594,Bennett (2013),2013,AWMA - Verbal STM (word recall)
+38296603,Biggart (2015),2015,NGRT Digitial Edition
+37671632,Blatchford (2007),2007,End of Year 6 KS2 Literacy SATs scores
+37671541,Brown (2005),2005,Woodcock Passage Comprehension
+37671596,Bunn (2008),2008,Salford Reading Age scores
+37671542,Burgoyne (2012),2012,Single Word Reading subtest from York Assessment of Reading (YARC) 
+37671546,Clarke (2017),2017,NGRT Reading Comprehension (RI + C)
+37671598,Cole (2009),2009,Multiple Skills Basic Math Probes (M-CBM)
+37671620,Cooper (2016) TA,2016,Basic Number Screening test (BNST)
+37671548,Dockrell (2015),2015,WIAT-11 (Sentence combining)
+43090143,Dorval (1978) TA,1978,Reading Comprehension- Teaching Assistants Group.
+37671600,Duff (2014),2014,YARC-Early Word Reading (Post-test only)
+37671552,Fricke (2013),2013, YARC Early Word Reading
+37671553,Fricke (2017),2017,CG - Listening Comprehension YARC
+37671623,Gibbs (2001),2001,Woodcock Johnson Letter-Word Identification Scores
+37671603,Goetz (2008),2008,BAS II Word Reading
+38296617,Gorard (2014),2014,GL New Group Reading Test
+37671634,Graham (2007),2007,PAT Reading Comprehension (Gain)
+37671557,Graves (2010),2010,Letter Naming Fluency (A2-2 terms)
+37671558,Gray (2007),2007,Reading Performance-One on one tuition
+37671515,Guerrero (2015),2015,WLPB-R (L2 Broad Reading Ability) NOVA
+37671559,Gwernan-Jones (2018),2018,Reading achievement-Phonics
+37671520,Haley (2017),2017,YARC Listening Comprehension (reported ES)
+37671562,Hatcher (2006),2006,BAS II Word Reading
+40398941,Hodgen (2019),2019,Progress Test in Mathematics
+37671521,Holmes (2013),2013,BNST Test (ANOVA)
+37671626,Hund-Reid (2008),2008,TOPEL Phonological Awareness
+37671605,Hund-Reid (2013),2013,DIBELS (PSF) Maintenance Test
+37671565,Jason (1994),1994,Reading comprehension grade
+37671627,Jones (2016),2016,Reading ability- one on one tuition
+43100933,Lapsely (2002),2002,(-10) ISTEP Language
+37671606,Lee (2016),2016,RAPT Bus Story (T Vs C) Post test scores
+37671566,MacLeod (2007),2007,Reading Recognition 
+37671568,McNally (2016) 1_1,2016,Progress in Reading Assessment (PIRA) TA only
+37671570,Merrell (2015),2015,Y7 Reading (NGRT) - Phonics Teaching assistants 
+37671572,Miller (2003),2003,MAT - Comprehension - PiR vs (RR + Control)
+37671607,Muijs (2003),2003,Mathematics test
+37671575,Nelson (2010),2010,TOPEL Phonological Awareness
+38296657,Nunes (2018),2018,Quantitative Reasoning
+38296659,Patel (2017),2017,HGRT - full sample
+37671611,Ratcliff (2009),2009,G3 Reading 2007 (iLEAP ELA)
+37671612,Roberts (2010),2010,WIAT-II UK WRT
+40398944,Roy (2019),2019,Effect size - HGRT (Table 10)
+38296668,Rutt (2014),2014,Basic Number Screening Test - Catch up TA group
+38296667,Rutt (2015),2015,NGRT - Full Sample
+43099855,Ryder (2008),2008,Neale comprehension raw score
+43099897,Savage (2003),2003,Reading All interventions v control
+38296671,See (2018),2018,General Maths - CEM InCAS Module
+38296672,Sheard (2015),2015,NGRT reading comprehension (TAs) 
+37671585,Sibieta (2016),2016,"APT, CELF, YARC language skills (30 wk)"
+38296673,Sibieta (2016),2016,NGRT REACH RI Group
+37671586,Styles (2015),2015,NGRT - Reading Score
+37671517,Swain (2010),2010,Burt Word Recognition Test
+43099931,Vadasy (2005),2005,WRAT Reading Comprehension RP
+37671592,Vadasy (2006),2006,K reading accuracy - teaching assistants - post-test (means and sd's)
+37671636,Vadasy (2007),2007,Reading Accuracy Scores
+37671638,Vadasy (2008),2008,Comprehension = GORT Comprehension subtest
+37671637,Vadasy (2008) TA,2008,Comprehension
+43090199,Vadasy (2008) TA,2008,Wood Cock Passage Comprehension Posttest
+37671588,Vadasy (2009),2009,G2/G3 reading (Cloze test) - teaching assistants
+37671589,Vadasy (2010),2010,Reading Comprehension 
+37671614,Vadasy (2013),2013,teaching assistants -  word reading (WRMT-R/NU) multilevel
+43090202,Wang (2008) TA,2008,Reading Comprehension-Teaching Assistants
+37671616,Welch (1995),1995,Reading Scores from CRT (Criterion Referenced Tests) 
+37671591,Word (1990),1990,Total Reading
