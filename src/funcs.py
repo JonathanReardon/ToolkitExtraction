@@ -6,12 +6,13 @@ __Author__ = "Jonathan Reardon"
 # Standard library imports
 import json
 import os
-import readline
 
 # Third-party imports
 import glob
 import numpy as np
 import pandas as pd
+from prompt_toolkit import prompt
+from prompt_toolkit.completion import PathCompleter
 from rich.console import Console
 from rich.progress import track
 from rich.style import Style
@@ -20,7 +21,6 @@ from rich.columns import Columns
 from rich.panel import Panel
 from rich import box
 from rich import print
-
 from toolz import interleave
 
 # Local imports
@@ -4795,9 +4795,6 @@ def main_menu_display1(functions, outfile1, df_display):
     console.clear()
     console.print(panel)
     print("\n")
-
-from prompt_toolkit import prompt
-from prompt_toolkit.completion import PathCompleter
 
 path_completer = PathCompleter()
 data_file = prompt('Enter the path to your JSON file: ', completer=path_completer)
