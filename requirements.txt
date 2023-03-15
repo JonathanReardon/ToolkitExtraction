@@ -1,4 +1,4 @@
-numpy == 1.21.5
+numpy == 1.22.0
 pandas == 1.5.0
 prompt_toolkit == 3.0.30
 rich == 12.4.4
