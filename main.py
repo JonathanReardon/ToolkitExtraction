@@ -44,7 +44,7 @@ from src.funcs import (
 )
 
 # table1 
-row_styles1 = ["#21241d"] * 10
+row_styles1 = ["#ffffff"] * 10
 row_data_list1 = [
     "Study ID", "Author", "Year", "Abstract", "Admin Strand",
     "Country", "Publication Type EPPI", "Publication Type",
@@ -60,14 +60,14 @@ def general_vars1():
 
     table_title_style = Style(italic=False, bgcolor=None, color="blue", bold=True)
     header_style = Style(italic=False, bgcolor=None, color="blue", bold=True)
-    column_style = Style(bgcolor=None, color="white") 
+    column_style = Style() 
 
     main_table2 = Table(show_header=True, 
                         box=box.SIMPLE,
-                        highlight=False,
-                        title_style=table_title_style,
-                        title=None,                   
+                        highlight=True,
+                        title_style=table_title_style,               
     )
+
     main_table2.add_column("", header_style=header_style, style=column_style, width=2)
     main_table2.add_column("General Variables", header_style=header_style, style=column_style)
 
@@ -77,7 +77,7 @@ def general_vars1():
     return main_table2
 
 # table1 
-row_styles2 = ["#21241d"] * 10
+row_styles2 = ["#ffffff"] * 10
 row_data_list2 = [
     "Outcome Title", "Outcome Description", "Outcome Type", "SMD", "SE",
     "Outcome Measure", "Outcome Group1 N", "Outcome Group1 Mean",

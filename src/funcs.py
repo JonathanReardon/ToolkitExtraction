@@ -4379,7 +4379,7 @@ def data_analysis_cl_table():
     main_table.add_row("26",  "Within-Class Grouping")
 
     main_table.add_row("",    "")
-    main_table.add_row("",    "[bold cyan]Early Years Toolkit[/bold]")
+    main_table.add_row("",    "[bold cyan]Early Years Toolkit[/bold cyan]")
     main_table.add_row("",    "")
     main_table.add_row("27",  "Early Literacy Approaches")
     main_table.add_row("28",  "Early Numeracy Approaches")
@@ -4397,6 +4397,7 @@ def data_analysis_cl_table():
                   padding=(1, 2),
                   width=80)
 
+    console = Console()
     print("\n")
     console.print(panel)
     print("\n")
@@ -4795,6 +4796,9 @@ def main_menu_display1(functions, outfile1, df_display):
     console.print(panel)
     print("\n")
 
+from prompt_toolkit import prompt
+from prompt_toolkit.completion import PathCompleter
 
-data_file = input_file_path("Input json data file: ")
+path_completer = PathCompleter()
+data_file = prompt('Enter the path to your JSON file: ', completer=path_completer)
 json_extractor = JSONDataExtractor(data_file)
