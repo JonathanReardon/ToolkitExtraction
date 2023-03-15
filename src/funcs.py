@@ -4379,7 +4379,7 @@ def data_analysis_cl_table():
     main_table.add_row("26",  "Within-Class Grouping")
 
     main_table.add_row("",    "")
-    main_table.add_row("",    "[bold cyan]Early Years Toolkit[/bold cyan]")
+    main_table.add_row("",    "[bold cyan]Early Years Toolkit[/bold]")
     main_table.add_row("",    "")
     main_table.add_row("27",  "Early Literacy Approaches")
     main_table.add_row("28",  "Early Numeracy Approaches")
