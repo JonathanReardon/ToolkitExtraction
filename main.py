@@ -23,8 +23,6 @@ from src.attributeIDs import *
 # Local imports
 from src.funcs import (
     data_analysis_cl_table,
-    data_cleaning_col_breakdown,
-    display_main_menu,
     dataframe_1_output_display,
     dataframe_2_output_display,
     dataframe_3_output_display,
@@ -35,7 +33,6 @@ from src.funcs import (
     JSONDataExtractor,
     DataFrameCompilation,
     StrandSpecificFrames,
-    RiskofBias,
     CustomFrames,
     input_file_info_display,
     data_file,
@@ -44,7 +41,7 @@ from src.funcs import (
 )
 
 # table1 
-row_styles1 = ["#ffffff"] * 10
+row_styles1 = ["#FFFFFF"] * 10
 row_data_list1 = [
     "Study ID", "Author", "Year", "Abstract", "Admin Strand",
     "Country", "Publication Type EPPI", "Publication Type",
@@ -52,24 +49,21 @@ row_data_list1 = [
 ]
 
 def general_vars1():
-
     console = Console()
+    custom_style_main = Style(bgcolor="#FFFFFF")
 
-    custom_style_main = Style(bgcolor="#21241d")
-    title1 = console.render_str("[bold]Custom Data Selection[/bold]")
-
-    table_title_style = Style(italic=False, bgcolor=None, color="blue", bold=True)
-    header_style = Style(italic=False, bgcolor=None, color="blue", bold=True)
-    column_style = Style() 
+    table_title_style = Style(italic=False, bgcolor="#FFFFFF", color="#000000", bold=True)
+    header_style = Style(italic=False, bgcolor="#FFFFFF", color="#000000", bold=True)
+    column_style = Style(bgcolor="#FFFFFF", color="#000000", bold=True) 
 
     main_table2 = Table(show_header=True, 
                         box=box.SIMPLE,
-                        highlight=True,
+                        highlight=False,
                         title_style=table_title_style,               
     )
 
     main_table2.add_column("", header_style=header_style, style=column_style, width=2)
-    main_table2.add_column("General Variables", header_style=header_style, style=column_style)
+    main_table2.add_column("General Variables", header_style=header_style, style=column_style, width=30)
 
     for idx, row_data in enumerate(row_data_list1, start=1):
         main_table2.add_row(f"{idx+0}", row_data, style=row_styles1[idx - 1])
@@ -77,59 +71,48 @@ def general_vars1():
     return main_table2
 
 # table1 
-row_styles2 = ["#ffffff"] * 10
+row_styles2 = ["#FFFFFF"] * 10
 row_data_list2 = [
     "Outcome Title", "Outcome Description", "Outcome Type", "SMD", "SE",
     "Outcome Measure", "Outcome Group1 N", "Outcome Group1 Mean",
     "Outcome Group1 SD", "Outcome Group2 N"
 ]
 
-
 def outcome_vars_1():
-    
     console = Console()
+    custom_style_main = Style(bgcolor="#FFFFFF")
 
-    custom_style_main = Style(bgcolor="#21241d")
-    title1 = console.render_str("[bold]Custom Data Selection[/bold]")
+    table_title_style = Style(italic=False, bgcolor="#FFFFFF", color="#000000", bold=True)
+    header_style = Style(italic=False, bgcolor="#FFFFFF", color="#000000", bold=True)
+    column_style = Style(bgcolor="#FFFFFF", color="#000000", bold=True) 
 
-    table_title_style = Style(italic=False, bgcolor=None, color="blue", bold=True)
-    header_style = Style(italic=False, bgcolor=None, color="blue", bold=True)
-    column_style = Style(bgcolor=None, color="white") 
-
-    # Outcome variables table
     main_table3 = Table(show_header=True, 
                         box=box.SIMPLE,
                         highlight=False,
-                        title_style=table_title_style,                 
+                        title_style=table_title_style,                  
     )
 
     main_table3.add_column("", header_style=header_style, style=column_style, width=3)
-    main_table3.add_column("Toolkit Primary Outcome", header_style=header_style, style=column_style)
+    main_table3.add_column("Toolkit Primary Outcome", header_style=header_style, style=column_style, width=30)
 
     for idx, row_data in enumerate(row_data_list2, start=1):
         main_table3.add_row(f"{idx+10}", row_data, style=row_styles2[idx - 1])
     
     return main_table3
 
-console = Console()
-main_table2 = general_vars1()
-main_table3 = outcome_vars_1()
-tables = Columns([main_table2, main_table3])
-console.print(tables)
-
-highlight_style = "#FFD700"
+highlight_style = "#ff0000"
 
 def get_user_input():
     while True:
         try:
-            data_cleaning_option = Prompt.ask("Enter an option from the [bold magenta]Main Menu[/bold magenta]")
+            data_cleaning_option = Prompt.ask("Enter an option from the Main Menu")
             data_cleaning_option=int(data_cleaning_option)
-            if data_cleaning_option < 0 or data_cleaning_option > 8:
+            if data_cleaning_option < 0 or data_cleaning_option > 9:
                 raise ValueError
             break
         except ValueError:
             console=Console()
-            console.print("Error: invalid input. Please enter a number from [bold magenta]0 to 8[/bold magenta].")
+            console.print("Error: invalid input. Please enter a number from 0 to 8.")
     return data_cleaning_option
 
 
@@ -155,7 +138,7 @@ def main():
         match data_cleaning_option:
             case 0: 
                 console = Console()
-                console.print("Thanks for using the [bold magenta]EEF Toolkit Data Extractor![bold magenta]")
+                console.print("Thanks for using the EEF Toolkit Data Extractor.")
                 run_program = False
             case 1:
                 _, outfile1 = data_frame_compilation.make_dataframe_1(save_file=True, clean_cols=True, verbose=False)
@@ -212,7 +195,7 @@ def main():
                 input_file_info_display(data_file)
 
                 # Display user option prompt
-                data_cleaning_option = Prompt.ask("Enter an option from the [bold magenta]Main Menu[/bold magenta]")
+                data_cleaning_option = Prompt.ask("Enter an option from the Main Menu")
                 data_cleaning_option=int(data_cleaning_option)
             case 6:
                 console = Console()
@@ -249,61 +232,40 @@ def main():
                 console.clear()
                 main_table2 = general_vars1()
                 main_table3 = outcome_vars_1()
-                tables = Columns([main_table2, main_table3])
-                console.print(tables)
-                
-                #custom_style_df1 = Style(bgcolor="#21241d")
-                #custom_style_main = Style(bgcolor="#21241d")
 
-                #table = Table(show_header=True, 
-                #                style=custom_style_df1,
-                #                title=None,
-                #                safe_box=False,
-                #                header_style="bold magenta",
-                #                box=box.MINIMAL,
-                #                width=None)
-                
-                #table.add_column("", style="bold white")
-                #table.add_column("Data", style="bold white")
+                custom_style_main = Style(bgcolor="#FFFFFF")
+                custom_style_outer = Style(bgcolor="#FFFFFF")
 
+                panel1 = Panel(main_table2, style=custom_style_main, border_style="#FFFFFF")
+                panel2 = Panel(main_table3, style=custom_style_main, border_style="#FFFFFF")
+
+                # Combine the panels horizontally
+                columns = Columns([panel1, panel2])
+
+                # Create a larger panel with white background and black text to house the columns
+                panel = Panel(columns, 
+                                title="Custom Data Selection", 
+                                style=custom_style_outer, 
+                                border_style="#000000",
+                                width=92)
+
+                # Print the panel
+                console.print(panel)
+                
                 df = CustomFrames(json_extractor)
 
                 used_options = []
-
-                """ def add_row_to_table(table, row, cell_style=None):
-                    table.add_row("[bold green]✓[/bold green]", row)
-                    if cell_style:
-                        table.columns[1].cells[-1].style = cell_style
-                    panel = Panel.fit(table, 
-                                    title="Custom Data Selection", 
-                                    style=custom_style_df1,
-                                    border_style="white",
-                                    title_align="left",
-                                    padding=(1, 2))
-                    panel1 = data_cleaning_col_breakdown()
-                    row1 = Columns([panel1, panel], equal=False)
-                    layout = Columns([row1], equal=False)
-                    panel = Panel(layout, 
-                                title="TST", 
-                                border_style="white", 
-                                padding=(1, 2), 
-                                title_align="left",
-                                style=custom_style_main,
-                                width=200)
-                    console.clear()
-                    console.print(panel)
-                    return table """
 
                 # Compile list of invidividual data frames
                 dataframes=[]
                 while True:
                     try:
-                        console.print("Add variables to your data frame ([bold magenta]0=Save file and exit)[/bold magenta]")
+                        console.print("\nAdd variables to your data frame or [#FFFFFF]0 to Save file and exit[/#FFFFFF]")
                         num = int(Prompt.ask("Selection"))
-                        if num < 0 or num > 150:
+                        if num < 0 or num > 20:
                             raise ValueError
                     except ValueError:
-                        print("Error: invalid input. Please enter a number from 0 to 150.\n")
+                        print("Error: invalid input. Please enter a number from 0 to 20.\n")
                         continue
 
                     match num:
@@ -315,7 +277,6 @@ def main():
                                 row_styles1[num - 1] = highlight_style
                                 eppiid_df = df.data_extraction.retrieve_metadata("ItemId", "id")
                                 dataframes.append(eppiid_df)
-                                #table = add_row_to_table(table, "Study ID")
                                 used_options.append("id")
                             else:
                                 print("You have already selected this option!")
@@ -324,7 +285,6 @@ def main():
                                 row_styles1[num - 1] = highlight_style
                                 author_df = df.data_extraction.retrieve_metadata("ShortTitle", "pub_author")
                                 dataframes.append(author_df)
-                                #table = add_row_to_table(table, "Publication Author")
                                 used_options.append("pub_author")
                             else:
                                 print("You have already selected this option!")
@@ -333,7 +293,6 @@ def main():
                                 row_styles1[num - 1] = highlight_style
                                 year_df = df.data_extraction.retrieve_metadata("Year", "pub_year")
                                 dataframes.append(year_df)
-                                #table = add_row_to_table(table, "Publication Year")
                                 used_options.append("pub_year")
                             else:
                                 print("You have already selected this option!")
@@ -342,7 +301,6 @@ def main():
                                 row_styles1[num - 1] = highlight_style
                                 abstract_df = df.data_extraction.retrieve_metadata("Abstract", "abstract")
                                 dataframes.append(abstract_df)
-                                #table = add_row_to_table(table, "Abstract")
                                 used_options.append("abstract")
                             else:
                                 print("You have already selected this option!")
@@ -351,7 +309,6 @@ def main():
                                 row_styles1[num - 1] = highlight_style
                                 admin_strand_df = df.data_extraction.retrieve_data(admin_strand_output, "strand_raw")
                                 dataframes.append(admin_strand_df)
-                                #table = add_row_to_table(table, "Strand")
                                 used_options.append("strand_raw")
                             else:
                                 print("You have already selected this option!")
@@ -360,7 +317,6 @@ def main():
                                 row_styles1[num - 1] = highlight_style
                                 country_df = df.data_extraction.retrieve_data(countries, "loc_country_raw")
                                 dataframes.append(country_df)
-                                #table = add_row_to_table(table, "Country")
                                 used_options.append("loc_country_raw")
                             else:
                                 print("You have already selected this option!")
@@ -369,7 +325,6 @@ def main():
                                 row_styles1[num - 1] = highlight_style
                                 pubtype_eppi_df = df.data_extraction.retrieve_metadata("TypeName", "pub_eppi")
                                 dataframes.append(pubtype_eppi_df)
-                                #table = add_row_to_table(table, "Publication Type EPPI")
                                 used_options.append("pub_eppi")
                             else:
                                 print("You have already selected this option!")
@@ -378,7 +333,6 @@ def main():
                                 row_styles1[num - 1] = highlight_style
                                 pub_type_data = df.data_extraction.retrieve_data(publication_type_output, "pub_type_raw")
                                 dataframes.append(pub_type_data)
-                                #table = add_row_to_table(table, "Publication Type")
                                 used_options.append("pub_type_raw")
                             else:
                                 print("You have already selected this option!")
@@ -387,7 +341,6 @@ def main():
                                 row_styles1[num - 1] = highlight_style
                                 edu_setting_data = df.data_extraction.retrieve_data(edu_setting_output, "int_setting_raw")
                                 dataframes.append(edu_setting_data)
-                                #table = add_row_to_table(table, "Educational Setting")
                                 used_options.append("int_setting_raw")
                             else:
                                 print("You have already selected this option!")
@@ -396,7 +349,6 @@ def main():
                                 row_styles1[num - 1] = highlight_style
                                 student_age_data = df.data_extraction.retrieve_data(student_age_output, "part_age_raw")
                                 dataframes.append(student_age_data)
-                                #table = add_row_to_table(table, "Student Age")
                                 used_options.append("part_age_raw")
                             else:
                                 print("You have already selected this option!")
@@ -515,19 +467,49 @@ def main():
                         main_table2 = general_vars1()
                         main_table3 = outcome_vars_1()
                         console.clear()
-                        tables = Columns([main_table2, main_table3])
-                        console.print(tables)
+
+                        panel1 = Panel(main_table2, style=custom_style_main, border_style="#FFFFFF")
+                        panel2 = Panel(main_table3, style=custom_style_main, border_style="#FFFFFF")
+
+                        # Combine the panels horizontally
+                        columns = Columns([panel1, panel2])
+
+                        # Create a larger panel with white background and black text to house the columns
+                        panel = Panel(columns, 
+                                      title="Custom Data Selection", 
+                                      style=custom_style_outer, 
+                                      border_style="#000000",
+                                      width=92)
+
+                        # Print the panel
+                        console.print(panel)
 
                 if dataframes:
                     all_df = pd.concat(dataframes, axis=1)
                     console.print("\n[bold]Custom data frame saved here..[/bold]\n", style="white")
                     outfile1 = df.data_extraction.save_dataframe(all_df, "_Custom.csv")
                     outfile1=str(outfile1)
+                    outfile1="[#FFFFFF]" + outfile1 + "[/#FFFFFF]"
                     console.print(outfile1 + "\n")
-                    console.print("Thanks for using the [bold magenta]EEF Toolkit Data Extractor![bold magenta]")
+                    console.print("Thanks for using the EEF Toolkit Data Extractor!")
                 else: 
-                    console.print("No data selected, thanks for using the [bold magenta]EEF Teaching and Learning Toolkit Extractor.[/bold magenta]")
+                    console.print("No data selected, thanks for using the EEF Teaching and Learning Toolkit Extractor.")
                 break
+            case 9:
+                df = data_frame_compilation.getOutcomeData(save_file=True)
+                break
+
+                #save_df = DataFrameCompilation.save_Dataframe(df, "test.csv")
+
+                """ functions = [data_frame_compilation.make_dataframe_4]
+
+                # Display main menu
+                main_menu_display1(functions, outfile4, dataframe_4_output_display)
+
+                # Crate input file display table
+                input_file_info_display(data_file)
+
+                data_cleaning_option = get_user_input() """
 
 if __name__ == "__main__":
     main()

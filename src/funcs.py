@@ -26,25 +26,11 @@ from toolz import interleave
 # Local imports
 from src.attributeIDs import *
 
-def input_file_path(prompt):
-    def complete(text, state):
-        return (glob.glob(text+'*')+[None])[state]
-    readline.set_completer_delims('\t')
-    readline.parse_and_bind("tab: complete")
-    readline.set_completer(complete)
-    path = input(prompt)
-    if not os.path.isfile(path):
-        print("File not found")
-        return input_file_path(prompt)
-    return path
-
-
 class JSONDataExtractor:
     def __init__(self, data_file):
         self.data_file = data_file
         self.data = None
         self.load_json()
-
 
     def load_json(self):
         datafile = os.path.join(os.getcwd(), self.data_file)
@@ -211,15 +197,13 @@ class JSONDataExtractor:
         '''
         Extract strand level outcome data for main analysis dataframe
         '''
-
         eppiid_df = json_extractor.retrieve_metadata("ItemId", "id")
         author_df = json_extractor.retrieve_metadata("ShortTitle", "pub_author")
         outcometype_df = json_extractor.get_outcome_data_lvl2(outcome_type_codes, "out_type_")
         outcome_df = json_extractor.get_outcome_data_lvl1("OutcomeText", "out_label_")
         outcome_title_df = json_extractor.get_outcome_data_lvl1("Title", "out_tit_")
 
-        df = pd.concat([
-            outcometype_df, outcome_df, outcome_title_df
+        df = pd.concat([outcometype_df, outcome_df, outcome_title_df
         ], axis=1)[list(interleave([
             outcometype_df, outcome_df, outcome_title_df
         ]))]
@@ -253,10 +237,12 @@ class JSONDataExtractor:
         outcome_df = outcome_df.applymap(lambda x: round(x, 4) if isinstance(x, (int, float)) else x)
         # name each column (number depends on outcome number)
         outcome_df.columns = [column_prefix+'{}'.format(column+1) for column in outcome_df.columns]
-        outcome_df.fillna("NA", inplace=True)
-        outcome_df = outcome_df.replace(r'^\s*$', "NA", regex=True)
-        outcome_df.replace('\r', ' ', regex=True, inplace=True)
-        outcome_df.replace('\n', ' ', regex=True, inplace=True)
+
+        #outcome_df.fillna("NA", inplace=True)
+        #outcome_df = outcom_df.replace(r'^\s*$', "NA", regex=True)
+        #outcome_df.replace('\r', ' ', regex=True, inplace=True)
+        #outcome_df.replace('\n', ' ', regex=True, inplace=True)
+        self.clean_up(outcome_df)
         return outcome_df
 
 
@@ -2130,6 +2116,31 @@ class DataFrameCompilation:
         return df_all_SS, outfile6
 
 
+    def getOutcomeData(self, save_file=True):
+        '''
+        Extract strand level outcome data for main analysis dataframe
+        '''
+        eppiid_df = json_extractor.retrieve_metadata("ItemId", "id")
+        author_df = json_extractor.retrieve_metadata("ShortTitle", "pub_author")
+        outcometype_df = json_extractor.get_outcome_data_lvl2(outcome_type_codes, "out_type_")
+        outcome_df = json_extractor.get_outcome_data_lvl1("OutcomeText", "out_label_")
+        outcome_title_df = json_extractor.get_outcome_data_lvl1("Title", "out_tit_")
+
+        df = pd.concat([outcometype_df, outcome_df, outcome_title_df
+        ], axis=1)[list(interleave([
+            outcometype_df, outcome_df, outcome_title_df
+        ]))]
+
+        all_variables = pd.concat([eppiid_df, author_df, df], axis=1, sort=False)
+
+        if save_file:
+            #all_variables = self.data_extraction.save_dataframe("Toolkit_Outcome_Check.csv")
+
+            all_variables = self.data_extraction.save_dataframe(all_variables, "_Outcomes.csv")
+
+        return all_variables
+    
+    
     def make_references(self, save_file=True):
         """
         """
@@ -4340,7 +4351,7 @@ def data_analysis_cl_table():
     """
     """
     console = Console()
-    custom_style_df1 = Style(bgcolor="#21241d")
+    custom_style_df1 = Style(bgcolor="#FFFFFF")
 
     main_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4348,8 +4359,8 @@ def data_analysis_cl_table():
                       safe_box=False,
                       box=box.SIMPLE)
 
-    main_table.add_column("", style="bold white")
-    main_table.add_column("Main Toolkit", header_style="bold cyan", style="white")
+    main_table.add_column("", style="bold #000000")
+    main_table.add_column("[bold #000000]Main Toolkit[/bold #000000]", header_style="bold", style="#000000")
 
     main_table.add_row("1",  "Arts Participation")
     main_table.add_row("2",  "Behaviour Interventions")
@@ -4379,7 +4390,7 @@ def data_analysis_cl_table():
     main_table.add_row("26",  "Within-Class Grouping")
 
     main_table.add_row("",    "")
-    main_table.add_row("",    "[bold cyan]Early Years Toolkit[/bold cyan]")
+    main_table.add_row("",    "[bold #000000]Early Years Toolkit[/bold #000000]")
     main_table.add_row("",    "")
     main_table.add_row("27",  "Early Literacy Approaches")
     main_table.add_row("28",  "Early Numeracy Approaches")
@@ -4392,7 +4403,7 @@ def data_analysis_cl_table():
     panel = Panel(main_table, 
                   title="Strand Specific Selection", 
                   style=custom_style_df1,
-                  border_style="white",
+                  border_style="bold #000000",
                   title_align="left",
                   padding=(1, 2),
                   width=80)
@@ -4439,9 +4450,9 @@ def display_table_struct(funcs):
 
 def data_cleaning_col_breakdown():
 
-    table_title_style = Style(italic=False, bgcolor=None, color="blue", bold=True)
-    header_style = Style(italic=False, bgcolor=None, color="blue", bold=True)
-    column_style = Style(bgcolor=None, color="white") 
+    table_title_style = Style(italic=False, bgcolor="#FFFFFF", color="#000000", bold=True)
+    header_style = Style(italic=False, bgcolor="#FFFFFF", color="#000000", bold=True)
+    column_style = Style(bgcolor="#FFFFFF", color="#000000") 
 
     main_table2 = Table(show_header=True, 
                         box=box.MINIMAL,
@@ -4485,9 +4496,9 @@ def data_cleaning_col_breakdown():
 
 
 def display_main_menu():
-    table_title_style = Style(italic=False, bgcolor=None, color="magenta", bold=True)
-    header_style = Style(italic=False, bgcolor=None, color="magenta", bold=True)
-    column_style = Style(bgcolor=None, color="white", bold=False) 
+    table_title_style = Style(italic=False, bgcolor=None, color="#000000", bold=True)
+    header_style = Style(italic=False, bgcolor="#FFFFFF", color="#000000", bold=True)
+    column_style = Style(bgcolor="#FFFFFF", color="#000000", bold=False) 
 
     main_table = Table(show_header=True,
                        highlight=False,
@@ -4495,8 +4506,8 @@ def display_main_menu():
                        title_style=table_title_style,
                        box=box.SIMPLE)
 
-    selection_style = Style(italic=False, bgcolor=None, color="magenta", bold=True)
-    description_style = Style(italic=False, bgcolor=None, color="magenta", bold=True)
+    selection_style = Style(italic=False, bgcolor="#ffffff", color="#000000", bold=True)
+    description_style = Style(italic=False, bgcolor="#ffffff", color="#000000", bold=True)
 
     main_table.add_column("Selection", header_style=selection_style, style=column_style)
     main_table.add_column("Description", header_style=description_style, style=column_style)
@@ -4515,7 +4526,7 @@ def display_main_menu():
 
 def dataframe_1_output_display(functions, outfile):
     console = Console()
-    custom_style_df1 = Style(bgcolor="#21241d")
+    custom_style_df1 = Style(bgcolor="#FFFFFF")
 
     df1_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4523,16 +4534,16 @@ def dataframe_1_output_display(functions, outfile):
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df1_table.add_column("Selection", justify="center", header_style="bold blue")
-    df1_table.add_column("Output directory", justify="left", header_style="blue")
-    df1_table.add_row("Dataframe 1", outfile)
+    df1_table.add_column("Selection", justify="center", header_style="bold #000000")
+    df1_table.add_column("Output directory", justify="left", header_style="#000000")
+    df1_table.add_row("Dataframe 1", outfile, style="#000000")
 
     return df1_table
 
 
 def dataframe_2_output_display(functions, outfile):
     console = Console()
-    custom_style_df1 = Style(bgcolor="#21241d")
+    custom_style_df1 = Style(bgcolor="#FFFFFF")
 
     df2_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4540,16 +4551,16 @@ def dataframe_2_output_display(functions, outfile):
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df2_table.add_column("Selection", justify="center", header_style="bold blue")
-    df2_table.add_column("Output directory", justify="left", header_style="blue")
-    df2_table.add_row("Dataframe 2", outfile)
+    df2_table.add_column("Selection", justify="center", header_style="bold #000000")
+    df2_table.add_column("Output directory", justify="left", header_style="#000000")
+    df2_table.add_row("Dataframe 2", outfile, style="#000000")
 
     return df2_table
 
 
 def dataframe_3_output_display(functions, outfile):
     console = Console()
-    custom_style_df1 = Style(bgcolor="#21241d")
+    custom_style_df1 = Style(bgcolor="#FFFFFF")
 
     df3_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4557,16 +4568,16 @@ def dataframe_3_output_display(functions, outfile):
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df3_table.add_column("Selection", justify="center", header_style="bold blue")
-    df3_table.add_column("Output directory", justify="left", header_style="blue")
-    df3_table.add_row("Dataframe 3", outfile)
+    df3_table.add_column("Selection", justify="center", header_style="bold #000000")
+    df3_table.add_column("Output directory", justify="left", header_style="#000000")
+    df3_table.add_row("Dataframe 3", outfile, style="#000000")
 
     return df3_table
 
 
 def dataframe_4_output_display(functions, outfile):
     console = Console()
-    custom_style_df1 = Style(bgcolor="#21241d")
+    custom_style_df1 = Style(bgcolor="#FFFFFF")
 
     df4_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4574,16 +4585,16 @@ def dataframe_4_output_display(functions, outfile):
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df4_table.add_column("Selection", justify="center", header_style="bold blue")
-    df4_table.add_column("Output directory", justify="left", header_style="blue")
-    df4_table.add_row("Dataframe 4", outfile)
+    df4_table.add_column("Selection", justify="center", header_style="bold #000000")
+    df4_table.add_column("Output directory", justify="left", header_style="#000000")
+    df4_table.add_row("Dataframe 4", outfile, style="#000000")
 
     return df4_table
 
 
 def dataframe_5_output_display(functions, outfile):
     console = Console()
-    custom_style_df1 = Style(bgcolor="#21241d")
+    custom_style_df1 = Style(bgcolor="#FFFFFF")
 
     df5_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4591,16 +4602,16 @@ def dataframe_5_output_display(functions, outfile):
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df5_table.add_column("Selection", justify="center", header_style="bold blue")
-    df5_table.add_column("Output directory", justify="left", header_style="blue")
-    df5_table.add_row("Dataframe 5", outfile)
+    df5_table.add_column("Selection", justify="center", header_style="bold #000000")
+    df5_table.add_column("Output directory", justify="left", header_style="#000000")
+    df5_table.add_row("Dataframe 5", outfile, style="#000000")
 
     return df5_table
 
 
 def dataframe_6_output_display(functions, outfile):
     console = Console()
-    custom_style_df1 = Style(bgcolor="#21241d")
+    custom_style_df1 = Style(bgcolor="#FFFFFF")
 
     df6_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4608,16 +4619,16 @@ def dataframe_6_output_display(functions, outfile):
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df6_table.add_column("Selection", justify="center", header_style="bold blue")
-    df6_table.add_column("Output directory", justify="left", header_style="blue")
-    df6_table.add_row("Dataframe 6", outfile)
+    df6_table.add_column("Selection", justify="center", header_style="bold #000000")
+    df6_table.add_column("Output directory", justify="left", header_style="bold #000000")
+    df6_table.add_row("Dataframe 6", outfile, style="#000000")
 
     return df6_table
 
 
 def dataframe_7_output_display(functions, outfile):
     console = Console()
-    custom_style_df1 = Style(bgcolor="#21241d")
+    custom_style_df1 = Style(bgcolor="#FFFFFF")
 
     df7_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4625,18 +4636,18 @@ def dataframe_7_output_display(functions, outfile):
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df7_table.add_column("Selection", justify="center", header_style="bold blue")
-    df7_table.add_column("Output directory", justify="left", header_style="blue")
-    df7_table.add_row("Dataframe 7", outfile)
+    df7_table.add_column("Selection", justify="center", header_style="bold #000000")
+    df7_table.add_column("Output directory", justify="left", header_style="bold #000000")
+    df7_table.add_row("Dataframe 7", outfile, style="#000000")
 
     return df7_table
 
 
 def input_file_info_display(data_file):
 
-    table_title_style = Style(italic=False, bgcolor=None, color="green", bold=True)
-    header_style = Style(italic=False, bgcolor=None, color="green", bold=True)
-    column_style = Style(bgcolor=None, color="white") 
+    table_title_style = Style(italic=False, bgcolor="#FFFFFF", color="#000000", bold=True)
+    header_style = Style(italic=False, bgcolor="#FFFFFF", color="#000000", bold=True)
+    column_style = Style(bgcolor="#FFFFFF", color="#000000") 
 
     file_info_table = Table(show_header=True,
                        highlight=False,
@@ -4664,25 +4675,34 @@ def main_menu_display():
     main_menu_table = display_main_menu()
     datafile_info_table = input_file_info_display(data_file)
 
-    custom_style_main = Style(bgcolor="#21241d")
-    custom_style_file_details = Style(bgcolor="#21241d")
-    custom_style_cleaning_info = Style(bgcolor="#21241d")
+    custom_style_main = Style(bgcolor="#FFFFFF")
+    custom_style_file_details = Style(bgcolor="#FFFFFF")
+    custom_style_cleaning_info = Style(bgcolor="#FFFFFF")
 
-    container_title = console.render_str("[bold white]EEF Teaching and Learning Toolkit Data Extractor[/bold white]")
+    container_title = console.render_str("[bold #000000]EEF Teaching and Learning Toolkit Data Extractor[/bold #000000]")
 
-    top_title = console.render_str("[bold]Welcome[/bold]")
-    title1 = console.render_str("[bold]Main Menu[/bold]")
-    title2 = console.render_str("[bold]Data File Details[/bold]")
+    top_title = console.render_str("[bold #000000]Welcome[/bold #000000]")
+    title1 = console.render_str("[bold #000000]Main Menu[/bold #000000]")
+    title2 = console.render_str("[bold #000000]Data File Details[/bold #000000]")
 
     # Set text for top panel of main menu
-    top_panel_text = """[white]Welcome to the EEF Teaching and Learing Toolkit Data Extractor. Navigate the [/white][bold cyan]Main Menu[/bold cyan] [white]to \nproduce a variety of dataframes containing data extracted from an input [/white][bold cyan](.json format)[/bold cyan] [white]datafile \nproduced by the EEF Teaching and Learning Toolkit Database.[/white]\n\n[bold cyan]Options 1-5[/bold cyan] [white]consist of our own custom dataframes used to 'clean' the data prior to analysis.[/white]\n[bold cyan]Option 6[/bold cyan] [white]produces the final dataframe(s) we use for our meta-analyses. [/white][bold cyan]Option 7[/bold cyan] [white]compiles the \nnecessary data to construct study references. Finally, [/white][bold cyan]Option 8[/bold cyan] [white]allows you to create your own \ncustom dataframe.[/white]"""
-    top_menu_style = Style(bgcolor="#21241d")
+    top_panel_text = (
+        "[#000000]Welcome to the EEF Teaching and Learning Toolkit Data Extractor. Navigate the[/#000000] "
+        "[bold #ff0000]Main Menu[/bold #ff0000] [#000000]to produce a variety of dataframes containing data extracted "
+        "from an input [bold #ff0000](.json format)[/bold #ff0000] [#000000]datafile produced by the EEF Teaching and "
+        "Learning Toolkit Database.\n\n[bold #ff0000]Options 1-5[/bold #ff0000] [#000000]consist of our own custom dataframes "
+        "used to 'clean' the data prior to analysis.[/#000000] [bold #ff0000]Option 6[/bold #ff0000] [#000000]produces the "
+        "final dataframe(s) we use for our meta-analyses. [/#000000][bold #ff0000]Option 7[/bold #ff0000] [#000000]compiles "
+        "the necessary data to construct study references. Finally, [/#000000][bold #ff0000]Option 8[/bold #ff0000] "
+        "[#000000]allows you to create your own custom dataframe.[/#000000]"
+    )
+    top_menu_style = Style(bgcolor="#FFFFFF")
 
     # create the panel with the text
     top_panel = Panel(
         top_panel_text,
         title=top_title, 
-        border_style="cyan",
+        border_style="bold #000000",
         title_align="left",
         style=top_menu_style,
         padding=(1, 2),
@@ -4691,7 +4711,7 @@ def main_menu_display():
     panel1a = Panel.fit(
         main_menu_table,
         title=title1,
-        border_style="magenta",
+        border_style="bold #000000",
         style=custom_style_main,
         title_align="left",
         padding=(1, 2),
@@ -4700,7 +4720,7 @@ def main_menu_display():
     panel1b = Panel.fit(
         datafile_info_table,
         title=title2,
-        border_style="yellow",
+        border_style="bold #000000",
         style=custom_style_file_details,
         title_align="left",
         padding=(1, 2),
@@ -4719,7 +4739,7 @@ def main_menu_display():
     panel = Panel(
         layout,
         title=container_title,
-        border_style="white",
+        border_style="bold #000000",
         padding=(1, 2),
         title_align="center",
         style=custom_style_main,
@@ -4746,13 +4766,13 @@ def main_menu_display1(functions, outfile1, df_display):
     main_menu_table = display_main_menu()
     datafile_info_table = input_file_info_display(data_file)
 
-    custom_style_main = Style(bgcolor="#21241d")
-    custom_style_file_details = Style(bgcolor="#21241d")
-    custom_style_cleaning_info = Style(bgcolor="#21241d")
+    custom_style_main = Style(bgcolor="#FFFFFF")
+    custom_style_file_details = Style(bgcolor="#FFFFFF")
+    custom_style_cleaning_info = Style(bgcolor="#FFFFFF")
 
-    title1 = console.render_str("[bold]Main Menu[/bold]")
-    title2 = console.render_str("[bold]Data File Details[/bold]")
-    title3 = console.render_str("[bold]Output Files[/bold]")
+    title1 = console.render_str("[bold #000000]Main Menu[/bold #000000]")
+    title2 = console.render_str("[bold #000000]Data File Details[/bold #000000]")
+    title3 = console.render_str("[bold #000000]Output Files[/bold #000000]")
 
     panel1a = Panel.fit(
         main_menu_table,
@@ -4785,7 +4805,7 @@ def main_menu_display1(functions, outfile1, df_display):
     panel = Panel(
         layout, 
         title="EEF Teaching and Learning Toolkit Data Extractor", 
-        border_style="white", 
+        border_style="bold #000000", 
         padding=(1, 2), 
         title_align="left",
         style=custom_style_main,
