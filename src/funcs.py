@@ -4671,7 +4671,7 @@ from rich.box import Box
 
 def main_menu_display():
     console = Console()
-    data_cleaning_var_table = data_cleaning_col_breakdown()
+    #data_cleaning_var_table = data_cleaning_col_breakdown()
     main_menu_table = display_main_menu()
     datafile_info_table = input_file_info_display(data_file)
 
@@ -4706,35 +4706,44 @@ def main_menu_display():
         title_align="left",
         style=top_menu_style,
         padding=(1, 2),
+        width=120,
     )
 
-    panel1a = Panel.fit(
+    panel1 = Panel.fit(
         main_menu_table,
         title=title1,
         border_style="bold #000000",
         style=custom_style_main,
         title_align="left",
         padding=(1, 2),
+        width=120,
     )
 
-    panel1b = Panel.fit(
+    panel2 = Panel.fit(
         datafile_info_table,
         title=title2,
         border_style="bold #000000",
         style=custom_style_file_details,
         title_align="left",
         padding=(1, 2),
-        width=33,
+        width=120,
     )
 
-    # create the first row of columns
-    row1 = Columns([panel1a, panel1b], equal=False)
+    """ # create the second row with the data cleaning variable breakdown panel
+    row2 = Panel.fit(
+        data_cleaning_var_table,
+        title="Data Cleaning Variable Breakdown",
+        border_style="bold #000000",
+        style=custom_style_cleaning_info,
+        title_align="left",
+        padding=(1, 2),
+    ) """
 
-    # combine the text panel and row1 into a new row
-    row_combined = Columns([top_panel, row1], equal=False)
+    # combine the text panel and panels into a new column
+    column_combined = Columns([top_panel, panel1, panel2], equal=False)
 
-    # create the layout with the combined rows
-    layout = Layout(row_combined)
+    # create the layout with the combined column
+    layout = Layout(column_combined)
 
     panel = Panel(
         layout,
@@ -4743,8 +4752,8 @@ def main_menu_display():
         padding=(1, 2),
         title_align="center",
         style=custom_style_main,
-        height=33,
-        width= 120,
+        height=41,
+        width=120,
     )
 
     console.clear()
@@ -4777,6 +4786,7 @@ def main_menu_display1(functions, outfile1, df_display):
     panel1a = Panel.fit(
         main_menu_table,
         title=title1,
+        border_style="bold #000000",
         style=custom_style_main,
         title_align="left",
         padding=(1, 2),
@@ -4784,23 +4794,29 @@ def main_menu_display1(functions, outfile1, df_display):
     panel1b = Panel.fit(
         datafile_info_table,
         title=title2,
+        border_style="bold #000000",
         style=custom_style_file_details,
         title_align="left",
         padding=(1, 2),
     )
+
     panel2 = Panel.fit(
         output_file_info,
         title=title3,
+        border_style="bold #000000",
         style=custom_style_cleaning_info,
         title_align="left",
         padding=(1, 2),
     )
     # create the first row of columns
-    row1 = Columns([panel1a, panel1b], equal=False)
+    row1 = Columns([panel1a], equal=False)
+
+    row1b = Columns([panel1b], equal=False)
+
     # create the second row of columns
     row2 = Columns([panel2], equal=False)
     # create the layout with the panels
-    layout = Columns([row1, row2], equal=False)
+    layout = Columns([row1, row1b, row2], equal=False)
 
     panel = Panel(
         layout, 
@@ -4809,8 +4825,8 @@ def main_menu_display1(functions, outfile1, df_display):
         padding=(1, 2), 
         title_align="left",
         style=custom_style_main,
-        width=120,
-        height=33)
+        width=130,
+        height=40)
 
     console.clear()
     console.print(panel)
