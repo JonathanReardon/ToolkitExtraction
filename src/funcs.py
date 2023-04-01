@@ -8,7 +8,6 @@ import json
 import os
 
 # Third-party imports
-import glob
 import numpy as np
 import pandas as pd
 from prompt_toolkit import prompt
@@ -22,6 +21,13 @@ from rich.panel import Panel
 from rich import box
 from rich import print
 from toolz import interleave
+
+from rich.console import Console
+from rich.panel import Panel
+from rich.layout import Layout
+from rich.style import Style
+from rich.table import Table
+from rich.columns import Columns
 
 # Local imports
 from src.attributeIDs import *
@@ -572,6 +578,7 @@ class DataFrameCompilation:
             other_part_ht,
             other_part_info,
         ], axis=1, sort=False)
+
         all_variables['part_assig_raw'] = all_variables['part_assig_raw'].str[0]
         all_variables['level_assig_raw'] = all_variables['level_assig_raw'].str[0]
         all_variables['rand_raw'] = all_variables['rand_raw'].apply(lambda x: ",".join(x) if isinstance(x, list) else x)
@@ -1843,13 +1850,15 @@ class DataFrameCompilation:
         study_design_ht = self.data_extraction.retrieve_ht(study_design_output, "int_design_ht")
         study_design_info = self.data_extraction.retrieve_info(study_design_output, "int_design_info")
         sample_size_comments_df = self.data_extraction.retrieve_info(sample_size_output, "sample_analysed_info")
+        toolkit_version_data = self.data_extraction.retrieve_data(toolkit_versions, "toolkit_version")
         low_ses_percentage_Comments_df = self.data_extraction.retrieve_info(percentage_low_fsm_output, "fsm_perc_info")
 
         record_details_df = pd.concat([
             eppiid_df,
+            toolkit_version_data,
             author_df,
             year_df,
-            pub_type_data
+            pub_type_data,
         ], axis=1)
 
         df = pd.concat([
@@ -2056,6 +2065,7 @@ class DataFrameCompilation:
             'pub_year',
             'pub_type_raw',
             'strand_raw',
+            'toolkit_version',
             'out_out_type_tool',
             'smd_tool',
             'se_tool',
@@ -2186,9 +2196,9 @@ class DataFrameCompilation:
         ], axis=1)
 
         if save_file:
-            outfile_7 = self.data_extraction.save_dataframe(references, "_References.csv")
+            outfile_8 = self.data_extraction.save_dataframe(references, "_References.csv")
 
-        return references, outfile_7
+        return references, outfile_8
         
 
 class StrandSpecificFrames:
@@ -3648,17 +3658,16 @@ class RiskofBias:
         self.admin_strand_df = self.data_extraction.retrieve_data(admin_strand_output, "strand_raw")
         self.publicationtype_df = self.data_extraction.retrieve_data(publication_type_output, "pub_type_raw")
         self.participant_assignment_df = self.data_extraction.retrieve_data(part_assign_output, "part_assig_raw")
+        #self.participant_assignment_df['part_assig_raw'] = self.participant_assignment_df['part_assig_raw'].apply(', '.join)
         self.randomisation_df = self.data_extraction.retrieve_data(randomisation_details, "rand_raw")
         self.study_realism_df = self.data_extraction.retrieve_data(study_realism_output, "eco_valid_raw")
         self.number_of_schools_intervention_Comments_df = self.data_extraction.retrieve_info(number_of_schools_intervention_output, "school_treat_info")
         self.intervention_delivery_df = self.data_extraction.retrieve_data(intervention_delivery_output, "int_who_raw")
         self.number_of_classes_total_Comments_df = self.data_extraction.retrieve_info(num_of_class_tot_output, "class_total_info")
         self.InterventionEvaluation_df = self.data_extraction.retrieve_data(int_eval_output, "out_eval_raw")   
-    
         self.comparability_df = self.data_extraction.retrieve_data(comparability_output, "comp_anal_raw")    
         self.comp_anal_ht = self.data_extraction.retrieve_ht(comparability_output, "comp_anal_ht")
         self.comp_anal_info = self.data_extraction.retrieve_info(comparability_output, "comp_anal_info")
-
         self.sample_size_Comments_df = self.data_extraction.retrieve_info(sample_size_output, "sample_analysed_info")
         self.overall_percent_attrition_Comments_df = self.data_extraction.retrieve_info(overall_perc_attr, "attri_perc_info")
         self.clustering_df = self.data_extraction.retrieve_data(clustering_output, "clust_anal_raw")  
@@ -3666,20 +3675,18 @@ class RiskofBias:
         self.toolkit_test_type = self.data_extraction.get_outcome_data_lvl2(test_type_output, "out_test_type_raw_")
         # from DataFrame5 import toolkit_es_type
         self.toolkit_es_type = self.data_extraction.get_outcome_data_lvl2(es_type_output, "out_es_type_")
-
-        all_variables, outfile5 = DataFrameCompilation.make_dataframe_5(self, save_file=True, clean_cols=False)
+        all_variables, outfile5 = DataFrameCompilation.make_dataframe_5(self, save_file=False, clean_cols=False, verbose=False)
         self.toolkit_es_type = all_variables.out_es_type_tool
-
-        all_variables, outfile5 = DataFrameCompilation.make_dataframe_5(self, save_file=True, clean_cols=False)
+        all_variables, outfile5 = DataFrameCompilation.make_dataframe_5(self, save_file=False, clean_cols=False, verbose=False)
         self.toolkit_test_type = all_variables.out_test_type_raw_tool
-
-        all_variables, outfile5 = DataFrameCompilation.make_dataframe_5(self, save_file=True, clean_cols=False)
+        all_variables, outfile5 = DataFrameCompilation.make_dataframe_5(self, save_file=False, clean_cols=False, verbose=False)
         self.tool_prim_es = all_variables.smd_tool
-
-        all_variables, outfile5 = DataFrameCompilation.make_dataframe_5(self, save_file=True, clean_cols=False)
+        all_variables, outfile5 = DataFrameCompilation.make_dataframe_5(self, save_file=False, clean_cols=False, verbose=False)
         self.tool_prim_se = all_variables.se_tool
-
-        print(self.participant_assignment_df)
+        self.participant_assignment_df['part_assig_raw'] = self.participant_assignment_df['part_assig_raw'].str[0]
+        #self.randomisation_df['rand_raw'] = self.randomisation_df['rand_raw'].apply(lambda x: ",".join(x) if isinstance(x, list) else x)
+        self.randomisation_df['rand_raw'] = self.randomisation_df['rand_raw'].str[0]
+        self.study_realism_df['eco_valid_raw'] = self.study_realism_df['eco_valid_raw'].str[0]
 
     def rob_year(self):
         self.year_df["pub_year"] = self.year_df["pub_year"].apply(pd.to_numeric, errors='coerce').fillna(0)
@@ -3880,14 +3887,15 @@ class RiskofBias:
         return self.publicationtype_df
 
     def rob_part_assign(self):
+
         conditions = [
-            (self.participant_assignment_df['part_assig_raw'] == 'Random (please specify)'),
-            (self.participant_assignment_df['part_assig_raw'] == 'Non-random, but matched'),
-            (self.participant_assignment_df['part_assig_raw'] == 'Non-random, not matched prior to treatment'),
-            (self.participant_assignment_df['part_assig_raw'] == 'Unclear'),
-            (self.participant_assignment_df['part_assig_raw'] == 'Not assigned - naturally occurring sample'),
-            (self.participant_assignment_df['part_assig_raw'] == 'Retrospective Quasi Experimental Design (QED)'),
-            (self.participant_assignment_df['part_assig_raw'] == 'Regression discontinuity'),
+            (self.participant_assignment_df['part_assig_raw'] == "Random (please specify)"),
+            (self.participant_assignment_df['part_assig_raw'] == "Non-random, but matched"),
+            (self.participant_assignment_df['part_assig_raw'] == "Non-random, not matched prior to treatment"),
+            (self.participant_assignment_df['part_assig_raw'] == "Unclear"),
+            (self.participant_assignment_df['part_assig_raw'] == "Not assigned - naturally occurring sample"),
+            (self.participant_assignment_df['part_assig_raw'] == "Retrospective Quasi Experimental Design (QED)"),
+            (self.participant_assignment_df['part_assig_raw'] == "Regression discontinuity"),
         ]
         choices = ['Low Risk', 'Medium Risk', 'Medium Risk', 'Medium Risk', 'Medium Risk', 'Medium Risk', 'Medium Risk']
 
@@ -4114,42 +4122,111 @@ class RiskofBias:
         ], axis=1, sort=False)
     
         # CONVERT OBJECT COLUMNS TO FLOAT (FOR ADDITION)
-        #self.risk_of_bias_df["rand_risk_value"] = self.risk_of_bias_df["rand_risk_value"].apply(pd.to_numeric, errors='coerce')
-        #self.risk_of_bias_df["part_assig_risk_value"] = self.risk_of_bias_df["part_assig_risk_value"].apply(pd.to_numeric, errors='coerce')
-        #self.risk_of_bias_df["eco_valid_risk_value"] = self.risk_of_bias_df["eco_valid_risk_value"].apply(pd.to_numeric, errors='coerce')
-        #self.risk_of_bias_df["school_treat_risk_value"] = self.risk_of_bias_df["school_treat_risk_value"].apply(pd.to_numeric, errors='coerce')
-        #self.risk_of_bias_df["pub_type_risk_value"] = self.risk_of_bias_df["pub_type_risk_value"].apply(pd.to_numeric, errors='coerce')
-        #self.risk_of_bias_df["class_total_risk_value"] = self.risk_of_bias_df["class_total_risk_value"].apply(pd.to_numeric, errors='coerce')
-        #self.risk_of_bias_df["out_eval_risk_value"] = self.risk_of_bias_df["out_eval_risk_value"].apply(pd.to_numeric, errors='coerce')
-        #self.risk_of_bias_df["comp_anal_risk_value"] = self.risk_of_bias_df["comp_anal_risk_value"].apply(pd.to_numeric, errors='coerce')
-        #self.risk_of_bias_df["sample_size_risk_value"] = self.risk_of_bias_df["sample_size_risk_value"].apply(pd.to_numeric, errors='coerce')
-        #self.risk_of_bias_df["out_test_type_raw_risk_value"] = self.risk_of_bias_df["out_test_type_raw_risk_value"].apply(pd.to_numeric, errors='coerce')
-        #self.risk_of_bias_df["out_es_type_risk_value"] = self.risk_of_bias_df["out_es_type_risk_value"].apply(pd.to_numeric, errors='coerce')
-        #self.risk_of_bias_df["int_who_raw_risk_value"] = self.risk_of_bias_df["int_who_raw_risk_value"].apply(pd.to_numeric, errors='coerce')
-        #self.risk_of_bias_df["attri_perc_info_risk_value"] = self.risk_of_bias_df["attri_perc_info_risk_value"].apply(pd.to_numeric, errors='coerce')
-        #self.risk_of_bias_df["clust_anal_risk_value"] = self.risk_of_bias_df["clust_anal_risk_value"].apply(pd.to_numeric, errors='coerce')
-        #self.risk_of_bias_df["pub_year_risk_value"] = self.risk_of_bias_df["pub_year_risk_value"].apply(pd.to_numeric, errors='coerce')
+        self.risk_of_bias_df["rand_risk_value"] = self.risk_of_bias_df["rand_risk_value"].apply(pd.to_numeric, errors='coerce')
+        self.risk_of_bias_df["part_assig_risk_value"] = self.risk_of_bias_df["part_assig_risk_value"].apply(pd.to_numeric, errors='coerce')
+        self.risk_of_bias_df["eco_valid_risk_value"] = self.risk_of_bias_df["eco_valid_risk_value"].apply(pd.to_numeric, errors='coerce')
+        self.risk_of_bias_df["school_treat_risk_value"] = self.risk_of_bias_df["school_treat_risk_value"].apply(pd.to_numeric, errors='coerce')
+        self.risk_of_bias_df["pub_type_risk_value"] = self.risk_of_bias_df["pub_type_risk_value"].apply(pd.to_numeric, errors='coerce')
+        self.risk_of_bias_df["class_total_risk_value"] = self.risk_of_bias_df["class_total_risk_value"].apply(pd.to_numeric, errors='coerce')
+        self.risk_of_bias_df["out_eval_risk_value"] = self.risk_of_bias_df["out_eval_risk_value"].apply(pd.to_numeric, errors='coerce')
+        self.risk_of_bias_df["comp_anal_risk_value"] = self.risk_of_bias_df["comp_anal_risk_value"].apply(pd.to_numeric, errors='coerce')
+        self.risk_of_bias_df["sample_size_risk_value"] = self.risk_of_bias_df["sample_size_risk_value"].apply(pd.to_numeric, errors='coerce')
+        self.risk_of_bias_df["out_test_type_raw_risk_value"] = self.risk_of_bias_df["out_test_type_raw_risk_value"].apply(pd.to_numeric, errors='coerce')
+        self.risk_of_bias_df["out_es_type_risk_value"] = self.risk_of_bias_df["out_es_type_risk_value"].apply(pd.to_numeric, errors='coerce')
+        self.risk_of_bias_df["int_who_raw_risk_value"] = self.risk_of_bias_df["int_who_raw_risk_value"].apply(pd.to_numeric, errors='coerce')
+        self.risk_of_bias_df["attri_perc_info_risk_value"] = self.risk_of_bias_df["attri_perc_info_risk_value"].apply(pd.to_numeric, errors='coerce')
+        self.risk_of_bias_df["clust_anal_risk_value"] = self.risk_of_bias_df["clust_anal_risk_value"].apply(pd.to_numeric, errors='coerce')
+        self.risk_of_bias_df["pub_year_risk_value"] = self.risk_of_bias_df["pub_year_risk_value"].apply(pd.to_numeric, errors='coerce')
 
-        #self.risk_of_bias_df['strand_raw'] = self.risk_of_bias_df['strand_raw'].str.join(', ')
+        """ self.risk_of_bias_df['strand_raw'] = self.risk_of_bias_df['strand_raw'].str.join(', ') """
 
-        """ self.risk_of_bias_df.replace('~', '', regex=True, inplace=True)
+        self.risk_of_bias_df['raw_total'] = self.risk_of_bias_df[[
+            'pub_year_risk_value',
+            'pub_type_risk_value',
+            'part_assig_risk_value',
+            'rand_risk_value',
+            'out_test_type_raw_risk_value',
+            'eco_valid_risk_value',
+            'int_who_raw_risk_value',
+            'school_treat_risk_value',
+            'sample_size_risk_value',
+            'class_total_risk_value',
+            'out_eval_risk_value',
+            'out_es_type_risk_value',
+            'comp_anal_risk_value',
+            'attri_perc_info_risk_value',
+            'clust_anal_risk_value',
+        ]].iloc[:].sum(axis=1)
+
+        # concatanate risk values for mean calculation
+        mean_calc = pd.concat([
+            self.risk_of_bias_df["pub_year_risk_value"],
+            self.risk_of_bias_df["pub_type_risk_value"],
+            self.risk_of_bias_df["part_assig_risk_value"],
+            self.risk_of_bias_df["rand_risk_value"],
+            self.risk_of_bias_df["out_test_type_raw_risk_value"],
+            self.risk_of_bias_df["eco_valid_risk_value"],
+            self.risk_of_bias_df["school_treat_risk_value"],
+            self.risk_of_bias_df["sample_size_risk_value"],
+            self.risk_of_bias_df["class_total_risk_value"],
+            self.risk_of_bias_df["out_eval_risk_value"],
+            self.risk_of_bias_df["out_es_type_risk_value"],
+            self.risk_of_bias_df["comp_anal_risk_value"],
+            self.risk_of_bias_df["attri_perc_info_risk_value"],
+            self.risk_of_bias_df["clust_anal_risk_value"],
+            self.risk_of_bias_df['int_who_raw_risk_value']
+        ], axis=1, sort=False)
+
+        self.risk_of_bias_df["NA_values"] = mean_calc.isnull().sum(axis=1)
+
+        # Replace zero with np.nan
+        mean_calc = mean_calc.replace(0, np.nan)
+        self.risk_of_bias_df["Mean"] = mean_calc.mean(axis=1)
+
+        # Get median and assign to 'median' column on a row by row basis
+        self.risk_of_bias_df["Median"] = mean_calc.median(axis=1)
+
+        # Final data cleaning
+        self.risk_of_bias_df.replace('~', '', regex=True, inplace=True)
         self.risk_of_bias_df.replace('<', '', regex=True, inplace=True)
         self.risk_of_bias_df.replace('≤', '', regex=True, inplace=True)
         self.risk_of_bias_df.replace(['NA'], 'NA', inplace=True)
         self.risk_of_bias_df.replace(['N'], 'NA', inplace=True)
-
         self.risk_of_bias_df.replace('\r', ' ', regex=True, inplace=True)
         self.risk_of_bias_df.replace('\n', ' ', regex=True, inplace=True)
         self.risk_of_bias_df.replace(':', ' ',  regex=True, inplace=True)
         self.risk_of_bias_df.replace(';', ' ',  regex=True, inplace=True)
-
         self.risk_of_bias_df.replace(r'^\s*$', "NA", regex=True)
-        self.risk_of_bias_df.fillna('NA', inplace=True) """
+        self.risk_of_bias_df.fillna('NA', inplace=True)
 
-        #final_score_col = self.risk_of_bias_df.pop('raw_total')
-        #self.risk_of_bias_df.insert(63, 'raw_total', final_score_col)
-        self.risk_of_bias_df.to_csv("ROB_TESTING.csv", index=False, header=True)
-        return self.risk_of_bias_df
+        # Append raw_total column to the end of the data frame
+        final_score_col = self.risk_of_bias_df.pop('raw_total')
+        self.risk_of_bias_df.insert(63, 'raw_total', final_score_col)
+
+    def compile(self):
+        self.initialize_vars()
+        self.rob_year()
+        self.rob_perc_attri()
+        self.rob_clustering()
+        self.rob_tkit_es_type()
+        self.rob_tkit_test_type()
+        self.rob_sample_size_comments()
+        self.rob_pub_type()
+        self.rob_part_assign()
+        self.rob_randomisation()
+        self.rob_eco_valid()
+        self.rob_num_schools_int()
+        self.rob_num_classes_total()
+        self.rob_int_who()
+        self.rob_out_eval()
+        self.rob_comparability()
+        self.rob_post_process()
+
+    def save_dataframe(self):
+        outfile7 = self.data_extraction.save_dataframe(self.risk_of_bias_df, "_Risk_of_Bias.csv")
+        return outfile7
+
+
     
 class CustomFrames:
     def __init__(self, data_extractor):
@@ -4518,8 +4595,9 @@ def display_main_menu():
     main_table.add_row("4. Effect Size A",    "Descriptive Statistics")
     main_table.add_row("5. Effect Size B",    "Outcome Details")
     main_table.add_row("6. Data Analysis",    "Key variables for data analysis")
-    main_table.add_row("7. References",       "Variables for constructing study references")
-    main_table.add_row("8. Custom Selection", "Select your own custom data frame")
+    main_table.add_row("7. Risk of Bias",     "Risk of bias calculation")
+    main_table.add_row("8. References",       "Variables for constructing study references")
+    main_table.add_row("9. Custom Selection", "Select your own custom data frame")
     main_table.add_row("0. EXIT", "")
     return main_table
 
@@ -4642,6 +4720,22 @@ def dataframe_7_output_display(functions, outfile):
 
     return df7_table
 
+def dataframe_8_output_display(functions, outfile):
+    console = Console()
+    custom_style_df1 = Style(bgcolor="#FFFFFF")
+
+    df8_table = Table(show_header=True, 
+                      style=custom_style_df1,
+                      title=None,
+                      safe_box=False,
+                      box=box.SIMPLE)
+
+    df8_table.add_column("Selection", justify="center", header_style="bold #000000")
+    df8_table.add_column("Output directory", justify="left", header_style="bold #000000")
+    df8_table.add_row("Dataframe 7", outfile, style="#000000")
+
+    return df8_table
+
 
 def input_file_info_display(data_file):
 
@@ -4658,15 +4752,6 @@ def input_file_info_display(data_file):
     file_info_table.add_column("Your input file", header_style=header_style, style=column_style)
     file_info_table.add_row(data_file)
     return file_info_table
-
-
-from rich.console import Console
-from rich.panel import Panel
-from rich.layout import Layout
-from rich.style import Style
-from rich.table import Table
-from rich.columns import Columns
-from rich.box import Box
 
 
 def main_menu_display():
@@ -4729,16 +4814,6 @@ def main_menu_display():
         width=120,
     )
 
-    """ # create the second row with the data cleaning variable breakdown panel
-    row2 = Panel.fit(
-        data_cleaning_var_table,
-        title="Data Cleaning Variable Breakdown",
-        border_style="bold #000000",
-        style=custom_style_cleaning_info,
-        title_align="left",
-        padding=(1, 2),
-    ) """
-
     # combine the text panel and panels into a new column
     column_combined = Columns([top_panel, panel1, panel2], equal=False)
 
@@ -4752,7 +4827,7 @@ def main_menu_display():
         padding=(1, 2),
         title_align="center",
         style=custom_style_main,
-        height=41,
+        height=44,
         width=120,
     )
 
@@ -4815,6 +4890,7 @@ def main_menu_display1(functions, outfile1, df_display):
 
     # create the second row of columns
     row2 = Columns([panel2], equal=False)
+
     # create the layout with the panels
     layout = Columns([row1, row1b, row2], equal=False)
 
@@ -4826,7 +4902,7 @@ def main_menu_display1(functions, outfile1, df_display):
         title_align="left",
         style=custom_style_main,
         width=130,
-        height=40)
+        height=44)
 
     console.clear()
     console.print(panel)

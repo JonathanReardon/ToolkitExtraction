@@ -1,28 +1,30 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-__Author__ = "Jonathan Reardon"
+__author__ = "Jonathan Reardon"
 
 import os
+import pandas as pd
 
-# Third Party imports
 from rich import print
 from rich.prompt import Prompt
 from rich.console import Console
 from rich.columns import Columns
 from rich.style import Style
 from rich.panel import Panel
-
 from rich.table import Table
 from rich import box
 from rich.pretty import Pretty
 
-import pandas as pd
 from src.attributeIDs import *
-
-# Local imports
 from src.funcs import (
+    CustomFrames,
+    DataFrameCompilation,
+    JSONDataExtractor,
+    RiskofBias,
+    StrandSpecificFrames,
     data_analysis_cl_table,
+    data_file,
     dataframe_1_output_display,
     dataframe_2_output_display,
     dataframe_3_output_display,
@@ -30,12 +32,8 @@ from src.funcs import (
     dataframe_5_output_display,
     dataframe_6_output_display,
     dataframe_7_output_display,
-    JSONDataExtractor,
-    DataFrameCompilation,
-    StrandSpecificFrames,
-    CustomFrames,
+    dataframe_8_output_display,
     input_file_info_display,
-    data_file,
     main_menu_display,
     main_menu_display1,
 )
@@ -48,7 +46,20 @@ row_data_list1 = [
     "Educational Setting", "Student Age"
 ]
 
-def general_vars1():
+def custom_general_vars1():
+    """
+    Displays a Rich list of 'general' variables for the custom data frame builder
+    - Study ID
+    - Author
+    - Year 
+    - Astract
+    - Admin Strand
+    - Country
+    - Publication Type EPPI
+    - Publication Type
+    - Educational Setting
+    - Student Age
+    """
     console = Console()
     custom_style_main = Style(bgcolor="#FFFFFF")
 
@@ -78,7 +89,20 @@ row_data_list2 = [
     "Outcome Group1 SD", "Outcome Group2 N"
 ]
 
-def outcome_vars_1():
+def custom_outcome_vars_1():
+    """
+    Displays a Rich list of [toolkit]'outcome' variables for the custom data frame builder
+    - Outcome Title
+    - Outcome Description
+    - Outcome Type
+    - SMD
+    - SE
+    - Outcome Measure
+    - Outcome Group1 N
+    - Outcome Group1 Mean
+    - Outcome Group1 SD
+    - Outcome Group2 N
+    """
     console = Console()
     custom_style_main = Style(bgcolor="#FFFFFF")
 
@@ -107,7 +131,7 @@ def get_user_input():
         try:
             data_cleaning_option = Prompt.ask("Enter an option from the Main Menu")
             data_cleaning_option=int(data_cleaning_option)
-            if data_cleaning_option < 0 or data_cleaning_option > 9:
+            if data_cleaning_option < 0 or data_cleaning_option > 90:
                 raise ValueError
             break
         except ValueError:
@@ -206,7 +230,7 @@ def main():
 
                 strand_specific_df = ss.strand_specific_df_selection(strand_specific_option)
 
-                all_variables, outfile6 = data_frame_compilation.make_dataframe_6(strand_specific_df, save_file=True)
+                _, outfile6 = data_frame_compilation.make_dataframe_6(strand_specific_df, save_file=True)
                 functions = data_frame_compilation.make_dataframe_6(strand_specific_df)
 
                 # Display main menu
@@ -217,8 +241,11 @@ def main():
 
                 data_cleaning_option = get_user_input()
             case 7:
-                _, outfile7 = data_frame_compilation.make_references(save_file=True)
-                functions = [data_frame_compilation.make_references]
+                # Create instance of risk of bias class
+                rob = RiskofBias(json_extractor)
+                # Combine and save data frame
+                functions = rob.compile()
+                outfile7=rob.save_dataframe()
 
                 # Display main menu
                 main_menu_display1(functions, outfile7, dataframe_7_output_display)
@@ -228,10 +255,24 @@ def main():
 
                 data_cleaning_option = get_user_input()
             case 8:
+                _, outfile8 = data_frame_compilation.make_references(save_file=True)
+                functions = [data_frame_compilation.make_references]
+
+                # Display main menu
+                main_menu_display1(functions, outfile8, dataframe_8_output_display)
+
+                # Crate input file display table
+                input_file_info_display(data_file)
+
+                data_cleaning_option = get_user_input()
+            case 9:
                 console = Console()
                 console.clear()
-                main_table2 = general_vars1()
-                main_table3 = outcome_vars_1()
+
+                # Display list of 'general vars e.g. id, author, year etc.
+                main_table2 = custom_general_vars1()
+                # Display list of outcome vars e.g. title, description, type etc.
+                main_table3 = custom_outcome_vars_1()
 
                 custom_style_main = Style(bgcolor="#FFFFFF")
                 custom_style_outer = Style(bgcolor="#FFFFFF")
@@ -464,8 +505,8 @@ def main():
                     if dataframes:
                         all_df = pd.concat(dataframes, axis=1)
                         console = Console()
-                        main_table2 = general_vars1()
-                        main_table3 = outcome_vars_1()
+                        main_table2 = custom_general_vars1()
+                        main_table3 = custom_outcome_vars_1()
                         console.clear()
 
                         panel1 = Panel(main_table2, style=custom_style_main, border_style="#FFFFFF")
@@ -498,18 +539,6 @@ def main():
             case 9:
                 df = data_frame_compilation.getOutcomeData(save_file=True)
                 break
-
-                #save_df = DataFrameCompilation.save_Dataframe(df, "test.csv")
-
-                """ functions = [data_frame_compilation.make_dataframe_4]
-
-                # Display main menu
-                main_menu_display1(functions, outfile4, dataframe_4_output_display)
-
-                # Crate input file display table
-                input_file_info_display(data_file)
-
-                data_cleaning_option = get_user_input() """
 
 if __name__ == "__main__":
     main()
