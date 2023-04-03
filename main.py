@@ -60,6 +60,15 @@ def custom_general_vars1():
     - Educational Setting
     - Student Age
     """
+
+    # table1 
+    row_styles1 = ["#FFFFFF"] * 10
+    row_data_list1 = [
+        "Study ID", "Author", "Year", "Abstract", "Admin Strand",
+        "Country", "Publication Type EPPI", "Publication Type",
+        "Educational Setting", "Student Age"
+    ]
+
     console = Console()
     custom_style_main = Style(bgcolor="#FFFFFF")
 
