@@ -46,6 +46,8 @@ row_data_list1 = [
     "Educational Setting", "Student Age"
 ]
 
+highlight_style = "#fc5424"
+
 def custom_general_vars1():
     """
     Displays a Rich list of 'general' variables for the custom data frame builder
@@ -61,20 +63,12 @@ def custom_general_vars1():
     - Student Age
     """
 
-    # table1 
-    row_styles1 = ["#FFFFFF"] * 10
-    row_data_list1 = [
-        "Study ID", "Author", "Year", "Abstract", "Admin Strand",
-        "Country", "Publication Type EPPI", "Publication Type",
-        "Educational Setting", "Student Age"
-    ]
-
     console = Console()
-    custom_style_main = Style(bgcolor="#FFFFFF")
+    custom_style_main = Style(bgcolor="#37474f")
 
-    table_title_style = Style(italic=False, bgcolor="#FFFFFF", color="#000000", bold=True)
-    header_style = Style(italic=False, bgcolor="#FFFFFF", color="#000000", bold=True)
-    column_style = Style(bgcolor="#FFFFFF", color="#000000", bold=True) 
+    table_title_style = Style(italic=False, bgcolor="#37474f", color="#fc5424", bold=True)
+    header_style = Style(italic=False, bgcolor="#37474f", color="#fc5424", bold=True)
+    column_style = Style(bgcolor="#37474f", color="#fc5424", bold=True) 
 
     main_table2 = Table(show_header=True, 
                         box=box.SIMPLE,
@@ -113,11 +107,11 @@ def custom_outcome_vars_1():
     - Outcome Group2 N
     """
     console = Console()
-    custom_style_main = Style(bgcolor="#FFFFFF")
+    custom_style_main = Style(bgcolor="#37474f")
 
-    table_title_style = Style(italic=False, bgcolor="#FFFFFF", color="#000000", bold=True)
-    header_style = Style(italic=False, bgcolor="#FFFFFF", color="#000000", bold=True)
-    column_style = Style(bgcolor="#FFFFFF", color="#000000", bold=True) 
+    table_title_style = Style(italic=False, bgcolor="#37474f", color="#fc5424", bold=True)
+    header_style = Style(italic=False, bgcolor="#37474f", color="#fc5424", bold=True)
+    column_style = Style(bgcolor="#37474f", color="#fc5424", bold=True) 
 
     main_table3 = Table(show_header=True, 
                         box=box.SIMPLE,
@@ -133,7 +127,7 @@ def custom_outcome_vars_1():
     
     return main_table3
 
-highlight_style = "#ff0000"
+
 
 def get_user_input():
     while True:
@@ -255,9 +249,10 @@ def main():
                 # Combine and save data frame
                 functions = rob.compile()
                 outfile7=rob.save_dataframe()
+                rob.padlocks()
 
                 # Display main menu
-                main_menu_display1(functions, outfile7, dataframe_7_output_display)
+                """ main_menu_display1(functions, outfile7, dataframe_7_output_display) """
 
                 # Crate input file display table
                 input_file_info_display(data_file)
@@ -283,11 +278,11 @@ def main():
                 # Display list of outcome vars e.g. title, description, type etc.
                 main_table3 = custom_outcome_vars_1()
 
-                custom_style_main = Style(bgcolor="#FFFFFF")
-                custom_style_outer = Style(bgcolor="#FFFFFF")
+                custom_style_main = Style(bgcolor="#37474f")
+                custom_style_outer = Style(bgcolor="#37474f")
 
-                panel1 = Panel(main_table2, style=custom_style_main, border_style="#FFFFFF")
-                panel2 = Panel(main_table3, style=custom_style_main, border_style="#FFFFFF")
+                panel1 = Panel(main_table2, style=custom_style_main, border_style="#37474f")
+                panel2 = Panel(main_table3, style=custom_style_main, border_style="#37474f")
 
                 # Combine the panels horizontally
                 columns = Columns([panel1, panel2])
@@ -296,7 +291,7 @@ def main():
                 panel = Panel(columns, 
                                 title="Custom Data Selection", 
                                 style=custom_style_outer, 
-                                border_style="#000000",
+                                border_style="#FFFFFF",
                                 width=92)
 
                 # Print the panel
@@ -310,7 +305,7 @@ def main():
                 dataframes=[]
                 while True:
                     try:
-                        console.print("\nAdd variables to your data frame or [#FFFFFF]0 to Save file and exit[/#FFFFFF]")
+                        console.print("\nAdd variables to your data frame or 0 to Save file and exit")
                         num = int(Prompt.ask("Selection"))
                         if num < 0 or num > 20:
                             raise ValueError
@@ -508,8 +503,6 @@ def main():
                                     print("You have already selected this option!")
                         case _:
                             print("Error: invalid option selected")
-                            #os.system('cls' if os.name == 'nt' else 'clear')
-                            #console.print(panel)
                     
                     if dataframes:
                         all_df = pd.concat(dataframes, axis=1)
@@ -518,8 +511,8 @@ def main():
                         main_table3 = custom_outcome_vars_1()
                         console.clear()
 
-                        panel1 = Panel(main_table2, style=custom_style_main, border_style="#FFFFFF")
-                        panel2 = Panel(main_table3, style=custom_style_main, border_style="#FFFFFF")
+                        panel1 = Panel(main_table2, style=custom_style_main, border_style="#37474f")
+                        panel2 = Panel(main_table3, style=custom_style_main, border_style="#37474f")
 
                         # Combine the panels horizontally
                         columns = Columns([panel1, panel2])
@@ -528,7 +521,7 @@ def main():
                         panel = Panel(columns, 
                                       title="Custom Data Selection", 
                                       style=custom_style_outer, 
-                                      border_style="#000000",
+                                      border_style="#FFFFFF",
                                       width=92)
 
                         # Print the panel
@@ -536,10 +529,10 @@ def main():
 
                 if dataframes:
                     all_df = pd.concat(dataframes, axis=1)
-                    console.print("\n[bold]Custom data frame saved here..[/bold]\n", style="white")
+                    console.print("\n[bold]Custom data frame saved here..[/bold]\n")
                     outfile1 = df.data_extraction.save_dataframe(all_df, "_Custom.csv")
                     outfile1=str(outfile1)
-                    outfile1="[#FFFFFF]" + outfile1 + "[/#FFFFFF]"
+                    outfile1=outfile1
                     console.print(outfile1 + "\n")
                     console.print("Thanks for using the EEF Toolkit Data Extractor!")
                 else: 
