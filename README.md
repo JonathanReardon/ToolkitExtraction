@@ -408,9 +408,4 @@ All output dataframes will be saved to the 'output' directory under the same nam
 
 ## License
 
-Distributed under the MIT License. See LICENSE.txt for more information.
-
-
-
-
-
+Distributed under the MIT License. See LICENSE for more information.
