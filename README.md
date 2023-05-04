@@ -1,7 +1,7 @@
 
 <h1 align="center">EEF Toolkit Datafile Extraction</h1>
 
-This is a command line application that accepts data files from the [Teaching and Learning Toolkit](https://educationendowmentfoundation.org.uk/education-evidence/teaching-learning-toolkit?gclid=CjwKCAjwjMiiBhA4EiwAZe6jQ3WnUgowD16xFwcG_6hZySd_qiKcElx5wRI0BjJAdwj5RkFT_kzz1hoCS_MQAvD_BwE) database and returns several bespoke dataframes required for data cleaning and analysis. The database produces long and complex (heavily nested) JSON files, and this application provides an easy way to extract the data we need as part of a wider processing pipeline.
+This command line application is designed to process data files from the [Teaching and Learning Toolkit](https://educationendowmentfoundation.org.uk/education-evidence/teaching-learning-toolkit?gclid=CjwKCAjwjMiiBhA4EiwAZe6jQ3WnUgowD16xFwcG_6hZySd_qiKcElx5wRI0BjJAdwj5RkFT_kzz1hoCS_MQAvD_BwE) database. It allows you to extract specific dataframes required for data cleaning and analysis purposes. The database provides JSON files with nested structures, and this application simplifies the process of extracting the necessary data, making it easier to integrate into your broader data processing pipeline.
 
 ## Dependencies
 
@@ -12,24 +12,34 @@ This is a command line application that accepts data files from the [Teaching an
 - rich 12.4.4
 - toolz 0.11.2
 
+Please make sure you have the above dependencies installed before running the application.
+
 ## How to Run
 
-To run the application, simply follow these steps.
+To run the application, follow these steps.
 
-Clone this repository:
+1. Clone this repository:
 
 ```bash
 >> git clone https://github.com/JonathanReardon/ToolkitExtraction
 >> cd ToolkitExtraction
 ```
 
-Run the application:
+2. Install the required dependencies by executing the following command:
+
+```bash
+pip install -r requirements.txt
+```
+
+3. Run the application:
 
 ```bash
 >> python3 main.py
 ```
 
-![](/img/visual1.png)
+![Here is the main menu. Select an option [1-9] corresponding to the dataframe you want.](/img/visual1.png)
+
+All output dataframes will be saved to the 'output' directory under the same name as your input file.
 
 ## Dataframe 1 [Study, Research and Design Variables]
 
