@@ -32,6 +32,9 @@ from rich.columns import Columns
 # Local imports
 from src.attributeIDs import *
 
+GREY="#37474f"
+WHITE="#FFFFFF"
+
 class JSONDataExtractor:
     def __init__(self, data_file):
         self.data_file = data_file
@@ -3658,7 +3661,6 @@ class RiskofBias:
         self.admin_strand_df = self.data_extraction.retrieve_data(admin_strand_output, "strand_raw")
         self.publicationtype_df = self.data_extraction.retrieve_data(publication_type_output, "pub_type_raw")
         self.participant_assignment_df = self.data_extraction.retrieve_data(part_assign_output, "part_assig_raw")
-        #self.participant_assignment_df['part_assig_raw'] = self.participant_assignment_df['part_assig_raw'].apply(', '.join)
         self.randomisation_df = self.data_extraction.retrieve_data(randomisation_details, "rand_raw")
         self.study_realism_df = self.data_extraction.retrieve_data(study_realism_output, "eco_valid_raw")
         self.number_of_schools_intervention_Comments_df = self.data_extraction.retrieve_info(number_of_schools_intervention_output, "school_treat_info")
@@ -3671,9 +3673,7 @@ class RiskofBias:
         self.sample_size_Comments_df = self.data_extraction.retrieve_info(sample_size_output, "sample_analysed_info")
         self.overall_percent_attrition_Comments_df = self.data_extraction.retrieve_info(overall_perc_attr, "attri_perc_info")
         self.clustering_df = self.data_extraction.retrieve_data(clustering_output, "clust_anal_raw")  
-        # from DataFrame5 import toolkit_test_type
         self.toolkit_test_type = self.data_extraction.get_outcome_data_lvl2(test_type_output, "out_test_type_raw_")
-        # from DataFrame5 import toolkit_es_type
         self.toolkit_es_type = self.data_extraction.get_outcome_data_lvl2(es_type_output, "out_es_type_")
         all_variables, outfile5 = DataFrameCompilation.make_dataframe_5(self, save_file=False, clean_cols=False, verbose=False)
         self.toolkit_es_type = all_variables.out_es_type_tool
@@ -3684,7 +3684,6 @@ class RiskofBias:
         all_variables, outfile5 = DataFrameCompilation.make_dataframe_5(self, save_file=False, clean_cols=False, verbose=False)
         self.tool_prim_se = all_variables.se_tool
         self.participant_assignment_df['part_assig_raw'] = self.participant_assignment_df['part_assig_raw'].str[0]
-        #self.randomisation_df['rand_raw'] = self.randomisation_df['rand_raw'].apply(lambda x: ",".join(x) if isinstance(x, list) else x)
         self.randomisation_df['rand_raw'] = self.randomisation_df['rand_raw'].str[0]
         self.study_realism_df['eco_valid_raw'] = self.study_realism_df['eco_valid_raw'].str[0]
 
@@ -3722,7 +3721,7 @@ class RiskofBias:
         def perc_attrit_risk(row):
             if row["attri_perc_info"] < 10:
                 return 'Low Risk'
-            if row["attri_perc_info"] > 10 and row["attri_perc_info"] < 20:
+            if row["attri_perc_info"] > 9 and row["attri_perc_info"] < 20:
                 return 'Medium Risk'
             if row["attri_perc_info"] > 19:
                 return 'High Risk'
@@ -3842,7 +3841,7 @@ class RiskofBias:
         def sample_size_risk(row):
             if row["sample_analysed_info"] <= 30: return 'High Risk'
             if row["sample_analysed_info"] > 30 and row["sample_analysed_info"] < 100: return 'Medium Risk'
-            if row["sample_analysed_info"] > 100: return 'Low Risk'
+            if row["sample_analysed_info"] > 99: return 'Low Risk'
             return 'NA'
 
         self.sample_size_Comments_df["sample_size_risk"] = self.sample_size_Comments_df.apply(lambda row: sample_size_risk(row), axis=1)
@@ -3958,7 +3957,7 @@ class RiskofBias:
 
         def school_treat_risk(row):
             if row['school_treat_info_new'] == 1: return 'High Risk'
-            if row['school_treat_info_new'] > 2 and row['school_treat_info_new'] < 6: return 'Medium Risk'
+            if row['school_treat_info_new'] > 1 and row['school_treat_info_new'] < 6: return 'Medium Risk'
             if row['school_treat_info_new'] > 5: return 'Low Risk'
             return 'NA'
 
@@ -4225,9 +4224,315 @@ class RiskofBias:
     def save_dataframe(self):
         outfile7 = self.data_extraction.save_dataframe(self.risk_of_bias_df, "_Risk_of_Bias.csv")
         return outfile7
-
-
     
+
+    def padlocks(self):
+
+        # % studies since year 2000 
+        number_of_studies = len(self.risk_of_bias_df)
+        self.risk_of_bias_df["pub_year"] = pd.to_numeric(self.risk_of_bias_df["pub_year"], errors='coerce')
+        recent_studies = len(self.risk_of_bias_df[self.risk_of_bias_df["pub_year"] > 2000])
+        perc_recent = recent_studies/number_of_studies*100
+        perc_recent = np.round(perc_recent, 2)
+
+        #print(f"perc_recent: {perc_recent}")
+
+        # total pupil number
+        number_of_studies = len(self.risk_of_bias_df)
+        total_pupil_number = self.risk_of_bias_df["sample_analysed_info"].sum().astype(int)
+
+        # print(f"total_pupil_number: {total_pupil_number}")
+
+        # percentage randomised
+        perc_randomised = self.risk_of_bias_df[self.risk_of_bias_df["rand_raw"] == 'Yes'].shape[0]/len(self.risk_of_bias_df)*100
+        perc_randomised = np.round(perc_randomised, 1)
+
+        # print(f"perc_randomised: {perc_randomised}")
+
+        # percentrage high ecological validity
+        perc_high_eco_valid = self.risk_of_bias_df[self.risk_of_bias_df["eco_valid_raw"] == 'High ecological validity'].shape[0]/len(self.risk_of_bias_df)*100
+        perc_high_eco_valid = np.round(perc_high_eco_valid, 1)
+
+        # print(f"perc_high_eco_valid: {perc_high_eco_valid}")
+
+        # mean ecological validity risk value
+        self.risk_of_bias_df["eco_valid_risk_value"] = pd.to_numeric(self.risk_of_bias_df["eco_valid_risk_value"], errors='coerce')
+        mean_eco_valid_risk = self.risk_of_bias_df["eco_valid_risk_value"].mean()
+        mean_eco_valid_risk = np.round(mean_eco_valid_risk, 2)
+
+        # print(f"mean_eco_valid_risk: {mean_eco_valid_risk}")
+
+        # median school treatment number
+        self.risk_of_bias_df["school_treat_info"] = pd.to_numeric(self.risk_of_bias_df["school_treat_info"], errors='coerce')
+        median_school_number = self.risk_of_bias_df["school_treat_info"].median(skipna=True)
+        median_school_number = np.round(median_school_number, 2)
+
+        #print(f"median_school_number: {median_school_number}")
+
+        # mean number of schools risk value
+        self.risk_of_bias_df["school_treat_risk_value"] = pd.to_numeric(self.risk_of_bias_df["school_treat_risk_value"], errors='coerce')
+        mean_number_schools_risk = self.risk_of_bias_df["school_treat_risk_value"].mean()
+        mean_number_schools_risk = np.round(mean_number_schools_risk, 2)
+
+        #print(f"mean_number_schools_risk: {mean_number_schools_risk}")
+
+        # participant assignment risk value
+        self.participant_assignment_df['part_assig_risk_value'] = pd.to_numeric(self.participant_assignment_df['part_assig_risk_value'], errors='coerce')
+        participant_assignment_risk = self.participant_assignment_df['part_assig_risk_value'].mean()
+        participant_assignment_risk.round(2)
+
+        # print(f"participant_assignment_risk: {participant_assignment_risk}")
+
+        # Percentage taught by research staff only (int_who_raw)
+        self.risk_of_bias_df["class_total_info"] = pd.to_numeric(self.risk_of_bias_df["class_total_info"], errors='coerce')
+        median_class_number = self.risk_of_bias_df["class_total_info"].median()
+        median_class_number = np.round(median_class_number, 2)
+
+        # print(f"median_class_number: {median_class_number}")
+
+        # mean class number risk value
+        self.risk_of_bias_df["class_total_risk_value"] = pd.to_numeric(self.risk_of_bias_df["class_total_risk_value"], errors='coerce')
+        mean_class_risk = self.risk_of_bias_df["class_total_risk_value"].mean()
+        mean_class_risk = np.round(mean_class_risk, 2)
+
+        #print(f"mean_class_risk: {mean_class_risk}")
+
+        # percentage independently evaluated
+        perc_indep_eval = self.risk_of_bias_df[self.risk_of_bias_df["out_eval_raw"] == 'An organization commissioned independently to evaluate'].shape[0]/len(self.risk_of_bias_df)*100
+        perc_indep_eval = np.round(perc_indep_eval, 1)
+
+        #print(f"perc_indep_eval: {perc_indep_eval}")
+
+        # median percent attrition reported
+        self.overall_percent_attrition_Comments_df["attri_perc_info"] = pd.to_numeric(self.overall_percent_attrition_Comments_df["attri_perc_info"], errors='coerce')
+        median_perc_attrit_reported = self.overall_percent_attrition_Comments_df["attri_perc_info"].median(skipna=True)
+        median_perc_attrit_reported = np.round(median_perc_attrit_reported, 2)
+
+        # print(f"median_perc_attrit_reported: {median_perc_attrit_reported}")
+
+        # percentage taught by research staff only
+        conditions = [
+            (self.intervention_delivery_df['research staff'] == True) &
+            (self.intervention_delivery_df["class teachers"] == False) &
+            (self.intervention_delivery_df["external teachers"] == False),
+        ]
+        values = ['1']
+        self.intervention_delivery_df['research_staff_only'] = np.select(conditions, values)
+        research_staff_only = (self.intervention_delivery_df["research_staff_only"] == "1").sum()/len(self.intervention_delivery_df*100)
+
+        # print(f"research_staff_only: {research_staff_only}")
+
+        strand = self.admin_strand_df.iloc[0, 0]
+
+        df = pd.DataFrame([[
+            strand,
+            number_of_studies, 
+            perc_recent,
+            total_pupil_number, 
+            perc_randomised, 
+            perc_high_eco_valid, 
+            mean_eco_valid_risk,
+            median_school_number,
+            mean_number_schools_risk,
+            median_class_number,
+            mean_class_risk,
+            perc_indep_eval,
+            participant_assignment_risk,
+            research_staff_only,
+            median_perc_attrit_reported
+        ]])
+
+        df.columns = [
+            "strand",
+            "number_of_studies",
+            "%_since_2000",
+            "total_pupil_number",
+            "%_randomised",
+            "%_high_eco_valid",
+            "mean_eco_valid_risk",
+            "median_school_number",
+            "mean_number_Schools_risk",
+            "median_class_number",
+            "mean_class_risk",
+            "%_indep_eval",
+            "part_assig_risk",
+            "%_taught_res_staff_only",
+            "%_median_attrit_reported"
+        ]
+
+        ########################################
+        # % studies since 2000 padlock scale
+        ########################################
+
+        # convert %_since_2000 data to numeric
+        df["%_since_2000"] = pd.to_numeric(df["%_since_2000"], errors='coerce').fillna(0)
+
+        def perc_recent_risk(row):
+            if row["%_since_2000"] > 49:
+                return 'L'
+            if row["%_since_2000"] > 25 and row["%_since_2000"] < 50:
+                return 'M'
+            if row["%_since_2000"] < 25:
+                return 'H'
+            return 'NA'
+
+        # apply padlock function to number of studies column
+        df["%_since_2000_padlock_scale"] = df.apply(lambda row: perc_recent_risk(row), axis=1)
+
+        ########################################
+        # _median_attrit_reported padlock scale
+        ########################################
+
+        # convert median attrition data to numeric
+        df["%_median_attrit_reported"] = pd.to_numeric(df["%_median_attrit_reported"], errors='coerce').fillna(0)
+
+        def median_attrit_report_risk(row):
+            if row["%_median_attrit_reported"] < 15:
+                return 'L'
+            if row["%_median_attrit_reported"] > 14 and row["%_median_attrit_reported"] < 30:
+                return 'M'
+            if row["%_median_attrit_reported"] > 29:
+                return 'H'
+            return 'NA'
+        
+        # apply padlock function to number of studies column
+        df["%_median_attrit_reported_padlock_scale"] = df.apply(lambda row: median_attrit_report_risk(row), axis=1)
+
+        ########################################
+        # make number of studies padlock scale
+        ########################################
+
+        # convert number of studies data to numeric
+        df["number_of_studies"] = pd.to_numeric(df["number_of_studies"], errors='coerce').fillna(0)
+
+        def num_studies_risk(row):
+            if row["number_of_studies"] < 10:
+                return '0'
+            if row["number_of_studies"] > 9 and row["number_of_studies"] < 25:
+                return '1'
+            if row["number_of_studies"] > 24 and row["number_of_studies"] < 35:
+                return '2'
+            if row["number_of_studies"] > 34 and row["number_of_studies"] < 60:
+                return '3'
+            if row["number_of_studies"] > 59 and row["number_of_studies"] < 90:
+                return '4'
+            if row["number_of_studies"] > 89:
+                return '5'
+            return 'NA'
+
+        # apply padlock function to number of studies column
+        df["number_of_studies_padlock_scale"] = df.apply(lambda row: num_studies_risk(row), axis=1)
+
+        ########################################
+        # make % randomised padlock scale
+        ########################################
+
+        # convert number of studies data to numeric
+        df["%_randomised"] = pd.to_numeric(df["%_randomised"], errors='coerce').fillna(0)
+
+        def perc_randomised_risk(row):
+            if row["%_randomised"] < 30:
+                return 'H'
+            if row["%_randomised"] > 29 and row["%_randomised"] < 60:
+                return 'M'
+            if row["%_randomised"] > 59:
+                return 'L'
+            return 'NA'
+
+        df["%_randomised_padlock_scale"] = df.apply(lambda row: perc_randomised_risk(row), axis=1)
+
+        ########################################
+        # make ecological validity padlock scale
+        ########################################
+
+        # convert number of studies data to numeric
+        df["%_high_eco_valid"] = pd.to_numeric(df["%_high_eco_valid"], errors='coerce').fillna(0)
+
+        def eco_valid_risk(row):
+            if row["%_high_eco_valid"] < 50:
+                return 'H'
+            if row["%_high_eco_valid"] > 49 and row["%_high_eco_valid"] < 75:
+                return 'M'
+            if row["%_high_eco_valid"] > 74:
+                return 'L'
+            return 'NA'
+
+        df["%_high_eco_valid_padlock_scale"] = df.apply(lambda row: eco_valid_risk(row), axis=1)
+
+        ########################################
+        # make % indep eval padlock scale
+        ########################################
+
+        # convert number of studies data to numeric
+        df["%_indep_eval"] = pd.to_numeric(df["%_indep_eval"], errors='coerce').fillna(0)
+
+        def perc_indep_eval_risk(row):
+            if row["%_indep_eval"] < 10:
+                return 'H'
+            if row["%_indep_eval"] > 9 and row["%_indep_eval"] < 30:
+                return 'M'
+            if row["%_indep_eval"] > 29:
+                return 'L'
+            return 'NA'
+
+        df["%_indep_eval_padlock_scale"] = df.apply(lambda row: perc_indep_eval_risk(row), axis=1)
+
+        ####################################################
+        # reduce padlock if any key ratings are High risk
+        ####################################################
+
+        df["number_of_studies_padlock_scale"] = pd.to_numeric(df["number_of_studies_padlock_scale"], errors='coerce').fillna(0)
+        df["New_padlock"] = df["number_of_studies_padlock_scale"]
+
+        def risk_impact(row):
+            if row["%_randomised_padlock_scale"] == "H": 
+                df["New_padlock"] = df["New_padlock"] - 1
+            if row["%_high_eco_valid_padlock_scale"] == "H":
+                df["New_padlock"] = df["New_padlock"] - 1
+            if row["%_indep_eval_padlock_scale"] == "H":
+                df["New_padlock"] = df["New_padlock"] - 1
+            if row["%_since_2000_padlock_scale"] == "H":
+                df["New_padlock"] = df["New_padlock"] - 1
+            if row["%_median_attrit_reported_padlock_scale"] == "H":
+                df["New_padlock"] = df["New_padlock"] - 1
+            return df["New_padlock"]
+
+        df["New_padlock"] = df.apply(lambda row: risk_impact(row), axis=1)
+
+        df = df[[
+            "strand",
+            "number_of_studies",
+            "number_of_studies_padlock_scale",
+            "%_since_2000",
+            "%_since_2000_padlock_scale",
+            "%_randomised",
+            "%_randomised_padlock_scale",
+            "%_high_eco_valid",
+            "%_high_eco_valid_padlock_scale",
+            "%_indep_eval",
+            "%_indep_eval_padlock_scale",
+            "%_median_attrit_reported",
+            "%_median_attrit_reported_padlock_scale",
+            "New_padlock"
+        ]]
+
+        #################################################################
+        # make more than 10 studies checker (has received meta-analysis)
+        #################################################################
+
+        number_of_studies_check = len(self.risk_of_bias_df)
+
+        if number_of_studies_check > 9 and df["New_padlock"][0] < 1:
+            df["New_padlock"][0] = 1
+            df["MA_floor"] = True
+        else:
+            print("default padlock floor of zero")
+            df["MA_floor"] = False
+
+        # write to disk
+        df.to_csv("test_padlock.csv", index=False, header=True)
+
+
 class CustomFrames:
     def __init__(self, data_extractor):
         self.data_extraction = data_extractor
@@ -4428,7 +4733,7 @@ def data_analysis_cl_table():
     """
     """
     console = Console()
-    custom_style_df1 = Style(bgcolor="#FFFFFF")
+    custom_style_df1 = Style(bgcolor=GREY)
 
     main_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4436,8 +4741,8 @@ def data_analysis_cl_table():
                       safe_box=False,
                       box=box.SIMPLE)
 
-    main_table.add_column("", style="bold #000000")
-    main_table.add_column("[bold #000000]Main Toolkit[/bold #000000]", header_style="bold", style="#000000")
+    main_table.add_column("", style="bold white")
+    main_table.add_column("[bold #fc5424]Main Toolkit[/bold #fc5424]", header_style="bold", style=WHITE)
 
     main_table.add_row("1",  "Arts Participation")
     main_table.add_row("2",  "Behaviour Interventions")
@@ -4467,7 +4772,7 @@ def data_analysis_cl_table():
     main_table.add_row("26",  "Within-Class Grouping")
 
     main_table.add_row("",    "")
-    main_table.add_row("",    "[bold #000000]Early Years Toolkit[/bold #000000]")
+    main_table.add_row("",    "[bold #fc5424]Early Years Toolkit[/bold #fc5424]")
     main_table.add_row("",    "")
     main_table.add_row("27",  "Early Literacy Approaches")
     main_table.add_row("28",  "Early Numeracy Approaches")
@@ -4480,7 +4785,7 @@ def data_analysis_cl_table():
     panel = Panel(main_table, 
                   title="Strand Specific Selection", 
                   style=custom_style_df1,
-                  border_style="bold #000000",
+                  border_style="bold white",
                   title_align="left",
                   padding=(1, 2),
                   width=80)
@@ -4501,35 +4806,13 @@ def display_table_struct(funcs):
     for num, func in track(enumerate(funcs), description="[green]Processing dataframes..\n[/green]"):
         func(save_file=True, clean_cols=True, verbose=False)
 
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 def data_cleaning_col_breakdown():
 
-    table_title_style = Style(italic=False, bgcolor="#FFFFFF", color="#000000", bold=True)
-    header_style = Style(italic=False, bgcolor="#FFFFFF", color="#000000", bold=True)
-    column_style = Style(bgcolor="#FFFFFF", color="#000000") 
+    table_title_style = Style(italic=False, bgcolor=GREY, color=WHITE, bold=True)
+    header_style = Style(italic=False, bgcolor=GREY, color=WHITE, bold=True)
+    column_style = Style(bgcolor=GREY, color=WHITE) 
 
     main_table2 = Table(show_header=True, 
                         box=box.MINIMAL,
@@ -4573,9 +4856,9 @@ def data_cleaning_col_breakdown():
 
 
 def display_main_menu():
-    table_title_style = Style(italic=False, bgcolor=None, color="#000000", bold=True)
-    header_style = Style(italic=False, bgcolor="#FFFFFF", color="#000000", bold=True)
-    column_style = Style(bgcolor="#FFFFFF", color="#000000", bold=False) 
+    table_title_style = Style(italic=False, bgcolor=None, color="#fc5424", bold=True)
+    header_style = Style(italic=False, bgcolor="#fc5424", color=WHITE, bold=True)
+    column_style = Style(bgcolor=GREY, color=WHITE, bold=False) 
 
     main_table = Table(show_header=True,
                        highlight=False,
@@ -4583,8 +4866,8 @@ def display_main_menu():
                        title_style=table_title_style,
                        box=box.SIMPLE)
 
-    selection_style = Style(italic=False, bgcolor="#ffffff", color="#000000", bold=True)
-    description_style = Style(italic=False, bgcolor="#ffffff", color="#000000", bold=True)
+    selection_style = Style(italic=False, bgcolor=GREY, color="#fc5424", bold=True)
+    description_style = Style(italic=False, bgcolor=GREY, color="#fc5424", bold=True)
 
     main_table.add_column("Selection", header_style=selection_style, style=column_style)
     main_table.add_column("Description", header_style=description_style, style=column_style)
@@ -4604,7 +4887,7 @@ def display_main_menu():
 
 def dataframe_1_output_display(functions, outfile):
     console = Console()
-    custom_style_df1 = Style(bgcolor="#FFFFFF")
+    custom_style_df1 = Style(bgcolor=GREY)
 
     df1_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4612,16 +4895,16 @@ def dataframe_1_output_display(functions, outfile):
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df1_table.add_column("Selection", justify="center", header_style="bold #000000")
-    df1_table.add_column("Output directory", justify="left", header_style="#000000")
-    df1_table.add_row("Dataframe 1", outfile, style="#000000")
+    df1_table.add_column("Selection", justify="center", header_style="#fc5424")
+    df1_table.add_column("Output directory", justify="left", header_style="#fc5424")
+    df1_table.add_row("Dataframe 1", outfile, style=WHITE)
 
     return df1_table
 
 
 def dataframe_2_output_display(functions, outfile):
     console = Console()
-    custom_style_df1 = Style(bgcolor="#FFFFFF")
+    custom_style_df1 = Style(bgcolor=GREY)
 
     df2_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4629,16 +4912,16 @@ def dataframe_2_output_display(functions, outfile):
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df2_table.add_column("Selection", justify="center", header_style="bold #000000")
-    df2_table.add_column("Output directory", justify="left", header_style="#000000")
-    df2_table.add_row("Dataframe 2", outfile, style="#000000")
+    df2_table.add_column("Selection", justify="center", header_style="#fc5424")
+    df2_table.add_column("Output directory", justify="left", header_style=WHITE)
+    df2_table.add_row("Dataframe 2", outfile, style=WHITE)
 
     return df2_table
 
 
 def dataframe_3_output_display(functions, outfile):
     console = Console()
-    custom_style_df1 = Style(bgcolor="#FFFFFF")
+    custom_style_df1 = Style(bgcolor=GREY)
 
     df3_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4646,16 +4929,16 @@ def dataframe_3_output_display(functions, outfile):
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df3_table.add_column("Selection", justify="center", header_style="bold #000000")
-    df3_table.add_column("Output directory", justify="left", header_style="#000000")
-    df3_table.add_row("Dataframe 3", outfile, style="#000000")
+    df3_table.add_column("Selection", justify="center", header_style="#fc5424")
+    df3_table.add_column("Output directory", justify="left", header_style=WHITE)
+    df3_table.add_row("Dataframe 3", outfile, style=WHITE)
 
     return df3_table
 
 
 def dataframe_4_output_display(functions, outfile):
     console = Console()
-    custom_style_df1 = Style(bgcolor="#FFFFFF")
+    custom_style_df1 = Style(bgcolor=GREY)
 
     df4_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4663,16 +4946,16 @@ def dataframe_4_output_display(functions, outfile):
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df4_table.add_column("Selection", justify="center", header_style="bold #000000")
-    df4_table.add_column("Output directory", justify="left", header_style="#000000")
-    df4_table.add_row("Dataframe 4", outfile, style="#000000")
+    df4_table.add_column("Selection", justify="center", header_style="#fc5424")
+    df4_table.add_column("Output directory", justify="left", header_style=WHITE)
+    df4_table.add_row("Dataframe 4", outfile, style=WHITE)
 
     return df4_table
 
 
 def dataframe_5_output_display(functions, outfile):
     console = Console()
-    custom_style_df1 = Style(bgcolor="#FFFFFF")
+    custom_style_df1 = Style(bgcolor=GREY)
 
     df5_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4680,16 +4963,16 @@ def dataframe_5_output_display(functions, outfile):
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df5_table.add_column("Selection", justify="center", header_style="bold #000000")
-    df5_table.add_column("Output directory", justify="left", header_style="#000000")
-    df5_table.add_row("Dataframe 5", outfile, style="#000000")
+    df5_table.add_column("Selection", justify="center", header_style="#fc5424")
+    df5_table.add_column("Output directory", justify="left", header_style=WHITE)
+    df5_table.add_row("Dataframe 5", outfile, style=WHITE)
 
     return df5_table
 
 
 def dataframe_6_output_display(functions, outfile):
     console = Console()
-    custom_style_df1 = Style(bgcolor="#FFFFFF")
+    custom_style_df1 = Style(bgcolor=GREY)
 
     df6_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4697,16 +4980,16 @@ def dataframe_6_output_display(functions, outfile):
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df6_table.add_column("Selection", justify="center", header_style="bold #000000")
-    df6_table.add_column("Output directory", justify="left", header_style="bold #000000")
-    df6_table.add_row("Dataframe 6", outfile, style="#000000")
+    df6_table.add_column("Selection", justify="center", header_style="#fc5424")
+    df6_table.add_column("Output directory", justify="left", header_style="#fc5424")
+    df6_table.add_row("Dataframe 6", outfile, style=WHITE)
 
     return df6_table
 
 
 def dataframe_7_output_display(functions, outfile):
     console = Console()
-    custom_style_df1 = Style(bgcolor="#FFFFFF")
+    custom_style_df1 = Style(bgcolor=GREY)
 
     df7_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4714,15 +4997,15 @@ def dataframe_7_output_display(functions, outfile):
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df7_table.add_column("Selection", justify="center", header_style="bold #000000")
-    df7_table.add_column("Output directory", justify="left", header_style="bold #000000")
-    df7_table.add_row("Dataframe 7", outfile, style="#000000")
+    df7_table.add_column("Selection", justify="center", header_style="#fc5424")
+    df7_table.add_column("Output directory", justify="left", header_style="#fc5424")
+    df7_table.add_row("Dataframe 7", outfile, style=WHITE)
 
     return df7_table
 
 def dataframe_8_output_display(functions, outfile):
     console = Console()
-    custom_style_df1 = Style(bgcolor="#FFFFFF")
+    custom_style_df1 = Style(bgcolor=GREY)
 
     df8_table = Table(show_header=True, 
                       style=custom_style_df1,
@@ -4730,18 +5013,18 @@ def dataframe_8_output_display(functions, outfile):
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df8_table.add_column("Selection", justify="center", header_style="bold #000000")
-    df8_table.add_column("Output directory", justify="left", header_style="bold #000000")
-    df8_table.add_row("Dataframe 7", outfile, style="#000000")
+    df8_table.add_column("Selection", justify="center", header_style="#fc5424")
+    df8_table.add_column("Output directory", justify="left", header_style="#fc5424")
+    df8_table.add_row("Dataframe 7", outfile, style=WHITE)
 
     return df8_table
 
 
 def input_file_info_display(data_file):
 
-    table_title_style = Style(italic=False, bgcolor="#FFFFFF", color="#000000", bold=True)
-    header_style = Style(italic=False, bgcolor="#FFFFFF", color="#000000", bold=True)
-    column_style = Style(bgcolor="#FFFFFF", color="#000000") 
+    table_title_style = Style(italic=False, bgcolor=GREY, color=WHITE, bold=True)
+    header_style = Style(italic=False, bgcolor=GREY, color="#fc5424", bold=True)
+    column_style = Style(bgcolor=GREY, color=WHITE) 
 
     file_info_table = Table(show_header=True,
                        highlight=False,
@@ -4753,41 +5036,40 @@ def input_file_info_display(data_file):
     file_info_table.add_row(data_file)
     return file_info_table
 
-
 def main_menu_display():
     console = Console()
     #data_cleaning_var_table = data_cleaning_col_breakdown()
     main_menu_table = display_main_menu()
     datafile_info_table = input_file_info_display(data_file)
 
-    custom_style_main = Style(bgcolor="#FFFFFF")
-    custom_style_file_details = Style(bgcolor="#FFFFFF")
-    custom_style_cleaning_info = Style(bgcolor="#FFFFFF")
+    custom_style_main = Style(bgcolor=GREY)
+    custom_style_file_details = Style(bgcolor=GREY)
+    custom_style_cleaning_info = Style(bgcolor=GREY)
 
-    container_title = console.render_str("[bold #000000]EEF Teaching and Learning Toolkit Data Extractor[/bold #000000]")
+    container_title = console.render_str("[bold white]EEF Teaching and Learning Toolkit Data Extractor[/bold white]")
 
-    top_title = console.render_str("[bold #000000]Welcome[/bold #000000]")
-    title1 = console.render_str("[bold #000000]Main Menu[/bold #000000]")
-    title2 = console.render_str("[bold #000000]Data File Details[/bold #000000]")
+    top_title = console.render_str("[bold white]Welcome[/bold white]")
+    title1 = console.render_str("[bold white]Main Menu[/bold white]")
+    title2 = console.render_str("[bold white]Data File Details[/bold white]")
 
     # Set text for top panel of main menu
     top_panel_text = (
-        "[#000000]Welcome to the EEF Teaching and Learning Toolkit Data Extractor. Navigate the[/#000000] "
-        "[bold #ff0000]Main Menu[/bold #ff0000] [#000000]to produce a variety of dataframes containing data extracted "
-        "from an input [bold #ff0000](.json format)[/bold #ff0000] [#000000]datafile produced by the EEF Teaching and "
-        "Learning Toolkit Database.\n\n[bold #ff0000]Options 1-5[/bold #ff0000] [#000000]consist of our own custom dataframes "
-        "used to 'clean' the data prior to analysis.[/#000000] [bold #ff0000]Option 6[/bold #ff0000] [#000000]produces the "
-        "final dataframe(s) we use for our meta-analyses. [/#000000][bold #ff0000]Option 7[/bold #ff0000] [#000000]compiles "
-        "the necessary data to construct study references. Finally, [/#000000][bold #ff0000]Option 8[/bold #ff0000] "
-        "[#000000]allows you to create your own custom dataframe.[/#000000]"
+        "[#FFFFFF]Welcome to the EEF Teaching and Learning Toolkit Data Extractor. Use the[/#FFFFFF] "
+        "[bold #fc5424]Main Menu[/bold #fc5424] [#FFFFFF]to generate various dataframes containing data extracted "
+        "from an input [bold #fc5424]JSON[/bold #fc5424] [#FFFFFF]datafile produced by the EEF Teaching and "
+        "Learning Toolkit Database.\n\n[bold #fc5424]Options 1-5[/bold #fc5424] [#FFFFFF]include our own custom dataframes "
+        "for data cleaning prior to analysis.[/#FFFFFF] [bold #fc5424]Option 6[/bold #fc5424] [#FFFFFF]gemerates the "
+        "final dataframe(s) used in our meta-analyses. [bold #fc5424]Option 7[/bold #fc5424] produces a bespoke risk of bias dataframe. [/#FFFFFF][bold #fc5424]Option 8[/bold #fc5424] [#FFFFFF]compiles "
+        "the necessary data for constructing study references. Finally, [/#FFFFFF][bold #fc5424]Option 9[/bold #fc5424] "
+        "[#FFFFFF]allows you to create your own custom variable dataframe.[/#FFFFFF]"
     )
-    top_menu_style = Style(bgcolor="#FFFFFF")
+    top_menu_style = Style(bgcolor=GREY)
 
     # create the panel with the text
     top_panel = Panel(
         top_panel_text,
         title=top_title, 
-        border_style="bold #000000",
+        border_style="bold white",
         title_align="left",
         style=top_menu_style,
         padding=(1, 2),
@@ -4797,7 +5079,7 @@ def main_menu_display():
     panel1 = Panel.fit(
         main_menu_table,
         title=title1,
-        border_style="bold #000000",
+        border_style="bold white",
         style=custom_style_main,
         title_align="left",
         padding=(1, 2),
@@ -4807,7 +5089,7 @@ def main_menu_display():
     panel2 = Panel.fit(
         datafile_info_table,
         title=title2,
-        border_style="bold #000000",
+        border_style="bold white",
         style=custom_style_file_details,
         title_align="left",
         padding=(1, 2),
@@ -4823,7 +5105,7 @@ def main_menu_display():
     panel = Panel(
         layout,
         title=container_title,
-        border_style="bold #000000",
+        border_style="bold white",
         padding=(1, 2),
         title_align="center",
         style=custom_style_main,
@@ -4836,13 +5118,6 @@ def main_menu_display():
     print("\n")
 
 
-
-
-
-
-
-
-
 def main_menu_display1(functions, outfile1, df_display):
 
     console = Console()
@@ -4850,18 +5125,18 @@ def main_menu_display1(functions, outfile1, df_display):
     main_menu_table = display_main_menu()
     datafile_info_table = input_file_info_display(data_file)
 
-    custom_style_main = Style(bgcolor="#FFFFFF")
-    custom_style_file_details = Style(bgcolor="#FFFFFF")
-    custom_style_cleaning_info = Style(bgcolor="#FFFFFF")
+    custom_style_main = Style(bgcolor=GREY)
+    custom_style_file_details = Style(bgcolor=GREY)
+    custom_style_cleaning_info = Style(bgcolor=GREY)
 
-    title1 = console.render_str("[bold #000000]Main Menu[/bold #000000]")
-    title2 = console.render_str("[bold #000000]Data File Details[/bold #000000]")
-    title3 = console.render_str("[bold #000000]Output Files[/bold #000000]")
+    title1 = console.render_str("[bold white]Main Menu[/bold white]")
+    title2 = console.render_str("[bold white]Data File Details[/bold white]")
+    title3 = console.render_str("[bold white]Output Files[/bold white]")
 
     panel1a = Panel.fit(
         main_menu_table,
         title=title1,
-        border_style="bold #000000",
+        border_style="bold white",
         style=custom_style_main,
         title_align="left",
         padding=(1, 2),
@@ -4869,7 +5144,7 @@ def main_menu_display1(functions, outfile1, df_display):
     panel1b = Panel.fit(
         datafile_info_table,
         title=title2,
-        border_style="bold #000000",
+        border_style="bold white",
         style=custom_style_file_details,
         title_align="left",
         padding=(1, 2),
@@ -4878,7 +5153,7 @@ def main_menu_display1(functions, outfile1, df_display):
     panel2 = Panel.fit(
         output_file_info,
         title=title3,
-        border_style="bold #000000",
+        border_style="bold white",
         style=custom_style_cleaning_info,
         title_align="left",
         padding=(1, 2),
@@ -4897,7 +5172,7 @@ def main_menu_display1(functions, outfile1, df_display):
     panel = Panel(
         layout, 
         title="EEF Teaching and Learning Toolkit Data Extractor", 
-        border_style="bold #000000", 
+        border_style="bold white", 
         padding=(1, 2), 
         title_align="left",
         style=custom_style_main,
@@ -4909,5 +5184,5 @@ def main_menu_display1(functions, outfile1, df_display):
     print("\n")
 
 path_completer = PathCompleter()
-data_file = prompt('Enter the path to your JSON file: ', completer=path_completer)
+data_file = prompt('Select your data file: ', completer=path_completer)
 json_extractor = JSONDataExtractor(data_file)
