@@ -1,5 +1,5 @@
 
-<h1 align="center">EEF Toolkit Datafile Extraction</h1>
+<h1 align="center">EEF Toolkit Datafile Extractor</h1>
 
 This command line application is designed to process data files from the [Teaching and Learning Toolkit](https://educationendowmentfoundation.org.uk/education-evidence/teaching-learning-toolkit?gclid=CjwKCAjwjMiiBhA4EiwAZe6jQ3WnUgowD16xFwcG_6hZySd_qiKcElx5wRI0BjJAdwj5RkFT_kzz1hoCS_MQAvD_BwE) database. It allows you to extract specific dataframes required for data cleaning and analysis purposes. The database provides JSON files with nested structures, and this application simplifies the process of extracting the necessary data, making it easier to integrate into your broader data processing pipeline.
 
