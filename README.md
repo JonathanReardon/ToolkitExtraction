@@ -37,6 +37,8 @@ To run the application, follow these steps.
 >> python3 main.py
 ```
 
+To begin, you will need to input a data file. Once you have done so, press enter to proceed to the main menu.
+
 <p align="center">
     <img src="/img/visual1.png">
 </p>
