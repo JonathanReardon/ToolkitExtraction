@@ -37,7 +37,9 @@ pip install -r requirements.txt
 >> python3 main.py
 ```
 
+<p align="center">
 ![Here is the main menu. Select an option [1-9] corresponding to the dataframe you want.](/img/visual1.png)
+</p>
 
 All output dataframes will be saved to the 'output' directory under the same name as your input file.
 
