@@ -41,7 +41,11 @@ pip install -r requirements.txt
     <img src="/img/visual1.png">
 </p>
 
-All output dataframes will be saved to the 'output' directory under the same name as your input file.
+All output dataframes will be saved within the 'output' directory, with the directory named after the original datafile. Each individual dataframe will be labeled with the original datafile name as a prefix and a dataframe label suffix.
+
+<p align="center">
+    <img src="/img/visual2.png">
+</p>
 
 ## Dataframe 1: Study, Research and Design Variables
 
@@ -376,7 +380,7 @@ All output dataframes will be saved to the 'output' directory under the same nam
 | `Outcome Evaluation`   | `raw, risk label, risk value` | `out_eval` |
 | `Computational Analysis`   | `raw, risk label, risk value` | `comp_anal` |
 | `Sample Size (Analysed)`   | `raw, risk label, risk value` | `sample_analysed` |
-| `Outcome Test Type`   | `raw, risk label, risk value` | `out_test_type` |
+| `Outcome Test Type`   | `raw, risk label, risk value` | `out_test_type` | 
 | `Outcome Effect Size Type`   | `raw, risk label, risk value` | `out_es_type` |
 | `Attrition Percentage`   | `raw, risk label, risk value` | `attri_perc` |
 | `Cluster Analysis`   | `raw, risk label, risk value` | `clust_anal` |
