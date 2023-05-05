@@ -51,6 +51,7 @@ All output dataframes will be saved within the 'output' directory, with the dire
 
 <details>
 <summary>Further details</summary>
+
 | Variable | Data Type | Column Name |
 | ------------- | ----------- | ----------- |
 | `Eppi ID`   | `raw` | `id` |
@@ -81,12 +82,14 @@ All output dataframes will be saved within the 'output' directory, with the dire
 | `Other Outcomes`   | `raw, ht, info` | `out_other` |
 | `Additional Outcomes`   | `raw, ht, info` | `out_info` |
 | `Other Participants Outcomes`   | `ht, info` | `part_other` |
+
 </details>
 
 ## Dataframe 2: Intervention Details
 
 <details>
 <summary>Further details</summary>
+
 | Variable | Data Type | Column Name |
 | ------------- | ----------- | ----------- |
 | `Eppi ID`   | `raw` | `id` |
@@ -116,12 +119,14 @@ All output dataframes will be saved within the 'output' directory, with the dire
 | `Comparison Variables Reported`   | `raw, ht, info` | `comp_var` |
 | `Comparison Variables Reported (Which Ones)` | `raw, ht, info` | `comp_var_rep` |
 | `Clustering`   | `raw, ht` | `clust_anal` |
+
 </details>
 
 ## Dataframe 3: Sample Size Variables
 
 <details>
 <summary>Further details</summary>
+
 | Variable | Data Type | Column Name |
 | ------------- | ----------- | ----------- |
 | `Eppi ID`   | `raw` | `id` |
@@ -145,12 +150,14 @@ All output dataframes will be saved within the 'output' directory, with the dire
 | `Attrition Dropout Reporting`   | `raw, ht, info` | `attri` |
 | `Treatment Group Attrition`   | `ht, info` | `attri_treat` |
 | `Overall Percentage Attrition`   | `ht, info` | `attri_perc` |
+
 </details>
 
 ## Dataframe 4: Effect Size A [Descriptive Statistics]
 
 <details>
 <summary>Further details</summary>
+
 | Variable | Data Type | Column Name |
 | ------------- | ----------- | ----------- |
 | `Eppi ID`   | `raw` | `id` |
@@ -192,12 +199,14 @@ All output dataframes will be saved within the 'output' directory, with the dire
 | `Control Group Gain Score 2 SD`   | `ht, info` | `gain_c2_sd` |
 | `Control Group Other 2 Info`   | `ht, info` | `out_c2_other` |
 | `Follow-up Data`   | `raw, ht, info` | `follow_up` |
+
 </details>
 
 ## Dataframe 5: Effect Size B [Outcome Details]
 
 <details>
 <summary>Further details</summary>
+
 | Variable | Data Type | Column Name |
 | ------------- | ----------- | ----------- |
 | `Eppi ID`   | `raw` | `id` |
@@ -319,12 +328,14 @@ All output dataframes will be saved within the 'output' directory, with the dire
 | `FSM Outcome Comparison` | `raw` | `out_comp_fsm` |
 | `FSM Effect Size Type` | `raw` | `out_es_type_fsm` |
 | `FSM Test Type` | `raw` | `out_test_type_fsm` |
+
 </details>
 
 ## Main Data Analysis Dataframe
 
 <details>
 <summary>Further details</summary>
+
 | Variable | Data Type | Column Name |
 | ------------- | ----------- | ----------- |
 | `Eppi ID`   | `raw` | `id` |
@@ -376,12 +387,14 @@ All output dataframes will be saved within the 'output' directory, with the dire
 | `Intervention Frequency`   | `info` | `int_freq` |
 | `Intervention Session Length`   | `info` | `int_leng` |
 | `Oucome Strand`   | `raw` | `out_strand` |
+
 </details>
 
 ## Risk of Bias Dataframe
 
 <details>
 <summary>Further details</summary>
+
 | Variable | Data Type | Column Name |
 | ------------- | ----------- | ----------- |
 | `Eppi ID`   | `raw` | `id` |
@@ -408,12 +421,14 @@ All output dataframes will be saved within the 'output' directory, with the dire
 | `Mean`   | `raw` | `Mean` |
 | `Median`   | `raw` | `Median` |
 | `Raw Total`   | `raw` | `raw_total` |
+
 </details>
 
 ## References Dataframe
 
 <details>
 <summary>Further details</summary>
+
 | Variable | Data Type | Column Name |
 | ------------- | ----------- | ----------- |
 | `Eppi ID`   | `raw` | `id` |
@@ -434,6 +449,7 @@ All output dataframes will be saved within the 'output' directory, with the dire
 | `Publisher`   | `raw` | `publisher` |
 | `City`   | `raw` | `city` |
 | `Institution`   | `raw` | `institution` |
+
 </details>
 
 ## License
