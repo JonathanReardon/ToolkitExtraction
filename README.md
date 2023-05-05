@@ -41,6 +41,12 @@ pip install -r requirements.txt
     <img src="/img/visual1.png">
 </p>
 
+When a selection is made, the newly created file location will be displayed in the "Output Files" box at the bottom of the display.
+
+<p align="center">
+    <img src="/img/visual3.png">
+</p>
+
 All output dataframes will be saved within the 'output' directory, with the directory named after the original datafile. Each individual dataframe will be labeled with the original datafile name as a prefix and a dataframe label suffix.
 
 <p align="center">
