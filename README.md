@@ -28,7 +28,7 @@ To run the application, follow these steps.
 2. Install the required dependencies by executing the following command:
 
 ```bash
-pip install -r requirements.txt
+>> pip install -r requirements.txt
 ```
 
 3. Run the application:
