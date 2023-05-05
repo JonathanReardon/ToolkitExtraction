@@ -5,12 +5,12 @@ This command line application is designed to process data files from the [Teachi
 
 ## Dependencies
 
-- Python 3.7 or higher
-- numpy 1.22.0
-- pandas 1.5.0
-- prompt_toolkit 3.0.30
-- rich 12.4.4
-- toolz 0.11.2
+- [Python](https://www.python.org/) 3.7 or higher
+- [numpy](https://github.com/numpy/numpy) 1.22.0
+- [pandas](https://github.com/pandas-dev/pandas) 1.5.0
+- [prompt_toolkit](https://github.com/prompt-toolkit/python-prompt-toolkit) 3.0.30
+- [rich](https://github.com/Textualize/rich/tree/6d30ad0f30028210124c149811cbbe2b183711f9) 12.4.4
+- [toolz](https://github.com/pytoolz/toolz) 0.11.2
 
 Please make sure you have the above dependencies installed before running the application.
 
