@@ -2157,7 +2157,7 @@ class DataFrameCompilation:
     def make_references(self, save_file=True):
         """
         """
-        eppiid_df = self.data_extraction.retrieve_metadata("ItemId", "ID")
+        eppiid_df = self.data_extraction.retrieve_metadata("ItemId", "id")
         admin_strand_df = self.data_extraction.retrieve_data(admin_strand_output, "toolkit_strand")
         author_df = self.data_extraction.retrieve_metadata("ShortTitle", "short_title")
         authors_df = self.data_extraction.retrieve_metadata("Authors", "main_authors")
