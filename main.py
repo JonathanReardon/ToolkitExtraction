@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import time
+
+
 __author__ = "Jonathan Reardon"
 
 import os
@@ -168,9 +171,11 @@ def main():
                 console.print("Thanks for using the EEF Toolkit Data Extractor.")
                 run_program = False
             case 1:
+                start = time.time()
                 _, outfile1 = data_frame_compilation.make_dataframe_1(save_file=True, clean_cols=True, verbose=False)
                 functions = [data_frame_compilation.make_dataframe_1]
-
+                end = time.time()
+        
                 # Display main menu
                 main_menu_display1(functions, outfile1, dataframe_1_output_display)
 
@@ -178,10 +183,12 @@ def main():
                 input_file_info_display(data_file)
 
                 data_cleaning_option = get_user_input()
+                print(f"The section took {end - start} seconds to complete.")
             case 2: 
+                start = time.time()
                 _, outfile2 = data_frame_compilation.make_dataframe_2(save_file=True, clean_cols=True, verbose=False)
                 functions = [data_frame_compilation.make_dataframe_2]
-
+                end = time.time()
                 # Display main menu
                 main_menu_display1(functions, outfile2, dataframe_2_output_display)
 
@@ -189,10 +196,12 @@ def main():
                 input_file_info_display(data_file)
 
                 data_cleaning_option = get_user_input()
+                print(f"The section took {end - start} seconds to complete.")
             case 3:
+                start = time.time()
                 _, outfile3 = data_frame_compilation.make_dataframe_3(save_file=True, clean_cols=True, verbose=False)
                 functions = [data_frame_compilation.make_dataframe_3]
-
+                end = time.time()
                 # Display main menu
                 main_menu_display1(functions, outfile3, dataframe_3_output_display)
 
@@ -200,10 +209,12 @@ def main():
                 input_file_info_display(data_file)
 
                 data_cleaning_option = get_user_input()
+                print(f"The section took {end - start} seconds to complete.")
             case 4:
+                start = time.time()
                 _, outfile4 = data_frame_compilation.make_dataframe_4(save_file=True, clean_cols=True, verbose=False)
                 functions = [data_frame_compilation.make_dataframe_4]
-
+                end = time.time()
                 # Display main menu
                 main_menu_display1(functions, outfile4, dataframe_4_output_display)
 
@@ -211,10 +222,12 @@ def main():
                 input_file_info_display(data_file)
 
                 data_cleaning_option = get_user_input()
+                print(f"The section took {end - start} seconds to complete.")
             case 5:
+                start = time.time()
                 _, outfile5 = data_frame_compilation.make_dataframe_5(save_file=True, clean_cols=True, verbose=False)
                 functions = [data_frame_compilation.make_dataframe_5]
-
+                end = time.time()
                 # Display main menu
                 main_menu_display1(functions, outfile5, dataframe_5_output_display)
 
@@ -224,6 +237,7 @@ def main():
                 # Display user option prompt
                 data_cleaning_option = Prompt.ask("Enter an option from the Main Menu")
                 data_cleaning_option=int(data_cleaning_option)
+                print(f"The section took {end - start} seconds to complete.")
             case 6:
                 console = Console()
                 console.clear()
@@ -232,10 +246,10 @@ def main():
                 ss = StrandSpecificFrames(json_extractor)
 
                 strand_specific_df = ss.strand_specific_df_selection(strand_specific_option)
-
+                start = time.time()
                 _, outfile6 = data_frame_compilation.make_dataframe_6(strand_specific_df, save_file=True)
                 functions = data_frame_compilation.make_dataframe_6(strand_specific_df)
-
+                end = time.time()
                 # Display main menu
                 main_menu_display1(functions, outfile6, dataframe_6_output_display)
 
@@ -243,12 +257,15 @@ def main():
                 input_file_info_display(data_file)
 
                 data_cleaning_option = get_user_input()
+                print(f"The section took {end - start} seconds to complete.")
             case 7:
                 # Create instance of risk of bias class
                 rob = RiskofBias(json_extractor)
+                start = time.time()
                 # Combine and save data frame
                 functions = rob.compile()
                 outfile7=rob.save_dataframe()
+                end = time.time()
                 rob.padlocks()
 
                 # Display main menu
@@ -258,6 +275,7 @@ def main():
                 input_file_info_display(data_file)
 
                 data_cleaning_option = get_user_input()
+                print(f"The section took {end - start} seconds to complete.")
             case 8:
                 _, outfile8 = data_frame_compilation.make_references(save_file=True)
                 functions = [data_frame_compilation.make_references]

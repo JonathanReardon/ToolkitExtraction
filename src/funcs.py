@@ -8,8 +8,10 @@ import json
 import os
 
 # Third-party imports
+from numba import jit
 import numpy as np
 import pandas as pd
+import warnings
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import PathCompleter
 from rich.console import Console
@@ -32,6 +34,9 @@ from rich.columns import Columns
 # Local imports
 from src.attributeIDs import *
 
+# Filter out all warnings
+warnings.filterwarnings('ignore')
+
 GREY="#37474f"
 WHITE="#FFFFFF"
 
@@ -45,7 +50,6 @@ class JSONDataExtractor:
         datafile = os.path.join(os.getcwd(), self.data_file)
         with open(datafile) as f:
             self.data = json.load(f)
-
 
     def get_metadata(self, var):
         ''' """ 
@@ -61,8 +65,7 @@ class JSONDataExtractor:
                 varlist.append("NA")
         return varlist
 
-
-    def get_data(self, codes):
+    """ def get_data(self, codes):
         '''
         Extract study-level main data.
         Params: List/dict [{..}] of one or more AttributeID's and Attribute labels.
@@ -82,10 +85,24 @@ class JSONDataExtractor:
                         holderfind = "NA"
                     holder.append(holderfind)
             df.append(holder)
+        return df """
+
+    def get_data(self, codes):
+        df = []
+        references = self.data["References"]
+        references_length = len(references)
+        for code in codes:
+            holder = []
+            for section in range(references_length):
+                if "Codes" in references[section]:
+                    codes_section = references[section]["Codes"]
+                    code_keys = set(code.keys())
+                    holderfind = [code[attribute["AttributeId"]] for attribute in codes_section if attribute["AttributeId"] in code_keys]
+                    holder.append(holderfind if holderfind else "NA")
+            df.append(holder)
         return df
-
-
-    def comments(self, codes):
+    
+    """ def comments(self, codes):
         ''' 
         Extracts study level "comment" data.
         Params: List/dict [{..}] of one or more AttributeID's and Attribute labels.
@@ -109,10 +126,36 @@ class JSONDataExtractor:
                     comments.append("NA")
             all_comments.append(comments)
             comments = []
+        return all_comments """
+
+    def comments(self, codes):
+        ''' 
+        Extracts study level "comment" data.
+        Params: List/dict [{..}] of one or more AttributeID's and Attribute labels.
+        Returns: A list of extracted data. One or more datapoints per study.
+        '''
+        all_comments = []
+        references = self.data["References"]
+        references_length = len(references)
+        for code in codes:
+            comments = []
+            code_keys = set(code.keys())
+            for section in range(references_length):
+                if "Codes" in references[section]:
+                    user_comments = []
+                    codes_section = references[section]["Codes"]
+                    for study_code in codes_section:
+                        if study_code["AttributeId"] in code_keys and "AdditionalText" in study_code:
+                            user_comments = study_code["AdditionalText"]
+                    comments.append(user_comments if user_comments else "NA")
+                else:
+                    comments.append("NA")
+            all_comments.append(comments)
         return all_comments
 
 
-    def highlighted_text(self, codes):
+
+    """ def highlighted_text(self, codes):
         ''' 
         Extracts Study level "highlighted text" data.
         Params: List/dict [{..}] of one or more AttributeID's and Attribute labels.
@@ -139,10 +182,31 @@ class JSONDataExtractor:
                     highlighted_text.append("NA")
             all_highlighted_text.append(highlighted_text)
             highlighted_text = []
+        return all_highlighted_text """
+
+    def highlighted_text(self, codes):
+        all_highlighted_text = []
+        references = self.data["References"]
+        references_length = len(references)
+        for code in codes:
+            highlighted_text = []
+            code_keys = set(code.keys())
+            for section in range(references_length):
+                if "Codes" in references[section]:
+                    user_highlighted_text = []
+                    codes_section = references[section]["Codes"]
+                    for study_code in codes_section:
+                        if study_code["AttributeId"] in code_keys and "ItemAttributeFullTextDetails" in study_code:
+                            user_highlighted_text.extend(item["Text"] for item in study_code["ItemAttributeFullTextDetails"])
+                    highlighted_text.append(user_highlighted_text if user_highlighted_text else "NA")
+                else:
+                    highlighted_text.append("NA")
+            all_highlighted_text.append(highlighted_text)
         return all_highlighted_text
 
 
-    def get_outcome_lvl1(self, var):
+
+    """ def get_outcome_lvl1(self, var):
         ''' 
         Extracts first-level outcome data.
         Params: Variable name (str) e.g. "SMD", "OutcomeID".
@@ -167,10 +231,32 @@ class JSONDataExtractor:
                 for i in range(max(outcome_number)):
                     holder.append("NA")
                 varlist.append(holder)
+        return varlist """
+
+    def get_outcome_lvl1(self, var):
+        references = self.data["References"]
+        references_length = len(references)
+        outcome_number = [
+            len(reference.get("Outcomes", [])) 
+            for reference in references
+        ]
+        max_outcome_number = max(outcome_number, default=0)
+
+        varlist = []
+        for section in range(references_length):
+            holder = []
+            outcomes = references[section].get("Outcomes", [])
+            for subsection in range(max_outcome_number):
+                if subsection < len(outcomes):
+                    holder.append(outcomes[subsection].get(var, "NA"))
+                else:
+                    holder.append("NA")
+            varlist.append(holder)
         return varlist
 
 
-    def get_outcome_lvl2(self, var):
+
+    """ def get_outcome_lvl2(self, var):
         '''
         Extracts second-level (nested) outcome data.
         Params: List/dict [{..}] of one or more AttributeID's and Attribute labels.
@@ -199,7 +285,36 @@ class JSONDataExtractor:
                     else:
                         outerholder = "NA"
                 varlist.append(outerholder)
+        return varlist """
+
+    def get_outcome_lvl2(self, var):
+        varlist = []
+        references = self.data["References"]
+        references_length = len(references)
+        for variable in range(len(var)):
+            var_items = var[variable].items()
+            for study in range(references_length):
+                reference_study = references[study]
+                outerholder = "NA"
+                if "Codes" in reference_study and "Outcomes" in reference_study:
+                    outerholder = []
+                    for item in range(len(reference_study["Outcomes"])):
+                        outcome_item = reference_study["Outcomes"][item]
+                        innerholderholder = "NA"
+                        if "OutcomeCodes" in outcome_item:
+                            innerholderholder = []
+                            outcome_item_attributes = outcome_item["OutcomeCodes"]["OutcomeItemAttributesList"]
+                            for subsection in range(len(outcome_item_attributes)):
+                                attribute_id = outcome_item_attributes[subsection]["AttributeId"]
+                                for key, value in var_items:
+                                    if key == attribute_id:
+                                        innerholderholder.append(outcome_item_attributes[subsection]["AttributeName"])
+                            if len(innerholderholder) == 0:
+                                innerholderholder = "NA"
+                        outerholder.append(innerholderholder)
+                varlist.append(outerholder)
         return varlist
+
 
 
     def getOutcomeData(self, dataframe, out_label, out_container, var_names):
@@ -2124,7 +2239,7 @@ class DataFrameCompilation:
             self.data_extraction.verbose_display(df_all_SS)
 
         if save_file:
-            outfile6 = self.data_extraction.save_dataframe(df_all_SS, "_Main_Analysis_SS.csv")
+            outfile6 = self.data_extraction.save_dataframe(df_all_SS, "_Main_Analysis.csv")
 
         return df_all_SS, outfile6
 
@@ -3711,6 +3826,23 @@ class RiskofBias:
 
         self.year_df['pub_year_risk_value'] = np.select(conditions, choices, default="NA")
         return self.year_df
+
+    """ def rob_year(self):
+        self.year_df["pub_year"] = pd.to_numeric(self.year_df["pub_year"], errors='coerce').fillna(0)
+
+        conditions = [
+            (self.year_df["pub_year"] < 1980),
+            (self.year_df["pub_year"] >= 1980) & (self.year_df["pub_year"] < 2000),
+            (self.year_df["pub_year"] >= 2000),
+        ]
+        choices_str = ['High Risk', 'Medium Risk', 'Low Risk']
+        choices_val = [1, 2, 3]
+
+        self.year_df["pub_year_raw_risk"] = np.select(conditions, choices_str, default="NA")
+        self.year_df['pub_year_risk_value'] = np.select(conditions, choices_val, default="NA")
+
+        return self.year_df """
+
     
     def rob_perc_attri(self):
         self.overall_percent_attrition_Comments_df.replace('%', '', regex=True, inplace=True)
@@ -3740,6 +3872,25 @@ class RiskofBias:
         self.overall_percent_attrition_Comments_df['attri_perc_info_risk_value'] = np.select(conditions, choices, default="NA")
         return self.overall_percent_attrition_Comments_df
 
+    """ def rob_perc_attri(self):
+        self.overall_percent_attrition_Comments_df.replace('%', '', regex=True, inplace=True)
+
+        self.overall_percent_attrition_Comments_df["attri_perc_info"] = pd.to_numeric(self.overall_percent_attrition_Comments_df["attri_perc_info"], errors='coerce').fillna(0)
+
+        conditions = [
+            (self.overall_percent_attrition_Comments_df["attri_perc_info"] < 10),
+            (self.overall_percent_attrition_Comments_df["attri_perc_info"] >= 10) & (self.overall_percent_attrition_Comments_df["attri_perc_info"] < 20),
+            (self.overall_percent_attrition_Comments_df["attri_perc_info"] >= 20),
+        ]
+        choices_str = ['Low Risk', 'Medium Risk', 'High Risk']
+        choices_val = [3, 2, 1]
+
+        self.overall_percent_attrition_Comments_df["attri_perc_info_raw_risk"] = np.select(conditions, choices_str, default="NA")
+        self.overall_percent_attrition_Comments_df['attri_perc_info_risk_value'] = np.select(conditions, choices_val, default="NA")
+
+        return self.overall_percent_attrition_Comments_df """
+
+
     def rob_clustering(self):
 
         # Medium/High risk for Yes/No – the difference is usually trivial 
@@ -3767,6 +3918,32 @@ class RiskofBias:
 
         self.clustering_df["clust_anal_risk_value"] = np.select(conditions, choices, default="NA")
         return self.clustering_df
+
+    """ def rob_clustering(self):
+        # Using .map() instead of .apply() for more efficient operations on pandas Series
+        self.clustering_df["clust_anal_raw"] = self.clustering_df["clust_anal_raw"].map(
+            lambda x: ",".join(x) if isinstance(x, list) else x
+        )
+        
+        # Creating dictionary mapping for more straightforward replacement
+        risk_mapping = {
+            "Yes": "Medium Risk",
+            "No": "High Risk"
+        }
+        self.clustering_df["clust_anal_raw_risk"] = self.clustering_df["clust_anal_raw"].map(
+            risk_mapping, na_action='ignore'
+        ).fillna("NA")
+        
+        risk_value_mapping = {
+            "Medium Risk": 2,
+            "High Risk": 1
+        }
+        self.clustering_df["clust_anal_risk_value"] = self.clustering_df["clust_anal_raw_risk"].map(
+            risk_value_mapping, na_action='ignore'
+        ).fillna("NA")
+        
+        return self.clustering_df """
+
 
     def rob_tkit_es_type(self):
         self.toolkit_es_type = pd.DataFrame(self.toolkit_es_type)
@@ -3799,6 +3976,36 @@ class RiskofBias:
         self.toolkit_es_type["out_es_type_risk_value"] = np.select(conditions, choices, default="NA")
         return self.toolkit_es_type
     
+    """ def rob_tkit_es_type(self):
+        self.toolkit_es_type = pd.DataFrame(self.toolkit_es_type)
+
+        self.toolkit_es_type.columns = ["out_es_type"]
+        self.toolkit_es_type["out_es_type"] = self.toolkit_es_type["out_es_type"].map(
+            lambda x: ",".join(x) if isinstance(x, list) else x
+        )
+
+        risk_mapping = {
+            "Post-test unadjusted (select one from this group)": 'High Risk',
+            "Post-test adjusted for baseline attainment": 'Low Risk',
+            "Post-test adjusted for baseline attainment AND clustering": 'Low Risk',
+            "Pre-post gain": 'Medium Risk'
+        }
+        self.toolkit_es_type["out_es_type_raw_risk"] = self.toolkit_es_type["out_es_type"].map(
+            risk_mapping, na_action='ignore'
+        ).fillna("NA")
+
+        risk_value_mapping = {
+            'High Risk': 1,
+            'Medium Risk': 2,
+            'Low Risk': 3
+        }
+        self.toolkit_es_type["out_es_type_risk_value"] = self.toolkit_es_type["out_es_type_raw_risk"].map(
+            risk_value_mapping, na_action='ignore'
+        ).fillna("NA")
+
+        return self.toolkit_es_type """
+
+
     def rob_tkit_test_type(self):
         self.toolkit_test_type = pd.DataFrame(self.toolkit_test_type)
 
@@ -3834,6 +4041,40 @@ class RiskofBias:
             conditions, choices, default="NA")
         return self.toolkit_test_type
 
+    """ def rob_tkit_test_type(self):
+        self.toolkit_test_type = pd.DataFrame(self.toolkit_test_type)
+
+        if len(self.toolkit_test_type.columns) > 1:
+            del self.toolkit_test_type[1]
+
+        self.toolkit_test_type.columns = ["out_test_type_raw"]
+        self.toolkit_test_type["out_test_type_raw"] = self.toolkit_test_type["out_test_type_raw"].map(
+            lambda x: ",".join(x) if isinstance(x, list) else x
+        )
+
+        risk_mapping = {
+            "Test type: Standardised test ": 'Low Risk',
+            "Test type: Researcher developed test": 'High Risk',
+            "Test type: National test": 'Low Risk',
+            "Test type: School-developed test": 'Medium Risk',
+            "Test type: International tests": 'Low Risk'
+        }
+        self.toolkit_test_type["out_test_type_raw_risk"] = self.toolkit_test_type["out_test_type_raw"].map(
+            risk_mapping, na_action='ignore'
+        ).fillna("NA")
+
+        risk_value_mapping = {
+            'High Risk': 1,
+            'Medium Risk': 2,
+            'Low Risk': 3
+        }
+        self.toolkit_test_type["out_test_type_raw_risk_value"] = self.toolkit_test_type["out_test_type_raw_risk"].map(
+            risk_value_mapping, na_action='ignore'
+        ).fillna("NA")
+
+        return self.toolkit_test_type """
+
+
     def rob_sample_size_comments(self):
         self.sample_size_Comments_df["sample_analysed_info"] = self.sample_size_Comments_df["sample_analysed_info"].apply(
             pd.to_numeric, errors='coerce').fillna(0)
@@ -3856,6 +4097,30 @@ class RiskofBias:
         self.sample_size_Comments_df['sample_size_risk_value'] = np.select(
             conditions, choices, default="NA")
         return self.sample_size_Comments_df
+
+    """ def rob_sample_size_comments(self):
+        self.sample_size_Comments_df["sample_analysed_info"] = self.sample_size_Comments_df["sample_analysed_info"].apply(
+            pd.to_numeric, errors='coerce').fillna(0)
+
+        def sample_size_risk(value):
+            if value <= 30: return 'High Risk'
+            elif value < 100: return 'Medium Risk'
+            elif value > 99: return 'Low Risk'
+            else: return 'NA'
+
+        self.sample_size_Comments_df["sample_size_risk"] = self.sample_size_Comments_df["sample_analysed_info"].apply(sample_size_risk)
+
+        risk_value_mapping = {
+            'High Risk': 1,
+            'Medium Risk': 2,
+            'Low Risk': 3
+        }
+        self.sample_size_Comments_df['sample_size_risk_value'] = self.sample_size_Comments_df["sample_size_risk"].map(
+            risk_value_mapping, na_action='ignore'
+        ).fillna("NA")
+
+        return self.sample_size_Comments_df """
+
 
     def rob_pub_type(self):
         self.publicationtype_df["pub_type_raw"] = self.publicationtype_df["pub_type_raw"].apply(lambda x: ",".join(x) if isinstance(x, list) else x)
@@ -3884,6 +4149,35 @@ class RiskofBias:
 
         self.publicationtype_df["pub_type_risk_value"] = np.select(conditions, choices, default="NA")
         return self.publicationtype_df
+
+    """ def rob_pub_type(self):
+        self.publicationtype_df["pub_type_raw"] = self.publicationtype_df["pub_type_raw"].map(
+            lambda x: ",".join(x) if isinstance(x, list) else x
+        )
+
+        risk_mapping = {
+            "Journal article": 'Low Risk',
+            "Dissertation or thesis": 'Low Risk',
+            "Technical report": 'Low Risk',
+            "Book or book chapter": 'Medium Risk',
+            "Conference paper": 'Medium Risk',
+            "Other (Please specify)": 'Medium Risk'
+        }
+        self.publicationtype_df["pub_type_risk"] = self.publicationtype_df["pub_type_raw"].map(
+            risk_mapping, na_action='ignore'
+        ).fillna("NA")
+
+        risk_value_mapping = {
+            'High Risk': 1,
+            'Medium Risk': 2,
+            'Low Risk': 3
+        }
+        self.publicationtype_df["pub_type_risk_value"] = self.publicationtype_df["pub_type_risk"].map(
+            risk_value_mapping, na_action='ignore'
+        ).fillna("NA")
+
+        return self.publicationtype_df """
+
 
     def rob_part_assign(self):
 
@@ -4003,9 +4297,9 @@ class RiskofBias:
     
     def rob_int_who(self):
         # originals
-        """ intervention_delivery_df["research staff"] = intervention_delivery_df["int_who_raw"].apply(lambda x: 'Research staff' in x) """
-        """ intervention_delivery_df["class teachers"]  = intervention_delivery_df["int_who_raw"].apply(lambda x: 'Class teachers' in x) """
-        """ intervention_delivery_df["other school staff"] = intervention_delivery_df["int_who_raw"].apply(lambda x: 'Other school staff' in x) """
+        #intervention_delivery_df["research staff"] = intervention_delivery_df["int_who_raw"].apply(lambda x: 'Research staff' in x)
+        #intervention_delivery_df["class teachers"]  = intervention_delivery_df["int_who_raw"].apply(lambda x: 'Class teachers' in x)
+        #intervention_delivery_df["other school staff"] = intervention_delivery_df["int_who_raw"].apply(lambda x: 'Other school staff' in x)
 
         self.intervention_delivery_df["peers"] = self.intervention_delivery_df["int_who_raw"].apply(lambda x: 'Peers' in x)
         self.intervention_delivery_df["lay persons/volunteers"] = self.intervention_delivery_df["int_who_raw"].apply(lambda x: 'Lay persons/volunteers' in x)
@@ -4121,7 +4415,7 @@ class RiskofBias:
         ], axis=1, sort=False)
     
         # CONVERT OBJECT COLUMNS TO FLOAT (FOR ADDITION)
-        self.risk_of_bias_df["rand_risk_value"] = self.risk_of_bias_df["rand_risk_value"].apply(pd.to_numeric, errors='coerce')
+        """ self.risk_of_bias_df["rand_risk_value"] = self.risk_of_bias_df["rand_risk_value"].apply(pd.to_numeric, errors='coerce')
         self.risk_of_bias_df["part_assig_risk_value"] = self.risk_of_bias_df["part_assig_risk_value"].apply(pd.to_numeric, errors='coerce')
         self.risk_of_bias_df["eco_valid_risk_value"] = self.risk_of_bias_df["eco_valid_risk_value"].apply(pd.to_numeric, errors='coerce')
         self.risk_of_bias_df["school_treat_risk_value"] = self.risk_of_bias_df["school_treat_risk_value"].apply(pd.to_numeric, errors='coerce')
@@ -4135,7 +4429,29 @@ class RiskofBias:
         self.risk_of_bias_df["int_who_raw_risk_value"] = self.risk_of_bias_df["int_who_raw_risk_value"].apply(pd.to_numeric, errors='coerce')
         self.risk_of_bias_df["attri_perc_info_risk_value"] = self.risk_of_bias_df["attri_perc_info_risk_value"].apply(pd.to_numeric, errors='coerce')
         self.risk_of_bias_df["clust_anal_risk_value"] = self.risk_of_bias_df["clust_anal_risk_value"].apply(pd.to_numeric, errors='coerce')
-        self.risk_of_bias_df["pub_year_risk_value"] = self.risk_of_bias_df["pub_year_risk_value"].apply(pd.to_numeric, errors='coerce')
+        self.risk_of_bias_df["pub_year_risk_value"] = self.risk_of_bias_df["pub_year_risk_value"].apply(pd.to_numeric, errors='coerce') """
+
+        columns_to_convert = [
+            "rand_risk_value",
+            "part_assig_risk_value",
+            "eco_valid_risk_value",
+            "school_treat_risk_value",
+            "pub_type_risk_value",
+            "class_total_risk_value",
+            "out_eval_risk_value",
+            "comp_anal_risk_value",
+            "sample_size_risk_value",
+            "out_test_type_raw_risk_value",
+            "out_es_type_risk_value",
+            "int_who_raw_risk_value",
+            "attri_perc_info_risk_value",
+            "clust_anal_risk_value",
+            "pub_year_risk_value"
+        ]
+
+
+        for column in columns_to_convert:
+            self.risk_of_bias_df[column] = self.risk_of_bias_df[column].apply(pd.to_numeric, errors='coerce')
 
         """ self.risk_of_bias_df['strand_raw'] = self.risk_of_bias_df['strand_raw'].str.join(', ') """
 
@@ -4202,6 +4518,7 @@ class RiskofBias:
         final_score_col = self.risk_of_bias_df.pop('raw_total')
         self.risk_of_bias_df.insert(63, 'raw_total', final_score_col)
 
+
     def compile(self):
         self.initialize_vars()
         self.rob_year()
@@ -4220,6 +4537,7 @@ class RiskofBias:
         self.rob_out_eval()
         self.rob_comparability()
         self.rob_post_process()
+    
 
     def save_dataframe(self):
         outfile7 = self.data_extraction.save_dataframe(self.risk_of_bias_df, "_Risk_of_Bias.csv")
@@ -5046,7 +5364,7 @@ def main_menu_display():
     custom_style_file_details = Style(bgcolor=GREY)
     custom_style_cleaning_info = Style(bgcolor=GREY)
 
-    container_title = console.render_str("[bold white]EEF Teaching and Learning Toolkit Data Extractor[/bold white]")
+    container_title = console.render_str("[bold white]EEF Data Extractor[/bold white]")
 
     top_title = console.render_str("[bold white]Welcome[/bold white]")
     title1 = console.render_str("[bold white]Main Menu[/bold white]")
@@ -5054,10 +5372,10 @@ def main_menu_display():
 
     # Set text for top panel of main menu
     top_panel_text = (
-        "[#FFFFFF]Welcome to the EEF Teaching and Learning Toolkit Data Extractor. Use the[/#FFFFFF] "
+        "[#FFFFFF]Welcome to the EEF Data Extractor. Use the[/#FFFFFF] "
         "[bold #fc5424]Main Menu[/bold #fc5424] [#FFFFFF]to generate various dataframes containing data extracted "
-        "from an input [bold #fc5424]JSON[/bold #fc5424] [#FFFFFF]datafile produced by the EEF Teaching and "
-        "Learning Toolkit Database.\n\n[bold #fc5424]Options 1-5[/bold #fc5424] [#FFFFFF]include our own custom dataframes "
+        "from an input [bold #fc5424]JSON[/bold #fc5424] [#FFFFFF]datafile produced by the EEF Education Evidence "
+        "Database.\n\n[bold #fc5424]Options 1-5[/bold #fc5424] [#FFFFFF]include our own custom dataframes "
         "for data cleaning prior to analysis.[/#FFFFFF] [bold #fc5424]Option 6[/bold #fc5424] [#FFFFFF]gemerates the "
         "final dataframe(s) used in our meta-analyses. [bold #fc5424]Option 7[/bold #fc5424] produces a bespoke risk of bias dataframe. [/#FFFFFF][bold #fc5424]Option 8[/bold #fc5424] [#FFFFFF]compiles "
         "the necessary data for constructing study references. Finally, [/#FFFFFF][bold #fc5424]Option 9[/bold #fc5424] "
