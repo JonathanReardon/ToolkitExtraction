@@ -2314,9 +2314,9 @@ class DataFrameCompilation:
         ], axis=1)
 
         if save_file:
-            outfile_8 = self.data_extraction.save_dataframe(references, "_References.csv")
+            outfile_9 = self.data_extraction.save_dataframe(references, "_References.csv")
 
-        return references, outfile_8
+        return references, outfile_9
         
 
 class StrandSpecificFrames:
@@ -3976,35 +3976,6 @@ class RiskofBias:
         self.toolkit_es_type["out_es_type_risk_value"] = np.select(conditions, choices, default="NA")
         return self.toolkit_es_type
     
-    """ def rob_tkit_es_type(self):
-        self.toolkit_es_type = pd.DataFrame(self.toolkit_es_type)
-
-        self.toolkit_es_type.columns = ["out_es_type"]
-        self.toolkit_es_type["out_es_type"] = self.toolkit_es_type["out_es_type"].map(
-            lambda x: ",".join(x) if isinstance(x, list) else x
-        )
-
-        risk_mapping = {
-            "Post-test unadjusted (select one from this group)": 'High Risk',
-            "Post-test adjusted for baseline attainment": 'Low Risk',
-            "Post-test adjusted for baseline attainment AND clustering": 'Low Risk',
-            "Pre-post gain": 'Medium Risk'
-        }
-        self.toolkit_es_type["out_es_type_raw_risk"] = self.toolkit_es_type["out_es_type"].map(
-            risk_mapping, na_action='ignore'
-        ).fillna("NA")
-
-        risk_value_mapping = {
-            'High Risk': 1,
-            'Medium Risk': 2,
-            'Low Risk': 3
-        }
-        self.toolkit_es_type["out_es_type_risk_value"] = self.toolkit_es_type["out_es_type_raw_risk"].map(
-            risk_value_mapping, na_action='ignore'
-        ).fillna("NA")
-
-        return self.toolkit_es_type """
-
 
     def rob_tkit_test_type(self):
         self.toolkit_test_type = pd.DataFrame(self.toolkit_test_type)
@@ -4041,40 +4012,6 @@ class RiskofBias:
             conditions, choices, default="NA")
         return self.toolkit_test_type
 
-    """ def rob_tkit_test_type(self):
-        self.toolkit_test_type = pd.DataFrame(self.toolkit_test_type)
-
-        if len(self.toolkit_test_type.columns) > 1:
-            del self.toolkit_test_type[1]
-
-        self.toolkit_test_type.columns = ["out_test_type_raw"]
-        self.toolkit_test_type["out_test_type_raw"] = self.toolkit_test_type["out_test_type_raw"].map(
-            lambda x: ",".join(x) if isinstance(x, list) else x
-        )
-
-        risk_mapping = {
-            "Test type: Standardised test ": 'Low Risk',
-            "Test type: Researcher developed test": 'High Risk',
-            "Test type: National test": 'Low Risk',
-            "Test type: School-developed test": 'Medium Risk',
-            "Test type: International tests": 'Low Risk'
-        }
-        self.toolkit_test_type["out_test_type_raw_risk"] = self.toolkit_test_type["out_test_type_raw"].map(
-            risk_mapping, na_action='ignore'
-        ).fillna("NA")
-
-        risk_value_mapping = {
-            'High Risk': 1,
-            'Medium Risk': 2,
-            'Low Risk': 3
-        }
-        self.toolkit_test_type["out_test_type_raw_risk_value"] = self.toolkit_test_type["out_test_type_raw_risk"].map(
-            risk_value_mapping, na_action='ignore'
-        ).fillna("NA")
-
-        return self.toolkit_test_type """
-
-
     def rob_sample_size_comments(self):
         self.sample_size_Comments_df["sample_analysed_info"] = self.sample_size_Comments_df["sample_analysed_info"].apply(
             pd.to_numeric, errors='coerce').fillna(0)
@@ -4097,29 +4034,6 @@ class RiskofBias:
         self.sample_size_Comments_df['sample_size_risk_value'] = np.select(
             conditions, choices, default="NA")
         return self.sample_size_Comments_df
-
-    """ def rob_sample_size_comments(self):
-        self.sample_size_Comments_df["sample_analysed_info"] = self.sample_size_Comments_df["sample_analysed_info"].apply(
-            pd.to_numeric, errors='coerce').fillna(0)
-
-        def sample_size_risk(value):
-            if value <= 30: return 'High Risk'
-            elif value < 100: return 'Medium Risk'
-            elif value > 99: return 'Low Risk'
-            else: return 'NA'
-
-        self.sample_size_Comments_df["sample_size_risk"] = self.sample_size_Comments_df["sample_analysed_info"].apply(sample_size_risk)
-
-        risk_value_mapping = {
-            'High Risk': 1,
-            'Medium Risk': 2,
-            'Low Risk': 3
-        }
-        self.sample_size_Comments_df['sample_size_risk_value'] = self.sample_size_Comments_df["sample_size_risk"].map(
-            risk_value_mapping, na_action='ignore'
-        ).fillna("NA")
-
-        return self.sample_size_Comments_df """
 
 
     def rob_pub_type(self):
@@ -4149,35 +4063,7 @@ class RiskofBias:
 
         self.publicationtype_df["pub_type_risk_value"] = np.select(conditions, choices, default="NA")
         return self.publicationtype_df
-
-    """ def rob_pub_type(self):
-        self.publicationtype_df["pub_type_raw"] = self.publicationtype_df["pub_type_raw"].map(
-            lambda x: ",".join(x) if isinstance(x, list) else x
-        )
-
-        risk_mapping = {
-            "Journal article": 'Low Risk',
-            "Dissertation or thesis": 'Low Risk',
-            "Technical report": 'Low Risk',
-            "Book or book chapter": 'Medium Risk',
-            "Conference paper": 'Medium Risk',
-            "Other (Please specify)": 'Medium Risk'
-        }
-        self.publicationtype_df["pub_type_risk"] = self.publicationtype_df["pub_type_raw"].map(
-            risk_mapping, na_action='ignore'
-        ).fillna("NA")
-
-        risk_value_mapping = {
-            'High Risk': 1,
-            'Medium Risk': 2,
-            'Low Risk': 3
-        }
-        self.publicationtype_df["pub_type_risk_value"] = self.publicationtype_df["pub_type_risk"].map(
-            risk_value_mapping, na_action='ignore'
-        ).fillna("NA")
-
-        return self.publicationtype_df """
-
+    
 
     def rob_part_assign(self):
 
@@ -4547,11 +4433,15 @@ class RiskofBias:
     def padlocks(self):
 
         # % studies since year 2000 
-        number_of_studies = len(self.risk_of_bias_df)
+        """ number_of_studies = len(self.risk_of_bias_df)
         self.risk_of_bias_df["pub_year"] = pd.to_numeric(self.risk_of_bias_df["pub_year"], errors='coerce')
         recent_studies = len(self.risk_of_bias_df[self.risk_of_bias_df["pub_year"] > 2000])
         perc_recent = recent_studies/number_of_studies*100
-        perc_recent = np.round(perc_recent, 2)
+        perc_recent = np.round(perc_recent, 2) """
+
+        self.risk_of_bias_df["pub_year"] = pd.to_numeric(self.risk_of_bias_df["pub_year"], errors='coerce')
+        perc_recent = (self.risk_of_bias_df["pub_year"] > 2000).mean() * 100
+        perc_recent = round(perc_recent, 2)
 
         #print(f"perc_recent: {perc_recent}")
 
@@ -4682,7 +4572,7 @@ class RiskofBias:
         # % studies since 2000 padlock scale
         ########################################
 
-        # convert %_since_2000 data to numeric
+        """ # convert %_since_2000 data to numeric
         df["%_since_2000"] = pd.to_numeric(df["%_since_2000"], errors='coerce').fillna(0)
 
         def perc_recent_risk(row):
@@ -4695,14 +4585,24 @@ class RiskofBias:
             return 'NA'
 
         # apply padlock function to number of studies column
-        df["%_since_2000_padlock_scale"] = df.apply(lambda row: perc_recent_risk(row), axis=1)
+        df["%_since_2000_padlock_scale"] = df.apply(lambda row: perc_recent_risk(row), axis=1) """
+
+        df["%_since_2000"] = pd.to_numeric(df["%_since_2000"], errors='coerce').fillna(0)
+
+        df["%_since_2000_padlock_scale"] = pd.cut(
+            df["%_since_2000"],
+            bins=[-np.inf, 25, 50, np.inf],
+            labels=['H', 'M', 'L'],
+            right=False,
+            include_lowest=True
+)
 
         ########################################
         # _median_attrit_reported padlock scale
         ########################################
 
         # convert median attrition data to numeric
-        df["%_median_attrit_reported"] = pd.to_numeric(df["%_median_attrit_reported"], errors='coerce').fillna(0)
+        """ df["%_median_attrit_reported"] = pd.to_numeric(df["%_median_attrit_reported"], errors='coerce').fillna(0)
 
         def median_attrit_report_risk(row):
             if row["%_median_attrit_reported"] < 15:
@@ -4714,14 +4614,25 @@ class RiskofBias:
             return 'NA'
         
         # apply padlock function to number of studies column
-        df["%_median_attrit_reported_padlock_scale"] = df.apply(lambda row: median_attrit_report_risk(row), axis=1)
+        df["%_median_attrit_reported_padlock_scale"] = df.apply(lambda row: median_attrit_report_risk(row), axis=1) """
+
+        df["%_median_attrit_reported"] = pd.to_numeric(df["%_median_attrit_reported"], errors='coerce').fillna(0)
+
+        df["%_median_attrit_reported_padlock_scale"] = pd.cut(
+            df["%_median_attrit_reported"],
+            bins=[-np.inf, 15, 30, np.inf],
+            labels=['L', 'M', 'H'],
+            right=False,
+            include_lowest=True
+        )
+
 
         ########################################
         # make number of studies padlock scale
         ########################################
 
         # convert number of studies data to numeric
-        df["number_of_studies"] = pd.to_numeric(df["number_of_studies"], errors='coerce').fillna(0)
+        """ df["number_of_studies"] = pd.to_numeric(df["number_of_studies"], errors='coerce').fillna(0)
 
         def num_studies_risk(row):
             if row["number_of_studies"] < 10:
@@ -4739,14 +4650,21 @@ class RiskofBias:
             return 'NA'
 
         # apply padlock function to number of studies column
-        df["number_of_studies_padlock_scale"] = df.apply(lambda row: num_studies_risk(row), axis=1)
+        df["number_of_studies_padlock_scale"] = df.apply(lambda row: num_studies_risk(row), axis=1) """
+
+        df["number_of_studies"] = pd.to_numeric(df["number_of_studies"], errors='coerce').fillna(0)
+
+        bins = [0, 10, 25, 35, 60, 90, np.inf]
+        labels = ['0', '1', '2', '3', '4', '5']
+        df["number_of_studies_padlock_scale"] = pd.cut(df["number_of_studies"], bins=bins, labels=labels, right=False, include_lowest=True)
+
 
         ########################################
         # make % randomised padlock scale
         ########################################
 
         # convert number of studies data to numeric
-        df["%_randomised"] = pd.to_numeric(df["%_randomised"], errors='coerce').fillna(0)
+        """ df["%_randomised"] = pd.to_numeric(df["%_randomised"], errors='coerce').fillna(0)
 
         def perc_randomised_risk(row):
             if row["%_randomised"] < 30:
@@ -4757,14 +4675,25 @@ class RiskofBias:
                 return 'L'
             return 'NA'
 
-        df["%_randomised_padlock_scale"] = df.apply(lambda row: perc_randomised_risk(row), axis=1)
+        df["%_randomised_padlock_scale"] = df.apply(lambda row: perc_randomised_risk(row), axis=1) """
+
+        df["%_randomised"] = pd.to_numeric(df["%_randomised"], errors='coerce').fillna(0)
+
+        df["%_randomised_padlock_scale"] = pd.cut(
+            df["%_randomised"],
+            bins=[-np.inf, 30, 60, np.inf],
+            labels=['H', 'M', 'L'],
+            right=False,
+            include_lowest=True
+        )
+
 
         ########################################
         # make ecological validity padlock scale
         ########################################
 
         # convert number of studies data to numeric
-        df["%_high_eco_valid"] = pd.to_numeric(df["%_high_eco_valid"], errors='coerce').fillna(0)
+        """ df["%_high_eco_valid"] = pd.to_numeric(df["%_high_eco_valid"], errors='coerce').fillna(0)
 
         def eco_valid_risk(row):
             if row["%_high_eco_valid"] < 50:
@@ -4775,14 +4704,25 @@ class RiskofBias:
                 return 'L'
             return 'NA'
 
-        df["%_high_eco_valid_padlock_scale"] = df.apply(lambda row: eco_valid_risk(row), axis=1)
+        df["%_high_eco_valid_padlock_scale"] = df.apply(lambda row: eco_valid_risk(row), axis=1) """
+
+        df["%_high_eco_valid"] = pd.to_numeric(df["%_high_eco_valid"], errors='coerce').fillna(0)
+
+        df["%_high_eco_valid_padlock_scale"] = pd.cut(
+            df["%_high_eco_valid"],
+            bins=[-np.inf, 50, 75, np.inf],
+            labels=['H', 'M', 'L'],
+            right=False,
+            include_lowest=True
+        )
+
 
         ########################################
         # make % indep eval padlock scale
         ########################################
 
         # convert number of studies data to numeric
-        df["%_indep_eval"] = pd.to_numeric(df["%_indep_eval"], errors='coerce').fillna(0)
+        """ df["%_indep_eval"] = pd.to_numeric(df["%_indep_eval"], errors='coerce').fillna(0)
 
         def perc_indep_eval_risk(row):
             if row["%_indep_eval"] < 10:
@@ -4793,13 +4733,24 @@ class RiskofBias:
                 return 'L'
             return 'NA'
 
-        df["%_indep_eval_padlock_scale"] = df.apply(lambda row: perc_indep_eval_risk(row), axis=1)
+        df["%_indep_eval_padlock_scale"] = df.apply(lambda row: perc_indep_eval_risk(row), axis=1) """
+
+        df["%_indep_eval"] = pd.to_numeric(df["%_indep_eval"], errors='coerce').fillna(0)
+
+        df["%_indep_eval_padlock_scale"] = pd.cut(
+            df["%_indep_eval"],
+            bins=[-np.inf, 10, 30, np.inf],
+            labels=['H', 'M', 'L'],
+            right=False,
+            include_lowest=True
+        )
+
 
         ####################################################
         # reduce padlock if any key ratings are High risk
         ####################################################
 
-        df["number_of_studies_padlock_scale"] = pd.to_numeric(df["number_of_studies_padlock_scale"], errors='coerce').fillna(0)
+        """ df["number_of_studies_padlock_scale"] = pd.to_numeric(df["number_of_studies_padlock_scale"], errors='coerce').fillna(0)
         df["New_padlock"] = df["number_of_studies_padlock_scale"]
 
         def risk_impact(row):
@@ -4815,7 +4766,22 @@ class RiskofBias:
                 df["New_padlock"] = df["New_padlock"] - 1
             return df["New_padlock"]
 
-        df["New_padlock"] = df.apply(lambda row: risk_impact(row), axis=1)
+        df["New_padlock"] = df.apply(lambda row: risk_impact(row), axis=1) """
+
+        df["number_of_studies_padlock_scale"] = pd.to_numeric(df["number_of_studies_padlock_scale"], errors='coerce').fillna(0)
+        df["New_padlock"] = df["number_of_studies_padlock_scale"]
+
+        conditions = [
+            (df["%_randomised_padlock_scale"] == "H"),
+            (df["%_high_eco_valid_padlock_scale"] == "H"),
+            (df["%_indep_eval_padlock_scale"] == "H"),
+            (df["%_since_2000_padlock_scale"] == "H"),
+            (df["%_median_attrit_reported_padlock_scale"] == "H")
+        ]
+        choices = [-1, -1, -1, -1, -1]
+
+        df["New_padlock"] = df["New_padlock"] + np.select(conditions, choices, default=0)
+
 
         df = df[[
             "strand",
@@ -4844,12 +4810,11 @@ class RiskofBias:
             df["New_padlock"][0] = 1
             df["MA_floor"] = True
         else:
-            print("default padlock floor of zero")
             df["MA_floor"] = False
 
         # write to disk
-        df.to_csv("test_padlock.csv", index=False, header=True)
-
+        outfile8 = self.data_extraction.save_dataframe(df, "_Padlocks.csv")
+        return outfile8
 
 class CustomFrames:
     def __init__(self, data_extractor):
@@ -5333,9 +5298,41 @@ def dataframe_8_output_display(functions, outfile):
 
     df8_table.add_column("Selection", justify="center", header_style="#fc5424")
     df8_table.add_column("Output directory", justify="left", header_style="#fc5424")
-    df8_table.add_row("Dataframe 7", outfile, style=WHITE)
+    df8_table.add_row("Dataframe 8", outfile, style=WHITE)
 
     return df8_table
+
+def dataframe_9_output_display(functions, outfile):
+    console = Console()
+    custom_style_df1 = Style(bgcolor=GREY)
+
+    df9_table = Table(show_header=True, 
+                      style=custom_style_df1,
+                      title=None,
+                      safe_box=False,
+                      box=box.SIMPLE)
+
+    df9_table.add_column("Selection", justify="center", header_style="#fc5424")
+    df9_table.add_column("Output directory", justify="left", header_style="#fc5424")
+    df9_table.add_row("Dataframe 9", outfile, style=WHITE)
+
+    return df9_table
+
+def create_output_display_table(dataframe_name, outfile):
+    console = Console()
+    custom_style_df1 = Style(bgcolor=GREY)
+
+    df_table = Table(show_header=True,
+                     style=custom_style_df1,
+                     title=None,
+                     safe_box=False,
+                     box=box.SIMPLE)
+
+    df_table.add_column("Selection", justify="center", header_style="#fc5424")
+    df_table.add_column("Output directory", justify="left", header_style="#fc5424")
+    df_table.add_row(dataframe_name, outfile, style=WHITE)
+
+    return df_table
 
 
 def input_file_info_display(data_file):
