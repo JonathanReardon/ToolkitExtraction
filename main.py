@@ -1,12 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import time
-
-
 __author__ = "Jonathan Reardon"
 
-import os
 import pandas as pd
 
 from rich import print
@@ -37,6 +33,7 @@ from src.funcs import (
     dataframe_7_output_display,
     dataframe_8_output_display,
     dataframe_9_output_display,
+    dataframe_10_output_display,
     input_file_info_display,
     main_menu_display,
     main_menu_display1,
@@ -130,7 +127,6 @@ def custom_outcome_vars_1():
         main_table3.add_row(f"{idx+10}", row_data, style=row_styles2[idx - 1])
     
     return main_table3
-
 
 
 def get_user_input():
@@ -246,6 +242,17 @@ def main():
 
                 data_cleaning_option = get_user_input()
             case 7:
+                outfile7 = data_frame_compilation.getOutcomeData(save_file=True)
+                functions = [data_frame_compilation.getOutcomeData]
+
+                # Display main menu
+                main_menu_display1(functions, outfile7, dataframe_7_output_display)
+
+                # Crate input file display table
+                input_file_info_display(data_file)
+                data_cleaning_option = get_user_input()
+
+            case 8:
                 # Create instance of risk of bias class
                 rob = RiskofBias(json_extractor)
                 # Combine and save data frame
@@ -253,37 +260,37 @@ def main():
                 outfile7=rob.save_dataframe()
 
                 # Display main menu
-                main_menu_display1(functions, outfile7, dataframe_7_output_display)
-
-                # Crate input file display table
-                input_file_info_display(data_file)
-
-                data_cleaning_option = get_user_input()
-            case 8:
-                # Create instance of risk of bias class
-                rob = RiskofBias(json_extractor)
-                # Combine and save data frame
-                functions = rob.compile()
-                outfile8 = rob.padlocks()
-                # Display main menu
-                main_menu_display1(functions, outfile8, dataframe_8_output_display)
+                main_menu_display1(functions, outfile7, dataframe_8_output_display)
 
                 # Crate input file display table
                 input_file_info_display(data_file)
 
                 data_cleaning_option = get_user_input()
             case 9:
-                _, outfile9 = data_frame_compilation.make_references(save_file=True)
-                functions = [data_frame_compilation.make_references]
-
+                # Create instance of risk of bias class
+                rob = RiskofBias(json_extractor)
+                # Combine and save data frame
+                functions = rob.compile()
+                outfile8 = rob.padlocks()
                 # Display main menu
-                main_menu_display1(functions, outfile9, dataframe_9_output_display)
+                main_menu_display1(functions, outfile8, dataframe_9_output_display)
 
                 # Crate input file display table
                 input_file_info_display(data_file)
 
                 data_cleaning_option = get_user_input()
             case 10:
+                _, outfile9 = data_frame_compilation.make_references(save_file=True)
+                functions = [data_frame_compilation.make_references]
+
+                # Display main menu
+                main_menu_display1(functions, outfile9, dataframe_10_output_display)
+
+                # Crate input file display table
+                input_file_info_display(data_file)
+
+                data_cleaning_option = get_user_input()
+            case 11:
                 console = Console()
                 console.clear()
 
@@ -551,9 +558,6 @@ def main():
                     console.print("Thanks for using the EEF Toolkit Data Extractor!")
                 else: 
                     console.print("No data selected, thanks for using the EEF Teaching and Learning Toolkit Extractor.")
-                break
-            case 9:
-                df = data_frame_compilation.getOutcomeData(save_file=True)
                 break
 
 if __name__ == "__main__":

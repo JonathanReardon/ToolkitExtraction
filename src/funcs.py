@@ -3842,7 +3842,6 @@ class RiskofBias:
         self.year_df['pub_year_risk_value'] = np.select(conditions, choices_val, default="NA")
 
         return self.year_df """
-
     
     def rob_perc_attri(self):
         self.overall_percent_attrition_Comments_df.replace('%', '', regex=True, inplace=True)
@@ -3889,7 +3888,6 @@ class RiskofBias:
         self.overall_percent_attrition_Comments_df['attri_perc_info_risk_value'] = np.select(conditions, choices_val, default="NA")
 
         return self.overall_percent_attrition_Comments_df """
-
 
     def rob_clustering(self):
 
@@ -3944,7 +3942,6 @@ class RiskofBias:
         
         return self.clustering_df """
 
-
     def rob_tkit_es_type(self):
         self.toolkit_es_type = pd.DataFrame(self.toolkit_es_type)
 
@@ -3975,7 +3972,6 @@ class RiskofBias:
 
         self.toolkit_es_type["out_es_type_risk_value"] = np.select(conditions, choices, default="NA")
         return self.toolkit_es_type
-    
 
     def rob_tkit_test_type(self):
         self.toolkit_test_type = pd.DataFrame(self.toolkit_test_type)
@@ -4035,7 +4031,6 @@ class RiskofBias:
             conditions, choices, default="NA")
         return self.sample_size_Comments_df
 
-
     def rob_pub_type(self):
         self.publicationtype_df["pub_type_raw"] = self.publicationtype_df["pub_type_raw"].apply(lambda x: ",".join(x) if isinstance(x, list) else x)
 
@@ -4064,7 +4059,6 @@ class RiskofBias:
         self.publicationtype_df["pub_type_risk_value"] = np.select(conditions, choices, default="NA")
         return self.publicationtype_df
     
-
     def rob_part_assign(self):
 
         conditions = [
@@ -4426,7 +4420,7 @@ class RiskofBias:
     
 
     def save_dataframe(self):
-        outfile7 = self.data_extraction.save_dataframe(self.risk_of_bias_df, "_Risk_of_Bias.csv")
+        outfile7 = self.data_extraction.save_dataframe(self.risk_of_bias_df, "_Study_Security.csv")
         return outfile7
     
 
@@ -5155,16 +5149,21 @@ def display_main_menu():
     main_table.add_column("Selection", header_style=selection_style, style=column_style)
     main_table.add_column("Description", header_style=description_style, style=column_style)
 
-    main_table.add_row("1. Dataframe 1",      "Study, Research & Design Variables")
-    main_table.add_row("2. Dataframe 2",      "Intervention Details")
-    main_table.add_row("3. Sample Size",      "Sample size variables")
-    main_table.add_row("4. Effect Size A",    "Descriptive Statistics")
-    main_table.add_row("5. Effect Size B",    "Outcome Details")
-    main_table.add_row("6. Data Analysis",    "Key variables for data analysis")
-    main_table.add_row("7. Risk of Bias",     "Risk of bias calculation")
-    main_table.add_row("8. References",       "Variables for constructing study references")
-    main_table.add_row("9. Custom Selection", "Select your own custom data frame")
-    main_table.add_row("0. EXIT", "")
+    main_table.add_row(" 1. Dataframe 1",      "Study, Research & Design Variables")
+    main_table.add_row(" 2. Dataframe 2",      "Intervention Details")
+    main_table.add_row(" 3. Sample Size",      "Sample size variables")
+    main_table.add_row(" 4. Effect Size A",    "Descriptive Statistics")
+    main_table.add_row(" 5. Effect Size B",    "Outcome Details")
+    main_table.add_row(" 6. Data Analysis",    "Key variables for data analysis")
+    main_table.add_row(" 7. Outcome Data",     "Raw outcome data")
+    main_table.add_row(" 8. Study Security",     "Study Security calculations")
+    main_table.add_row(" 9. Padlocks",       "Strand level padlock data")
+    main_table.add_row("10. References",     "Data for constructing study references")
+    main_table.add_row("11. Custom Selection", "Select your own custom data frame")
+
+    main_table.add_row("", "")
+
+    main_table.add_row(" 0. EXIT", "")
     return main_table
 
 
@@ -5318,6 +5317,23 @@ def dataframe_9_output_display(functions, outfile):
 
     return df9_table
 
+def dataframe_10_output_display(functions, outfile):
+    console = Console()
+    custom_style_df1 = Style(bgcolor=GREY)
+
+    df9_table = Table(show_header=True, 
+                      style=custom_style_df1,
+                      title=None,
+                      safe_box=False,
+                      box=box.SIMPLE)
+
+    df9_table.add_column("Selection", justify="center", header_style="#fc5424")
+    df9_table.add_column("Output directory", justify="left", header_style="#fc5424")
+    df9_table.add_row("Dataframe 10", outfile, style=WHITE)
+
+    return df9_table
+
+
 def create_output_display_table(dataframe_name, outfile):
     console = Console()
     custom_style_df1 = Style(bgcolor=GREY)
@@ -5373,9 +5389,11 @@ def main_menu_display():
         "[bold #fc5424]Main Menu[/bold #fc5424] [#FFFFFF]to generate various dataframes containing data extracted "
         "from an input [bold #fc5424]JSON[/bold #fc5424] [#FFFFFF]datafile produced by the EEF Education Evidence "
         "Database.\n\n[bold #fc5424]Options 1-5[/bold #fc5424] [#FFFFFF]include our own custom dataframes "
-        "for data cleaning prior to analysis.[/#FFFFFF] [bold #fc5424]Option 6[/bold #fc5424] [#FFFFFF]gemerates the "
-        "final dataframe(s) used in our meta-analyses. [bold #fc5424]Option 7[/bold #fc5424] produces a bespoke risk of bias dataframe. [/#FFFFFF][bold #fc5424]Option 8[/bold #fc5424] [#FFFFFF]compiles "
-        "the necessary data for constructing study references. Finally, [/#FFFFFF][bold #fc5424]Option 9[/bold #fc5424] "
+        "for data cleaning prior to analysis.[/#FFFFFF] [bold #fc5424]Option 6[/bold #fc5424] [#FFFFFF]generates the "
+        "final dataframe(s) used in our meta-analyses. [bold #fc5424]Option 7[/bold #fc5424] produces raw (unordered) "
+        "outcome data. [bold #fc5424]Option 8[/bold #fc5424] produces a bespoke study security dataframe. "
+        "[/#FFFFFF][bold #fc5424]Option 9[/bold #fc5424] produces a strand-level 'padlocks' dataframe. [bold #fc5424]Option 10[/bold #fc5424] [#FFFFFF]compiles "
+        "the necessary data for constructing study references. Finally, [/#FFFFFF][bold #fc5424]Option 11[/bold #fc5424] "
         "[#FFFFFF]allows you to create your own custom variable dataframe.[/#FFFFFF]"
     )
     top_menu_style = Style(bgcolor=GREY)
@@ -5424,7 +5442,7 @@ def main_menu_display():
         padding=(1, 2),
         title_align="center",
         style=custom_style_main,
-        height=44,
+        height=46,
         width=120,
     )
 
