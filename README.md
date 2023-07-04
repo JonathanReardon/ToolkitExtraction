@@ -66,6 +66,17 @@ All output dataframes will be saved within the 'output' directory, with the dire
 
 ## Dataframe 1: Study, Research and Design Variables
 
+This dataframe contains 'raw', 'ht', 'info', and 'CLEAN' data types.
+
+
+| Data Type | Description | Number of Columns |
+| --- | --- | :----: |
+|  `_raw` | raw data as input by the data coders | 21 |
+|  `_ht` | text highlighted from the manuscript | 20 |
+|  `_info` | any 'user' entered info | 21 |
+| `_CLEAN`  | empty columns for data cleaning notes | 23 |
+|   | **Total Number of Columns** | **85** |
+
 <details>
 
 <summary>Further details</summary>
