@@ -476,6 +476,86 @@ This dataframe contains 'raw' and 'info' data types, as well as one custom defin
 
 ## Study Security Dataframe
 
+This dataframe contains 'raw' and 'info' data types, as well as 44 custom columns used to assess the variables considered to be at risk of affecting research validity or bias.
+
+| Data Type | Description | Number of Columns |
+| --- | --- | :----: |
+|  `_raw` | raw data as input by the data coders | 17 |
+|  `_ht` | text highlighted from the manuscript | 0 |
+|  `_info` | any 'user' entered info | 3 |
+| `_CLEAN`  | empty columns for data cleaning notes | 0 |
+| `*custom*`  | user defined calculation | 44 |
+|   | **Total Number of Columns** | **64** |
+
+### Study Security Risk Assessment
+
+14 variables are currently identified as having the potential to negatively affect study validity or introduce bias. Values associated with these variables are converted to a 3 point scale (high/medium/low risk).
+
+| Variable | Condition | Risk |
+| --- | --- | --- |
+|  `Publication Year` | < 1980 | High Risk |
+|                   | > 1979 and < 2000 | Medium Risk |
+|                   | > 1999 | Low Risk |
+|  `Attrition %` | > 19 | High Risk |
+|                | > 9 and < 20 | Medium Risk |
+|                | < 10 | Low Risk |
+|  `Cluster Analysis` | "Yes" | Medium Risk |
+|                     | "No" | High Risk |
+|  `Effect Size Type` | "Post-test unadjusted" | High Risk |
+|                     | "Pre-post gain" | Medium Risk |
+|                     | "Post-test adjusted for baseline attainment" | Low Risk |
+|                     | "Post-test adjusted for baseline attainment" | Low Risk |
+|  `Test Type` | "Test type: Researcher developed test" | High Risk |
+|              | "Test type: School-developed test" | Medium Risk |
+|              | "Test type: Standardised test" | Low Risk |
+|              | "Test type: National test" | Low Risk |
+|              | "Test type: International tests" | Low Risk |
+|  `Sample Size` | <= 30 | High Risk |
+|                | > 30 and < 100 | Medium Risk |
+|                | "Test type: Standardised test" | Low Risk |
+|                | > 99 | Low Risk |
+|  `Publication Type` | "Book or book chapter" | Medium Risk |
+|                | "Conference paper" | Medium Risk |
+|                | "Other" | Medium Risk |
+|                | "Journal article" | Low Risk |
+|                | "Dissertation or thesis" | Low Risk |
+|                | "Technical report" | Low Risk |
+|  `Participant Assignment` | "Regression discontinuity" | Medium Risk |
+|                | "Retrospective Quasi Experimental Design (QED)" | Medium Risk |
+|                | "Not assigned - naturally occurring sample" | Medium Risk |
+|                | "Unclear" | Medium Risk |
+|                | "Non-random, not matched prior to treatment" | Medium Risk |
+|                | "Non-random, but matched" | Medium Risk |
+|                | "Random" | Low Risk |
+|  `Randomisation` | "No/Unclear" | Medium Risk |
+|                | "Not applicable" | Medium Risk |
+|                | "Yes" | Low Risk |
+|  `Ecological Validity` | "Unclear" | High Risk |
+|                | "Low ecological validity" | High Risk |
+|                | "High ecological validity" | Low Risk |
+|  `Number of Schools` | 1 | High Risk |
+|                | > 1 and < 6 | Medium Risk |
+|                | > 5 | Low Risk |
+|  `Number of Classes` | 1 | High Risk |
+|                | > 1 and < 6 | Medium Risk |
+|                | > 5 | Low Risk |
+|  `Intervention Delivery` | "Unclear/not specified" | High Risk |
+|                | "Peers" | High Risk |
+|                | "Digital technology" | High Risk |
+|                | "Lay persons/volunteers" | Medium Risk |
+|                | "Teaching assistants" | Medium Risk |
+|                | "Digital technology" | Medium Risk |
+|                | "Parents/carers" | Medium Risk |
+|                | "External teachers" | Medium Risk |
+|                | "Class teachers" | Low Risk |
+|  `Intervention Evaluation` | "The developer" | Medium Risk |
+|                | "A different organization paid by developer" | Medium Risk |
+|                | "Unclear/not stated" | Medium Risk |
+|                | "An organization commissioned independently to evaluate" | Low Risk |
+|  `Comparability` | "No" | Medium Risk |
+|                | "Unclear or details not provided" | Medium Risk |
+|                | "Yes" | Low Risk |
+
 <details>
 
 <summary>Further details</summary>
