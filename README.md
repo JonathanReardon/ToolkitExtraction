@@ -501,11 +501,11 @@ This dataframe contains 'raw' and 'info' data types, as well as 44 custom column
 |                | < 10 | Low Risk |
 |  `Cluster Analysis` | "Yes" | Medium Risk |
 |                     | "No" | High Risk |
-|  `Effect Size Type` | "Post-test unadjusted" | High Risk |
+|  `Outcome Effect Size Type` | "Post-test unadjusted" | High Risk |
 |                     | "Pre-post gain" | Medium Risk |
 |                     | "Post-test adjusted for baseline attainment" | Low Risk |
 |                     | "Post-test adjusted for baseline attainment" | Low Risk |
-|  `Test Type` | "Test type: Researcher developed test" | High Risk |
+|  `Outcome Test Type` | "Test type: Researcher developed test" | High Risk |
 |              | "Test type: School-developed test" | Medium Risk |
 |              | "Test type: Standardised test" | Low Risk |
 |              | "Test type: National test" | Low Risk |
