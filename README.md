@@ -68,7 +68,6 @@ All output dataframes will be saved within the 'output' directory, with the dire
 
 This dataframe contains 'raw', 'ht', 'info', and 'CLEAN' data types.
 
-
 | Data Type | Description | Number of Columns |
 | --- | --- | :----: |
 |  `_raw` | raw data as input by the data coders | 21 |
@@ -87,7 +86,7 @@ This dataframe contains 'raw', 'ht', 'info', and 'CLEAN' data types.
 | `Author`                         | `raw`           | `pub_author`      |
 | `Year`                           | `raw`           | `pub_year`        |
 | `Abstract`                       | `raw`           | `abstract`        |
-| `Admin Strand`                   | `raw, info`     | `strand`          |
+| `Admin Strand`                   | `raw, info`     | `strand`      |
 | `Toolkit Version`                | `raw`           | `toolkit_version` |
 | `Publication Type EPPI`          | `raw`           | `pub_eppi`        |
 | `Publication Type`               | `raw, ht, info` | `pub_type_raw`    |
@@ -116,6 +115,16 @@ This dataframe contains 'raw', 'ht', 'info', and 'CLEAN' data types.
 
 ## Dataframe 2: Intervention Details
 
+This dataframe contains 'raw', 'ht', 'info', and 'CLEAN' data types.
+
+| Data Type | Description | Number of Columns |
+| --- | --- | :----: |
+|  `_raw` | raw data as input by the data coders | 23 |
+|  `_ht` | text highlighted from the manuscript | 21 |
+|  `_info` | any 'user' entered info | 21 |
+| `_CLEAN`  | empty columns for data cleaning notes | 22 |
+|   | **Total Number of Columns** | **86** |
+
 <details>
 
 <summary>Further details</summary>
@@ -125,7 +134,7 @@ This dataframe contains 'raw', 'ht', 'info', and 'CLEAN' data types.
 | `Eppi ID`                                    | `raw`           | `id`              |
 | `Author`                                     | `raw`           | `pub_author`      |
 | `Year`                                       | `raw`           | `pub_year`        |
-| `Admin Strand`                               | `raw, info`     | `strand`          |
+| `Admin Strand`                               | `raw, info`     | `strand`      |
 | `Toolkit Version`                            | `raw`           | `toolkit_version` |
 | `Intervention Name`                          | `ht, info`      | `int_name`        |
 | `Intervention Description`                   | `ht, info`      | `int_desc`        |
@@ -154,6 +163,16 @@ This dataframe contains 'raw', 'ht', 'info', and 'CLEAN' data types.
 
 ## Dataframe 3: Sample Size Variables
 
+This dataframe contains 'raw', 'ht', 'info', and 'CLEAN' data types.
+
+| Data Type | Description | Number of Columns |
+| --- | --- | :----: |
+|  `_raw` | raw data as input by the data coders | 9 |
+|  `_ht` | text highlighted from the manuscript | 15 |
+|  `_info` | any 'user' entered info | 16 |
+| `_CLEAN`  | empty columns for data cleaning notes | 17 |
+|   | **Total Number of Columns** | **57** |
+
 <details>
 
 <summary>Further details</summary>
@@ -163,7 +182,7 @@ This dataframe contains 'raw', 'ht', 'info', and 'CLEAN' data types.
 | `Eppi ID`                                  | `raw`           | `id`              |
 | `Author`                                   | `raw`           | `pub_author`      |
 | `Year`                                     | `raw`           | `pub_year`        |
-| `Admin Strand`                             | `raw, info`     | `strand`          |
+| `Admin Strand`                             | `raw, info`     | `strand`      |
 | `Toolkit Version`                          | `raw`           | `toolkit_version` |
 | `Sample Size`                              | `info, ht`      | `sample_analysed` |
 | `Gender`                                   | `raw, ht, info` | `part_gen`        |
@@ -186,6 +205,16 @@ This dataframe contains 'raw', 'ht', 'info', and 'CLEAN' data types.
 
 ## Dataframe 4: Effect Size A \[Descriptive Statistics\]
 
+This dataframe contains 'raw', 'ht', 'info', and 'CLEAN' data types.
+
+| Data Type | Description | Number of Columns |
+| --- | --- | :----: |
+|  `_raw` | raw data as input by the data coders | 7 |
+|  `_ht` | text highlighted from the manuscript | 34 |
+|  `_info` | any 'user' entered info | 35 |
+| `_CLEAN`  | empty columns for data cleaning notes | 34 |
+|   | **Total Number of Columns** | **110** |
+
 <details>
 
 <summary>Further details</summary>
@@ -195,7 +224,7 @@ This dataframe contains 'raw', 'ht', 'info', and 'CLEAN' data types.
 | `Eppi ID`                                         | `raw`           | `id`              |
 | `Author`                                          | `raw`           | `author`          |
 | `Year`                                            | `raw`           | `pub_year`        |
-| `Admin Strand`                                    | `raw, info`     | `strand`          |
+| `Admin Strand`                                    | `raw, info`     | `strand`      |
 | `Toolkit Version`                                 | `raw`           | `toolkit_version` |
 | `Description Statistics Primary Outcome Reported` | `raw, ht, info` | `desc_stats`      |
 | `Intervention Group Number`                       | `ht, info`      | `n_treat`         |
@@ -235,6 +264,16 @@ This dataframe contains 'raw', 'ht', 'info', and 'CLEAN' data types.
 </details>
 
 ## Dataframe 5: Effect Size B \[Outcome Details\]
+
+This dataframe contains 'raw', 'info', and 'CLEAN' data types.
+
+| Data Type | Description | Number of Columns |
+| --- | --- | :----: |
+|  `_raw` | raw data as input by the data coders | 118 |
+|  `_ht` | text highlighted from the manuscript | 0 |
+|  `_info` | any 'user' entered info | 1 |
+| `_CLEAN`  | empty columns for data cleaning notes | 113 |
+|   | **Total Number of Columns** | **232** |
 
 <details>
 
@@ -366,6 +405,17 @@ This dataframe contains 'raw', 'ht', 'info', and 'CLEAN' data types.
 
 ## Main Data Analysis Dataframe
 
+This dataframe contains 'raw' and 'info' data types, as well as one custom defined 'fsm_50' column which returns a value of 'TRUE' where fsm_perc_info (percentage of students on free school meals) is 50 or above, and 'FALSE' for values below  50.
+
+| Data Type | Description | Number of Columns |
+| --- | --- | :----: |
+|  `_raw` | raw data as input by the data coders | 40 |
+|  `_ht` | text highlighted from the manuscript | 0 |
+|  `_info` | any 'user' entered info | 7 |
+| `_CLEAN`  | empty columns for data cleaning notes | 0 |
+| `*custom*`  | user defined calculation | 1 |
+|   | **Total Number of Columns** | **48** |
+
 <details>
 
 <summary>Further details</summary>
@@ -376,7 +426,7 @@ This dataframe contains 'raw', 'ht', 'info', and 'CLEAN' data types.
 | `Author`                         | `raw`       | `pub_author`        |
 | `Year`                           | `raw`       | `pub_year`          |
 | `Publication Type`               | `raw`       | `pub_type`          |
-| `Admin Strand`                   | `raw, info` | `strand`            |
+| `Admin Strand`                   | `raw`       | `strand`            |
 | `Toolkit Version`                | `raw`       | `toolkit_version`   |
 | `Toolkit Outcome`                | `raw`       | `out_out_type_tool` |
 | `Toolkit SMD`                    | `raw`       | `smd_tool`          |
