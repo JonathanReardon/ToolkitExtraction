@@ -119,24 +119,40 @@ def custom_general_vars1():
     return main_table2
 
 # table1 
-row_styles2 = ["#FFFFFF"] * 16
+row_styles2 = ["#FFFFFF"] * 32
 row_data_list2 = [
-    "Outcome Title", 
-    "Outcome Description", 
-    "Outcome Type", 
-    "SMD", 
-    "SE",
-    "CI (lower)",
-    "CI (upper)",
-    "Outcome Measure", 
-    "Outcome Group1 N", 
-    "Outcome Group1 Mean",
-    "Outcome Group1 SD", 
-    "Outcome Group2 N",
-    "Outcome Group2 Mean",
-    "Outcome Group2 SD",
-    "Outcome Test Type",
-    "Outcome Effect Size Type",
+    "(primary) Title", 
+    "(primary) Description", 
+    "(primary) Type", 
+    "(primary) SMD", 
+    "(primary) SE",
+    "(primary) CI (lower)",
+    "(primary) CI (upper)",
+    "(primary) Measure", 
+    "(primary) Group1 N", 
+    "(primary) Group1 Mean",
+    "(primary) Group1 SD", 
+    "(primary) Group2 N",
+    "(primary) Group2 Mean",
+    "(primary) Group2 SD",
+    "(primary) Test Type",
+    "(primary) Effect Size Type",
+    "(reading) Title",
+    "(reading) Description", 
+    "(reading) Type", 
+    "(reading) SMD", 
+    "(reading) SE",
+    "(reading) CI (lower)",
+    "(reading) CI (upper)",
+    "(reading) Measure", 
+    "(reading) Group1 N", 
+    "(reading) Group1 Mean",
+    "(reading) Group1 SD", 
+    "(reading) Group2 N",
+    "(reading) Group2 Mean",
+    "(reading) Group2 SD",
+    "(reading) Test Type",
+    "(reading) Effect Size Type",
 ]
 
 def custom_outcome_vars_1():
@@ -167,13 +183,84 @@ def custom_outcome_vars_1():
     )
 
     main_table3.add_column("", header_style=header_style, style=column_style, width=3)
-    main_table3.add_column("Toolkit Primary Outcome", header_style=header_style, style=column_style, width=30)
+    main_table3.add_column("Outcome Specific Data", header_style=header_style, style=column_style, width=30)
 
     for idx, row_data in enumerate(row_data_list2, start=1):
         main_table3.add_row(f"{idx+36}", row_data, style=row_styles2[idx - 1])
     
     return main_table3
 
+# table1 
+row_styles3 = ["#FFFFFF"] * 32
+row_data_list3 = [
+    "(writing) Title", 
+    "(writing) Description", 
+    "(writing) Type", 
+    "(writing) SMD", 
+    "(writing) SE",
+    "(writing) CI (lower)",
+    "(writing) CI (upper)",
+    "(writing) Measure", 
+    "(writing) Group1 N", 
+    "(writing) Group1 Mean",
+    "(writing) Group1 SD", 
+    "(writing) Group2 N",
+    "(writing) Group2 Mean",
+    "(writing) Group2 SD",
+    "(writing) Test Type",
+    "(writing) Effect Size Type",
+    "(math) Title",
+    "(math) Description", 
+    "(math) Type", 
+    "(math) SMD", 
+    "(math) SE",
+    "(math) CI (lower)",
+    "(math) CI (upper)",
+    "(math) Measure", 
+    "(math) Group1 N", 
+    "(math) Group1 Mean",
+    "(math) Group1 SD", 
+    "(math) Group2 N",
+    "(math) Group2 Mean",
+    "(math) Group2 SD",
+    "(math) Test Type",
+    "(math) Effect Size Type",
+]
+
+def custom_outcome_vars_2():
+    """
+    Displays a Rich list of [toolkit]'outcome' variables for the custom data frame builder
+    - Outcome Title
+    - Outcome Description
+    - Outcome Type
+    - SMD
+    - SE
+    - Outcome Measure
+    - Outcome Group1 N
+    - Outcome Group1 Mean
+    - Outcome Group1 SD
+    - Outcome Group2 N
+    """
+    console = Console()
+    custom_style_main = Style(bgcolor="#37474f")
+
+    table_title_style = Style(italic=False, bgcolor="#37474f", color="#fc5424", bold=True)
+    header_style = Style(italic=False, bgcolor="#37474f", color="#fc5424", bold=True)
+    column_style = Style(bgcolor="#37474f", color="#fc5424", bold=True) 
+
+    main_table4 = Table(show_header=True, 
+                        box=box.SIMPLE,
+                        highlight=False,
+                        title_style=table_title_style,                  
+    )
+
+    main_table4.add_column("", header_style=header_style, style=column_style, width=3)
+    main_table4.add_column("Outcome Specific Data", header_style=header_style, style=column_style, width=30)
+
+    for idx, row_data in enumerate(row_data_list3, start=1):
+        main_table4.add_row(f"{idx+68}", row_data, style=row_styles3[idx - 1])
+    
+    return main_table4
 
 def get_user_input():
     while True:
@@ -344,22 +431,25 @@ def main():
                 main_table2 = custom_general_vars1()
                 # Display list of outcome vars e.g. title, description, type etc.
                 main_table3 = custom_outcome_vars_1()
+                # Display list of outcome vars e.g. title, description, type etc.
+                main_table4 = custom_outcome_vars_2()
 
                 custom_style_main = Style(bgcolor="#37474f")
                 custom_style_outer = Style(bgcolor="#37474f")
 
                 panel1 = Panel(main_table2, style=custom_style_main, border_style="#37474f")
                 panel2 = Panel(main_table3, style=custom_style_main, border_style="#37474f")
+                panel3 = Panel(main_table4, style=custom_style_main, border_style="#37474f")
 
                 # Combine the panels horizontally
-                columns = Columns([panel1, panel2])
+                columns = Columns([panel1, panel2, panel3])
 
                 # Create a larger panel with white background and black text to house the columns
                 panel = Panel(columns, 
                                 title="Custom Data Selection", 
                                 style=custom_style_outer, 
                                 border_style="#FFFFFF",
-                                width=94)
+                                width=200)
 
                 # Print the panel
                 console.print(panel)
@@ -374,10 +464,10 @@ def main():
                     try:
                         console.print("\nAdd variables to your data frame or 0 to Save file and exit")
                         num = int(Prompt.ask("Selection"))
-                        if num < 0 or num > 60:
+                        if num < 0 or num > 100:
                             raise ValueError
                     except ValueError:
-                        print("Error: invalid input. Please enter a number from 0 to 51.\n")
+                        print("Error: invalid input. Please enter a number from 0 to 100.\n")
                         continue
 
                     match num:
@@ -690,9 +780,6 @@ def main():
                                 used_options.append("rand_info")
                             else:
                                 print("You have already selected this option!")
-
-
-
                         #/*************************/#
                         #/ TOOLKIT PRIMARY OUTCOME /#
                         #/*************************/#
@@ -856,14 +943,495 @@ def main():
                                     used_options.append("out_es_type_tool")
                                 else:
                                     print("You have already selected this option!")
-
-
-
-
-
-
-
-
+                        #/*************************/#
+                        #/     READING OUTCOME     /#
+                        #/*************************/#
+                        case 53:
+                                if "out_tit_red" not in used_options:
+                                    row_styles2[num - 37] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_out_tit_red = df_out.out_tit_red
+                                    dataframes.append(df_out_tit_red)
+                                    used_options.append("out_tit_red")
+                                else:
+                                    print("You have already selected this option!")
+                        case 54:
+                                if "out_desc_red" not in used_options:
+                                    row_styles2[num - 37] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_out_desc_red = df_out.out_desc_red
+                                    dataframes.append(df_out_desc_red)
+                                    used_options.append("out_desc_red")
+                                else:
+                                    print("You have already selected this option!")
+                        case 55:
+                                if "out_type_red" not in used_options:
+                                    row_styles2[num - 37] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_out_type_red = df_out.out_type_red
+                                    dataframes.append(df_out_type_red)
+                                    used_options.append("out_type_red")
+                                else:
+                                    print("You have already selected this option!")
+                        case 56:
+                                if "smd_red" not in used_options:
+                                    row_styles2[num - 37] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_smd_red = df_out.smd_red
+                                    dataframes.append(df_smd_red)
+                                    used_options.append("smd_red")
+                                else:
+                                    print("You have already selected this option!")
+                        case 57:
+                                if "se_red" not in used_options:
+                                    row_styles2[num - 37] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_se_red = df_out.se_red
+                                    dataframes.append(df_se_red)
+                                    used_options.append("se_red")
+                                else:
+                                    print("You have already selected this option!")
+                        case 58:
+                                if "ci_lower_red" not in used_options:
+                                    row_styles2[num - 37] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_ci_lower_red = df_out.ci_lower_red
+                                    dataframes.append(df_ci_lower_red)
+                                    used_options.append("ci_lower_red")
+                                else:
+                                    print("You have already selected this option!")
+                        case 59:
+                                if "ci_upper_red" not in used_options:
+                                    row_styles2[num - 37] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_ci_upper_red = df_out.ci_upper_red
+                                    dataframes.append(df_ci_upper_red)
+                                    used_options.append("ci_upper_red")
+                                else:
+                                    print("You have already selected this option!")
+                        case 60:
+                                if "out_measure_red" not in used_options:
+                                    row_styles2[num - 37] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_out_measure_red = df_out.out_measure_red
+                                    dataframes.append(df_out_measure_red)
+                                    used_options.append("out_measure_red")
+                                else:
+                                    print("You have already selected this option!")
+                        case 61:
+                                if "out_g1_n_red" not in used_options:
+                                    row_styles2[num - 37] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g1_n_red = df_out.out_g1_n_red
+                                    dataframes.append(df_g1_n_red)
+                                    used_options.append("out_g1_n_red")
+                                else:
+                                    print("You have already selected this option!")
+                        case 62:
+                                if "out_g1_mean_red" not in used_options:
+                                    row_styles2[num - 37] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g1_mean_red = df_out.out_g1_mean_red
+                                    dataframes.append(df_g1_mean_red)
+                                    used_options.append("out_g1_mean_red")
+                                else:
+                                    print("You have already selected this option!")
+                        case 63:
+                                if "out_g1_sd_red" not in used_options:
+                                    row_styles2[num - 37] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g1_sd_red = df_out.out_g1_sd_red
+                                    dataframes.append(df_g1_sd_red)
+                                    used_options.append("out_g1_sd_red")
+                                else:
+                                    print("You have already selected this option!")
+                        case 64:
+                                if "out_g2_n_red" not in used_options:
+                                    row_styles2[num - 37] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g2_n_red = df_out.out_g2_n_red
+                                    dataframes.append(df_g2_n_red)
+                                    used_options.append("out_g2_n_red")
+                                else:
+                                    print("You have already selected this option!")
+                        case 65:
+                                if "out_g2_mean_red" not in used_options:
+                                    row_styles2[num - 37] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g2_mean_red = df_out.out_g2_mean_red
+                                    dataframes.append(df_g2_mean_red)
+                                    used_options.append("out_g2_mean_red")
+                                else:
+                                    print("You have already selected this option!")
+                        case 66:
+                                if "out_g2_sd_red" not in used_options:
+                                    row_styles2[num - 37] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g2_sd_red = df_out.out_g2_sd_red
+                                    dataframes.append(df_g2_sd_red)
+                                    used_options.append("out_g2_sd_red")
+                                else:
+                                    print("You have already selected this option!")
+                        case 67:
+                                if "out_test_type_raw_red" not in used_options:
+                                    row_styles2[num - 37] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_out_test_type_red = df_out.out_test_type_raw_red
+                                    dataframes.append(df_out_test_type_red)
+                                    used_options.append("out_test_type_raw_red")
+                                else:
+                                    print("You have already selected this option!")
+                        case 68:
+                                if "out_es_type_red" not in used_options:
+                                    row_styles2[num - 37] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_out_es_type_red = df_out.out_es_type_red
+                                    dataframes.append(df_out_es_type_red)
+                                    used_options.append("out_es_type_red")
+                                else:
+                                    print("You have already selected this option!")
+                        #/*************************/#
+                        #/     WRITING OUTCOME     /#
+                        #/*************************/#
+                        case 69:
+                                if "out_tit_wri" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_out_tit_wri = df_out.out_tit_wri
+                                    dataframes.append(df_out_tit_wri)
+                                    used_options.append("out_tit_wri")
+                                else:
+                                    print("You have already selected this option!")
+                        case 70:
+                                if "out_desc_wri" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_out_desc_wri = df_out.out_desc_wri
+                                    dataframes.append(df_out_desc_wri)
+                                    used_options.append("out_desc_wri")
+                                else:
+                                    print("You have already selected this option!")
+                        case 71:
+                                if "out_type_wri" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_out_type_wri = df_out.out_type_wri
+                                    dataframes.append(df_out_type_wri)
+                                    used_options.append("out_type_wri")
+                                else:
+                                    print("You have already selected this option!")
+                        case 72:
+                                if "smd_wri" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_smd_wri = df_out.smd_wri
+                                    dataframes.append(df_smd_wri)
+                                    used_options.append("smd_wri")
+                                else:
+                                    print("You have already selected this option!")
+                        case 73:
+                                if "se_wri" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_se_wri = df_out.se_wri
+                                    dataframes.append(df_se_wri)
+                                    used_options.append("se_wri")
+                                else:
+                                    print("You have already selected this option!")
+                        case 74:
+                                if "ci_lower_wri" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_ci_lower_wri = df_out.ci_lower_wri
+                                    dataframes.append(df_ci_lower_wri)
+                                    used_options.append("ci_lower_wri")
+                                else:
+                                    print("You have already selected this option!")
+                        case 75:
+                                if "ci_upper_wri" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_ci_upper_wri = df_out.ci_upper_wri
+                                    dataframes.append(df_ci_upper_wri)
+                                    used_options.append("ci_upper_wri")
+                                else:
+                                    print("You have already selected this option!")
+                        case 76:
+                                if "out_measure_wri" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_out_measure_wri = df_out.out_measure_wri
+                                    dataframes.append(df_out_measure_wri)
+                                    used_options.append("out_measure_wri")
+                                else:
+                                    print("You have already selected this option!")
+                        case 77:
+                                if "out_g1_n_wri" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g1_n_wri = df_out.out_g1_n_wri
+                                    dataframes.append(df_g1_n_wri)
+                                    used_options.append("out_g1_n_wri")
+                                else:
+                                    print("You have already selected this option!")
+                        case 78:
+                                if "out_g1_mean_wri" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g1_mean_wri = df_out.out_g1_mean_wri
+                                    dataframes.append(df_g1_mean_wri)
+                                    used_options.append("out_g1_mean_wri")
+                                else:
+                                    print("You have already selected this option!")
+                        case 79:
+                                if "out_g1_sd_wri" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g1_sd_wri = df_out.out_g1_sd_wri
+                                    dataframes.append(df_g1_sd_wri)
+                                    used_options.append("out_g1_sd_wri")
+                                else:
+                                    print("You have already selected this option!")
+                        case 80:
+                                if "out_g2_n_wri" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g2_n_wri = df_out.out_g2_n_wri
+                                    dataframes.append(df_g2_n_wri)
+                                    used_options.append("out_g2_n_wri")
+                                else:
+                                    print("You have already selected this option!")
+                        case 81:
+                                if "out_g2_mean_wri" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g2_mean_wri = df_out.out_g2_mean_wri
+                                    dataframes.append(df_g2_mean_wri)
+                                    used_options.append("out_g2_mean_wri")
+                                else:
+                                    print("You have already selected this option!")
+                        case 82:
+                                if "out_g2_sd_wri" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g2_sd_wri = df_out.out_g2_sd_wri
+                                    dataframes.append(df_g2_sd_wri)
+                                    used_options.append("out_g2_sd_wri")
+                                else:
+                                    print("You have already selected this option!")
+                        case 83:
+                                if "out_test_type_raw_wri" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_out_test_type_wri = df_out.out_test_type_raw_wri
+                                    dataframes.append(df_out_test_type_wri)
+                                    used_options.append("out_test_type_raw_wri")
+                                else:
+                                    print("You have already selected this option!")
+                        case 84:
+                                if "out_es_type_wri" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_out_es_type_wri = df_out.out_es_type_wri
+                                    dataframes.append(df_out_es_type_wri)
+                                    used_options.append("out_es_type_wri")
+                                else:
+                                    print("You have already selected this option!")
+                        #/*************************/#
+                        #/        MATH OUTCOME     /#
+                        #/*************************/#
+                        case 85:
+                                if "out_tit_math" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_out_tit_math = df_out.out_tit_math
+                                    dataframes.append(df_out_tit_math)
+                                    used_options.append("out_tit_math")
+                                else:
+                                    print("You have already selected this option!")
+                        case 86:
+                                if "out_desc_math" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_out_desc_math = df_out.out_desc_math
+                                    dataframes.append(df_out_desc_math)
+                                    used_options.append("out_desc_math")
+                                else:
+                                    print("You have already selected this option!")
+                        case 87:
+                                if "out_type_math" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_out_type_math = df_out.out_type_math
+                                    dataframes.append(df_out_type_math)
+                                    used_options.append("out_type_math")
+                                else:
+                                    print("You have already selected this option!")
+                        case 88:
+                                if "smd_math" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_smd_math = df_out.smd_math
+                                    dataframes.append(df_smd_math)
+                                    used_options.append("smd_math")
+                                else:
+                                    print("You have already selected this option!")
+                        case 89:
+                                if "se_math" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_se_math = df_out.se_math
+                                    dataframes.append(df_se_math)
+                                    used_options.append("se_math")
+                                else:
+                                    print("You have already selected this option!")
+                        case 90:
+                                if "ci_lower_math" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_ci_lower_math = df_out.ci_lower_math
+                                    dataframes.append(df_ci_lower_math)
+                                    used_options.append("ci_lower_math")
+                                else:
+                                    print("You have already selected this option!")
+                        case 91:
+                                if "ci_upper_math" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_ci_upper_math = df_out.ci_upper_math
+                                    dataframes.append(df_ci_upper_math)
+                                    used_options.append("ci_upper_math")
+                                else:
+                                    print("You have already selected this option!")
+                        case 92:
+                                if "out_measure_math" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_out_measure_math = df_out.out_measure_math
+                                    dataframes.append(df_out_measure_math)
+                                    used_options.append("out_measure_math")
+                                else:
+                                    print("You have already selected this option!")
+                        case 93:
+                                if "out_g1_n_math" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g1_n_math = df_out.out_g1_n_math
+                                    dataframes.append(df_g1_n_math)
+                                    used_options.append("out_g1_n_math")
+                                else:
+                                    print("You have already selected this option!")
+                        case 94:
+                                if "out_g1_mean_math" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g1_mean_math = df_out.out_g1_mean_math
+                                    dataframes.append(df_g1_mean_math)
+                                    used_options.append("out_g1_mean_math")
+                                else:
+                                    print("You have already selected this option!")
+                        case 95:
+                                if "out_g1_sd_math" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g1_sd_math = df_out.out_g1_sd_math
+                                    dataframes.append(df_g1_sd_math)
+                                    used_options.append("out_g1_sd_math")
+                                else:
+                                    print("You have already selected this option!")
+                        case 96:
+                                if "out_g2_n_math" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g2_n_math = df_out.out_g2_n_math
+                                    dataframes.append(df_g2_n_math)
+                                    used_options.append("out_g2_n_math")
+                                else:
+                                    print("You have already selected this option!")
+                        case 97:
+                                if "out_g2_mean_math" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g2_mean_math = df_out.out_g2_mean_math
+                                    dataframes.append(df_g2_mean_math)
+                                    used_options.append("out_g2_mean_math")
+                                else:
+                                    print("You have already selected this option!")
+                        case 98:
+                                if "out_g2_sd_math" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g2_sd_math = df_out.out_g2_sd_math
+                                    dataframes.append(df_g2_sd_math)
+                                    used_options.append("out_g2_sd_math")
+                                else:
+                                    print("You have already selected this option!")
+                        case 99:
+                                if "out_test_type_raw_math" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_out_test_type_math = df_out.out_test_type_raw_math
+                                    dataframes.append(df_out_test_type_math)
+                                    used_options.append("out_test_type_raw_math")
+                                else:
+                                    print("You have already selected this option!")
+                        case 100:
+                                if "out_es_type_math" not in used_options:
+                                    row_styles3[num - 69] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_out_es_type_math = df_out.out_es_type_math
+                                    dataframes.append(df_out_es_type_math)
+                                    used_options.append("out_es_type_math")
+                                else:
+                                    print("You have already selected this option!")
 
                         case _:
                             print("Error: invalid option selected")
@@ -873,20 +1441,22 @@ def main():
                         console = Console()
                         main_table2 = custom_general_vars1()
                         main_table3 = custom_outcome_vars_1()
+                        main_table4 = custom_outcome_vars_2()
                         console.clear()
 
                         panel1 = Panel(main_table2, style=custom_style_main, border_style="#37474f")
                         panel2 = Panel(main_table3, style=custom_style_main, border_style="#37474f")
+                        panel3 = Panel(main_table4, style=custom_style_main, border_style="#37474f")
 
                         # Combine the panels horizontally
-                        columns = Columns([panel1, panel2])
+                        columns = Columns([panel1, panel2, panel3])
 
                         # Create a larger panel with white background and black text to house the columns
                         panel = Panel(columns, 
                                       title="Custom Data Selection", 
                                       style=custom_style_outer, 
                                       border_style="#FFFFFF",
-                                      width=92)
+                                      width=200)
 
                         # Print the panel
                         console.print(panel)
