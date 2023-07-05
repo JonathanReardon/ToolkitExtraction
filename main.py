@@ -40,11 +40,44 @@ from src.funcs import (
 )
 
 # table1 
-row_styles1 = ["#FFFFFF"] * 10
+row_styles1 = ["#FFFFFF"] * 36
 row_data_list1 = [
-    "Study ID", "Author", "Year", "Abstract", "Admin Strand",
-    "Country", "Publication Type EPPI", "Publication Type",
-    "Educational Setting", "Student Age"
+    "Study ID", 
+    "Author", 
+    "Year", 
+    "Abstract", 
+    "Admin Strand",
+    "Country", 
+    "Publication Type EPPI", 
+    "Publication Type",
+    "Educational Setting", 
+    "Student Age",
+    "Strand",
+    "Ecological Validity",
+    "Number of Schools Int (info)",
+    "Number of Schools Int (ht)",
+    "Number of Schools Ctrl (info)",
+    "Number of Schools Ctrl (ht)",
+    "Number of Schools Total (info)",
+    "Number of Schools Total (ht)",
+    "Number of Classes Int (info)",
+    "Number of Classes Int (ht)",
+    "Number of Classes Ctrl (info)",
+    "Number of Classes Ctrl (ht)",
+    "Number of Classes Total (info)",
+    "Number of Classes Total (ht)",
+    "Participant Assignment (raw)",
+    "Participant Assignment (ht)",
+    "Participant Assignment (info)",
+    "Level of Assignment (raw)",
+    "Level of Assignment (ht)",
+    "Level of Assignment (info)",
+    "Study Design (raw)",
+    "Study Design (ht)",
+    "Study Design (info)",
+    "Randomisation (raw)",
+    "Randomisation (ht)",
+    "Randomisation (info)",
 ]
 
 highlight_style = "#fc5424"
@@ -86,11 +119,24 @@ def custom_general_vars1():
     return main_table2
 
 # table1 
-row_styles2 = ["#FFFFFF"] * 10
+row_styles2 = ["#FFFFFF"] * 16
 row_data_list2 = [
-    "Outcome Title", "Outcome Description", "Outcome Type", "SMD", "SE",
-    "Outcome Measure", "Outcome Group1 N", "Outcome Group1 Mean",
-    "Outcome Group1 SD", "Outcome Group2 N"
+    "Outcome Title", 
+    "Outcome Description", 
+    "Outcome Type", 
+    "SMD", 
+    "SE",
+    "CI (lower)",
+    "CI (upper)",
+    "Outcome Measure", 
+    "Outcome Group1 N", 
+    "Outcome Group1 Mean",
+    "Outcome Group1 SD", 
+    "Outcome Group2 N",
+    "Outcome Group2 Mean",
+    "Outcome Group2 SD",
+    "Outcome Test Type",
+    "Outcome Effect Size Type",
 ]
 
 def custom_outcome_vars_1():
@@ -124,7 +170,7 @@ def custom_outcome_vars_1():
     main_table3.add_column("Toolkit Primary Outcome", header_style=header_style, style=column_style, width=30)
 
     for idx, row_data in enumerate(row_data_list2, start=1):
-        main_table3.add_row(f"{idx+10}", row_data, style=row_styles2[idx - 1])
+        main_table3.add_row(f"{idx+36}", row_data, style=row_styles2[idx - 1])
     
     return main_table3
 
@@ -313,7 +359,7 @@ def main():
                                 title="Custom Data Selection", 
                                 style=custom_style_outer, 
                                 border_style="#FFFFFF",
-                                width=92)
+                                width=94)
 
                 # Print the panel
                 console.print(panel)
@@ -328,10 +374,10 @@ def main():
                     try:
                         console.print("\nAdd variables to your data frame or 0 to Save file and exit")
                         num = int(Prompt.ask("Selection"))
-                        if num < 0 or num > 20:
+                        if num < 0 or num > 60:
                             raise ValueError
                     except ValueError:
-                        print("Error: invalid input. Please enter a number from 0 to 20.\n")
+                        print("Error: invalid input. Please enter a number from 0 to 51.\n")
                         continue
 
                     match num:
@@ -418,23 +464,251 @@ def main():
                                 used_options.append("part_age_raw")
                             else:
                                 print("You have already selected this option!")
+                        case 11: 
+                            if "strand_raw" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                admin_strand_data = df.data_extraction.retrieve_data(admin_strand_output, "strand_raw")
+                                dataframes.append(admin_strand_data)
+                                used_options.append("strand_raw")
+                            else:
+                                print("You have already selected this option!")
+                        case 12: 
+                            if "eco_valid_raw" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                eco_valid_raw = df.data_extraction.retrieve_data(study_realism_output, "eco_valid_raw")
+                                dataframes.append(eco_valid_raw)
+                                used_options.append("eco_valid_raw")
+                            else:
+                                print("You have already selected this option!")
+                        #/*************************/#
+                        #/     NUMBER OF SCHOOLS   /#
+                        #/*************************/#
+                        case 13: 
+                            if "school_treat_info" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                number_of_school_int_info = df.data_extraction.retrieve_info(number_of_schools_intervention_output, "school_treat_info")
+                                dataframes.append(number_of_school_int_info)
+                                used_options.append("school_treat_info")
+                            else:
+                                print("You have already selected this option!")
+                        case 14: 
+                            if "school_treat_ht" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                number_of_school_int_ht = df.data_extraction.retrieve_ht(number_of_schools_intervention_output, "school_treat_ht")
+                                dataframes.append(number_of_school_int_ht)
+                                used_options.append("school_treat_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 15: 
+                            if "school_cont_info" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                number_of_school_control_info = df.data_extraction.retrieve_info(number_of_schools_control_output, "school_cont_info")
+                                dataframes.append(number_of_school_control_info)
+                                used_options.append("school_cont_info")
+                            else:
+                                print("You have already selected this option!")
+                        case 16: 
+                            if "school_cont_ht" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                number_of_school_control_ht = df.data_extraction.retrieve_ht(number_of_schools_control_output, "school_cont_ht")
+                                dataframes.append(number_of_school_int_ht)
+                                used_options.append("school_cont_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 17: 
+                            if "school_total_info" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                number_of_school_total_info = df.data_extraction.retrieve_info(number_of_schools_total_output, "school_total_info")
+                                dataframes.append(number_of_school_total_info)
+                                used_options.append("school_total_info")
+                            else:
+                                print("You have already selected this option!")
+                        case 18: 
+                            if "school_total_ht" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                number_of_school_total_ht = df.data_extraction.retrieve_ht(number_of_schools_total_output, "school_total_ht")
+                                dataframes.append(number_of_school_total_ht)
+                                used_options.append("school_total_ht")
+                            else:
+                                print("You have already selected this option!")
+                        #/*************************/#
+                        #/    NUMBER OF CLASSES    /#
+                        #/*************************/#
+                        case 19: 
+                            if "class_treat_info" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                number_of_classes_int_info = df.data_extraction.retrieve_info(num_of_class_int_output, "class_treat_info")
+                                dataframes.append(number_of_classes_int_info)
+                                used_options.append("class_treat_info")
+                            else:
+                                print("You have already selected this option!")
+                        case 20: 
+                            if "class_treat_ht" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                number_of_classes_int_ht = df.data_extraction.retrieve_ht(num_of_class_int_output, "class_treat_ht")
+                                dataframes.append(number_of_classes_int_ht)
+                                used_options.append("class_treat_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 21: 
+                            if "class_cont_info" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                number_of_classes_control_info = df.data_extraction.retrieve_info(num_of_class_cont_output, "class_cont_info")
+                                dataframes.append(number_of_classes_control_info)
+                                used_options.append("class_cont_info")
+                            else:
+                                print("You have already selected this option!")
+                        case 22: 
+                            if "class_cont_ht" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                number_of_classes_control_ht = df.data_extraction.retrieve_ht(num_of_class_cont_output, "class_cont_ht")
+                                dataframes.append(number_of_classes_control_ht)
+                                used_options.append("class_cont_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 23: 
+                            if "class_total_info" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                number_of_classes_total_info = df.data_extraction.retrieve_info(num_of_class_tot_output, "class_total_info")
+                                dataframes.append(number_of_classes_total_info)
+                                used_options.append("class_total_info")
+                            else:
+                                print("You have already selected this option!")
+                        case 24: 
+                            if "class_total_ht" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                number_of_classes_total_ht = df.data_extraction.retrieve_ht(num_of_class_tot_output, "class_total_ht")
+                                dataframes.append(number_of_classes_total_ht)
+                                used_options.append("class_total_ht")
+                            else:
+                                print("You have already selected this option!")
+                        #/****************************/#
+                        #/   PARTICIPANT ASSIGNMENT   /#
+                        #/****************************/#
+                        case 25: 
+                            if "part_assig_raw" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                part_assig_data = df.data_extraction.retrieve_data(part_assign_output, "part_assig_raw")
+                                dataframes.append(part_assig_data)
+                                used_options.append("part_assig_raw")
+                            else:
+                                print("You have already selected this option!")
+                        case 26: 
+                            if "part_assig_ht" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                part_assig_ht = df.data_extraction.retrieve_ht(part_assign_output, "part_assig_ht")
+                                dataframes.append(part_assig_ht)
+                                used_options.append("part_assig_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 27: 
+                            if "part_assig_info" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                part_assig_info = df.data_extraction.retrieve_info(part_assign_output, "part_assig_info")
+                                dataframes.append(part_assig_ht)
+                                used_options.append("part_assig_info")
+                            else:
+                                print("You have already selected this option!")
+                        #/*************************/#
+                        #/   LEVEL OF ASSIGNMENT   /#
+                        #/*************************/#
+                        case 28: 
+                            if "level_assig_raw" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                level_of_assign_data = df.data_extraction.retrieve_data(level_of_assignment_output, "level_assig_raw")
+                                dataframes.append(level_of_assign_data)
+                                used_options.append("level_assig_raw")
+                            else:
+                                print("You have already selected this option!")
+                        case 29: 
+                            if "level_assig_ht" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                level_of_assign_ht = df.data_extraction.retrieve_ht(level_of_assignment_output, "level_assig_ht")
+                                dataframes.append(level_of_assign_ht)
+                                used_options.append("level_assig_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 30: 
+                            if "level_assig_info" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                level_of_assign_info = df.data_extraction.retrieve_info(level_of_assignment_output, "level_assig_info")
+                                dataframes.append(level_of_assign_info)
+                                used_options.append("level_assig_info")
+                            else:
+                                print("You have already selected this option!")
+                        #/**********************/#
+                        #/     STUDY DESIGN     /#
+                        #/**********************/#
+                        case 31: 
+                            if "int_desig_raw" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                study_design_data = df.data_extraction.retrieve_data(study_design_output, "int_desig_raw")
+                                dataframes.append(study_design_data)
+                                used_options.append("int_desig_raw")
+                            else:
+                                print("You have already selected this option!")
+                        case 32: 
+                            if "int_design_ht" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                study_design_ht = df.data_extraction.retrieve_ht(study_design_output, "int_design_ht")
+                                dataframes.append(study_design_ht)
+                                used_options.append("int_design_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 33: 
+                            if "int_design_info" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                study_design_info = df.data_extraction.retrieve_info(study_design_output, "int_design_info")
+                                dataframes.append(study_design_info)
+                                used_options.append("int_design_info")
+                            else:
+                                print("You have already selected this option!")
+                        #/**********************/#
+                        #/     RANDOMISATION    /#
+                        #/**********************/#
+                        case 34: 
+                            if "rand_raw" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                rand_data = df.data_extraction.retrieve_data(randomisation_details, "rand_raw")
+                                dataframes.append(rand_data)
+                                used_options.append("rand_raw")
+                            else:
+                                print("You have already selected this option!")
+                        case 35: 
+                            if "rand_ht" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                rand_ht = df.data_extraction.retrieve_ht(randomisation_details, "rand_ht")
+                                dataframes.append(rand_ht)
+                                used_options.append("rand_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 36: 
+                            if "rand_info" not in used_options:
+                                row_styles1[num - 1] = highlight_style
+                                rand_info = df.data_extraction.retrieve_info(randomisation_details, "rand_info")
+                                dataframes.append(rand_info)
+                                used_options.append("rand_info")
+                            else:
+                                print("You have already selected this option!")
+
+
+
                         #/*************************/#
                         #/ TOOLKIT PRIMARY OUTCOME /#
                         #/*************************/#
-                        case 11:
+                        case 37:
                                 if "out_tit_tool" not in used_options:
-                                    row_styles2[num - 11] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_tit_tool = df_out.out_tit_tool
                                     dataframes.append(df_out_tit_tool)
-                                    #table = add_row_to_table(table, "Toolkit Outcome Title")
                                     used_options.append("out_tit_tool")
                                 else:
                                     print("You have already selected this option!")
-                        case 12:
+                        case 38:
                                 if "out_desc_tool" not in used_options:
-                                    row_styles2[num - 11] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_desc_tool = df_out.out_desc_tool
@@ -442,9 +716,9 @@ def main():
                                     used_options.append("out_desc_tool")
                                 else:
                                     print("You have already selected this option!")
-                        case 13:
+                        case 39:
                                 if "out_type_tool" not in used_options:
-                                    row_styles2[num - 11] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_type_tool = df_out.out_type_tool
@@ -452,9 +726,9 @@ def main():
                                     used_options.append("out_type_tool")
                                 else:
                                     print("You have already selected this option!")
-                        case 14:
+                        case 40:
                                 if "smd_tool" not in used_options:
-                                    row_styles2[num - 11] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_smd_tool = df_out.smd_tool
@@ -462,9 +736,9 @@ def main():
                                     used_options.append("smd_tool")
                                 else:
                                     print("You have already selected this option!")
-                        case 15:
+                        case 41:
                                 if "se_tool" not in used_options:
-                                    row_styles2[num - 11] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_se_tool = df_out.se_tool
@@ -472,9 +746,29 @@ def main():
                                     used_options.append("se_tool")
                                 else:
                                     print("You have already selected this option!")
-                        case 16:
+                        case 42:
+                                if "ci_lower_tool" not in used_options:
+                                    row_styles2[num - 37] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_ci_lower_tool = df_out.ci_lower_tool
+                                    dataframes.append(df_ci_lower_tool)
+                                    used_options.append("ci_lower_tool")
+                                else:
+                                    print("You have already selected this option!")
+                        case 43:
+                                if "ci_upper_tool" not in used_options:
+                                    row_styles2[num - 37] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_ci_upper_tool = df_out.ci_upper_tool
+                                    dataframes.append(df_ci_upper_tool)
+                                    used_options.append("ci_upper_tool")
+                                else:
+                                    print("You have already selected this option!")
+                        case 44:
                                 if "out_measure_tool" not in used_options:
-                                    row_styles2[num - 11] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_measure_tool = df_out.out_measure_tool
@@ -482,9 +776,9 @@ def main():
                                     used_options.append("out_measure_tool")
                                 else:
                                     print("You have already selected this option!")
-                        case 17:
+                        case 45:
                                 if "out_g1_n_tool" not in used_options:
-                                    row_styles2[num - 11] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g1_n_tool = df_out.out_g1_n_tool
@@ -492,9 +786,9 @@ def main():
                                     used_options.append("out_g1_n_tool")
                                 else:
                                     print("You have already selected this option!")
-                        case 18:
+                        case 46:
                                 if "out_g1_mean_tool" not in used_options:
-                                    row_styles2[num - 11] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g1_mean_tool = df_out.out_g1_mean_tool
@@ -502,9 +796,9 @@ def main():
                                     used_options.append("out_g1_mean_tool")
                                 else:
                                     print("You have already selected this option!")
-                        case 19:
+                        case 47:
                                 if "out_g1_sd_tool" not in used_options:
-                                    row_styles2[num - 11] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g1_sd_tool = df_out.out_g1_sd_tool
@@ -512,9 +806,9 @@ def main():
                                     used_options.append("out_g1_sd_tool")
                                 else:
                                     print("You have already selected this option!")
-                        case 20:
+                        case 48:
                                 if "out_g2_n_tool" not in used_options:
-                                    row_styles2[num - 11] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g2_n_tool = df_out.out_g2_n_tool
@@ -522,6 +816,55 @@ def main():
                                     used_options.append("out_g2_n_tool")
                                 else:
                                     print("You have already selected this option!")
+                        case 49:
+                                if "out_g2_mean_tool" not in used_options:
+                                    row_styles2[num - 37] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g2_mean_tool = df_out.out_g2_mean_tool
+                                    dataframes.append(df_g2_mean_tool)
+                                    used_options.append("out_g2_mean_tool")
+                                else:
+                                    print("You have already selected this option!")
+                        case 50:
+                                if "out_g2_sd_tool" not in used_options:
+                                    row_styles2[num - 37] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_g2_sd_tool = df_out.out_g2_sd_tool
+                                    dataframes.append(df_g2_sd_tool)
+                                    used_options.append("out_g2_sd_tool")
+                                else:
+                                    print("You have already selected this option!")
+                        case 51:
+                                if "out_test_type_raw_" not in used_options:
+                                    row_styles2[num - 37] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_out_test_type = df_out.out_test_type_raw_tool
+                                    dataframes.append(df_out_test_type)
+                                    used_options.append("out_test_type_raw_")
+                                else:
+                                    print("You have already selected this option!")
+                        case 52:
+                                if "out_es_type_tool" not in used_options:
+                                    row_styles2[num - 37] = highlight_style
+                                    df_outcomes = DataFrameCompilation(json_extractor)
+                                    df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
+                                    df_out_es_type = df_out.out_es_type_tool
+                                    dataframes.append(df_out_es_type)
+                                    used_options.append("out_es_type_tool")
+                                else:
+                                    print("You have already selected this option!")
+
+
+
+
+
+
+
+
+
                         case _:
                             print("Error: invalid option selected")
                     

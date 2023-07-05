@@ -2162,7 +2162,6 @@ class DataFrameCompilation:
         df_all["fsm_perc_info"] = (df_all["fsm_perc_info"].str.strip('%'))
         df_all["fsm_perc_info"] = pd.to_numeric(df_all["fsm_perc_info"], errors='coerce')
 
-        # percentage taught by research staff only
         conditions = [
             df_all["fsm_perc_info"] > 49,
             df_all["fsm_perc_info"] < 50,
@@ -4155,7 +4154,7 @@ class RiskofBias:
         def class_total_risk1(row):
             if row['class_total_info_new'] == 1:
                 return 'Higher Risk'
-            if row['class_total_info_new'] > 2 and row['class_total_info_new'] < 6:
+            if row['class_total_info_new'] > 1 and row['class_total_info_new'] < 6:
                 return 'Medium Risk'
             if row['class_total_info_new'] > 5:
                 return 'Low Risk'
