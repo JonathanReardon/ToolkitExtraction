@@ -474,11 +474,13 @@ class JSONDataExtractor:
         return outfile
 
 
-    def save_dataframe(self, df, df_name):
+    def save_dataframe(self, df, df_name, standard_info=False, custom_info=False):
         '''
         Saves a .csv of the dataframe to output/
         '''
         # Get current working dir
+        import datetime
+        current_datetime = datetime.datetime.now()
         cw = os.getcwd() + "/output"
         # get file name for output
         outfile_name_pre = data_file.rsplit('/')[-1] # 
@@ -493,12 +495,32 @@ class JSONDataExtractor:
         else:
             print("Successfully created {} directory".format("output/" + outfile_name_mid))
         # write to disk
-        #print("Input file: {}\n".format(data_file))
-        #print("Saving extracted output to: {}\n".format(outfile))
         df.to_csv(outfile, index=False)
+
+        if standard_info==True:
+            info_file_name = df_name.replace('.csv', '_INFO.txt')
+            # Save the column names to a .txt file
+            output_file_path = os.path.join(cw + "/" + outfile_name_mid, outfile_name_mid + info_file_name)
+            with open(output_file_path, 'w') as f:
+                for i, col_name in enumerate(df.columns, start=1):
+                    f.write(f"{i}. '{col_name}'\n")   
+
+        if custom_info==True:
+            # Replace '_Custom.csv' with '_INFO.txt' in the file name
+            info_file_name = df_name.replace('_Custom.csv', '_INFO.txt')
+            # Define the output file path for column names
+            output_file_path = os.path.join(cw + "/" + outfile_name_mid, outfile_name_mid + info_file_name)
+
+            # Save the column names to a .txt file
+            with open(output_file_path, 'w') as f:
+                for i, col_name in enumerate(df.columns, start=1):
+                    f.write(f"{i}. '{col_name}'\n")
+
         return outfile
 
 
+    
+    
     def verbose_display(self, df):
         '''
         Displays further info
@@ -540,7 +562,7 @@ class JSONDataExtractor:
         outcome_num = int(outcome_num)
 
         if save_file:
-            self.save_dataframe(all_variables, "_Outcomes.csv")
+            self.save_dataframe(all_variables, "_Outcomes.csv", standard_info=True)
 
 
     #/***********************************************/
@@ -741,7 +763,7 @@ class DataFrameCompilation:
             self.data_extraction.verbose_display(all_variables)
         
         if save_file:
-            outfile1 = self.data_extraction.save_dataframe(all_variables, "_DataFrame1.csv")
+            outfile1 = self.data_extraction.save_dataframe(all_variables, "_DataFrame1.csv", standard_info=True)
         
         return all_variables, outfile1
 
@@ -941,7 +963,7 @@ class DataFrameCompilation:
             self.data_extraction.verbose_display(all_variables)
         
         if save_file:
-            outfile2 = self.data_extraction.save_dataframe(all_variables, "_DataFrame2.csv")
+            outfile2 = self.data_extraction.save_dataframe(all_variables, "_DataFrame2.csv", standard_info=True)
         
         return all_variables, outfile2
 
@@ -1081,7 +1103,7 @@ class DataFrameCompilation:
             self.data_extraction.verbose_display(all_variables)
         
         if save_file:
-            outfile3 = self.data_extraction.save_dataframe(all_variables, "_DataFrame3_Sample_Size.csv")
+            outfile3 = self.data_extraction.save_dataframe(all_variables, "_DataFrame3_Sample_Size.csv", standard_info=True)
         
         return all_variables, outfile3
 
@@ -1323,7 +1345,7 @@ class DataFrameCompilation:
             if verbose:
                 self.data_extraction.verbose_display(all_variables)
             if save_file:
-                outfile4 = self.data_extraction.save_dataframe(all_variables, "_DataFrame4_Effect_Size_A.csv")
+                outfile4 = self.data_extraction.save_dataframe(all_variables, "_DataFrame4_Effect_Size_A.csv", standard_info=True)
             
             return all_variables, outfile4
         except:
@@ -1739,6 +1761,9 @@ class DataFrameCompilation:
             16: "out_comp_tool",
             17: "out_es_type_tool",
             18: "out_test_type_raw_tool",
+
+
+
             19: "out_tit_red",
             20: "out_desc_red",
             21: "out_type_red",
@@ -1758,6 +1783,8 @@ class DataFrameCompilation:
             35: "out_comp_red",
             36: "out_es_type_red",
             37: "out_test_type_raw_red",
+
+            
             38: "out_tit_wri",
             39: "out_desc_wri",
             40: "out_type_wri",
@@ -1887,7 +1914,7 @@ class DataFrameCompilation:
             self.data_extraction.verbose_display(all_variables)
         
         if save_file:
-            outfile5 = self.data_extraction.save_dataframe(all_variables, "_DataFrame5_Effect_Size_B.csv")
+            outfile5 = self.data_extraction.save_dataframe(all_variables, "_DataFrame5_Effect_Size_B.csv", standard_info=True)
         else:
             outfile5=None
         
@@ -2238,7 +2265,7 @@ class DataFrameCompilation:
             self.data_extraction.verbose_display(df_all_SS)
 
         if save_file:
-            outfile6 = self.data_extraction.save_dataframe(df_all_SS, "_Main_Analysis.csv")
+            outfile6 = self.data_extraction.save_dataframe(df_all_SS, "_Main_Analysis.csv", standard_info=True)
 
         return df_all_SS, outfile6
 
@@ -2263,7 +2290,7 @@ class DataFrameCompilation:
         if save_file:
             #all_variables = self.data_extraction.save_dataframe("Toolkit_Outcome_Check.csv")
 
-            all_variables = self.data_extraction.save_dataframe(all_variables, "_Outcomes.csv")
+            all_variables = self.data_extraction.save_dataframe(all_variables, "_Outcomes.csv", standard_info=True)
 
         return all_variables
     
@@ -2313,7 +2340,7 @@ class DataFrameCompilation:
         ], axis=1)
 
         if save_file:
-            outfile_9 = self.data_extraction.save_dataframe(references, "_References.csv")
+            outfile_9 = self.data_extraction.save_dataframe(references, "_References.csv", standard_info=True)
 
         return references, outfile_9
         
@@ -4419,7 +4446,7 @@ class RiskofBias:
     
 
     def save_dataframe(self):
-        outfile7 = self.data_extraction.save_dataframe(self.risk_of_bias_df, "_Study_Security.csv")
+        outfile7 = self.data_extraction.save_dataframe(self.risk_of_bias_df, "_Study_Security.csv", standard_info=True)
         return outfile7
     
 
@@ -4806,7 +4833,7 @@ class RiskofBias:
             df["MA_floor"] = False
 
         # write to disk
-        outfile8 = self.data_extraction.save_dataframe(df, "_Padlocks.csv")
+        outfile8 = self.data_extraction.save_dataframe(df, "_Padlocks.csv", standard_info=True)
         return outfile8
 
 class CustomFrames:
@@ -5212,7 +5239,7 @@ def dataframe_3_output_display(functions, outfile):
 
     df3_table.add_column("Selection", justify="center", header_style="#fc5424")
     df3_table.add_column("Output directory", justify="left", header_style=WHITE)
-    df3_table.add_row("Dataframe 3", outfile, style=WHITE)
+    df3_table.add_row("Sample Size", outfile, style=WHITE)
 
     return df3_table
 
@@ -5229,7 +5256,7 @@ def dataframe_4_output_display(functions, outfile):
 
     df4_table.add_column("Selection", justify="center", header_style="#fc5424")
     df4_table.add_column("Output directory", justify="left", header_style=WHITE)
-    df4_table.add_row("Dataframe 4", outfile, style=WHITE)
+    df4_table.add_row("Effect Size A", outfile, style=WHITE)
 
     return df4_table
 
@@ -5246,7 +5273,7 @@ def dataframe_5_output_display(functions, outfile):
 
     df5_table.add_column("Selection", justify="center", header_style="#fc5424")
     df5_table.add_column("Output directory", justify="left", header_style=WHITE)
-    df5_table.add_row("Dataframe 5", outfile, style=WHITE)
+    df5_table.add_row("Effect Size B", outfile, style=WHITE)
 
     return df5_table
 
@@ -5263,7 +5290,7 @@ def dataframe_6_output_display(functions, outfile):
 
     df6_table.add_column("Selection", justify="center", header_style="#fc5424")
     df6_table.add_column("Output directory", justify="left", header_style="#fc5424")
-    df6_table.add_row("Dataframe 6", outfile, style=WHITE)
+    df6_table.add_row("Main Analysis", outfile, style=WHITE)
 
     return df6_table
 
@@ -5280,7 +5307,7 @@ def dataframe_7_output_display(functions, outfile):
 
     df7_table.add_column("Selection", justify="center", header_style="#fc5424")
     df7_table.add_column("Output directory", justify="left", header_style="#fc5424")
-    df7_table.add_row("Dataframe 7", outfile, style=WHITE)
+    df7_table.add_row("Outcome Data", outfile, style=WHITE)
 
     return df7_table
 
@@ -5296,7 +5323,7 @@ def dataframe_8_output_display(functions, outfile):
 
     df8_table.add_column("Selection", justify="center", header_style="#fc5424")
     df8_table.add_column("Output directory", justify="left", header_style="#fc5424")
-    df8_table.add_row("Dataframe 8", outfile, style=WHITE)
+    df8_table.add_row("Study Security", outfile, style=WHITE)
 
     return df8_table
 
@@ -5312,7 +5339,7 @@ def dataframe_9_output_display(functions, outfile):
 
     df9_table.add_column("Selection", justify="center", header_style="#fc5424")
     df9_table.add_column("Output directory", justify="left", header_style="#fc5424")
-    df9_table.add_row("Dataframe 9", outfile, style=WHITE)
+    df9_table.add_row("Padlocks", outfile, style=WHITE)
 
     return df9_table
 
@@ -5320,18 +5347,33 @@ def dataframe_10_output_display(functions, outfile):
     console = Console()
     custom_style_df1 = Style(bgcolor=GREY)
 
-    df9_table = Table(show_header=True, 
+    df10_table = Table(show_header=True, 
                       style=custom_style_df1,
                       title=None,
                       safe_box=False,
                       box=box.SIMPLE)
 
-    df9_table.add_column("Selection", justify="center", header_style="#fc5424")
-    df9_table.add_column("Output directory", justify="left", header_style="#fc5424")
-    df9_table.add_row("Dataframe 10", outfile, style=WHITE)
+    df10_table.add_column("Selection", justify="center", header_style="#fc5424")
+    df10_table.add_column("Output directory", justify="left", header_style="#fc5424")
+    df10_table.add_row("References", outfile, style=WHITE)
 
-    return df9_table
+    return df10_table
 
+def dataframe_11_output_display(functions, outfile):
+    console = Console()
+    custom_style_df1 = Style(bgcolor=GREY)
+
+    df11_table = Table(show_header=True, 
+                      style=custom_style_df1,
+                      title=None,
+                      safe_box=False,
+                      box=box.SIMPLE)
+
+    df11_table.add_column("Selection", justify="center", header_style="#fc5424")
+    df11_table.add_column("Output directory", justify="left", header_style="#fc5424")
+    df11_table.add_row("Custom", outfile, style=WHITE)
+
+    return df11_table
 
 def create_output_display_table(dataframe_name, outfile):
     console = Console()

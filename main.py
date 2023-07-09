@@ -34,6 +34,7 @@ from src.funcs import (
     dataframe_8_output_display,
     dataframe_9_output_display,
     dataframe_10_output_display,
+    dataframe_11_output_display,
     input_file_info_display,
     main_menu_display,
     main_menu_display1,
@@ -362,13 +363,6 @@ row_data_list5 = [
     "Intervention Setting (raw)", 
     "Intervention Setting (ht)", 
     "Intervention Setting (info)",
-    "PLACEHOLDER", 
-    "PLACEHOLDER",
-    "PLACEHOLDER",
-    "PLACEHOLDER",
-    "PLACEHOLDER",
-    "PLACEHOLDER", 
-    "PLACEHOLDER",
 ]
 
 def custom_outcome_vars_4():
@@ -610,7 +604,9 @@ def main():
 
                 # Compile list of invidividual data frames
                 dataframes=[]
-                while True:
+
+                custom=True
+                while custom==True:
                     try:
                         console.print("\nAdd variables to your data frame or 0 to Save file and exit")
                         num = int(Prompt.ask("Selection"))
@@ -2114,6 +2110,7 @@ def main():
                         case _:
                             print("Error: invalid option selected")
                     
+                    
                     if dataframes:
                         all_df = pd.concat(dataframes, axis=1)
                         console = Console()
@@ -2139,7 +2136,7 @@ def main():
                                       style=custom_style_outer, 
                                       border_style="#FFFFFF",
                                       width=250)
-
+                        console.clear()
                         # Print the panel
                         console.print(panel)
 
@@ -2147,15 +2144,16 @@ def main():
                     import datetime 
                     current_datetime = datetime.datetime.now()
                     all_df = pd.concat(dataframes, axis=1)
-                    console.print("\n[bold]Custom data frame saved here..[/bold]\n")
-                    outfile1 = df.data_extraction.save_dataframe(all_df, f"_{current_datetime.strftime('%Y-%m-%d_%H-%M-%S')}_Custom.csv")
+                    console.print("\n[bold]Custom dataframe saved here..[/bold]\n")
+
+                    outfile1 = df.data_extraction.save_dataframe(all_df, f"_{current_datetime.strftime('%Y-%m-%d_%H-%M-%S')}_Custom.csv", custom_info=True)
+
                     outfile1=str(outfile1)
                     outfile1=outfile1
                     console.print(outfile1 + "\n")
-                    console.print("Thanks for using the EEF Toolkit Data Extractor!")
                 else: 
                     console.print("No data selected, thanks for using the EEF Teaching and Learning Toolkit Extractor.")
-                break
+                
 
 if __name__ == "__main__":
     main()
