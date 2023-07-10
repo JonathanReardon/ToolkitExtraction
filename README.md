@@ -275,7 +275,7 @@ This dataframe contains 'raw', 'info', and 'CLEAN' data types.
 <summary>Effect Size B Column Summary</summary>
 
 | Variable                                          | Data Type   | Column Name              |
-|---------------------------------------------------|-------------|--------------------------|
+|---|---|---|
 | `Eppi ID`                                         | `raw`       | `id`                     |
 | `Author`                                          | `raw`       | `pub_author`             |
 | `Year`                                            | `raw`       | `pub_year`               |
@@ -417,7 +417,7 @@ This dataframe contains 'raw' and 'info' data types, as well as one custom defin
 <summary>Main Analysis Column Summary</summary>
 
 | Variable                         | Data Type   | Column Name         |
-|----------------------------------|-------------|---------------------|
+|---|---|---|
 | `Eppi ID`                        | `raw`       | `id`                |
 | `Author`                         | `raw`       | `pub_author`        |
 | `Year`                           | `raw`       | `pub_year`          |
@@ -491,7 +491,7 @@ This dataframe contains 'raw' and 'info' data types, as well as 44 custom column
 <summary>Risk Assessment Condition Table</Summary>
 
 | Variable                          | Condition                                    | Risk           |
-| --------------------------------- | -------------------------------------------- | -------------- |
+| --- | --- | --- |
 | `Publication Year`                | < 1980                                       | High Risk      |
 |                                   | > 1979 and < 2000                            | Medium Risk    |
 |                                   | > 1999                                       | Low Risk       |
@@ -559,7 +559,7 @@ This dataframe contains 'raw' and 'info' data types, as well as 44 custom column
 <summary>Study Security Column Summary</summary>
 
 | Variable                   | Data Type                                     | Column Name       |
-|----------------------------|-----------------------------------------------|-------------------|
+|---|---|---|
 | `Eppi ID`                  | `raw`                                         | `id`              |
 | `Author`                   | `raw`                                         | `pub_author`      |
 | `Toolkit SMD`              | `raw`                                         | `smd_tool`        |
@@ -609,8 +609,8 @@ This dataframe can be thought of as the overall "strand" version of the study-le
 <details>
 <summary>Strand Padlocks Condition Table</summary>
 
-| Variable                                | Condition         | Risk        |
-| --------------------------------------- | ----------------- | ----------- |
+| Variable | Condition | Risk |
+| --- | --- | --- |
 | `Number of Studies`                     | < 10              | 0           |
 |                                         | > 9 and < 25      | 1           |
 |                                         | > 24 and < 35     | 2           |
