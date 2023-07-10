@@ -608,6 +608,7 @@ This dataframe can be thought of as the overall "strand" version of the study-le
 
 <details>
 <summary>Strand Padlocks Condition Table</summary>
+
 | Variable                                | Condition         | Risk        |
 | --------------------------------------- | ----------------- | ----------- |
 | `Number of Studies`                     | < 10              | 0           |
@@ -635,6 +636,7 @@ This dataframe can be thought of as the overall "strand" version of the study-le
 
 <details>
 <summary>Strand Padlocks Column Summary</summary>
+
 | Variable | Data Type | Column Name |
 |---|---|---|
 | `Strand`                                     | `raw`             | `strand`                    |
