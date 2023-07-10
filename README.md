@@ -497,6 +497,7 @@ This dataframe contains only 'raw' data type, and displays unordered outcome inf
 | `Outcome 2 Type`      | `raw`       | `strand`            |
 | `Outcome 2 Type`      | `raw`       | `toolkit_version`   |
 | `...`                 | `...`       | `...` |
+</details>
 
 ## Study Security
 
