@@ -414,7 +414,9 @@ This dataframe contains 'raw' and 'info' data types, as well as one custom defin
 |  `_info` | any 'user' entered info | 7 |
 | `_CLEAN`  | empty columns for data cleaning notes | 0 |
 | `*custom*`  | user defined calculation | 1 |
-|   | **Total Number of Columns** | **48** |
+|   | **Total Number of Columns** | **48**<sup>1</sup> |
+
+<sup>1</sup>This refers to the total number of columns without the addition of strand specific columns, which will increase the overall column count.
 
 <details>
 
@@ -566,22 +568,22 @@ This dataframe contains 'raw' and 'info' data types, as well as 44 custom column
 | `Author`                   | `raw`                                         | `pub_author`      |
 | `Toolkit SMD`              | `raw`                                         | `smd_tool`        |
 | `Toolkit SE`               | `raw`                                         | `se_tool`         |
-| `Publication Year`         | `raw, risk label, risk value`                 | `pub_year`        |
+| `Publication Year`         | `raw, custom, custom`                 | `pub_year`        |
 | `Strand`                   | `raw`                                         | `strand`          |
-| `Publication Type`         | `raw, risk label, risk value`                 | `pub_type`        |
-| `Participant Assignment`   | `raw, risk label, risk value`                 | `part_assig`      |
-| `Study Realism`            | `raw, risk label, risk value`                 | `eco_valid`       |
-| `School Treatment Group`   | `raw, raw_adjusted, risk label, risk value`   | `school_treat`    |
-| `Intervention Delivery`    | `raw, risk label (ind var split), risk value` | `int_who`         |
-| `Number of Classes Total`  | `raw, raw_adjusted, risk label, risk value`   | `class_total`     |
-| `Outcome Evaluation`       | `raw, risk label, risk value`                 | `out_eval`        |
-| `Computational Analysis`   | `raw, risk label, risk value`                 | `comp_anal`       |
-| `Sample Size (Analysed)`   | `raw, risk label, risk value`                 | `sample_analysed` |
-| `Outcome Test Type`        | `raw, risk label, risk value`                 | `out_test_type`   |
-| `Outcome Effect Size Type` | `raw, risk label, risk value`                 | `out_es_type`     |
-| `Attrition Percentage`     | `raw, risk label, risk value`                 | `attri_perc`      |
-| `Cluster Analysis`         | `raw, risk label, risk value`                 | `clust_anal`      |
-| `Randomisation`            | `raw, risk label, risk value`                 | `rand`            |
+| `Publication Type`         | `raw, custom, custom`                 | `pub_type`        |
+| `Participant Assignment`   | `raw, custom, custom`                 | `part_assig`      |
+| `Study Realism`            | `raw, custom, custom`                 | `eco_valid`       |
+| `School Treatment Group`   | `raw, raw_adjusted, custom, custom`   | `school_treat`    |
+| `Intervention Delivery`    | `raw, custom (ind var split), custom` | `int_who`         |
+| `Number of Classes Total`  | `raw, raw_adjusted, custom, custom`   | `class_total`     |
+| `Outcome Evaluation`       | `raw, custom, custom`                 | `out_eval`        |
+| `Computational Analysis`   | `raw, custom, custom`                 | `comp_anal`       |
+| `Sample Size (Analysed)`   | `raw, custom, custom`                 | `sample_analysed` |
+| `Outcome Test Type`        | `raw, custom, custom`                 | `out_test_type`   |
+| `Outcome Effect Size Type` | `raw, custom, custom`                 | `out_es_type`     |
+| `Attrition Percentage`     | `raw, custom, custom`                 | `attri_perc`      |
+| `Cluster Analysis`         | `raw, custom, custom`                 | `clust_anal`      |
+| `Randomisation`            | `raw, custom, custom`                 | `rand`            |
 | `NA values`                | `raw`                                         | `NA_values`       |
 | `Mean`                     | `raw`                                         | `Mean`            |
 | `Median`                   | `raw`                                         | `Median`          |
@@ -591,11 +593,75 @@ This dataframe contains 'raw' and 'info' data types, as well as 44 custom column
 
 ## Strand Padlocks
 
+This dataframe, consisting of raw and custom data types, contains one strand-specific row where a set of key variables, thought to affect strand quality, are mapped to a 3 point scale: low, medium, and high risk. Each strand begins with an initial padlock value based on the number of studies it contains. For each of the 5 key padlock values, if any are "High Risk", we subtract 1 from the initial padlock value. The end result is the strands final padlock value. If a strand ends on a padlock value of 0 AND contains 10 or more studies (and has therefore been meta-analysed), its value is raised to 1.
+
+This dataframe can be thought of as the overall "strand" version of the study-level "Study Security" dataframe.
+
+| Data Type | Description | Number of Columns |
+| --- | --- | :----: |
+|  `_raw`     | raw data as input by the data coders  | 7 |
+|  `_ht`      | text highlighted from the manuscript  | 0 |
+|  `_info`    | any 'user' entered info               | 0 |
+| `_CLEAN`    | empty columns for data cleaning notes | 0 |
+| `*custom*`  | user defined calculation              | 8 |
+|             | **Total Number of Columns**           | **15** |
+
+### Strand Padlocks Risk Assessment
+
+6 variables are currently identified as having the potential to negatively affect strand-level quality and/or validity. Values associated with these variables are converted to a 3 point risk value scale ('Condition'/'Risk' columns).
+
+| Variable | Condition | Risk|
+| ---| ---| --- |
+| `Number of Studies`                      | < 10             | 0 |
+|                                          | > 9 and < 25     | 1 |
+|                                          | > 24 and < 35    | 2 |
+|                                          | > 34 and < 60    | 3 |
+|                                          | > 59 and < 90    | 4 |
+|                                          | > 89             | 5 |
+| `% Studies since 2000`                   | > 49             | Low Risk  |
+|                                          | > 25 and < 50    | Medium Risk |
+|                                          | < 25             | High Risk |
+| `% Studies randomised`                   | < 30 | High Risk |
+|                                          | > 29 and < 60>   | Medium Risk |
+|                                          | > 59             | Low Risk |
+| `% Studies w/ high ecological validity`  | < 50             | High Risk |
+|                                          | > 49 and < 75    | Medium Risk |
+|                                          | > 74             | Low Risk |
+| `% Studies independently evaluated`      | < 10             | High Risk |
+|                                          | < 9 and < 30     | Medium Risk |
+|                                          | > 29             | Low Risk |
+| `% Median attrition reported`            | < 15             | Low Risk |
+|                                          | > 14 and < 30    | Medium Risk |
+|                                          | > 29             | High Risk |
+
 <details>
 
 <summary>Further details</summary>
 
+| Variable                                     | Data Type         | Column Name                 |
+|----------------------------------------------|-------------------|-----------------------------|
+| `Strand`                                     | `raw`             | `strand`                    |
+| `Filename`                                   | `raw`             | `filename`                  |
+| `Number of studies`                          | `raw`             | `num_of_studies`            |
+| `Number of studies PS`                       | `custom`          | `num_of_studies_ps`         |
+| `% Studies since 2000`                       | `raw`             | `%_since_2000`              |
+| `% Studies since 2000 PS`                    | `custom`          | `%_since_2000_ps`           |
+| `% Studies randomised`                       | `raw`             | `%_randomised`              |
+| `% Studies randomised PS`                    | `custom`          | `%_randomised_ps`           |
+| `% Studies w/ high ecological validity`      | `raw`             | `%_high_eco_valid`          |
+| `% Studies w/ high ecological validity PS`   | `custom`          | `%_high_eco_valid_ps`       |
+| `% Studies independently evaluated`          | `raw`             | `%_indep_eval`              |
+| `% Studies independently evaluated PS`       | `custom`          | `%_indep_eval_ps`           |
+| `% Median attrition reported`                | `raw`             | `%_med_attrit_reported`     |
+| `% Median attrition reporeted PS`            | `custom`          | `%_med_attrit_reported_ps`  |
+| `MA floor`                                   | `custom`          | `MA_Floor`                  |
+| `Padlock Value`                              | `custom`          | `New_padlock`               |
+
+</details>
+
 ## References Dataframe
+
+This dataframe contains only raw values extracted in order to construct studyu references.
 
 <details>
 
