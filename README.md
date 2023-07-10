@@ -724,6 +724,184 @@ This dataframe contains only raw values extracted in order to construct study re
 
 </details>
 
+## Custom Dataframe Selection
+
+This dataframe consists of the data the user chooses from a pre-defined column list.
+
+| Data Type   | Description                           | Number of Columns   |
+| ----------- | ------------------------------------- | :-----------------: |
+|  `_raw`     | raw data as input by the data coders  | 119                 |
+|  `_ht`      | text highlighted from the manuscript  | 19                  |
+|  `_info`    | any 'user' entered info               | 19                  |
+| `_CLEAN`    | empty columns for data cleaning notes | 0                   |
+|             | **Total Number of Columns**           | **157**<sup>1</sup> |
+
+<sup>1</sup>157 is the maximum number of columns where are all data are selected.
+
+<details>
+<summary>Custom Dataframe Selection Column Summary</summary>
+
+| Variable                                    | Data Type | Column Name         |
+| ------------------------------------------- | --------- | ------------------- |
+| `Eppi ID`                                   | `raw`     | `id`                |
+| `Publication Author`                        | `raw`     | `pub_author`        |
+| `Publication Year`                          | `raw`     | `pub_year`          |
+| `Abstract`                                  | `raw`     | `abstract`          |
+| `Strand`                                    | `raw`     | `strand_raw`        |
+| `Country`                                   | `raw`     | `loc_country_raw`   |
+| `Publication Type (EPPI)`                   | `raw`     | `pub_eppi`          |
+| `Publication Type`                          | `raw`     | `pub_type_raw`      |
+| `Educational Setting`                       | `raw`     | `int_setting_raw`   |
+| `Participant Age`                           | `raw`     | `part_age_raw`      |
+| `REPLACE`                                   | `REPLACE` | `REPLACE`           |
+| `Ecological Validity`                       | `raw`     | `eco_valid_raw`     |
+| `Intervention Number of Schools (info)`     | `info`    | `school_treat_info` |
+| `Intervention Number of Schools (ht)`       | `ht`      | `school_treat_ht`   |
+| `Control Number of Schools (info)`          | `info`    | `school_cont_info`  |
+| `Control Number of Schools (ht)`            | `ht`      | `school_cont_ht`    |
+| `Total Number of Schools (info)`            | `info`    | `school_total_info` |
+| `Total Number of Schools (ht)`              | `ht`      | `school_total_ht`   |
+| `Intervention Number of Classes (info)`     | `info`    | `class_treat_info`  |
+| `Intervention Number of Schools (ht)`       | `ht`      | `class_treat_ht`    |
+| `Control Number of ClassesClasses (info)`   | `info`    | `class_cont_info`   |
+| `Control Number of Schools (ht)`            | `ht`      | `class_cont_ht`     |
+| `Total Number of Classes (info)`            | `info`    | `class_total_info`  |
+| `Total Number of Classes (ht)`              | `ht`      | `class_total_ht`    |
+| `Participant Assignment`                    | `raw`     | `part_assig_raw`    |
+| `Participant Assignmen (ht)`                | `ht`      | `part_assig_ht`     |
+| `Participant Assignmen (info)`              | `info`    | `part_assig_info`   |
+| `Level of Assignment`                       | `raw`     | `level_assig_raw`   |
+| `Level of Assignmen (ht)`                   | `ht`      | `level_assig_ht`    |
+| `Level of Assignmen (info)`                 | `info`    | `level_assig_info`  |
+| `Study Design`                              | `raw`     | `int_desig_raw`     |
+| `Study Design (ht)`                         | `ht`      | `int_design_ht`     |
+| `Study Design (info)`                       | `info`    | `int_design_info`   |
+| `Randomisation`                             | `raw`     | `rand_raw`          |
+| `Randomisation (ht)`                        | `ht`      | `rand_ht`           |
+| `Randomisation (info)`                      | `info`    | `rand_info`         |
+| `Toolkit Primary Outcome Title`             | `raw`  | `out_tit_tool`       |
+| `Toolkit Primary Outcome Description`       | `raw`  | `out_desc_tool`      |
+| `Toolkit Primary Outcome Type`              | `raw`  | `out_type_tool`      |
+| `Toolkit Primary Outcome SMD`               | `raw`  | `smd_tool`           |
+| `Toolkit Primary Outcome SE`                | `raw`  | `se_tool`            |
+| `Toolkit Primary Outcome CI (lower)`        | `raw`  | `ci_lower_tool`      |
+| `Toolkit Primary Outcome CI (upper)`        | `raw`  | `ci_upper_tool`      |
+| `Toolkit Primary Outcome Measure`           | `raw`  | `out_measure_tool`   |
+| `Toolkit Primary Outcome Group1 N`          | `raw`  | `out_g1_n_tool`      |
+| `Toolkit Primary Outcome Group1 Mean`       | `raw`  | `out_g1_mean_tool`   |
+| `Toolkit Primary Outcome Group1 SD`         | `raw`  | `out_g1_sd_tool`     |
+| `Toolkit Primary Outcome Group2 N`          | `raw`  | `out_g2_n_tool`      |
+| `Toolkit Primary Outcome Group2 Mean`       | `raw`  | `out_g2_mean_tool`   |
+| `Toolkit Primary Outcome Group2 SD`         | `raw`  | `out_g2_sd_tool`     |
+| `Toolkit Primary Outcome Test Type`         | `raw`  | `out_test_type_raw_` |
+| `Toolkit Primary Outcome Effect Size Type`  | `raw`  | `out_es_type_tool`   |
+| `Reading Outcome Title`                     | `raw`  | `out_tit_red`        |
+| `Reading Outcome Description`               | `raw`  | `out_desc_red`       |
+| `Reading Outcome Type`                      | `raw`  | `out_type_red`       |
+| `Reading Outcome SMD`                       | `raw`  | `smd_red`            |
+| `Reading Outcome SE`                        | `raw`  | `se_red`             |
+| `Reading Outcome CI (lower)`                | `raw`  | `ci_lower_red`       |
+| `Reading Outcome CI (upper)`                | `raw`  | `ci_upper_red`       |
+| `Reading Outcome Measure`                   | `raw`  | `out_measure_red`    |
+| `Reading Outcome Group1 N`                  | `raw`  | `out_g1_n_red`       |
+| `Reading Outcome Group1 Mean`               | `raw`  | `out_g1_mean_red`    |
+| `Reading Outcome Group1 SD`                 | `raw`  | `out_g1_sd_red`      |
+| `Reading Outcome Group2 N`                  | `raw`  | `out_g2_n_red`       |
+| `Reading Outcome Group2 Mean`               | `raw`  | `out_g2_mean_red`    |
+| `Reading Outcome Group2 SD`                 | `raw`  | `out_g2_sd_red`      |
+| `Reading Outcome Test Type`                 | `raw`  | `out_test_type_raw_red` |
+| `Reading Outcome Effect Size Type`          | `raw`  | `out_es_type_red`    |
+| `Writnig Outcome Title`                     | `raw`  | `out_tit_wri`        |
+| `Writnig Outcome Description`               | `raw`  | `out_desc_wri`       |
+| `Writnig Outcome Type`                      | `raw`  | `out_type_wri`       |
+| `Writnig Outcome SMD`                       | `raw`  | `smd_wri`            |
+| `Writnig Outcome SE`                        | `raw`  | `se_wri`             |
+| `Writnig Outcome CI (lower)`                | `raw`  | `ci_lower_wri`       |
+| `Writnig Outcome CI (upper)`                | `raw`  | `ci_upper_wri`       |
+| `Writnig Outcome Measure`                   | `raw`  | `out_measure_wri`    |
+| `Writnig Outcome Group1 N`                  | `raw`  | `out_g1_n_wri`       |
+| `Writnig Outcome Group1 Mean`               | `raw`  | `out_g1_mean_wri`    |
+| `Writnig Outcome Group1 SD`                 | `raw`  | `out_g1_sd_wri`      |
+| `Writnig Outcome Group2 N`                  | `raw`  | `out_g2_n_wri`       |
+| `Writnig Outcome Group2 Mean`               | `raw`  | `out_g2_mean_wri`    |
+| `Writnig Outcome Group2 SD`                 | `raw`  | `out_g2_sd_wri`      |
+| `Writnig Outcome Test Type`                 | `raw`  | `out_test_type_raw_wri` |
+| `Writnig Outcome Effect Size Type`          | `raw`  | `out_es_type_wri`    |
+| `Math Outcome Title`                        | `raw`  | `out_tit_math`       |
+| `Math Outcome Description`                  | `raw`  | `out_desc_math`      |
+| `Math Outcome Type`                         | `raw`  | `out_type_math`      |
+| `Math Outcome SMD`                          | `raw`  | `smd_math`           |
+| `Math Outcome SE`                           | `raw`  | `se_math`            |
+| `Math Outcome CI (lower)`                   | `raw`  | `ci_lower_math`      |
+| `Math Outcome CI (upper)`                   | `raw`  | `ci_upper_math`      |
+| `Math Outcome Measure`                      | `raw`  | `out_measure_math`   |
+| `Math Outcome Group1 N`                     | `raw`  | `out_g1_n_math`      |
+| `Math Outcome Group1 Mean`                  | `raw`  | `out_g1_mean_math`   |
+| `Math Outcome Group1 SD`                    | `raw`  | `out_g1_sd_math`     |
+| `Math Outcome Group2 N`                     | `raw`  | `out_g2_n_math`      |
+| `Math Outcome Group2 Mean`                  | `raw`  | `out_g2_mean_math`   |
+| `Math Outcome Group2 SD`                    | `raw`  | `out_g2_sd_math`     |
+| `Math Outcome Test Type`                    | `raw`  | `out_test_type_raw_math` |
+| `Math Outcome Effect Size Type`             | `raw`  | `out_es_type_math`   |
+| `Science Outcome Title`                     | `raw`  | `out_tit_sci`        |
+| `Science Outcome Description`               | `raw`  | `out_desc_sci`       |
+| `Science Outcome Type`                      | `raw`  | `out_type_sci`       |
+| `Science Outcome SMD`                       | `raw`  | `smd_sci`            |
+| `Science Outcome SE`                        | `raw`  | `se_sci`             |
+| `Science Outcome CI (lower)`                | `raw`  | `ci_lower_sci`       |
+| `Science Outcome CI (upper)`                | `raw`  | `ci_upper_sci`       |
+| `Science Outcome Measure`                   | `raw`  | `out_measure_sci`    |
+| `Science Outcome Group1 N`                  | `raw`  | `out_g1_n_sci`       |
+| `Science Outcome Group1 Mean`               | `raw`  | `out_g1_mean_sci`    |
+| `Science Outcome Group1 SD`                 | `raw`  | `out_g1_sd_sci`      |
+| `Science Outcome Group2 N`                  | `raw`  | `out_g2_n_sci`       |
+| `Science Outcome Group2 Mean`               | `raw`  | `out_g2_mean_sci`    |
+| `Science Outcome Group2 SD`                 | `raw`  | `out_g2_sd_sci`      |
+| `Science Outcome Test Type`                 | `raw`  | `out_test_type_raw_sci` |
+| `Science Outcome Effect Size Type`          | `raw`  | `out_es_type_sci`    |
+| `FSM Outcome Title`                         | `raw`  | `out_tit_fsm`        |
+| `FSM Outcome Description`                   | `raw`  | `out_desc_fsm`       |
+| `FSM Outcome Type`                          | `raw`  | `out_type_fsm`       |
+| `FSM Outcome SMD`                           | `raw`  | `smd_fsm`            |
+| `FSM Outcome SE`                            | `raw`  | `se_fsm`             |
+| `FSM Outcome CI (lower)`                    | `raw`  | `ci_lower_fsm`       |
+| `FSM Outcome CI (upper)`                    | `raw`  | `ci_upper_fsm`       |
+| `FSM Outcome Measure`                       | `raw`  | `out_measure_fsm`    |
+| `FSM Outcome Group1 N`                      | `raw`  | `out_g1_n_fsm`       |
+| `FSM Outcome Group1 Mean`                   | `raw`  | `out_g1_mean_fsm`    |
+| `FSM Outcome Group1 SD`                     | `raw`  | `out_g1_sd_fsm`      |
+| `FSM Outcome Group2 N`                      | `raw`  | `out_g2_n_fsm`       |
+| `FSM Outcome Group2 Mean`                   | `raw`  | `out_g2_mean_fsm`    |
+| `FSM Outcome Group2 SD`                     | `raw`  | `out_g2_sd_fsm`      |
+| `FSM Outcome Test Type`                     | `raw`  | `out_test_type_raw_fsm` |
+| `FSM Outcome Effect Size Type`              | `raw`  | `out_es_type_fsm`    |
+| `Intervention Training`                     | `raw`  | `int_training_raw`   |
+| `Intervention Training (ht)`                | `ht`   | `int_training_ht`    |
+| `Intervention Training (info)`              | `info` | `int_training_info`  |
+| `Intervention Approach`                     | `raw`  | `int_approach_raw`   |
+| `Intervention Approach (ht)`                | `ht`   | `int_approach_ht`    |
+| `Intervention Approach (info)`              | `info` | `int_approach_info`  |
+| `Digital Technology`                        | `raw`  | `digit_tech_raw`     |
+| `Digital Technology (ht)`                   | `ht`   | `digit_tech_ht`      |
+| `Digital Technology (info)`                 | `info` | `digit_tech_info`    |
+| `Parental Participation`                    | `raw`  | `parent_partic_raw`  |
+| `Parental Participation (ht)`               | `ht`   | `parent_partic_ht`   |
+| `Parental Participation (info)`             | `info` | `parent_partic_info` |
+| `Intervention When`                         | `raw`  | `int_when_raw`       |
+| `Intervention When (ht)`                    | `ht`   | `int_when_ht`        |
+| `Intervention When (info)`                  | `info` | `int_when_info`      |
+| `Intervention Delivery`                     | `raw`  | `int_who_raw`        |
+| `Intervention Delivery (ht)`                | `ht`   | `int_who_ht`         |
+| `Intervention Delivery (info)`              | `info` | `int_who_info`       |
+| `Intervention Duration (ht)`                | `ht`   | `int_dur_ht`         |
+| `Intervention Duration (info)`              | `info` | `int_dur_info`       |
+| `Intervention Length (ht)`                  | `ht`   | `int_leng_ht`        |
+| `Intervention Length (info)`                | `info` | `int_leng_info`      |
+| `Intervention Setting`                      | `raw`  | `int_setting_raw`    |
+| `Intervention Setting (ht)`                 | `ht`   | `int_setting_ht`     |
+| `Intervention Setting (info)`               | `info` | `int_setting_info`   |
+</details>
+
 ## License
 
 Distributed under the MIT License. See LICENSE for more information.
