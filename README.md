@@ -490,69 +490,69 @@ This dataframe contains 'raw' and 'info' data types, as well as 44 custom column
 <details>
 <summary>Risk Assessment Condition Table</Summary>
 
-| Variable                          | Condition                                    | Risk           |
+| Variable                          | Condition                                    | Risk             |
 | --- | --- | --- |
-| `Publication Year`                | < 1980                                       | High Risk      |
-|                                   | > 1979 and < 2000                            | Medium Risk    |
-|                                   | > 1999                                       | Low Risk       |
-| `Attrition %`                     | > 19                                         | High Risk      |
-|                                   | > 9 and < 20                                 | Medium Risk    |
-|                                   | < 10                                         | Low Risk       |
-| `Cluster Analysis`                | "Yes"                                        | Medium Risk    |
-|                                   | "No"                                         | High Risk      |
-| `Outcome Effect Size Type`        | "Post-test unadjusted"                       | High Risk      |
-|                                   | "Pre-post gain"                              | Medium Risk    |
-|                                   | "Post-test adjusted for baseline attainment" | Low Risk       |
-| `Outcome Test Type`               | "Test type: Researcher developed test"       | High Risk      |
-|                                   | "Test type: School-developed test"           | Medium Risk    |
-|                                   | "Test type: Standardised test"               | Low Risk       |
-|                                   | "Test type: National test"                   | Low Risk       |
-|                                   | "Test type: International tests"             | Low Risk       |
-| `Sample Size`                     | <= 30                                        | High Risk      |
-|                                   | > 30 and < 100                               | Medium Risk    |
-|                                   | "Test type: Standardised test"               | Low Risk       |
-|                                   | > 99                                         | Low Risk       |
-| `Publication Type`                | "Book or book chapter"                       | Medium Risk    |
-|                                   | "Conference paper"                           | Medium Risk    |
-|                                   | "Other"                                      | Medium Risk    |
-|                                   | "Journal article"                            | Low Risk       |
-|                                   | "Dissertation or thesis"                     | Low Risk       |
-|                                   | "Technical report"                           | Low Risk       |
-| `Participant Assignment`          | "Regression discontinuity"                   | Medium Risk    |
-|                                   | "Retrospective Quasi Experimental Design"    | Medium Risk    |
-|                                   | "Not assigned - naturally occurring sample"  | Medium Risk    |
-|                                   | "Unclear"                                    | Medium Risk    |
-|                                   | "Non-random, not matched prior to treatment" | Medium Risk    |
-|                                   | "Non-random, but matched"                    | Medium Risk    |
-|                                   | "Random"                                     | Low Risk       |
-| `Randomisation`                   | "No/Unclear"                                 | Medium Risk    |
-|                                   | "Not applicable"                             | Medium Risk    |
-|                                   | "Yes"                                        | Low Risk       |
-| `Ecological Validity`             | "Unclear"                                    | High Risk      |
-|                                   | "Low ecological validity"                    | High Risk      |
-|                                   | "High ecological validity"                   | Low Risk       |
-| `Number of Schools`               | 1                                            | High Risk      |
-|                                   | > 1 and < 6                                  | Medium Risk    |
-|                                   | > 5                                          | Low Risk       |
-| `Number of Classes`               | 1                                            | High Risk      |
-|                                   | > 1 and < 6                                  | Medium Risk    |
-|                                   | > 5                                          | Low Risk       |
-| `Intervention Delivery`           | "Unclear/not specified"                      | High Risk      |
-|                                   | "Peers"                                      | High Risk      |
-|                                   | "Digital technology"                         | High Risk      |
-|                                   | "Lay persons/volunteers"                     | Medium Risk    |
-|                                   | "Teaching assistants"                        | Medium Risk    |
-|                                   | "Digital technology"                         | Medium Risk    |
-|                                   | "Parents/carers"                             | Medium Risk    |
-|                                   | "External teachers"                          | Medium Risk    |
-|                                   | "Class teachers"                             | Low Risk       |
-| `Intervention Evaluation`         | "The developer"                              | Medium Risk    |
-|                                   | "A different organization paid by developer" | Medium Risk    |
-|                                   | "Unclear/not stated"                         | Medium Risk    |
-|                                   | "An organization commissioned independently to evaluate" | Low Risk |
-| `Comparability`                   | "No"                                         | Medium Risk    |
-|                                   | "Unclear or details not provided"            | Medium Risk    |
-|                                   | "Yes"                                        | Low Risk       |
+| `Publication Year`                | `< 1980`                                     | `High Risk`      |
+|                                   | `> 1979 and < 2000`                          | `Medium Risk`    |
+|                                   | `> 1999`                                     | `Low Risk`       |
+| `Attrition %`                     | `> 19`                                       | `High Risk`      |
+|                                   | `> 9 and < 20`                               | `Medium Risk`    |
+|                                   | `< 10`                                       | `Low Risk`       |
+| `Cluster Analysis`                | `Yes`                                        | `Medium Risk`    |
+|                                   | `No`                                         | `High Risk`      |
+| `Outcome Effect Size Type`        | `Post-test unadjusted`                       | `High Risk`      |
+|                                   | `Pre-post gain`                              | `Medium Risk`    |
+|                                   | `Post-test adjusted for baseline attainment` | `Low Risk`       |
+| `Outcome Test Type`               | `Test type: Researcher developed test`       | `High Risk`      |
+|                                   | `Test type: School-developed test`           | `Medium Risk`    |
+|                                   | `Test type: Standardised test`               | `Low Risk`       |
+|                                   | `Test type: National test`                   | `Low Risk`       |
+|                                   | `Test type: International tests`             | `Low Risk`       |
+| `Sample Size`                     | `<= 30`                                      | `High Risk`      |
+|                                   | `> 30 and < 100`                             | `Medium Risk`    |
+|                                   | `"Test type: Standardised test`              | `Low Risk`       |
+|                                   | `> 99`                                       | `Low Risk`       |
+| `Publication Type`                | `Book or book chapter`                       | `Medium Risk`    |
+|                                   | `Conference paper`                           | `Medium Risk`    |
+|                                   | `Other`                                      | `Medium Risk`    |
+|                                   | `Journal article`                            | `Low Risk`       |
+|                                   | `Dissertation or thesis`                     | `Low Risk`       |
+|                                   | `Technical report`                           | `Low Risk`       |
+| `Participant Assignment`          | `Regression discontinuity`                   | `Medium Risk`    |
+|                                   | `Retrospective Quasi Experimental Design`    | `Medium Risk`    |
+|                                   | `Not assigned - naturally occurring sample`  | `Medium Risk`    |
+|                                   | `Unclear`                                    | `Medium Risk`    |
+|                                   | `Non-random, not matched prior to treatment` | `Medium Risk`    |
+|                                   | `Non-random, but matched`                    | `Medium Risk`    |
+|                                   | `Random`                                     | `Low Risk`       |
+| `Randomisation`                   | `No/Unclear`                                 | `Medium Risk`    |
+|                                   | `Not applicable`                             | `Medium Risk`    |
+|                                   | `Yes`                                        | `Low Risk`       |
+| `Ecological Validity`             | `Unclear`                                    | `High Risk`      |
+|                                   | `Low ecological validity`                    | `High Risk`      |
+|                                   | `High ecological validity`                   | `Low Risk`       |
+| `Number of Schools`               | `1`                                          | `High Risk`      |
+|                                   | `> 1 and < 6`                                | `Medium Risk`    |
+|                                   | `> 5`                                        | `Low Risk`       |
+| `Number of Classes`               | `1`                                          | `High Risk`      |
+|                                   | `> 1 and < 6`                                | `Medium Risk`    |
+|                                   | `> 5`                                        | `Low Risk`       |
+| `Intervention Delivery`           | `Unclear/not specified`                      | `High Risk`      |
+|                                   | `Peers`                                      | `High Risk`      |
+|                                   | `Digital technology`                         | `High Risk`      |
+|                                   | `Lay persons/volunteers`                     | `Medium Risk`    |
+|                                   | `Teaching assistants`                        | `Medium Risk`    |
+|                                   | `Digital technology`                         | `Medium Risk`    |
+|                                   | `Parents/carers`                             | `Medium Risk`    |
+|                                   | `External teachers`                          | `Medium Risk`    |
+|                                   | `Class teachers`                             | `Low Risk`       |
+| `Intervention Evaluation`         | `The developer`                              | `Medium Risk`    |
+|                                   | `A different organization paid by developer` | `Medium Risk`    |
+|                                   | `Unclear/not stated`                         | `Medium Risk`    |
+|                                   | `An organization commissioned independently to evaluate` | `Low Risk` |
+| `Comparability`                   | `No`                                         | `Medium Risk`    |
+|                                   | `Unclear or details not provided`            | `Medium Risk`    |
+|                                   | `Yes`                                        | `Low Risk`       |
 </details>
 
 <details>
@@ -587,7 +587,7 @@ This dataframe contains 'raw' and 'info' data types, as well as 44 custom column
 
 </details>
 
-## Strand Padlocks
+## Strand Padlocks Dataframe
 
 This dataframe, consisting of raw and custom data types, contains one strand-specific row where a set of key variables, thought to affect strand quality, are mapped to a 3 point scale: low, medium, and high risk. Each strand begins with an initial padlock value based on the number of studies it contains. For each of the 5 key padlock values, if any are "High Risk", we subtract 1 from the initial padlock value. The end result is the strands final padlock value. If a strand ends on a padlock value of 0 AND contains 10 or more studies (and has therefore been meta-analysed), its value is raised to 1.
 
@@ -611,27 +611,27 @@ This dataframe can be thought of as the overall "strand" version of the study-le
 
 | Variable | Condition | Risk |
 | --- | --- | --- |
-| `Number of Studies`                     | < 10              | 0           |
-|                                         | > 9 and < 25      | 1           |
-|                                         | > 24 and < 35     | 2           |
-|                                         | > 34 and < 60     | 3           |
-|                                         | > 59 and < 90     | 4           |
-|                                         | > 89              | 5           |
-| `% Studies since 2000`                  | > 49              | Low Risk    |
-|                                         | > 25 and < 50     | Medium Risk |
-|                                         | < 25              | High Risk   |
-| `% Studies randomised`                  | < 30              | High Risk   |
-|                                         | > 29 and < 60     | Medium Risk |
-|                                         | > 59              | Low Risk    |
-| `% Studies w/ high ecological validity` | < 50              | High Risk   |
-|                                         | > 49 and < 75     | Medium Risk |
-|                                         | > 74              | Low Risk    |
-| `% Studies independently evaluated`     | < 10              | High Risk   |
-|                                         | < 9 and < 30      | Medium Risk |
-|                                         | > 29              | Low Risk    |
-| `% Median attrition reported`           | < 15              | Low Risk    |
-|                                         | > 14 and   30     | Medium Risk |
-|                                         | > 29              | High Risk   |
+| `Number of Studies`                     | `< 10`              | `0`           |
+|                                         | `> 9 and < 25`      | `1`           |
+|                                         | `> 24 and < 35`     | `2`           |
+|                                         | `> 34 and < 60`     | `3`           |
+|                                         | `> 59 and < 90`     | `4`           |
+|                                         | `> 89`              | `5`           |
+| `% Studies since 2000`                  | `> 49`              | `Low Risk`    |
+|                                         | `> 25 and < 50`     | `Medium Risk` |
+|                                         | `< 25`              | `High Risk`   |
+| `% Studies randomised`                  | `< 30`              | `High Risk`   |
+|                                         | `> 29 and < 60`     | `Medium Risk` |
+|                                         | `> 59`              | `Low Risk`    |
+| `% Studies w/ high ecological validity` | `< 50`              | `High Risk`   |
+|                                         | `> 49 and < 75`     | `Medium Risk` |
+|                                         | `> 74`              | `Low Risk`    |
+| `% Studies independently evaluated`     | `< 10`              | `High Risk`   |
+|                                         | `< 9 and < 30`      | `Medium Risk` |
+|                                         | `> 29`              | `Low Risk`    |
+| `% Median attrition reported`           | `< 15`              | `Low Risk`    |
+|                                         | `> 14 and   30`     | `Medium Risk` |
+|                                         | `> 29`              | `High Risk`   |
 </details>
 
 <details>
@@ -659,10 +659,17 @@ This dataframe can be thought of as the overall "strand" version of the study-le
 
 ## References Dataframe
 
-This dataframe contains only raw values extracted in order to construct studyu references.
+This dataframe contains only raw values extracted in order to construct study references.
+
+| Data Type   | Description                           | Number of Columns |
+| ----------- | ------------------------------------- | :---------------: |
+|  `_raw`     | raw data as input by the data coders  | 18                |
+|  `_ht`      | text highlighted from the manuscript  | 0                 |
+|  `_info`    | any 'user' entered info               | 0                 |
+| `_CLEAN`    | empty columns for data cleaning notes | 0                 |
+|             | **Total Number of Columns**           | **18**            |
 
 <details>
-
 <summary>References Column Summary</summary>
 
 | Variable         | Data Type | Column Name      |
