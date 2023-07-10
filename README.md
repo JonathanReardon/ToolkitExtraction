@@ -489,6 +489,7 @@ This dataframe contains 'raw' and 'info' data types, as well as 44 custom column
 
 <details>
 <summary>Risk Assessment Condition Table</Summary>
+
 | Variable                          | Condition                                    | Risk           |
 | --------------------------------- | -------------------------------------------- | -------------- |
 | `Publication Year`                | < 1980                                       | High Risk      |
