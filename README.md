@@ -470,7 +470,35 @@ This dataframe contains 'raw' and 'info' data types, as well as one custom defin
 
 </details>
 
-## Study Security Dataframe
+## Outcome Data
+
+This dataframe contains only 'raw' data type, and displays unordered outcome information (outcome type and label).
+
+| Data Type | Description | Number of Columns |
+| --- | --- | :----: |
+|  `_raw` | raw data as input by the data coders | ALL |
+|  `_ht` | text highlighted from the manuscript | 0 |
+|  `_info` | any 'user' entered info | 0 |
+| `_CLEAN`  | empty columns for data cleaning notes | 0 |
+| `*custom*`  | user defined calculation | 0 |
+|   | **Total Number of Columns** | **NA**<sup>1</sup> |
+
+<sup>1</sup>Total number of columns will depend on the study with the maximum number of outcomes.
+
+<details>
+<summary>Outcome Data Column Summary</summary>
+
+| Variable                         | Data Type   | Column Name         |
+|---|---|---|
+| `Eppi ID`             | `raw`       | `id`                |
+| `Publication Author`  | `raw`       | `pub_author`        |
+| `Outcome 1 Type`      | `raw`       | `pub_year`          |
+| `Outcome 1 Label`     | `raw`       | `pub_type`          |
+| `Outcome 2 Type`      | `raw`       | `strand`            |
+| `Outcome 2 Type`      | `raw`       | `toolkit_version`   |
+| `...`                 | `...`       | `...` |
+
+## Study Security
 
 This dataframe contains 'raw' and 'info' data types, as well as 44 custom columns used to assess the variables considered to be at risk of affecting research validity or bias.
 
@@ -490,7 +518,7 @@ This dataframe contains 'raw' and 'info' data types, as well as 44 custom column
 <details>
 <summary>Risk Assessment Condition Table</Summary>
 
-| Variable                          | Condition                                    | Risk             |
+| Variable | Condition | Risk |
 | --- | --- | --- |
 | `Publication Year`                | `< 1980`                                     | `High Risk`      |
 |                                   | `> 1979 and < 2000`                          | `Medium Risk`    |
@@ -587,7 +615,7 @@ This dataframe contains 'raw' and 'info' data types, as well as 44 custom column
 
 </details>
 
-## Strand Padlocks Dataframe
+## Strand Padlocks
 
 This dataframe, consisting of raw and custom data types, contains one strand-specific row where a set of key variables, thought to affect strand quality, are mapped to a 3 point scale: low, medium, and high risk. Each strand begins with an initial padlock value based on the number of studies it contains. For each of the 5 key padlock values, if any are "High Risk", we subtract 1 from the initial padlock value. The end result is the strands final padlock value. If a strand ends on a padlock value of 0 AND contains 10 or more studies (and has therefore been meta-analysed), its value is raised to 1.
 
