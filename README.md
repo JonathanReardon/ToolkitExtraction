@@ -36,7 +36,7 @@ When a selection is made, the newly created file location will be displayed in t
 
 <p align="center">
 
-<img src="/eefdata/img/visual3.png"/>
+<img src="/eefdata/img/visual2.png"/>
 
 </p>
 
