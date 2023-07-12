@@ -30,7 +30,13 @@ When you run eef-data, you will be asked to input a data file. Once you have don
 <img src="/eefdata/img/visual1.png"/>
 </p>
 
-When a selection is made, the newly created file location will be displayed in the "Output Files" box at the bottom of the display. Each individual dataframe will be labeled with the original datafile name as a prefix and a dataframe label suffix.
+When a selection is made, the newly created file location will be displayed in the "Output Files" box at the bottom of the display.
+
+<p align="center">
+<img src="/eefdata/img/visual2.png"/>
+</p>
+
+Each individual dataframe will be labeled with the original datafile name as a prefix and a dataframe label suffix.
 
 ## Dataframe 1: Study, Research and Design Variables
 
