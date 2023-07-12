@@ -1,50 +1,34 @@
+
+[<img alt="" src="https://img.shields.io/pypi/v/eef-data?label=PyPI%20Package" />](https://pypi.org/project/eef-data/)
+
+
 <h1 align="center">
 
 EEF Datafile Extractor
 
 </h1>
 
-This command line application is designed to process data files from the [EEF](https://educationendowmentfoundation.org.uk/education-evidence/teaching-learning-toolkit?gclid=CjwKCAjwjMiiBhA4EiwAZe6jQ3WnUgowD16xFwcG_6hZySd_qiKcElx5wRI0BjJAdwj5RkFT_kzz1hoCS_MQAvD_BwE) Education Evidence Database. It allows you to extract specific dataframes required for data cleaning and analysis purposes. The database provides JSON files with nested structures, and this application simplifies the process of extracting the necessary data, making it easier to integrate into your broader data processing pipeline.
+The EEF Datafile Extractor is an application designed to streamline the processing of data files from the [EEF](https://educationendowmentfoundation.org.uk/education-evidence/teaching-learning-toolkit?gclid=CjwKCAjwjMiiBhA4EiwAZe6jQ3WnUgowD16xFwcG_6hZySd_qiKcElx5wRI0BjJAdwj5RkFT_kzz1hoCS_MQAvD_BwE) Education Evidence Database. The database provides JSON files with complex, nested structures, and our toolkit simplifies the process of extracting the necessary data, making it easier to integrate into your broader data processing pipeline. We provide a collection of bespoke dataframes specifically tailored for data cleaning and analysis. In addition to the pre-built dataframes, the tool includes a custom dataframe builder. This feature empowers you to compile your own dataframes based on your specific research requirements.
 
-## Dependencies
+## Installing
 
--   [Python](https://www.python.org/) 3.7 or higher
--   [numpy](https://github.com/numpy/numpy) 1.22.0
--   [pandas](https://github.com/pandas-dev/pandas) 1.5.0
--   [prompt_toolkit](https://github.com/prompt-toolkit/python-prompt-toolkit) 3.0.30
--   [rich](https://github.com/Textualize/rich/tree/6d30ad0f30028210124c149811cbbe2b183711f9) 12.4.4
--   [toolz](https://github.com/pytoolz/toolz) 0.11.2
-
-Please make sure you have the above dependencies installed before running the application.
-
-## How to Run
-
-To run the application, follow these steps.
-
-1.  Clone this repository:
+Install with `pip` or your favorite PyPI package manager.
 
 ``` bash
->> git clone https://github.com/JonathanReardon/ToolkitExtraction
->> cd ToolkitExtraction
+>> pip install eef-data
 ```
 
-2.  Install the required dependencies by executing the following command:
+and simply run from the command line..
 
 ``` bash
->> pip install -r requirements.txt
+>> eef-data
 ```
 
-3.  Run the application:
-
-``` bash
->> python3 main.py
-```
-
-To begin, you will need to input a data file. Once you have done so, press enter to proceed to the main menu.
+When you run eef-data, you will be asked to input a data file. Once you have done so, press enter to proceed to the main menu.
 
 <p align="center">
 
-<img src="/img/visual1.png"/>
+<img src="/eefdata/img/visual1.png"/>
 
 </p>
 
@@ -52,17 +36,11 @@ When a selection is made, the newly created file location will be displayed in t
 
 <p align="center">
 
-<img src="/img/visual3.png"/>
+<img src="/eefdata/img/visual3.png"/>
 
 </p>
 
-All output dataframes will be saved within the 'output' directory, with the directory named after the original datafile. Each individual dataframe will be labeled with the original datafile name as a prefix and a dataframe label suffix.
-
-<p align="center">
-
-<img src="/img/visual2.png"/>
-
-</p>
+Each individual dataframe will be labeled with the original datafile name as a prefix and a dataframe label suffix.
 
 ## Dataframe 1: Study, Research and Design Variables
 
