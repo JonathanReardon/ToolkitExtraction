@@ -115,12 +115,12 @@ def custom_general_vars1():
     main_table2.add_column("General Data", header_style=header_style, style=column_style, width=30)
 
     for idx, row_data in enumerate(row_data_list1, start=1):
-        main_table2.add_row(f"{idx+0}", row_data, style=row_styles1[idx - 1])
+        main_table2.add_row(f"{idx}", row_data, style=row_styles1[idx - 1])
     
     return main_table2
 
 # table1 
-row_styles2 = ["#FFFFFF"] * 32
+row_styles2 = ["#FFFFFF"] * 48
 row_data_list2 = [
     "(primary) Title", 
     "(primary) Description", 
@@ -154,6 +154,22 @@ row_data_list2 = [
     "(reading) Group2 SD",
     "(reading) Test Type",
     "(reading) Effect Size Type",
+    "(writing) Title", 
+    "(writing) Description", 
+    "(writing) Type", 
+    "(writing) SMD", 
+    "(writing) SE",
+    "(writing) CI (lower)",
+    "(writing) CI (upper)",
+    "(writing) Measure", 
+    "(writing) Group1 N", 
+    "(writing) Group1 Mean",
+    "(writing) Group1 SD", 
+    "(writing) Group2 N",
+    "(writing) Group2 Mean",
+    "(writing) Group2 SD",
+    "(writing) Test Type",
+    "(writing) Effect Size Type",
 ]
 
 def custom_outcome_vars_1():
@@ -192,24 +208,9 @@ def custom_outcome_vars_1():
     return main_table3
 
 # table1 
-row_styles3 = ["#FFFFFF"] * 32
+row_styles3 = ["#FFFFFF"] * 48
 row_data_list3 = [
-    "(writing) Title", 
-    "(writing) Description", 
-    "(writing) Type", 
-    "(writing) SMD", 
-    "(writing) SE",
-    "(writing) CI (lower)",
-    "(writing) CI (upper)",
-    "(writing) Measure", 
-    "(writing) Group1 N", 
-    "(writing) Group1 Mean",
-    "(writing) Group1 SD", 
-    "(writing) Group2 N",
-    "(writing) Group2 Mean",
-    "(writing) Group2 SD",
-    "(writing) Test Type",
-    "(writing) Effect Size Type",
+
     "(math) Title",
     "(math) Description", 
     "(math) Type", 
@@ -226,46 +227,6 @@ row_data_list3 = [
     "(math) Group2 SD",
     "(math) Test Type",
     "(math) Effect Size Type",
-]
-
-def custom_outcome_vars_2():
-    """
-    Displays a Rich list of [toolkit]'outcome' variables for the custom data frame builder
-    - Outcome Title
-    - Outcome Description
-    - Outcome Type
-    - SMD
-    - SE
-    - Outcome Measure
-    - Outcome Group1 N
-    - Outcome Group1 Mean
-    - Outcome Group1 SD
-    - Outcome Group2 N
-    """
-    console = Console()
-    custom_style_main = Style(bgcolor="#37474f")
-
-    table_title_style = Style(italic=False, bgcolor="#37474f", color="#fc5424", bold=True)
-    header_style = Style(italic=False, bgcolor="#37474f", color="#fc5424", bold=True)
-    column_style = Style(bgcolor="#37474f", color="#fc5424", bold=True) 
-
-    main_table4 = Table(show_header=True, 
-                        box=box.SIMPLE,
-                        highlight=False,
-                        title_style=table_title_style,                  
-    )
-
-    main_table4.add_column("", header_style=header_style, style=column_style, width=3)
-    main_table4.add_column("Outcome Specific Data", header_style=header_style, style=column_style, width=30)
-
-    for idx, row_data in enumerate(row_data_list3, start=1):
-        main_table4.add_row(f"{idx+68}", row_data, style=row_styles3[idx - 1])
-    
-    return main_table4
-
-# table1 
-row_styles4 = ["#FFFFFF"] * 32
-row_data_list4 = [
     "(science) Title", 
     "(science) Description", 
     "(science) Type", 
@@ -300,7 +261,7 @@ row_data_list4 = [
     "(fsm) Effect Size Type",
 ]
 
-def custom_outcome_vars_3():
+def custom_outcome_vars_2():
     """
     Displays a Rich list of [toolkit]'outcome' variables for the custom data frame builder
     - Outcome Title
@@ -321,25 +282,29 @@ def custom_outcome_vars_3():
     header_style = Style(italic=False, bgcolor="#37474f", color="#fc5424", bold=True)
     column_style = Style(bgcolor="#37474f", color="#fc5424", bold=True) 
 
-    main_table5 = Table(show_header=True, 
+    main_table4 = Table(show_header=True, 
                         box=box.SIMPLE,
                         highlight=False,
                         title_style=table_title_style,                  
     )
 
-    main_table5.add_column("", header_style=header_style, style=column_style, width=3)
-    main_table5.add_column("Outcome Specific Data", header_style=header_style, style=column_style, width=30)
+    main_table4.add_column("", header_style=header_style, style=column_style, width=3)
+    main_table4.add_column("Outcome Specific Data", header_style=header_style, style=column_style, width=30)
 
-    for idx, row_data in enumerate(row_data_list4, start=1):
-        main_table5.add_row(f"{idx+100}", row_data, style=row_styles4[idx - 1])
+    for idx, row_data in enumerate(row_data_list3, start=1):
+        main_table4.add_row(f"{idx+84}", row_data, style=row_styles3[idx - 1])
     
-    return main_table5
+    return main_table4
 
 # table1 
-row_styles5 = ["#FFFFFF"] * 32
-row_data_list5 = [
+row_styles4 = ["#FFFFFF"] * 49
+row_data_list4 = [
     "Intervention Name (ht)",
     "Intervention Name (info)",
+    "Intervention Description (ht)",
+    "Intervention Description (info)",
+    "Intervention Objective (ht)",
+    "Intervention Objective (info)",
     "Intervention Training (raw)", 
     "Intervention Training (ht)", 
     "Intervention Training (info)", 
@@ -365,12 +330,104 @@ row_data_list5 = [
     "Intervention Setting (raw)", 
     "Intervention Setting (ht)", 
     "Intervention Setting (info)",
+    "Intervention Focus (raw)",
+    "Intervention Focus (ht)",
+    "Intervention Focus (info)",
+    "Intervention Detail (raw)",
+    "Intervention Detail (ht)",
+    "Intervention Detail (info)",
+    "Intervention Costs (raw)",
+    "Intervention Costs (ht)",
+    "Intervention Costs (info)",
+    "Baseline Differences (raw)",
+    "Baseline Differences (ht)",
+    "Baseline Differences (info)",
+    "Comparability (raw)",
+    "Comparability (ht)",
+    "Comparability (info)",
+    "Comparability Reported (raw)",
+    "Comparability Reported (ht)",
+    "Comparability Reported (info)",
 ]
 
-def custom_outcome_vars_4():
+def intervention_vars_3():
     """
     Displays a Rich list of [toolkit]'outcome' variables for the custom data frame builder
-    - Outcome Title
+    - Outcome Titlepanel5
+    - Outcome Description
+    - Outcome Type
+    - SMD
+    - SE
+    - Outcome Measure
+    - Outcome Group1 N
+    - Outcome Group1 Mean
+    - Outcome Group1 SD
+    - Outcome Group2 N
+    """
+    console = Console()
+    custom_style_main = Style(bgcolor="#37474f")
+
+    table_title_style = Style(italic=False, bgcolor="#37474f", color="#fc5424", bold=True)
+    header_style = Style(italic=False, bgcolor="#37474f", color="#fc5424", bold=True)
+    column_style = Style(bgcolor="#37474f", color="#fc5424", bold=True) 
+
+    main_table5 = Table(show_header=True, 
+                        box=box.SIMPLE,
+                        highlight=False,
+                        title_style=table_title_style,                  
+    )
+
+    main_table5.add_column("", header_style=header_style, style=column_style, width=3)
+    main_table5.add_column("Intervention Details", header_style=header_style, style=column_style, width=31)
+
+    for idx, row_data in enumerate(row_data_list4, start=1):
+        main_table5.add_row(f"{idx+132}", row_data, style=row_styles4[idx - 1])
+    
+    return main_table5
+
+# table1 
+row_styles5 = ["#FFFFFF"] * 34
+row_data_list5 = [
+    "Which Comp Var Reported (raw)",
+    "Which Comp Var Reported (ht)",
+    "Which Comp Var Reported (info)",
+    "Clustering (raw)",
+    "Clustering (ht)",
+    "Clustering (info)",
+    "Student Gender (raw)",
+    "Student Gender (ht)",
+    "Student Gender (info)",
+    "Sample Size (ht)",
+    "Sample Size (info)",
+    "Intervention Sample Size (ht)",
+    "Intervention Sample Size (info)",
+    "Control Sample Size (ht)",
+    "Control Sample Size (info)",
+    "Intervention 2 Sample Size (ht)",
+    "Intervention 2 Sample Size (info)",
+    "Intervention 3 Sample Size (ht)",
+    "Intervention 3 Sample Size (info)",
+    "Intervention Sample Size Analyzed (ht)",
+    "Intervention Sample Size Analyzed (info)",
+    "Control Sample Size Analyzed (ht)",
+    "Control Sample Size Analyzed (info)",
+    "Intervention 2 Sample Size Analyzed (ht)",
+    "Intervention 2 Sample Size Analyzed (info)",
+    "Control 2 Sample Size Analyzed (ht)",
+    "Control 2 Sample Size Analyzed (info)",
+    "Attrition Reported (raw)",
+    "Attrition Reported (ht)",
+    "Attrition Reported (info)",
+    "Treatment Group Attrition (ht)",
+    "Treatment Group Attrition (info)",
+    "Total % Attrition (ht)",
+    "Total % Attrition (info)",
+]
+
+def intervention_vars_4():
+    """
+    Displays a Rich list of [toolkit]'outcome' variables for the custom data frame builder
+    - Outcome Titlepanel5
     - Outcome Description
     - Outcome Type
     - SMD
@@ -395,10 +452,10 @@ def custom_outcome_vars_4():
     )
 
     main_table6.add_column("", header_style=header_style, style=column_style, width=3)
-    main_table6.add_column("Intervention Details", header_style=header_style, style=column_style, width=30)
+    main_table6.add_column("Intervention Details", header_style=header_style, style=column_style, width=42)
 
     for idx, row_data in enumerate(row_data_list5, start=1):
-        main_table6.add_row(f"{idx+132}", row_data, style=row_styles5[idx - 1])
+        main_table6.add_row(f"{idx+181}", row_data, style=row_styles5[idx - 1])
     
     return main_table6
 
@@ -574,9 +631,10 @@ def main():
                 # Display list of outcome vars e.g. title, description, type etc.
                 main_table4 = custom_outcome_vars_2()
                 # Display list of outcome vars e.g. title, description, type etc.
-                main_table5 = custom_outcome_vars_3()
+                main_table5 = intervention_vars_3()
                 # Display list of outcome vars e.g. title, description, type etc.
-                main_table6 = custom_outcome_vars_4()
+                main_table6 = intervention_vars_4()
+
 
                 custom_style_main = Style(bgcolor="#37474f")
                 custom_style_outer = Style(bgcolor="#37474f")
@@ -612,10 +670,10 @@ def main():
                     try:
                         console.print("\nAdd variables to your data frame or 0 to Save file and exit")
                         num = int(Prompt.ask("Selection"))
-                        if num < 0 or num > 160:
+                        if num < 0 or num > 2010:
                             raise ValueError
                     except ValueError:
-                        print("Error: invalid input. Please enter a number from 0 to 160.\n")
+                        print("Error: invalid input. Please enter a number from 0 to 2010.\n")
                         continue
 
                     match num:
@@ -1259,7 +1317,7 @@ def main():
                         #/*************************/#
                         case 69:
                                 if "out_tit_wri" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_tit_wri = df_out.out_tit_wri
@@ -1269,7 +1327,7 @@ def main():
                                     print("You have already selected this option!")
                         case 70:
                                 if "out_desc_wri" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_desc_wri = df_out.out_desc_wri
@@ -1279,7 +1337,7 @@ def main():
                                     print("You have already selected this option!")
                         case 71:
                                 if "out_type_wri" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_type_wri = df_out.out_type_wri
@@ -1289,7 +1347,7 @@ def main():
                                     print("You have already selected this option!")
                         case 72:
                                 if "smd_wri" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_smd_wri = df_out.smd_wri
@@ -1299,7 +1357,7 @@ def main():
                                     print("You have already selected this option!")
                         case 73:
                                 if "se_wri" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_se_wri = df_out.se_wri
@@ -1309,7 +1367,7 @@ def main():
                                     print("You have already selected this option!")
                         case 74:
                                 if "ci_lower_wri" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_ci_lower_wri = df_out.ci_lower_wri
@@ -1319,7 +1377,7 @@ def main():
                                     print("You have already selected this option!")
                         case 75:
                                 if "ci_upper_wri" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_ci_upper_wri = df_out.ci_upper_wri
@@ -1329,7 +1387,7 @@ def main():
                                     print("You have already selected this option!")
                         case 76:
                                 if "out_measure_wri" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_measure_wri = df_out.out_measure_wri
@@ -1339,7 +1397,7 @@ def main():
                                     print("You have already selected this option!")
                         case 77:
                                 if "out_g1_n_wri" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g1_n_wri = df_out.out_g1_n_wri
@@ -1349,7 +1407,7 @@ def main():
                                     print("You have already selected this option!")
                         case 78:
                                 if "out_g1_mean_wri" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g1_mean_wri = df_out.out_g1_mean_wri
@@ -1359,7 +1417,7 @@ def main():
                                     print("You have already selected this option!")
                         case 79:
                                 if "out_g1_sd_wri" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g1_sd_wri = df_out.out_g1_sd_wri
@@ -1369,7 +1427,7 @@ def main():
                                     print("You have already selected this option!")
                         case 80:
                                 if "out_g2_n_wri" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g2_n_wri = df_out.out_g2_n_wri
@@ -1379,7 +1437,7 @@ def main():
                                     print("You have already selected this option!")
                         case 81:
                                 if "out_g2_mean_wri" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g2_mean_wri = df_out.out_g2_mean_wri
@@ -1389,7 +1447,7 @@ def main():
                                     print("You have already selected this option!")
                         case 82:
                                 if "out_g2_sd_wri" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g2_sd_wri = df_out.out_g2_sd_wri
@@ -1399,7 +1457,7 @@ def main():
                                     print("You have already selected this option!")
                         case 83:
                                 if "out_test_type_raw_wri" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_test_type_wri = df_out.out_test_type_raw_wri
@@ -1409,7 +1467,7 @@ def main():
                                     print("You have already selected this option!")
                         case 84:
                                 if "out_es_type_wri" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles2[num - 37] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_es_type_wri = df_out.out_es_type_wri
@@ -1422,7 +1480,7 @@ def main():
                         #/*************************/#
                         case 85:
                                 if "out_tit_math" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_tit_math = df_out.out_tit_math
@@ -1432,7 +1490,7 @@ def main():
                                     print("You have already selected this option!")
                         case 86:
                                 if "out_desc_math" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_desc_math = df_out.out_desc_math
@@ -1442,7 +1500,7 @@ def main():
                                     print("You have already selected this option!")
                         case 87:
                                 if "out_type_math" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_type_math = df_out.out_type_math
@@ -1452,7 +1510,7 @@ def main():
                                     print("You have already selected this option!")
                         case 88:
                                 if "smd_math" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_smd_math = df_out.smd_math
@@ -1462,7 +1520,7 @@ def main():
                                     print("You have already selected this option!")
                         case 89:
                                 if "se_math" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_se_math = df_out.se_math
@@ -1472,7 +1530,7 @@ def main():
                                     print("You have already selected this option!")
                         case 90:
                                 if "ci_lower_math" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_ci_lower_math = df_out.ci_lower_math
@@ -1482,7 +1540,7 @@ def main():
                                     print("You have already selected this option!")
                         case 91:
                                 if "ci_upper_math" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_ci_upper_math = df_out.ci_upper_math
@@ -1492,7 +1550,7 @@ def main():
                                     print("You have already selected this option!")
                         case 92:
                                 if "out_measure_math" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_measure_math = df_out.out_measure_math
@@ -1502,7 +1560,7 @@ def main():
                                     print("You have already selected this option!")
                         case 93:
                                 if "out_g1_n_math" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g1_n_math = df_out.out_g1_n_math
@@ -1512,7 +1570,7 @@ def main():
                                     print("You have already selected this option!")
                         case 94:
                                 if "out_g1_mean_math" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g1_mean_math = df_out.out_g1_mean_math
@@ -1522,7 +1580,7 @@ def main():
                                     print("You have already selected this option!")
                         case 95:
                                 if "out_g1_sd_math" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g1_sd_math = df_out.out_g1_sd_math
@@ -1532,7 +1590,7 @@ def main():
                                     print("You have already selected this option!")
                         case 96:
                                 if "out_g2_n_math" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g2_n_math = df_out.out_g2_n_math
@@ -1542,7 +1600,7 @@ def main():
                                     print("You have already selected this option!")
                         case 97:
                                 if "out_g2_mean_math" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g2_mean_math = df_out.out_g2_mean_math
@@ -1552,7 +1610,7 @@ def main():
                                     print("You have already selected this option!")
                         case 98:
                                 if "out_g2_sd_math" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g2_sd_math = df_out.out_g2_sd_math
@@ -1562,7 +1620,7 @@ def main():
                                     print("You have already selected this option!")
                         case 99:
                                 if "out_test_type_raw_math" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_test_type_math = df_out.out_test_type_raw_math
@@ -1572,7 +1630,7 @@ def main():
                                     print("You have already selected this option!")
                         case 100:
                                 if "out_es_type_math" not in used_options:
-                                    row_styles3[num - 69] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_es_type_math = df_out.out_es_type_math
@@ -1585,7 +1643,7 @@ def main():
                         #/*************************/#
                         case 101:
                                 if "out_tit_sci" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_tit_sci = df_out.out_tit_sci
@@ -1595,7 +1653,7 @@ def main():
                                     print("You have already selected this option!")
                         case 102:
                                 if "out_desc_sci" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_desc_sci = df_out.out_desc_sci
@@ -1605,7 +1663,7 @@ def main():
                                     print("You have already selected this option!")
                         case 103:
                                 if "out_type_sci" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_type_sci = df_out.out_type_sci
@@ -1615,7 +1673,7 @@ def main():
                                     print("You have already selected this option!")
                         case 104:
                                 if "smd_sci" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_smd_sci = df_out.smd_sci
@@ -1625,7 +1683,7 @@ def main():
                                     print("You have already selected this option!")
                         case 105:
                                 if "se_sci" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_se_sci = df_out.se_sci
@@ -1635,7 +1693,7 @@ def main():
                                     print("You have already selected this option!")
                         case 106:
                                 if "ci_lower_sci" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_ci_lower_sci = df_out.ci_lower_sci
@@ -1645,7 +1703,7 @@ def main():
                                     print("You have already selected this option!")
                         case 107:
                                 if "ci_upper_sci" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_ci_upper_sci = df_out.ci_upper_sci
@@ -1655,7 +1713,7 @@ def main():
                                     print("You have already selected this option!")
                         case 108:
                                 if "out_measure_sci" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_measure_sci = df_out.out_measure_sci
@@ -1665,7 +1723,7 @@ def main():
                                     print("You have already selected this option!")
                         case 109:
                                 if "out_g1_n_sci" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g1_n_sci = df_out.out_g1_n_sci
@@ -1675,7 +1733,7 @@ def main():
                                     print("You have already selected this option!")
                         case 110:
                                 if "out_g1_mean_sci" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g1_mean_sci = df_out.out_g1_mean_sci
@@ -1685,7 +1743,7 @@ def main():
                                     print("You have already selected this option!")
                         case 111:
                                 if "out_g1_sd_sci" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g1_sd_sci = df_out.out_g1_sd_sci
@@ -1695,7 +1753,7 @@ def main():
                                     print("You have already selected this option!")
                         case 112:
                                 if "out_g2_n_sci" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g2_n_sci = df_out.out_g2_n_sci
@@ -1705,7 +1763,7 @@ def main():
                                     print("You have already selected this option!")
                         case 113:
                                 if "out_g2_mean_sci" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g2_mean_sci = df_out.out_g2_mean_sci
@@ -1715,7 +1773,7 @@ def main():
                                     print("You have already selected this option!")
                         case 114:
                                 if "out_g2_sd_sci" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g2_sd_sci = df_out.out_g2_sd_sci
@@ -1725,7 +1783,7 @@ def main():
                                     print("You have already selected this option!")
                         case 115:
                                 if "out_test_type_raw_sci" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_test_type_sci = df_out.out_test_type_raw_sci
@@ -1735,7 +1793,7 @@ def main():
                                     print("You have already selected this option!")
                         case 116:
                                 if "out_es_type_sci" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_es_type_sci = df_out.out_es_type_sci
@@ -1748,7 +1806,7 @@ def main():
                         #/*************************/#
                         case 117:
                                 if "out_tit_fsm" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_tit_fsm = df_out.out_tit_fsm
@@ -1758,7 +1816,7 @@ def main():
                                     print("You have already selected this option!")
                         case 118:
                                 if "out_desc_fsm" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_desc_fsm = df_out.out_desc_fsm
@@ -1768,7 +1826,7 @@ def main():
                                     print("You have already selected this option!")
                         case 119:
                                 if "out_type_fsm" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_type_fsm = df_out.out_type_fsm
@@ -1778,7 +1836,7 @@ def main():
                                     print("You have already selected this option!")
                         case 120:
                                 if "smd_fsm" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_smd_fsm = df_out.smd_fsm
@@ -1788,7 +1846,7 @@ def main():
                                     print("You have already selected this option!")
                         case 121:
                                 if "se_fsm" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_se_fsm = df_out.se_fsm
@@ -1798,7 +1856,7 @@ def main():
                                     print("You have already selected this option!")
                         case 122:
                                 if "ci_lower_fsm" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_ci_lower_fsm = df_out.ci_lower_fsm
@@ -1808,7 +1866,7 @@ def main():
                                     print("You have already selected this option!")
                         case 123:
                                 if "ci_upper_fsm" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_ci_upper_fsm = df_out.ci_upper_fsm
@@ -1818,7 +1876,7 @@ def main():
                                     print("You have already selected this option!")
                         case 124:
                                 if "out_measure_fsm" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_measure_fsm = df_out.out_measure_fsm
@@ -1828,7 +1886,7 @@ def main():
                                     print("You have already selected this option!")
                         case 125:
                                 if "out_g1_n_fsm" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g1_n_fsm = df_out.out_g1_n_fsm
@@ -1838,7 +1896,7 @@ def main():
                                     print("You have already selected this option!")
                         case 126:
                                 if "out_g1_mean_fsm" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g1_mean_fsm = df_out.out_g1_mean_fsm
@@ -1848,7 +1906,7 @@ def main():
                                     print("You have already selected this option!")
                         case 127:
                                 if "out_g1_sd_fsm" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g1_sd_fsm = df_out.out_g1_sd_fsm
@@ -1858,7 +1916,7 @@ def main():
                                     print("You have already selected this option!")
                         case 128:
                                 if "out_g2_n_fsm" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g2_n_fsm = df_out.out_g2_n_fsm
@@ -1868,7 +1926,7 @@ def main():
                                     print("You have already selected this option!")
                         case 129:
                                 if "out_g2_mean_fsm" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g2_mean_fsm = df_out.out_g2_mean_fsm
@@ -1878,7 +1936,7 @@ def main():
                                     print("You have already selected this option!")
                         case 130:
                                 if "out_g2_sd_fsm" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_g2_sd_fsm = df_out.out_g2_sd_fsm
@@ -1888,7 +1946,7 @@ def main():
                                     print("You have already selected this option!")
                         case 131:
                                 if "out_test_type_raw_fsm" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_test_type_fsm = df_out.out_test_type_raw_fsm
@@ -1898,7 +1956,7 @@ def main():
                                     print("You have already selected this option!")
                         case 132:
                                 if "out_es_type_fsm" not in used_options:
-                                    row_styles4[num - 101] = highlight_style
+                                    row_styles3[num - 85] = highlight_style
                                     df_outcomes = DataFrameCompilation(json_extractor)
                                     df_out, _ = df_outcomes.make_dataframe_5(save_file=False, clean_cols=False, verbose=False)
                                     df_out_es_type_fsm = df_out.out_es_type_fsm
@@ -1911,7 +1969,7 @@ def main():
                         #/*****************************/#
                         case 133: 
                             if "intervention_name_ht" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 intervention_name_ht = df.data_extraction.retrieve_ht(int_name_output, "intervention_name_ht")
                                 dataframes.append(intervention_name_ht)
                                 used_options.append("intervention_name_ht")
@@ -1919,7 +1977,7 @@ def main():
                                 print("You have already selected this option!")
                         case 134: 
                             if "int_name_info" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 intervention_name_info = df.data_extraction.retrieve_info(int_name_output, "int_name_info")
                                 dataframes.append(intervention_name_info)
                                 used_options.append("int_name_info")
@@ -1927,7 +1985,7 @@ def main():
                                 print("You have already selected this option!")
                         case 135: 
                             if "intervention_desc_ht" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 intervention_desc_ht = df.data_extraction.retrieve_ht(intervention_description_output, "intervention_desc_ht")
                                 dataframes.append(intervention_desc_ht)
                                 used_options.append("intervention_desc_ht")
@@ -1935,7 +1993,7 @@ def main():
                                 print("You have already selected this option!")
                         case 136: 
                             if "intervention_desc_info" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 intervention_desc_info = df.data_extraction.retrieve_info(intervention_description_output, "intervention_desc_info")
                                 dataframes.append(intervention_desc_info)
                                 used_options.append("intervention_desc_info")
@@ -1943,7 +2001,7 @@ def main():
                                 print("You have already selected this option!")
                         case 137: 
                             if "intervention_objec_ht" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 intervention_desc_ht = df.data_extraction.retrieve_ht(intervention_objectives_output, "intervention_objec_ht")
                                 dataframes.append(intervention_desc_ht)
                                 used_options.append("intervention_objec_ht")
@@ -1951,212 +2009,642 @@ def main():
                                 print("You have already selected this option!")
                         case 138: 
                             if "intervention_objec_info" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 intervention_desc_info = df.data_extraction.retrieve_info(intervention_objectives_output, "intervention_objec_info")
                                 dataframes.append(intervention_desc_info)
                                 used_options.append("intervention_objec_info")
                             else:
                                 print("You have already selected this option!")
-                        case 193: 
+                        case 139: 
                             if "int_training_raw" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 intervention_training_prov_data = df.data_extraction.retrieve_data(int_training_provided_output, "int_training_raw")
                                 dataframes.append(intervention_training_prov_data)
                                 used_options.append("int_training_raw")
                             else:
                                 print("You have already selected this option!")
-                        case 194: 
+                        case 140: 
                             if "int_training_ht" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 intervention_training_prov_ht = df.data_extraction.retrieve_ht(int_training_provided_output, "int_training_ht")
                                 dataframes.append(intervention_training_prov_ht)
                                 used_options.append("int_training_ht")
                             else:
                                 print("You have already selected this option!")
-                        case 195: 
+                        case 141: 
                             if "int_training_info" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 intervention_training_prov_info = df.data_extraction.retrieve_info(int_training_provided_output, "int_training_info")
                                 dataframes.append(intervention_training_prov_info)
                                 used_options.append("int_training_info")
                             else:
                                 print("You have already selected this option!")
-                        case 196: 
+                        case 142: 
                             if "int_approach_raw" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 intervention_teaching_app_data = df.data_extraction.retrieve_data(intervention_teaching_approach, "int_approach_raw")
                                 dataframes.append(intervention_teaching_app_data)
                                 used_options.append("int_approach_raw")
                             else:
                                 print("You have already selected this option!")
-                        case 197: 
+                        case 143: 
                             if "int_approach_ht" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 intervention_training_prov_ht = df.data_extraction.retrieve_ht(intervention_teaching_approach, "int_approach_ht")
                                 dataframes.append(intervention_training_prov_ht)
                                 used_options.append("int_approach_ht")
                             else:
                                 print("You have already selected this option!")
-                        case 198: 
+                        case 144: 
                             if "int_approach_info" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 intervention_training_prov_info = df.data_extraction.retrieve_info(intervention_teaching_approach, "int_approach_info")
                                 dataframes.append(intervention_training_prov_info)
                                 used_options.append("int_approach_info")
                             else:
                                 print("You have already selected this option!")
-                        case 139: 
+                        case 145: 
                             if "digit_tech_raw" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 digit_tech_data = df.data_extraction.retrieve_data(int_appr_dig_tech, "digit_tech_raw")
                                 dataframes.append(digit_tech_data)
                                 used_options.append("digit_tech_raw")
                             else:
                                 print("You have already selected this option!")
-                        case 140: 
+                        case 146: 
                             if "digit_tech_ht" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 digit_tech_ht = df.data_extraction.retrieve_ht(int_appr_dig_tech, "digit_tech_ht")
                                 dataframes.append(digit_tech_ht)
                                 used_options.append("digit_tech_ht")
                             else:
                                 print("You have already selected this option!")
-                        case 141: 
+                        case 147: 
                             if "digit_tech_info" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 digit_tech_info = df.data_extraction.retrieve_info(int_appr_dig_tech, "digit_tech_info")
                                 dataframes.append(digit_tech_info)
                                 used_options.append("digit_tech_info")
                             else:
                                 print("You have already selected this option!")
-                        case 142: 
+                        case 148: 
                             if "parent_partic_raw" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 par_eng_data = df.data_extraction.retrieve_data(int_appr_par_or_comm_vol, "parent_partic_raw")
                                 dataframes.append(par_eng_data)
                                 used_options.append("parent_partic_raw")
                             else:
                                 print("You have already selected this option!")
-                        case 143: 
+                        case 149: 
                             if "parent_partic_ht" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 par_eng_ht = df.data_extraction.retrieve_ht(int_appr_par_or_comm_vol, "parent_partic_ht")
                                 dataframes.append(par_eng_ht)
                                 used_options.append("parent_partic_ht")
                             else:
                                 print("You have already selected this option!")
-                        case 144: 
+                        case 150: 
                             if "parent_partic_info" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 par_eng_info = df.data_extraction.retrieve_info(int_appr_par_or_comm_vol, "parent_partic_info")
                                 dataframes.append(par_eng_info)
                                 used_options.append("parent_partic_info")
                             else:
                                 print("You have already selected this option!")
-                        case 145: 
+                        case 151: 
                             if "int_when_raw" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 intervention_time_data = df.data_extraction.retrieve_data(intervention_time_output, "int_when_raw")
                                 dataframes.append(intervention_time_data)
                                 used_options.append("int_when_raw")
                             else:
                                 print("You have already selected this option!")
-                        case 146: 
+                        case 152: 
                             if "int_when_ht" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 intervention_time_ht = df.data_extraction.retrieve_ht(intervention_time_output, "int_when_ht")
                                 dataframes.append(intervention_time_ht)
                                 used_options.append("int_when_ht")
                             else:
                                 print("You have already selected this option!")
-                        case 147: 
+                        case 153: 
                             if "int_when_info" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 intervention_time_info = df.data_extraction.retrieve_info(intervention_time_output, "int_when_info")
                                 dataframes.append(intervention_time_info)
                                 used_options.append("int_when_info")
                             else:
                                 print("You have already selected this option!")
-                        case 148: 
+                        case 154: 
                             if "int_who_raw" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 intervention_delivery_data = df.data_extraction.retrieve_data(intervention_delivery_output, "int_who_raw")
                                 dataframes.append(intervention_delivery_data)
                                 used_options.append("int_who_raw")
                             else:
                                 print("You have already selected this option!")
-                        case 149: 
+                        case 155: 
                             if "int_who_ht" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 intervention_delivery_ht = df.data_extraction.retrieve_ht(intervention_delivery_output, "int_who_ht")
                                 dataframes.append(intervention_delivery_ht)
                                 used_options.append("int_who_ht")
                             else:
                                 print("You have already selected this option!")
-                        case 150: 
+                        case 156: 
                             if "int_who_info" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 intervention_delivery_info = df.data_extraction.retrieve_info(intervention_delivery_output, "int_who_info")
                                 dataframes.append(intervention_delivery_info)
                                 used_options.append("int_who_info")
                             else:
                                 print("You have already selected this option!")
-                        case 151: 
+                        case 157: 
                             if "int_dur_ht" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 intervention_duration_ht = df.data_extraction.retrieve_ht(int_dur_output, "int_dur_ht")
                                 dataframes.append(intervention_duration_ht)
                                 used_options.append("int_dur_ht")
                             else:
                                 print("You have already selected this option!")
-                        case 152: 
+                        case 158: 
                             if "int_dur_info" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 intervention_duration_info = df.data_extraction.retrieve_info(int_dur_output, "int_dur_info")
                                 dataframes.append(intervention_duration_info)
                                 used_options.append("int_dur_info")
                             else:
                                 print("You have already selected this option!")
-                        case 153: 
+                        case 159: 
                             if "int_leng_ht" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 intervention_duration_ht = df.data_extraction.retrieve_ht(intervention_session_length_output, "int_leng_ht")
                                 dataframes.append(intervention_duration_ht)
                                 used_options.append("int_leng_ht")
                             else:
                                 print("You have already selected this option!")
-                        case 154: 
+                        case 160: 
                             if "int_leng_info" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 intervention_sess_length_info = df.data_extraction.retrieve_info(intervention_session_length_output, "int_leng_info")
                                 dataframes.append(intervention_sess_length_info)
                                 used_options.append("int_leng_info")
                             else:
                                 print("You have already selected this option!")
-                        case 155: 
+                        case 161: 
                             if "int_setting_raw" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 edu_setting_data = df.data_extraction.retrieve_info(edu_setting_output, "int_setting_raw")
                                 dataframes.append(edu_setting_data)
                                 used_options.append("int_setting_raw")
                             else:
                                 print("You have already selected this option!")
-                        case 156: 
+                        case 162: 
                             if "int_setting_ht" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 edu_setting_ht = df.data_extraction.retrieve_ht(edu_setting_output, "int_setting_ht")
                                 dataframes.append(edu_setting_ht)
                                 used_options.append("int_setting_ht")
                             else:
                                 print("You have already selected this option!")
-                        case 157: 
+                        case 163: 
                             if "int_setting_info" not in used_options:
-                                row_styles5[num - 133] = highlight_style
+                                row_styles4[num - 133] = highlight_style
                                 edu_setting_info = df.data_extraction.retrieve_info(edu_setting_output, "int_setting_info")
                                 dataframes.append(edu_setting_info)
                                 used_options.append("int_setting_info")
                             else:
                                 print("You have already selected this option!")
+                        case 164: 
+                            if "int_part_raw" not in used_options:
+                                row_styles4[num - 133] = highlight_style
+                                int_focus = df.data_extraction.retrieve_info(int_focus_output, "int_part_raw")
+                                dataframes.append(int_focus)
+                                used_options.append("int_part_raw")
+                            else:
+                                print("You have already selected this option!")
+                        case 165: 
+                            if "int_part_ht" not in used_options:
+                                row_styles4[num - 133] = highlight_style
+                                int_focus_ht = df.data_extraction.retrieve_info(int_focus_output, "int_part_ht")
+                                dataframes.append(int_focus_ht)
+                                used_options.append("int_part_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 166: 
+                            if "int_part_info" not in used_options:
+                                row_styles4[num - 133] = highlight_style
+                                int_focus_info = df.data_extraction.retrieve_info(int_focus_output, "int_part_info")
+                                dataframes.append(int_focus_info)
+                                used_options.append("int_part_info")
+                            else:
+                                print("You have already selected this option!")
+                        case 167: 
+                            if "int_fidel_raw" not in used_options:
+                                row_styles4[num - 133] = highlight_style
+                                int_fidel = df.data_extraction.retrieve_data(int_impl_details, "int_fidel_raw")
+                                dataframes.append(int_fidel)
+                                used_options.append("int_fidel_raw")
+                            else:
+                                print("You have already selected this option!")
+                        case 168: 
+                            if "int_fidel_ht" not in used_options:
+                                row_styles4[num - 133] = highlight_style
+                                int_fidel_ht = df.data_extraction.retrieve_ht(int_impl_details, "int_fidel_ht")
+                                dataframes.append(int_fidel_ht)
+                                used_options.append("int_fidel_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 169: 
+                            if "int_fidel_info" not in used_options:
+                                row_styles4[num - 133] = highlight_style
+                                int_fidel_ht_info = df.data_extraction.retrieve_info(int_impl_details, "int_fidel_info")
+                                dataframes.append(int_fidel_ht_info)
+                                used_options.append("int_fidel_info")
+                            else:
+                                print("You have already selected this option!")
+                        case 170: 
+                            if "int_cost_raw" not in used_options:
+                                row_styles4[num - 133] = highlight_style
+                                int_cost = df.data_extraction.retrieve_data(int_costs_reported, "int_cost_raw")
+                                dataframes.append(int_cost)
+                                used_options.append("int_cost_raw")
+                            else:
+                                print("You have already selected this option!")
+                        case 171: 
+                            if "int_cost_ht" not in used_options:
+                                row_styles4[num - 133] = highlight_style
+                                int_cost_ht = df.data_extraction.retrieve_ht(int_costs_reported, "int_cost_ht")
+                                dataframes.append(int_cost_ht)
+                                used_options.append("int_cost_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 172: 
+                            if "int_cost_info" not in used_options:
+                                row_styles4[num - 133] = highlight_style
+                                int_cost_info = df.data_extraction.retrieve_info(int_costs_reported, "int_cost_info")
+                                dataframes.append(int_cost_info)
+                                used_options.append("int_cost_info")
+                            else:
+                                print("You have already selected this option!")
+                        case 173: 
+                            if "base_diff_raw" not in used_options:
+                                row_styles4[num - 133] = highlight_style
+                                base_diff = df.data_extraction.retrieve_data(baseline_diff_output, "base_diff_raw")
+                                dataframes.append(base_diff)
+                                used_options.append("base_diff_raw")
+                            else:
+                                print("You have already selected this option!")
+                        case 174: 
+                            if "base_diff_ht" not in used_options:
+                                row_styles4[num - 133] = highlight_style
+                                base_diff_ht = df.data_extraction.retrieve_ht(baseline_diff_output, "base_diff_ht")
+                                dataframes.append(base_diff_ht)
+                                used_options.append("base_diff_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 175: 
+                            if "base_diff_info" not in used_options:
+                                row_styles4[num - 133] = highlight_style
+                                base_diff_info = df.data_extraction.retrieve_info(baseline_diff_output, "base_diff_info")
+                                dataframes.append(base_diff_info)
+                                used_options.append("base_diff_info")
+                            else:
+                                print("You have already selected this option!")
+                        case 176: 
+                            if "comp_anal_raw" not in used_options:
+                                row_styles4[num - 133] = highlight_style
+                                comp_anal = df.data_extraction.retrieve_data(comparability_output, "comp_anal_raw")
+                                dataframes.append(comp_anal)
+                                used_options.append("comp_anal_raw")
+                            else:
+                                print("You have already selected this option!")
+                        case 177: 
+                            if "comp_anal_ht" not in used_options:
+                                row_styles4[num - 133] = highlight_style
+                                comp_anal_ht = df.data_extraction.retrieve_ht(comparability_output, "comp_anal_ht")
+                                dataframes.append(comp_anal_ht)
+                                used_options.append("comp_anal_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 178: 
+                            if "comp_anal_info" not in used_options:
+                                row_styles4[num - 133] = highlight_style
+                                comp_anal_info = df.data_extraction.retrieve_info(comparability_output, "comp_anal_info")
+                                dataframes.append(comp_anal_info)
+                                used_options.append("comp_anal_info")
+                            else:
+                                print("You have already selected this option!")
+                        case 179: 
+                            if "comp_var__raw" not in used_options:
+                                row_styles4[num - 133] = highlight_style
+                                comp_var = df.data_extraction.retrieve_data(comp_vars_rep, "comp_var__raw")
+                                dataframes.append(comp_var)
+                                used_options.append("comp_var__raw")
+                            else:
+                                print("You have already selected this option!")
+                        case 180: 
+                            if "comp_var__ht" not in used_options:
+                                row_styles4[num - 133] = highlight_style
+                                comp_var_ht = df.data_extraction.retrieve_ht(comp_vars_rep, "comp_var__ht")
+                                dataframes.append(comp_var_ht)
+                                used_options.append("comp_var__ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 181: 
+                            if "comp_var__info" not in used_options:
+                                row_styles4[num - 133] = highlight_style
+                                comp_var_info = df.data_extraction.retrieve_info(comp_vars_rep, "comp_var__info")
+                                dataframes.append(comp_var_info)
+                                used_options.append("comp_var__info")
+                            else:
+                                print("You have already selected this option!")
+                        case 182: 
+                            if "comp_var_rep_raw" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                comp_var_rep = df.data_extraction.retrieve_data(which_comp_vars_rep_output, "comp_var_rep_raw")
+                                dataframes.append(comp_var_rep)
+                                used_options.append("comp_var_rep_raw")
+                            else:
+                                print("You have already selected this option!")
+                        case 183: 
+                            if "comp_var_rep_ht" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                comp_var_rep_ht = df.data_extraction.retrieve_ht(which_comp_vars_rep_output, "comp_var_rep_ht")
+                                dataframes.append(comp_var_rep_ht)
+                                used_options.append("comp_var_rep_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 184: 
+                            if "comp_var_rep_info" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                comp_var_rep_info = df.data_extraction.retrieve_info(which_comp_vars_rep_output, "comp_var_rep_info")
+                                dataframes.append(comp_var_rep_info)
+                                used_options.append("comp_var_rep_info")
+                            else:
+                                print("You have already selected this option!")
+                        # CLUSTERING
+                        case 185: 
+                            if "clust_anal_raw" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                clustering = df.data_extraction.retrieve_data(clustering_output, "clust_anal_raw")
+                                dataframes.append(clustering)
+                                used_options.append("clust_anal_raw")
+                            else:
+                                print("You have already selected this option!")
+                        case 186: 
+                            if "clust_anal_ht" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                clustering_ht = df.data_extraction.retrieve_ht(clustering_output, "clust_anal_ht")
+                                dataframes.append(clustering_ht)
+                                used_options.append("clust_anal_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 187: 
+                            if "clust_anal_info" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                clustering_info = df.data_extraction.retrieve_info(clustering_output, "clust_anal_info")
+                                dataframes.append(clustering_info)
+                                used_options.append("clust_anal_info")
+                            else:
+                                print("You have already selected this option!")
+                        # STUDENT GENDER
+                        case 188: 
+                            if "part_gen_raw" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                gender = df.data_extraction.retrieve_data(student_gender, "part_gen_raw")
+                                dataframes.append(gender)
+                                used_options.append("part_gen_raw")
+                            else:
+                                print("You have already selected this option!")
+                        case 189: 
+                            if "part_gen_ht" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                gender_ht = df.data_extraction.retrieve_ht(student_gender, "part_gen_ht")
+                                dataframes.append(gender_ht)
+                                used_options.append("part_gen_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 190: 
+                            if "part_gen_info" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                gender_info = df.data_extraction.retrieve_info(student_gender, "part_gen_info")
+                                dataframes.append(gender_info)
+                                used_options.append("part_gen_info")
+                            else:
+                                print("You have already selected this option!")
+                        # SAMPLE SIZE
+                        case 191: 
+                            if "sample_analysed_ht" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                sample_size_ht = df.data_extraction.retrieve_ht(sample_size_output, "sample_analysed_ht")
+                                dataframes.append(sample_size_ht)
+                                used_options.append("sample_analysed_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 192: 
+                            if "sample_analysed_info" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                sample_size_info = df.data_extraction.retrieve_info(sample_size_output, "sample_analysed_info")
+                                dataframes.append(sample_size_info)
+                                used_options.append("sample_analysed_info")
+                            else:
+                                print("You have already selected this option!")
+                        # INTERVENTION SAMPLE SIZE
+                        case 193: 
+                            if "base_n_treat_ht" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                sample_size_int_ht = df.data_extraction.retrieve_ht(sample_size_intervention_output, "base_n_treat_ht")
+                                dataframes.append(sample_size_int_ht)
+                                used_options.append("base_n_treat_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 194: 
+                            if "base_n_treat_info" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                sample_size_int_info = df.data_extraction.retrieve_info(sample_size_intervention_output, "base_n_treat_info")
+                                dataframes.append(sample_size_int_info)
+                                used_options.append("base_n_treat_info")
+                            else:
+                                print("You have already selected this option!")
+                        # CONTROL SAMPLE SIZE
+                        case 195: 
+                            if "base_n_cont_ht" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                sample_size_cont_ht = df.data_extraction.retrieve_ht(sample_size_control_output, "base_n_cont_ht")
+                                dataframes.append(sample_size_cont_ht)
+                                used_options.append("base_n_cont_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 196: 
+                            if "base_n_cont_info" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                sample_size_cont_info = df.data_extraction.retrieve_info(sample_size_control_output, "base_n_cont_info")
+                                dataframes.append(sample_size_cont_info)
+                                used_options.append("base_n_cont_info")
+                            else:
+                                print("You have already selected this option!")
+                        # INTERVENTION 2 SAMPLE SIZE
+                        case 197: 
+                            if "base_n_treat2_ht" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                sample_size_int2_ht = df.data_extraction.retrieve_ht(sample_size_second_intervention_output, "base_n_treat2_ht")
+                                dataframes.append(sample_size_int2_ht)
+                                used_options.append("base_n_treat2_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 198: 
+                            if "base_n_treat2_info" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                sample_size_int2_info = df.data_extraction.retrieve_info(sample_size_second_intervention_output, "base_n_treat2_info")
+                                dataframes.append(sample_size_int2_info)
+                                used_options.append("base_n_treat2_info")
+                            else:
+                                print("You have already selected this option!")
+                        # INTERVENTION 3 SAMPLE SIZE
+                        case 199: 
+                            if "base_n_treat3_ht" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                sample_size_int3_ht = df.data_extraction.retrieve_ht(sample_size_third_intervention_output, "base_n_treat3_ht")
+                                dataframes.append(sample_size_int3_ht)
+                                used_options.append("base_n_treat3_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 200: 
+                            if "base_n_treat3_info" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                sample_size_int3_info = df.data_extraction.retrieve_info(sample_size_third_intervention_output, "base_n_treat3_info")
+                                dataframes.append(sample_size_int3_info)
+                                used_options.append("base_n_treat3_info")
+                            else:
+                                print("You have already selected this option!") 
+                        # INTERVENTION SAMPLE SIZE ANALYSED
+                        case 201: 
+                            if "n_treat_ht" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                sameple_size_int_anal_ht = df.data_extraction.retrieve_ht(samp_size_anal_int_output, "n_treat_ht")
+                                dataframes.append(sameple_size_int_anal_ht)
+                                used_options.append("n_treat_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 202: 
+                            if "n_treat_info" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                sameple_size_int_anal_info = df.data_extraction.retrieve_info(samp_size_anal_int_output, "n_treat_info")
+                                dataframes.append(sameple_size_int_anal_info)
+                                used_options.append("n_treat_info")
+                            else:
+                                print("You have already selected this option!") 
+                        # CONTROL SAMPLE SIZE ANALYSED
+                        case 203: 
+                            if "n_cont_ht" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                sameple_size_cont_anal_ht = df.data_extraction.retrieve_ht(samp_size_anal_cont_output, "n_cont_ht")
+                                dataframes.append(sameple_size_cont_anal_ht)
+                                used_options.append("n_cont_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 204: 
+                            if "n_cont_info" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                sameple_size_cont_anal_info = df.data_extraction.retrieve_info(samp_size_anal_cont_output, "n_cont_info")
+                                dataframes.append(sameple_size_cont_anal_info)
+                                used_options.append("n_cont_info")
+                            else:
+                                print("You have already selected this option!") 
+                        # INTERVENTION 2 SAMPLE SIZE ANALYSED
+                        case 205: 
+                            if "n_treat2_ht" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                sameple_size_int2_anal_ht = df.data_extraction.retrieve_ht(samp_size_anal_sec_int_output, "n_treat2_ht")
+                                dataframes.append(sameple_size_int2_anal_ht)
+                                used_options.append("n_treat2_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 206: 
+                            if "n_treat2_info" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                sameple_size_int2_anal_info = df.data_extraction.retrieve_info(samp_size_anal_sec_int_output, "n_treat2_info")
+                                dataframes.append(sameple_size_int2_anal_info)
+                                used_options.append("n_treat2_info")
+                            else:
+                                print("You have already selected this option!") 
+                        # CONTROL 2 SAMPLE SIZE ANALYSED
+                        case 207: 
+                            if "n_cont2_ht" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                sameple_size_contr2_anal_ht = df.data_extraction.retrieve_ht(samp_size_anal_sec_cont_output, "n_cont2_ht")
+                                dataframes.append(sameple_size_contr2_anal_ht)
+                                used_options.append("n_cont2_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 208: 
+                            if "n_cont2_info" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                sameple_size_contr2_anal_info = df.data_extraction.retrieve_info(samp_size_anal_sec_cont_output, "n_cont2_info")
+                                dataframes.append(sameple_size_contr2_anal_info)
+                                used_options.append("n_cont2_info")
+                            else:
+                                print("You have already selected this option!") 
+                        # ATTRITION REPORTED
+                        case 209: 
+                            if "attri_raw" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                attrition = df.data_extraction.retrieve_data(attr_dropout_rep_output, "attri_raw")
+                                dataframes.append(attrition)
+                                used_options.append("attri_raw")
+                            else:
+                                print("You have already selected this option!")
+                        case 210: 
+                            if "attri_ht" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                attrition_ht = df.data_extraction.retrieve_ht(attr_dropout_rep_output, "attri_ht")
+                                dataframes.append(attrition_ht)
+                                used_options.append("attri_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 211: 
+                            if "attri_info" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                attrition_info = df.data_extraction.retrieve_info(attr_dropout_rep_output, "attri_info")
+                                dataframes.append(attrition_info)
+                                used_options.append("attri_info")
+                            else:
+                                print("You have already selected this option!")
+                        # ATTRITION TREATMENT GROUP
+                        case 212: 
+                            if "attri_treat_ht" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                attrition_treat_ht = df.data_extraction.retrieve_ht(treat_grp_attr, "attri_treat_ht")
+                                dataframes.append(attrition_treat_ht)
+                                used_options.append("attri_treat_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 213: 
+                            if "attri_treat_info" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                attrition_treat_info = df.data_extraction.retrieve_info(treat_grp_attr, "attri_treat_info")
+                                dataframes.append(attrition_treat_info)
+                                used_options.append("attri_treat_info")
+                            else:
+                                print("You have already selected this option!") 
+                        # TOTAL % ATTRITION
+                        case 214: 
+                            if "attri_perc_ht" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                total_perc_attr_ht = df.data_extraction.retrieve_ht(overall_perc_attr, "attri_perc_ht")
+                                dataframes.append(total_perc_attr_ht)
+                                used_options.append("attri_perc_ht")
+                            else:
+                                print("You have already selected this option!")
+                        case 215: 
+                            if "attri_perc_info" not in used_options:
+                                row_styles5[num - 182] = highlight_style
+                                total_perc_attr_info = df.data_extraction.retrieve_info(overall_perc_attr, "attri_perc_info")
+                                dataframes.append(total_perc_attr_info)
+                                used_options.append("attri_perc_info")
+                            else:
+                                print("You have already selected this option!") 
                         case _:
                             print("Error: invalid option selected")
                     
@@ -2167,8 +2655,8 @@ def main():
                         main_table2 = custom_general_vars1()
                         main_table3 = custom_outcome_vars_1()
                         main_table4 = custom_outcome_vars_2()
-                        main_table5 = custom_outcome_vars_3()
-                        main_table6 = custom_outcome_vars_4()
+                        main_table5 = intervention_vars_3()
+                        main_table6 = intervention_vars_4()
                         console.clear()
 
                         panel1 = Panel(main_table2, style=custom_style_main, border_style="#37474f")
