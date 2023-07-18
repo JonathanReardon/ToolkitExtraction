@@ -874,6 +874,36 @@ This dataframe consists of the data the user chooses from a pre-defined column l
 | `Intervention Setting`                      | `raw`  | `int_setting_raw`    |
 | `Intervention Setting (ht)`                 | `ht`   | `int_setting_ht`     |
 | `Intervention Setting (info)`               | `info` | `int_setting_info`   |
+| `Intervention Focus`                      | `raw`  | `int_part_raw`    |
+| `Intervention Focus (ht)`                 | `ht`   | `int_part_ht`     |
+| `Intervention Focus (info)`               | `info` | `int_part_info`   |
+| `Intervention Detail`                      | `raw`  | `int_fidel_raw`    |
+| `Intervention Detail (ht)`                 | `ht`   | `int_fidel_ht`     |
+| `Intervention Detail (info)`               | `info` | `int_fidel_info`   |
+| `Intervention Cost`                      | `raw`  | `int_cost_raw`    |
+| `Intervention Cost (ht)`                 | `ht`   | `int_cost_ht`     |
+| `Intervention Cost (info)`               | `info` | `int_cost_info`   |
+| `Baseline Differences (raw)`              | `raw`  | `base_diff_raw`    |
+| `Baseline Differences (ht)`               | `ht`   | `base_diff_ht`     |
+| `Baseline Differences (info)`             | `info` | `base_diff_info`   |
+| `Comparability (raw)`              | `raw`  | `comp_anal_raw`    |
+| `Comparability (ht)`               | `ht`   | `comp_anal_ht`     |
+| `Comparability (info)`             | `info` | `comp_anal_info`   |
+| `Comparability Reported (raw)`              | `raw`  | `comp_var__raw`    |
+| `Comparability Reported (ht)`               | `ht`   | `comp_var__ht`     |
+| `Comparability Reported (info)`             | `info` | `comp_var__info`   |
+| `Which Comp Var Reported (raw)`              | `raw`  | `comp_var_rep_raw`    |
+| `Which Comp Var Reported (ht)`               | `ht`   | `comp_var_rep_ht`     |
+| `Which Comp Var Reported (info)`             | `info` | `comp_var_rep_info`   |
+| `Clustering (raw)`              | `raw`  | `clust_anal_raw`    |
+| `Clustering (ht)`               | `ht`   | `clust_anal_ht`     |
+| `Clustering (info)`             | `info` | `clust_anal_info`   |
+| `Student Gender (raw)`              | `raw`  | `part_gen_raw`    |
+| `Student Gender (ht)`               | `ht`   | `part_gen_ht`     |
+| `Student Gender (info)`             | `info` | `part_gen_info`   |
+| `Sample Size (ht)`               | `ht`   | `sample_analysed_ht`     |
+| `Sample Size (info)`             | `info` | `sample_analysed_info`   |
+
 </details>
 
 ## License
