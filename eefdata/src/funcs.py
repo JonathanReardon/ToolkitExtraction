@@ -32,7 +32,7 @@ from rich.table import Table
 from rich.columns import Columns
 
 # Local imports
-from eefdata.src.attributeIDs import *
+from src.attributeIDs import *
 
 # Filter out all warnings
 warnings.filterwarnings('ignore')
@@ -5393,7 +5393,7 @@ def main_menu_display1(functions, outfile1, df_display):
         padding=(1, 2), 
         title_align="left",
         style=custom_style_main,
-        #width=150,
+        width=120,
         height=44)
 
     console.clear()
