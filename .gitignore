@@ -1,7 +1,6 @@
 padlock_data/
 .vscode
 __pycache__
-README_pypi.md
 dist/
 output/
 eef_data.egg-info

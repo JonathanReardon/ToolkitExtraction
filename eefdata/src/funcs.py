@@ -32,7 +32,7 @@ from rich.table import Table
 from rich.columns import Columns
 
 # Local imports
-from src.attributeIDs import *
+from eefdata.src.attributeIDs import *
 
 # Filter out all warnings
 warnings.filterwarnings('ignore')

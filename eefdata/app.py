@@ -15,8 +15,8 @@ from rich.table import Table
 from rich import box
 from rich.pretty import Pretty
 
-from eefdata.src.attributeIDs import *
-from eefdata.src.funcs import (
+from .src.attributeIDs import *
+from .src.funcs import (
     CustomFrames,
     DataFrameCompilation,
     JSONDataExtractor,
@@ -634,7 +634,6 @@ def main():
                 main_table5 = intervention_vars_3()
                 # Display list of outcome vars e.g. title, description, type etc.
                 main_table6 = intervention_vars_4()
-
 
                 custom_style_main = Style(bgcolor="#37474f")
                 custom_style_outer = Style(bgcolor="#37474f")
