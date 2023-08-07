@@ -4978,7 +4978,7 @@ def data_cleaning_col_breakdown():
     main_table2.add_row("Admin Strand",  "Int Name",  "Gender",  "Desc Stats Prim Out",  "Outcome Type")
     main_table2.add_row("Publication Type EPPI",  "Int Description",  "Sample Size",  "Int Treat Grp Number",  "Standard Mean Difference")
     main_table2.add_row("Publication Type",  "Int Objective",  "SES/FSM",  "Int Treat Grp Pre-test Mean/SD",  "Standard Error")
-    main_table2.add_row("Educational Setting", "Int Organisatio Type",  "Int Treat Sample Size",  "Int Treat Grp Post-test Mean/SD",  "Confidence Interval (lb)")
+    main_table2.add_row("Educational Setting", "Int Organisation Type",  "Int Treat Sample Size",  "Int Treat Grp Post-test Mean/SD",  "Confidence Interval (lb)")
     main_table2.add_row("Ecological Validity", "Int Training",  "Int Cont Sample Size",  "Int Treat Grp Gain Score Mean/SD",  "Confidence Interval (ub)")
     main_table2.add_row("Student Age",  "Int Focus",  "Int Treat Grp2 Sample Size",  "Int Treat Grp Any Other Info",  "Outcome")
     main_table2.add_row("Number of Schools",  "Int Teaching Approach",  "Int Treat Grp3 Sample Size",  "Int Cont Grp Number",  "Sample")
@@ -5028,7 +5028,8 @@ def display_main_menu():
     main_table.add_row(" 8. Study Security",     "Study Security calculations")
     main_table.add_row(" 9. Padlocks",       "Strand level padlock data")
     main_table.add_row("10. References",     "Data for constructing study references")
-    main_table.add_row("11. Custom Selection", "Select your own custom data frame")
+    main_table.add_row("11. Column Selection", "Custom column selection")
+    main_table.add_row("12. Study Selection", "Custom ID selection")
 
     main_table.add_row("", "")
 
@@ -5278,7 +5279,8 @@ def main_menu_display():
         "outcome data. [bold #fc5424]Option 8[/bold #fc5424] produces a bespoke study security dataframe. "
         "[/#FFFFFF][bold #fc5424]Option 9[/bold #fc5424] produces a strand-level 'padlocks' dataframe. [bold #fc5424]Option 10[/bold #fc5424] [#FFFFFF]compiles "
         "the necessary data for constructing study references. Finally, [/#FFFFFF][bold #fc5424]Option 11[/bold #fc5424] "
-        "[#FFFFFF]allows you to create your own custom variable dataframe.[/#FFFFFF]"
+        "[#FFFFFF]allows you to create your own custom column dataframe,[/#FFFFFF] and [bold #fc5424]option 12[/bold #fc5424] allows you to create your own "
+        "individual study dataframe."
     )
     top_menu_style = Style(bgcolor=GREY)
 
@@ -5326,7 +5328,7 @@ def main_menu_display():
         padding=(1, 2),
         title_align="center",
         style=custom_style_main,
-        height=46,
+        height=47,
         width=120,
     )
 
@@ -5401,5 +5403,15 @@ def main_menu_display1(functions, outfile1, df_display):
     print("\n")
 
 path_completer = PathCompleter()
-data_file = prompt('Select your data file: ', completer=path_completer)
+
+
+while True:
+    data_file = prompt('Select your data file: ', completer=path_completer)
+    if os.path.isfile(data_file) and data_file.endswith('.json'):
+        break
+    else:
+        print('Invalid file. Please enter a valid .json file.')
+
+
+
 json_extractor = JSONDataExtractor(data_file)

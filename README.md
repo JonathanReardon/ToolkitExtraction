@@ -698,26 +698,26 @@ This dataframe contains only raw values extracted in order to construct study re
 
 </details>
 
-## Custom Dataframe Selection
+## Custom Column Selection
 
-This dataframe consists of the data the user chooses from a pre-defined column list.
+Custom column selections consist of the data the user chooses from a pre-defined list of column options.
 
 | Data Type   | Description                           | Number of Columns   |
 | ----------- | ------------------------------------- | :-----------------: |
-|  `_raw`     | raw data as input by the data coders  | 119                 |
-|  `_ht`      | text highlighted from the manuscript  | 19                  |
-|  `_info`    | any 'user' entered info               | 19                  |
+|  `_raw`     | raw data as input by the data coders  | 127                 |
+|  `_ht`      | text highlighted from the manuscript  | 43                 |
+|  `_info`    | any 'user' entered info               | 43                  |
 | `_CLEAN`    | empty columns for data cleaning notes | 0                   |
-|             | **Total Number of Columns**           | **157**<sup>1</sup> |
+|             | **Total Number of Columns**           | **213**<sup>1</sup> |
 
-<sup>1</sup>157 is the maximum number of columns where are all data are selected.
+<sup>1</sup>213 is the maximum number of columns where are all data are selected.
 
 <details>
 <summary>Custom Dataframe Selection Column Summary</summary>
 
 | Variable                                    | Data Type | Column Name         |
 | ------------------------------------------- | --------- | ------------------- |
-| `Eppi ID`                                   | `raw`     | `id`                |
+| `Study ID`                                   | `raw`     | `id`                |
 | `Publication Author`                        | `raw`     | `pub_author`        |
 | `Publication Year`                          | `raw`     | `pub_year`          |
 | `Abstract`                                  | `raw`     | `abstract`          |
@@ -725,9 +725,7 @@ This dataframe consists of the data the user chooses from a pre-defined column l
 | `Country`                                   | `raw`     | `loc_country_raw`   |
 | `Publication Type (EPPI)`                   | `raw`     | `pub_eppi`          |
 | `Publication Type`                          | `raw`     | `pub_type_raw`      |
-| `Educational Setting`                       | `raw`     | `int_setting_raw`   |
 | `Participant Age`                           | `raw`     | `part_age_raw`      |
-| `REPLACE`                                   | `REPLACE` | `REPLACE`           |
 | `Ecological Validity`                       | `raw`     | `eco_valid_raw`     |
 | `Intervention Number of Schools (info)`     | `info`    | `school_treat_info` |
 | `Intervention Number of Schools (ht)`       | `ht`      | `school_treat_ht`   |
@@ -785,22 +783,22 @@ This dataframe consists of the data the user chooses from a pre-defined column l
 | `Reading Outcome Group2 SD`                 | `raw`  | `out_g2_sd_red`      |
 | `Reading Outcome Test Type`                 | `raw`  | `out_test_type_raw_red` |
 | `Reading Outcome Effect Size Type`          | `raw`  | `out_es_type_red`    |
-| `Writnig Outcome Title`                     | `raw`  | `out_tit_wri`        |
-| `Writnig Outcome Description`               | `raw`  | `out_desc_wri`       |
-| `Writnig Outcome Type`                      | `raw`  | `out_type_wri`       |
-| `Writnig Outcome SMD`                       | `raw`  | `smd_wri`            |
-| `Writnig Outcome SE`                        | `raw`  | `se_wri`             |
-| `Writnig Outcome CI (lower)`                | `raw`  | `ci_lower_wri`       |
-| `Writnig Outcome CI (upper)`                | `raw`  | `ci_upper_wri`       |
-| `Writnig Outcome Measure`                   | `raw`  | `out_measure_wri`    |
-| `Writnig Outcome Group1 N`                  | `raw`  | `out_g1_n_wri`       |
-| `Writnig Outcome Group1 Mean`               | `raw`  | `out_g1_mean_wri`    |
-| `Writnig Outcome Group1 SD`                 | `raw`  | `out_g1_sd_wri`      |
-| `Writnig Outcome Group2 N`                  | `raw`  | `out_g2_n_wri`       |
-| `Writnig Outcome Group2 Mean`               | `raw`  | `out_g2_mean_wri`    |
-| `Writnig Outcome Group2 SD`                 | `raw`  | `out_g2_sd_wri`      |
-| `Writnig Outcome Test Type`                 | `raw`  | `out_test_type_raw_wri` |
-| `Writnig Outcome Effect Size Type`          | `raw`  | `out_es_type_wri`    |
+| `Writing Outcome Title`                     | `raw`  | `out_tit_wri`        |
+| `Writing Outcome Description`               | `raw`  | `out_desc_wri`       |
+| `Writing Outcome Type`                      | `raw`  | `out_type_wri`       |
+| `Writing Outcome SMD`                       | `raw`  | `smd_wri`            |
+| `Writing Outcome SE`                        | `raw`  | `se_wri`             |
+| `Writing Outcome CI (lower)`                | `raw`  | `ci_lower_wri`       |
+| `Writing Outcome CI (upper)`                | `raw`  | `ci_upper_wri`       |
+| `Writing Outcome Measure`                   | `raw`  | `out_measure_wri`    |
+| `Writing Outcome Group1 N`                  | `raw`  | `out_g1_n_wri`       |
+| `Writing Outcome Group1 Mean`               | `raw`  | `out_g1_mean_wri`    |
+| `Writing Outcome Group1 SD`                 | `raw`  | `out_g1_sd_wri`      |
+| `Writing Outcome Group2 N`                  | `raw`  | `out_g2_n_wri`       |
+| `Writing Outcome Group2 Mean`               | `raw`  | `out_g2_mean_wri`    |
+| `Writing Outcome Group2 SD`                 | `raw`  | `out_g2_sd_wri`      |
+| `Writing Outcome Test Type`                 | `raw`  | `out_test_type_raw_wri` |
+| `Writing Outcome Effect Size Type`          | `raw`  | `out_es_type_wri`    |
 | `Math Outcome Title`                        | `raw`  | `out_tit_math`       |
 | `Math Outcome Description`                  | `raw`  | `out_desc_math`      |
 | `Math Outcome Type`                         | `raw`  | `out_type_math`      |
@@ -849,6 +847,12 @@ This dataframe consists of the data the user chooses from a pre-defined column l
 | `FSM Outcome Group2 SD`                     | `raw`  | `out_g2_sd_fsm`      |
 | `FSM Outcome Test Type`                     | `raw`  | `out_test_type_raw_fsm` |
 | `FSM Outcome Effect Size Type`              | `raw`  | `out_es_type_fsm`    |
+| `Intervention Name (ht)`                     | `ht`  | `int_name_ht`   |
+| `Intervention Name (info)`                     | `info`  | `int_name_info`   |
+| `Intervention Description (ht)`                     | `ht`  | `int_desc_ht`   |
+| `Intervention Description (info)`                     | `info`  | `int_desc_info`   |
+| `Intervention Objective (ht)`                     | `ht`  | `int_objec_ht`   |
+| `Intervention Objective (info)`                     | `info`  | `int_objec_info`   |
 | `Intervention Training`                     | `raw`  | `int_training_raw`   |
 | `Intervention Training (ht)`                | `ht`   | `int_training_ht`    |
 | `Intervention Training (info)`              | `info` | `int_training_info`  |
@@ -889,22 +893,50 @@ This dataframe consists of the data the user chooses from a pre-defined column l
 | `Comparability (raw)`              | `raw`  | `comp_anal_raw`    |
 | `Comparability (ht)`               | `ht`   | `comp_anal_ht`     |
 | `Comparability (info)`             | `info` | `comp_anal_info`   |
-| `Comparability Reported (raw)`              | `raw`  | `comp_var__raw`    |
+| `Comparability Reported`              | `raw`  | `comp_var__raw`    |
 | `Comparability Reported (ht)`               | `ht`   | `comp_var__ht`     |
 | `Comparability Reported (info)`             | `info` | `comp_var__info`   |
-| `Which Comp Var Reported (raw)`              | `raw`  | `comp_var_rep_raw`    |
+| `Which Comp Var Reported`              | `raw`  | `comp_var_rep_raw`    |
 | `Which Comp Var Reported (ht)`               | `ht`   | `comp_var_rep_ht`     |
 | `Which Comp Var Reported (info)`             | `info` | `comp_var_rep_info`   |
-| `Clustering (raw)`              | `raw`  | `clust_anal_raw`    |
+| `Clustering`              | `raw`  | `clust_anal_raw`    |
 | `Clustering (ht)`               | `ht`   | `clust_anal_ht`     |
 | `Clustering (info)`             | `info` | `clust_anal_info`   |
-| `Student Gender (raw)`              | `raw`  | `part_gen_raw`    |
+| `Student Gender`              | `raw`  | `part_gen_raw`    |
 | `Student Gender (ht)`               | `ht`   | `part_gen_ht`     |
 | `Student Gender (info)`             | `info` | `part_gen_info`   |
 | `Sample Size (ht)`               | `ht`   | `sample_analysed_ht`     |
 | `Sample Size (info)`             | `info` | `sample_analysed_info`   |
+| `Intervention Sample Size (ht)`             | `ht` | `base_n_treat_ht`   |
+| `Intervention Sample Size (info)`             | `info` | `base_n_treat_info`   |
+| `Control Sample Size (ht)`             | `ht` | `base_n_cont_ht`   |
+| `Control Sample Size (info)`             | `info` | `base_n_cont_info`   |
+| `Intervention 2 Sample Size (ht)`             | `ht` | `base_n_treat2_ht`   |
+| `Intervention 2 Sample Size (info)`             | `info` | `base_n_treat2_info`   |
+| `Intervention 3 Sample Size (ht)`             | `ht` | `base_n_treat3_ht`   |
+| `Intervention 3 Sample Size (info)`             | `info` | `base_n_treat3_info`   |
+| `Intervention Sample Size Analyzed (ht)`             | `ht` | `n_treat_ht`   |
+| `Intervention Sample Size Analyzed (info)`             | `info` | `n_treat_info`   |
+| `Control Sample Size Analyzed (ht)`             | `ht` | `n_cont_ht`   |
+| `Control Sample Size Analyzed (info)`             | `info` | `n_cont_info`   |
+| `Intervention 2 Sample Size Analyzed (ht)`             | `ht` | `n_treat2_ht`   |
+| `Intervention 2 Sample Size Analyzed (info)`             | `info` | `n_treat2_info`   |
+| `Control 2 Sample Size Analyzed (ht)`             | `ht` | `n_cont2_ht`   |
+| `Control 2 Sample Size  (info)`             | `info` | `n_cont2_info`   |
+| `Attrition Reported`             | `raw` | `attri_raw`   |
+| `Attrition Reported (ht)`             | `ht` | `attri_ht`   |
+| `Attrition Reported (info)`             | `info` | `attri_info`   |
+| `Treatment Group Attrition (ht)`             | `ht` | `attri_treat_ht`   |
+| `Treatment Group Attrition (info)`             | `info` | `attri_treat_info`   |
+| `Total % Attrition (ht)`             | `ht` | `attri_perc_ht`   |
+| `Total % Attrition (info)`             | `info` | `attri_perc_info`   |
+| `All`             | `*all columns` | `*all columns`   |
 
 </details>
+
+## Custom ID Selection
+
+This option produces all columns for one or more user entered EPPI ID's.
 
 ## License
 
