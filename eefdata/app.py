@@ -970,7 +970,7 @@ def main():
                                 used_options.append("smd_tool")
                             else:
                                 print("You have already selected this option!")
-                        case 49:
+                        case 39:
                             if "se_tool" not in used_options:
                                 row_styles2[num - 35] = highlight_style
                                 all_df["se_tool"] = df_out.se_tool
