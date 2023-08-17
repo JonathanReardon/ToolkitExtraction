@@ -1,7 +1,9 @@
 padlock_data/
 .vscode
-__pycache__
+*.eef_data.egg.info
+eef_data/__pycache__/
 dist/
+build/
 output/
 eef_data.egg-info
 requirements.txt
