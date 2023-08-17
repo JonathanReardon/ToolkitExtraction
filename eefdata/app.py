@@ -2250,6 +2250,7 @@ def main():
                                 
                             all_df["id"] = df.data_extraction.retrieve_metadata("ItemId", "id")
                             all_df["pub_author"] = df.data_extraction.retrieve_metadata("ShortTitle", "pub_author")
+                            all_df["title"] = df.data_extraction.retrieve_metadata("Title", "title")
                             all_df["pub_year"] = df.data_extraction.retrieve_metadata("Year", "pub_year")
                             all_df["abstract"] = df.data_extraction.retrieve_metadata("Abstract", "abstract")
                             all_df["strand_raw"] = df.data_extraction.retrieve_data(admin_strand_output, "strand_raw")
