@@ -49,7 +49,7 @@ class JSONDataExtractor:
 
     def load_json(self):
         datafile = os.path.join(os.getcwd(), self.data_file)
-        with open(datafile) as f:
+        with open(datafile, encoding='utf-8', errors='replace') as f:
             self.data = json.load(f)
 
 
