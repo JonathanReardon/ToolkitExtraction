@@ -1391,7 +1391,7 @@ class DataFrameCompilation:
         Writing_and_spelling_prim_out_desc,
         Writing_and_spelling_test_type) = writing_and_spelling_lists
         
-        writing_and_spelling_lists = self.data_extraction.getOutcomeData(df, 'Writing and spelling primary outcome', writing_and_spelling_lists, OUTCOME_VARS)
+        writing_and_spelling_lists = self.data_extraction.getOutcomeData(df, 'Writing and spelling primary outcome.', writing_and_spelling_lists, OUTCOME_VARS)
         
         mathematics_lists = [[] for _ in range(19)]
         
@@ -3650,7 +3650,10 @@ class RiskofBias:
         self.number_of_schools_intervention_Comments_df = self.data_extraction.retrieve_info(number_of_schools_intervention_output, "school_treat_info")
         self.intervention_delivery_df = self.data_extraction.retrieve_data(intervention_delivery_output, "int_who_raw")
         self.number_of_classes_total_Comments_df = self.data_extraction.retrieve_info(num_of_class_tot_output, "class_total_info")
+
         self.InterventionEvaluation_df = self.data_extraction.retrieve_data(int_eval_output, "out_eval_raw")   
+        self.eef_eval_df = self.data_extraction.retrieve_data(eef_eval, "eef_eval") 
+
         self.comparability_df = self.data_extraction.retrieve_data(comparability_output, "comp_anal_raw")    
         self.comp_anal_ht = self.data_extraction.retrieve_ht(comparability_output, "comp_anal_ht")
         self.comp_anal_info = self.data_extraction.retrieve_info(comparability_output, "comp_anal_info")
@@ -3696,21 +3699,6 @@ class RiskofBias:
         self.year_df['pub_year_risk_value'] = np.select(conditions, choices, default="NA")
         return self.year_df
 
-    """ def rob_year(self):
-        self.year_df["pub_year"] = pd.to_numeric(self.year_df["pub_year"], errors='coerce').fillna(0)
-
-        conditions = [
-            (self.year_df["pub_year"] < 1980),
-            (self.year_df["pub_year"] >= 1980) & (self.year_df["pub_year"] < 2000),
-            (self.year_df["pub_year"] >= 2000),
-        ]
-        choices_str = ['High Risk', 'Medium Risk', 'Low Risk']
-        choices_val = [1, 2, 3]
-
-        self.year_df["pub_year_raw_risk"] = np.select(conditions, choices_str, default="NA")
-        self.year_df['pub_year_risk_value'] = np.select(conditions, choices_val, default="NA")
-
-        return self.year_df """
     
     def rob_perc_attri(self):
         self.overall_percent_attrition_Comments_df.replace('%', '', regex=True, inplace=True)
@@ -3740,23 +3728,6 @@ class RiskofBias:
         self.overall_percent_attrition_Comments_df['attri_perc_info_risk_value'] = np.select(conditions, choices, default="NA")
         return self.overall_percent_attrition_Comments_df
 
-    """ def rob_perc_attri(self):
-        self.overall_percent_attrition_Comments_df.replace('%', '', regex=True, inplace=True)
-
-        self.overall_percent_attrition_Comments_df["attri_perc_info"] = pd.to_numeric(self.overall_percent_attrition_Comments_df["attri_perc_info"], errors='coerce').fillna(0)
-
-        conditions = [
-            (self.overall_percent_attrition_Comments_df["attri_perc_info"] < 10),
-            (self.overall_percent_attrition_Comments_df["attri_perc_info"] >= 10) & (self.overall_percent_attrition_Comments_df["attri_perc_info"] < 20),
-            (self.overall_percent_attrition_Comments_df["attri_perc_info"] >= 20),
-        ]
-        choices_str = ['Low Risk', 'Medium Risk', 'High Risk']
-        choices_val = [3, 2, 1]
-
-        self.overall_percent_attrition_Comments_df["attri_perc_info_raw_risk"] = np.select(conditions, choices_str, default="NA")
-        self.overall_percent_attrition_Comments_df['attri_perc_info_risk_value'] = np.select(conditions, choices_val, default="NA")
-
-        return self.overall_percent_attrition_Comments_df """
 
     def rob_clustering(self):
 
@@ -3769,10 +3740,11 @@ class RiskofBias:
         conditions = [
             (self.clustering_df['clust_anal_raw'] == "Yes"),
             (self.clustering_df['clust_anal_raw'] == "No"),
+            (self.clustering_df['clust_anal_raw'] == "Unclear"),
         ]
 
         # GET RISK LEVELS PER PUBLICATION TYPE
-        choices = ['Medium Risk', 'High Risk', ]
+        choices = ['Medium Risk', 'High Risk', 'High Risk']
 
         self.clustering_df["clust_anal_raw_risk"] = np.select(conditions, choices, default="NA")
 
@@ -3786,30 +3758,6 @@ class RiskofBias:
         self.clustering_df["clust_anal_risk_value"] = np.select(conditions, choices, default="NA")
         return self.clustering_df
 
-    """ def rob_clustering(self):
-        # Using .map() instead of .apply() for more efficient operations on pandas Series
-        self.clustering_df["clust_anal_raw"] = self.clustering_df["clust_anal_raw"].map(
-            lambda x: ",".join(x) if isinstance(x, list) else x
-        )
-        
-        # Creating dictionary mapping for more straightforward replacement
-        risk_mapping = {
-            "Yes": "Medium Risk",
-            "No": "High Risk"
-        }
-        self.clustering_df["clust_anal_raw_risk"] = self.clustering_df["clust_anal_raw"].map(
-            risk_mapping, na_action='ignore'
-        ).fillna("NA")
-        
-        risk_value_mapping = {
-            "Medium Risk": 2,
-            "High Risk": 1
-        }
-        self.clustering_df["clust_anal_risk_value"] = self.clustering_df["clust_anal_raw_risk"].map(
-            risk_value_mapping, na_action='ignore'
-        ).fillna("NA")
-        
-        return self.clustering_df """
 
     def rob_tkit_es_type(self):
         self.toolkit_es_type = pd.DataFrame(self.toolkit_es_type)
@@ -3913,7 +3861,7 @@ class RiskofBias:
         ]
 
         # GET RISK LEVELS PER PUBLICATION TYPE
-        choices = ['Low Risk', 'Low Risk', 'Low Risk', 'Medium Risk', 'Medium Risk', 'Medium Risk']
+        choices = ['Low Risk', 'Low Risk', 'Low Risk', 'Medium Risk', 'Medium Risk', 'High Risk']
 
         self.publicationtype_df["pub_type_risk"] = np.select(conditions, choices, default="NA")
 
@@ -4090,6 +4038,8 @@ class RiskofBias:
 
         self.InterventionEvaluation_df['out_eval_raw'] = self.InterventionEvaluation_df['out_eval_raw'].str[0]
 
+        self.InterventionEvaluation_df["eev_eval"] = self.eef_eval_df
+
         conditions = [
             (self.InterventionEvaluation_df['out_eval_raw'] == "The developer"),
             (self.InterventionEvaluation_df['out_eval_raw'] == "A different organization paid by developer"),
@@ -4111,6 +4061,33 @@ class RiskofBias:
         choices = [1, 2, 3]
 
         self.InterventionEvaluation_df["out_eval_risk_value"] = np.select(conditions, choices, default="NA")
+
+
+        for index, row in self.InterventionEvaluation_df.iterrows():
+            eev_eval_value = row['eev_eval']
+
+            # Convert the object to string and strip square brackets
+            if isinstance(eev_eval_value, list):
+                # If it's a list, convert the first element to string
+                eev_eval_str = str(eev_eval_value[0])
+            else:
+                # If it's already a string, use it as is
+                eev_eval_str = str(eev_eval_value)
+
+            cleaned_value = eev_eval_str.strip("[]'\"").lower()
+
+            if cleaned_value == 'yes':
+                self.InterventionEvaluation_df.at[index, 'out_eval_risk'] = 'Low Risk'
+                
+                # Check if out_eval_risk_value is numeric and update it
+                if isinstance(self.InterventionEvaluation_df.at[index, 'out_eval_risk_value'], (int, float, np.number)):
+                    self.InterventionEvaluation_df.at[index, 'out_eval_risk_value'] = 3
+                else:
+                    # Convert to integer if not already
+                    self.InterventionEvaluation_df.at[index, 'out_eval_risk_value'] = int(3)
+
+        
+
         return self.InterventionEvaluation_df
 
     def rob_comparability(self):
@@ -4152,6 +4129,7 @@ class RiskofBias:
             self.study_realism_df,
             self.number_of_schools_intervention_Comments_df,
             self.intervention_delivery_df,
+            self.eef_eval_df,
             self.number_of_classes_total_Comments_df,
             self.InterventionEvaluation_df,
             self.comparability_df,
