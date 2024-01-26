@@ -2370,6 +2370,11 @@ int_eval_output = [{  # Who undertook the outcome evaluation?
     5215578: "Is this an EEF evaluation?"
 }]
 
+eef_eval = [{
+    10441292: "yes",
+    10441293: "no"
+}]
+
 ####################################
 # SETTING & SAMPLE CHARACTERISTICS #
 ####################################
@@ -5482,6 +5487,6 @@ health_outcomes_repro_tract_infection_CEDIL_MH = [{
 
 toolkit_versions = [{
     12172938: "MT_Sept_2021",
-    12172939: "MT_2023 (in progress)",
+    12172939: "MT_2024",
     12173011: "EY_January 2023",
 }]
