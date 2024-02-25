@@ -1945,28 +1945,87 @@ class DataFrameCompilation:
 
         reading_lists = [[] for _ in range(3)]
         (reading_prim,  reading_prim_smd,  reading_prim_se) = reading_lists
-
         self.data_extraction.getOutcomeData(df, 'Reading primary outcome', reading_lists, outcome_vars)
 
         writing_lists = [[] for _ in range(3)]
         (Writing_and_spelling_prim, Writing_and_spelling_prim_smd, Writing_and_spelling_prim_se) = writing_lists
-
         self.data_extraction.getOutcomeData(df, 'Writing and spelling primary outcome', writing_lists, outcome_vars)
 
         mathematics_lists = [[] for _ in range(3)]
         (Mathematics_prim, Mathematics_prim_smd, Mathematics_prim_se) = mathematics_lists
-
         self.data_extraction.getOutcomeData(df, 'Mathematics primary outcome', mathematics_lists, outcome_vars)
 
         science_lists = [[] for _ in range(3)]
         (Science_prim, Science_prim_smd, Science_prim_se) = science_lists
-
         self.data_extraction.getOutcomeData(df, 'Science primary outcome', science_lists, outcome_vars)
 
         fsm_lists = [[] for _ in range(3)]
         (fsm_prim, fsm_prim_smd, fsm_prim_se) = fsm_lists
-
         self.data_extraction.getOutcomeData(df, 'FSM primary outcome', fsm_lists, outcome_vars)
+
+        ##################
+        # NEW CEDIL DATA #
+        ##################
+
+        # Enrolment: School enrolment
+        enrol_school_enrol_lists = [[] for _ in range(3)]
+        (enrol_se_prim, enrol_se_smd, enrol_se_se) = enrol_school_enrol_lists
+        self.data_extraction.getOutcomeData(df, 'Enrolment: School enrolment', enrol_school_enrol_lists, outcome_vars)
+
+        # Enrolment: Return to education
+        enrol_return_edu_lists = [[] for _ in range(3)]
+        enrol_ret_edu_prim, enrol_ret_edu_smd, enrol_ret_edu_se = enrol_return_edu_lists
+        self.data_extraction.getOutcomeData(df, 'Enrolment: Return to education', enrol_return_edu_lists, outcome_vars)
+
+        # Attendance: Attendance rate
+        attendance_attend_rate_lists = [[] for _ in range(3)]
+        attend_att_rate_prim, attend_att_rate_smd, attend_att_rate_se = attendance_attend_rate_lists
+        self.data_extraction.getOutcomeData(df, 'Attendance: Attendance rate', attendance_attend_rate_lists, outcome_vars)
+
+        # Attendance: Absence rate
+        attendance_absence_rate_lists = [[] for _ in range(3)]
+        attend_absence_rate_prim, attend_absence_rate_smd, attend_absence_rate_se = attendance_absence_rate_lists
+        self.data_extraction.getOutcomeData(df, 'Attendance: Absence rate', attendance_absence_rate_lists, outcome_vars)
+
+        # Attendance: Time in school
+        attendance_time_school_lists = [[] for _ in range(3)]
+        attend_time_school_prim, attend_time_school_smd, attend_time_school_se = attendance_time_school_lists
+        self.data_extraction.getOutcomeData(df, 'Attendance: Time in school', attendance_time_school_lists, outcome_vars)
+
+        # Drop-out: Drop-out rate
+        drop_out_drop_out_rate_lists = [[] for _ in range(3)]
+        drop_out_drop_out_prim, drop_out_drop_out_smd, drop_out_drop_out_se = drop_out_drop_out_rate_lists
+        self.data_extraction.getOutcomeData(df, 'Drop-out: Drop-out rate', drop_out_drop_out_rate_lists, outcome_vars)
+
+        # Drop-out: Retention rate
+        drop_out_retention_rate_lists = [[] for _ in range(3)]
+        drop_out_ret_rate_prim, drop_out_ret_rate_smd, drop_out_ret_rate_se = drop_out_retention_rate_lists
+        self.data_extraction.getOutcomeData(df, 'Attendance: Time in school', drop_out_retention_rate_lists, outcome_vars)
+
+        # Completion: Grade completion
+        compl_grade_compl_lists = [[] for _ in range(3)]
+        compl_grade_compl_prim, compl_grade_compl_smd, compl_grade_compl_se = compl_grade_compl_lists
+        self.data_extraction.getOutcomeData(df, 'Completion: Grade completion', compl_grade_compl_lists, outcome_vars)
+
+        # Completion: School completion
+        compl_school_compl_lists = [[] for _ in range(3)]
+        compl_school_compl_prim, compl_school_compl_smd, compl_school_compl_se = compl_school_compl_lists
+        self.data_extraction.getOutcomeData(df, 'Completion: School completion', compl_school_compl_lists, outcome_vars)
+
+        # Progression: Next grade
+        prog_next_grade_lists = [[] for _ in range(3)]
+        prog_next_grade_prim, prog_next_grade_smd, prog_next_grade_se = prog_next_grade_lists
+        self.data_extraction.getOutcomeData(df, 'Progression: Next grade', prog_next_grade_lists, outcome_vars)
+
+        # Progression: Grade repetition
+        prog_grade_rep_lists = [[] for _ in range(3)]
+        prog_grade_rep_prim, prog_grade_rep_smd, prog_grade_rep_se = prog_grade_rep_lists
+        self.data_extraction.getOutcomeData(df, 'Progression: Grade repetition', prog_grade_rep_lists, outcome_vars)
+
+        # Other (please specify)
+        other_lists = [[] for _ in range(3)]
+        other_prim, other_smd, other_se = other_lists
+        self.data_extraction.getOutcomeData(df, 'Other (please specify)', other_lists, outcome_vars)
 
         df_zip = list(zip(
             toolkit_out_strand,
@@ -1993,7 +2052,55 @@ class DataFrameCompilation:
             Science_prim_se,
             fsm_prim,
             fsm_prim_smd,
-            fsm_prim_se
+            fsm_prim_se,
+            # NEW CEDIL ADDITIONS
+            enrol_se_prim,
+            enrol_se_smd,
+            enrol_se_se,
+
+            enrol_ret_edu_prim,
+            enrol_ret_edu_smd,
+            enrol_ret_edu_se,
+
+            attend_att_rate_prim,
+            attend_att_rate_smd,
+            attend_att_rate_se,
+
+            attend_absence_rate_prim,
+            attend_absence_rate_smd,
+            attend_absence_rate_se,
+
+            attend_time_school_prim,
+            attend_time_school_smd,
+            attend_time_school_se,
+
+            drop_out_drop_out_prim,
+            drop_out_drop_out_smd,
+            drop_out_drop_out_se,
+
+            drop_out_ret_rate_prim,
+            drop_out_ret_rate_smd,
+            drop_out_ret_rate_se,
+
+            compl_grade_compl_prim,
+            compl_grade_compl_smd,
+            compl_grade_compl_se,
+
+            compl_school_compl_prim,
+            compl_school_compl_smd,
+            compl_school_compl_se,
+
+            prog_next_grade_prim,
+            prog_next_grade_smd,
+            prog_next_grade_se,
+
+            prog_grade_rep_prim,
+            prog_grade_rep_smd,
+            prog_grade_rep_se,
+
+            other_prim,
+            other_smd,
+            other_se,
         ))
 
         df = pd.DataFrame(df_zip)
@@ -2023,7 +2130,55 @@ class DataFrameCompilation:
             21: "se_sci",
             22: "out_out_type_fsm",
             23: "smd_fsm",
-            24: "se_fsm"
+            24: "se_fsm",
+
+            25: "out_out_type_enrol_school_enrol",
+            26: "smd_enrol_school_enrol",
+            27: "se_enrol_school_enrol",
+
+            28: "out_out_type_enrol_ret_edu",
+            29: "smd_enrol_ret_edu",
+            30: "se_enrol_ret_edu",
+
+            31: "out_out_type_attend_attend_rate",
+            32: "smd_attend_attend_rate",
+            33: "se_attend_attend_rate",
+
+            34: "out_out_type_attend_abs_rate",
+            35: "smd_attend_abs_rate",
+            36: "se_attend_abs_rate",
+
+            37: "out_out_type_attend_time_in_school",
+            38: "smd_attend_time_in_school",
+            39: "se_attend_time_in_school",
+
+            40: "out_out_type_drop_out_rate",
+            41: "smd_drop_out_rate",
+            42: "se_drop_out_rate",
+
+            43: "out_out_type_drop_out_ret_rate",
+            44: "smd_drop_out_ret_rate",
+            45: "se_drop_out_ret_rate",
+
+            46: "out_out_type_grade_compl",
+            47: "smd_grade_compl",
+            48: "se_grade_compl",
+
+            49: "out_out_type_school_compl",
+            50: "smd_school_compl",
+            51: "se_school_compl",
+
+            52: "out_out_type_prog_next_grade",
+            53: "smd_prog_next_grade",
+            54: "se_prog_next_grade",
+
+            55: "out_out_type_prog_grade_rep",
+            56: "smd_prog_grade_rep",
+            57: "se_prog_grade_rep",
+
+            58: "out_out_type_other",
+            59: "smd_other",
+            60: "se_other",
         })
 
         df_all = pd.concat([record_details_df, df, general_df], axis=1, sort=False)
@@ -2077,6 +2232,55 @@ class DataFrameCompilation:
             'out_out_type_fsm',
             'smd_fsm',
             'se_fsm',
+            # NEW CEDIL ADDITIONS
+            'out_out_type_enrol_school_enrol',
+            'smd_enrol_school_enrol',
+            'se_enrol_school_enrol',
+
+            'out_out_type_enrol_ret_edu',
+            'smd_enrol_ret_edu',
+            'se_enrol_ret_edu',
+
+            'out_out_type_attend_attend_rate',
+            'smd_attend_attend_rate',
+            'se_attend_attend_rate',
+
+            'out_out_type_attend_abs_rate',
+            'smd_attend_abs_rate',
+            'se_attend_abs_rate',
+
+            "out_out_type_attend_time_in_school",
+            "smd_attend_time_in_school",
+            "se_attend_time_in_school",
+
+            "out_out_type_drop_out_rate",
+            "smd_drop_out_rate",
+            "se_drop_out_rate",
+
+            "out_out_type_drop_out_ret_rate",
+            "smd_drop_out_ret_rate",
+            "se_drop_out_ret_rate",
+
+            "out_out_type_grade_compl",
+            "smd_grade_compl",
+            "se_grade_compl",
+
+            "out_out_type_school_compl",
+            "smd_school_compl",
+            "se_school_compl",
+
+            "out_out_type_prog_next_grade",
+            "smd_prog_next_grade",
+            "se_prog_next_grade",
+
+            "out_out_type_prog_grade_rep",
+            "smd_prog_grade_rep",
+            "se_prog_grade_rep",
+
+            "out_out_type_other",
+            "smd_other",
+            "se_other",
+
             'sample_analysed_info',
             'school_total_info',
             'class_total_info',

@@ -2543,25 +2543,27 @@ student_gender = [{  # What is the gender of the students?
     5513032: 'No information provided'
 }]
 
-# standard academic outcome codes
+# STANDARD AND CEDIL academic outcome codes
 outcome_type_codes = [{  # Outcome type (select all that apply)
     7755570: "Toolkit primary outcome",
     7755571: "Reading primary outcome",
     7755572: "Writing and spelling primary outcome.",
     7755573: "Mathematics primary outcome",
     7755574: "Science primary outcome",
-    7755575: "Other outcome"
+    7755575: "Other outcome",
+    14220840: "Enrolment: School enrolment",
+    14220841: "Enrolment: Return to education",
+    14220842: "Attendance: Attendance rate",
+    14220843: "Attendance: Absence rate",
+    14220844: "Attendance: Time in school",
+    14220845: "Drop-out: Drop-out rate",
+    14220846: "Drop-out: Retention rate",
+    14220847: "Completion: Grade completion",
+    14220848: "Completion: School completion",
+    14220849: "Progression: Next grade",
+    14220850: "Progression: Grade repetition",
+    14410613: "Other (please specify)"
 }]
-
-# CEDIL standard academic outcome codes
-""" outcome_type_codes = [{  # Outcome type (select all that apply)
-    8934475: "Toolkit primary outcome",
-    8934476: "Reading primary outcome",
-    8934477: "Writing and spelling primary outcome.",
-    8934478: "Mathematics primary outcome",
-    8934479: "Science primary outcome",
-    8934480: "Other outcome"
-}] """
 
 sample_output = [{  
     # Sample (select one from this group)
