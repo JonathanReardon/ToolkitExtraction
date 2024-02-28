@@ -6,7 +6,7 @@ with open('README_package.md', 'r', encoding='utf-8') as fh:
 
 setup(
     name='eef-data',
-    version='0.55',  # Remember to increment the version number
+    version='0.57',  # Remember to increment the version number
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
