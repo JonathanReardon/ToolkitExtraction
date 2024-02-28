@@ -5492,3 +5492,104 @@ toolkit_versions = [{
     12172939: "MT_2024",
     12173011: "EY_January 2023",
 }]
+
+
+
+
+
+
+
+
+
+
+
+# ADDITIONAL EDUCATIONAL OUTCOMES
+
+addit_edu_out_rep_CEDIL = [{
+    14220722: "Enrolment",
+    14220723: "Return to education",
+    14220724: "Attendance",
+    14220725: "Absenteeism",
+    14220726: "Time in school",
+    14220727: "Drop-out",
+    14220728: "Pupil retention",
+    14220729: "Grade completion",
+    14220730: "School graduation",
+    14220731: "Next grade progression",
+    14220732: "Grade repetition",
+    14220733: "Other",
+    14220734: "None reported",
+}]
+
+school_compl_level_CEDIL = [{
+    14220736: "Early childhood education (ISCED Level 0)",
+    14220737: "Primary education (ISCED Level 1)",
+    14220738: "Lower secondary education (ISCED Level 2)",
+    14220739: "Upper secondary education (ISCED level 3)",
+    14220740: "Secondary education (ISCED levels 2 and 3)",
+}]
+
+outcomes_rep_undes_pop_CEDIL = [{
+  14220744: "Yes",
+  14220745: "No",
+ }]
+
+und_outcome_CEDIL = [{
+    14220746: "",
+}]
+
+tea_out_rep_CEDIL = [{
+    14220749: "Yes",
+    14220750: "No",
+}]
+
+tea_outcome_CEDIL = [{
+    14220752: "Attendance",
+    14220753: "Performance",
+    14220754: "Other",
+    14220755: "None reported",
+}]
+
+follow_up_ed_CEDIL = [{
+    14220759: "Yes",
+    14220760: "No",
+}]
+
+ad_edu_out_CEDIL = [{
+    14220761: "",
+}]
+
+# CASH TRANSFER STRAND SPECIFIC
+
+school_target_CEDIL = [{
+    8934879: "Nursery/Kindergarten",
+    8934880: "Primary only",
+    8934881: "Secondary only",
+    8934882: "Primary and secondary",
+    8935024: "Other",
+    8934883: "Not reported/Unclear",
+}]
+
+ct_elig_CEDIL = [{
+    8934885: "Village/neighbourhood income",
+    8934886: "Household income",
+    8934887: "Targetted population",
+    8934888: "Not reported/Unclear",
+    8935025: "Other",
+}]
+
+means_tested_CEDIL = [{
+    8934890: "Yes",
+    8934891: "No",
+    8934892: "Not reported/Unclear",
+    8934893: "threshold?",
+}]
+
+ct_recipient_CEDIL = [{
+    8934895: "Mother or female head of household",
+    8934896: "Father or male head of household",
+    8934897: "Parent or head of household",
+    8934898: "Student (or student and parent/guardian)",
+    8935026: "Other",
+    8934899: "Not reported/Unclear",
+}]

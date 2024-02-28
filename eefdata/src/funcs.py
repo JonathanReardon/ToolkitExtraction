@@ -2316,6 +2316,108 @@ class DataFrameCompilation:
 
         return df_all_SS, outfile6
 
+    def make_dataframe_7(self, save_file=True, clean_cols=False, verbose=True):
+            """
+            Extracts data from the sources defined in the current instance of the 
+            DataExtraction class, and returns a pandas DataFrame with the relevant 
+            variables for further cleaning and analysis. 
+
+            Args:
+            - save_file (bool): Whether or not to save the resulting dataframe to a file.
+            - clean_cols (bool): Whether or not to add empty columns per variable
+            for data checkers to log changes.
+            - verbose (bool): Whether or not to display information about the extraction process.
+
+            Returns:
+            - all_variables: a pandas DataFrame with the relevant variables included.
+            - outfile1 (str or None): the name of the output CSV file, 
+            if `save_file=True`. If `save_file=False`, returns `None`.
+            """
+            eppiid_df = self.data_extraction.retrieve_metadata("ItemId", "id")
+            author_df = self.data_extraction.retrieve_metadata("ShortTitle", "pub_author")
+            year_df = self.data_extraction.retrieve_metadata("Year", "pub_year")
+            admin_strand_data = self.data_extraction.retrieve_data(admin_strand_output, "strand_raw")
+            admin_strand_info = self.data_extraction.retrieve_info(admin_strand_output, "strand_info")
+
+            addit_out_edu_rep_data = self.data_extraction.retrieve_data(addit_edu_out_rep_CEDIL, "ed_out_raw")
+            addit_out_edu_rep_info = self.data_extraction.retrieve_info(addit_edu_out_rep_CEDIL, "ed_out_info")
+
+            school_compl_level_data = self.data_extraction.retrieve_data(school_compl_level_CEDIL, "sch_comp_raw")
+
+            und_pop_out_rep_data = self.data_extraction.retrieve_data(outcomes_rep_undes_pop_CEDIL, "und_pop_out_raw")
+
+            und_outcome_info = self.data_extraction.retrieve_info(und_outcome_CEDIL, "und_out_info")
+
+            tea_out_rep_info = self.data_extraction.retrieve_data(tea_out_rep_CEDIL, "tea_out_raw")
+
+            tea_out_list_data = self.data_extraction.retrieve_data(tea_outcome_CEDIL, "tea_out_list_raw")
+            tea_out_list_info = self.data_extraction.retrieve_info(tea_outcome_CEDIL, "tea_out_list_info")
+
+            follow_up_ed_data = self.data_extraction.retrieve_data(follow_up_ed_CEDIL, "foll_up_ed_raw")
+
+
+            all_variables = pd.concat([
+                eppiid_df,
+                author_df,
+                year_df,
+                admin_strand_data,
+                admin_strand_info,
+                addit_out_edu_rep_data,
+                addit_out_edu_rep_info,
+                school_compl_level_data,
+                und_pop_out_rep_data,
+                und_outcome_info,
+                tea_out_rep_info,
+                tea_out_list_data,
+                tea_out_list_info,
+                follow_up_ed_data
+            ], axis=1, sort=False)
+
+
+            
+            if clean_cols == True:
+                # Insert empty columns for each variable for data 
+                # checkers to log errors prior to main analysis
+                cols_to_insert = {
+                    'strand_CLEAN': 6,
+                    'pub_eppi_CLEAN': 9,
+                    'pub_type_CLEAN': 13,
+                    'loc_country_CLEAN': 15,
+                    'int_Setting_CLEAN': 19,
+                    'eco_valid_CLEAN': 23,
+                    'part_age_CLEAN': 27,
+                    'school_treat_CLEAN': 30,
+                    'school_cont_CLEAN': 33,
+                    'school_total_CLEAN': 36,
+                    'school_na_CLEAN': 40,
+                    'class_treat_CLEAN': 43,
+                    'class_cont_CLEAN': 46,
+                    'class_total_CLEAN': 49,
+                    'class_na_CLEAN': 53,
+                    'treat_group_CLEAN': 57,
+                    'part_assig_CLEAN': 61,
+                    'level_assig_CLEAN': 65,
+                    'int_design_CLEAN': 69,
+                    'rand_CLEAN': 73,
+                    'out_other_CLEAN': 77,
+                    'out_info_CLEAN': 81,
+                    'part_other_CLEAN': 84
+                }
+                # Insert empty columns at specified locations
+                for col_name, col_idx in cols_to_insert.items():
+                    all_variables.insert(col_idx, col_name, '')
+            
+            # Remove problematic text from outputs
+            self.data_extraction.clean_up(all_variables)
+        
+            if verbose:
+                self.data_extraction.verbose_display(all_variables)
+            
+            if save_file:
+                outfile7 = self.data_extraction.save_dataframe(all_variables, "_DataFrame7_other_edu_out.csv", standard_info=True)
+            
+            return all_variables, outfile7
+
 
     def getOutcomeData(self, save_file=True):
         '''
@@ -3728,6 +3830,48 @@ class StrandSpecificFrames:
         return wc_ss_df
 
 
+    def cash_transfer_CEDIL_ss(self):
+        """
+        Retrieves data related to metacognition and self-regulated learning.
+
+        Returns:
+            pandas.DataFrame: A data frame containing the following columns:
+                - msr_knowl_type: Type of knowledge in the task
+                - msr_task_stage: Stage of the task at which self-regulated learning occurred
+                - msr_strategy: Type of self-regulated learning strategy used
+                - msr_motiv_aspects: Motivational aspects related to self-regulated learning
+                - msr_teaching_approach: Teaching approach that encourages self-regulated learning
+                - msr_digit_tech: Digital technologies used for self-regulated learning
+
+            If data is missing for any of these columns, it will be filled with "NA".
+        """
+        school_target_data = self.data_extraction.retrieve_data(school_target_CEDIL, "schl_target_raw")
+        school_target_info = self.data_extraction.retrieve_info(school_target_CEDIL, "schl_target_info")
+
+        ct_eligibility_data = self.data_extraction.retrieve_data(ct_elig_CEDIL, "elig_raw")
+        ct_eligibility_info = self.data_extraction.retrieve_info(ct_elig_CEDIL, "elig_info")
+
+        means_tested_data = self.data_extraction.retrieve_data(means_tested_CEDIL, "means_test_raw")
+        means_tested_info = self.data_extraction.retrieve_info(means_tested_CEDIL, "means_test_info")
+
+        recip_data = self.data_extraction.retrieve_data(ct_recipient_CEDIL, "recip_raw")
+        recip_info = self.data_extraction.retrieve_info(ct_recipient_CEDIL, "recip_info")
+        
+        school_target_df = pd.concat([
+            school_target_data,
+            school_target_info,
+            ct_eligibility_data,
+            ct_eligibility_info,
+            means_tested_data,
+            means_tested_info,
+            recip_data,
+            recip_info,
+        ], axis=1, sort=False)
+        
+        school_target_df.fillna("NA", inplace=True)
+        return school_target_df
+
+
     def strand_specific_df_selection(self, user_input):
         """
         Selects a strand-specific dataframe based on user input.
@@ -3835,6 +3979,10 @@ class StrandSpecificFrames:
             case 31: 
                 print("- Strand specific datraframe selection: Play Based Learning")
                 ss_df = self.ey_play_based_learning_ss()
+            # CEDIL
+            case 32:
+                print("- Strand specific datraframe selection: [CEDIL] Cash Transfer]")
+                ss_df = self.cash_transfer_CEDIL_ss()
         return ss_df
 
 

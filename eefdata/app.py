@@ -498,7 +498,7 @@ def main():
                 console.print("Thanks for using the EEF Toolkit Data Extractor.")
                 run_program = False
             case 1:
-                _, outfile1 = data_frame_compilation.make_dataframe_1(save_file=True, clean_cols=True, verbose=False)
+                _, outfile1 = data_frame_compilation.make_dataframe_1(save_file=True, clean_cols=False, verbose=False)
                 functions = [data_frame_compilation.make_dataframe_1]
         
                 # Display main menu
@@ -509,7 +509,7 @@ def main():
 
                 data_cleaning_option = get_user_input()
             case 2: 
-                _, outfile2 = data_frame_compilation.make_dataframe_2(save_file=True, clean_cols=True, verbose=False)
+                _, outfile2 = data_frame_compilation.make_dataframe_2(save_file=True, clean_cols=False, verbose=False)
                 functions = [data_frame_compilation.make_dataframe_2]
 
                 # Display main menu
@@ -520,7 +520,7 @@ def main():
 
                 data_cleaning_option = get_user_input()
             case 3:
-                _, outfile3 = data_frame_compilation.make_dataframe_3(save_file=True, clean_cols=True, verbose=False)
+                _, outfile3 = data_frame_compilation.make_dataframe_3(save_file=True, clean_cols=False, verbose=False)
                 functions = [data_frame_compilation.make_dataframe_3]
 
                 # Display main menu
@@ -531,7 +531,7 @@ def main():
 
                 data_cleaning_option = get_user_input()
             case 4:
-                _, outfile4 = data_frame_compilation.make_dataframe_4(save_file=True, clean_cols=True, verbose=False)
+                _, outfile4 = data_frame_compilation.make_dataframe_4(save_file=True, clean_cols=False, verbose=False)
                 functions = [data_frame_compilation.make_dataframe_4]
                 
                 # Display main menu
@@ -542,7 +542,7 @@ def main():
 
                 data_cleaning_option = get_user_input()
             case 5:
-                _, outfile5 = data_frame_compilation.make_dataframe_5(save_file=True, clean_cols=True, verbose=False)
+                _, outfile5 = data_frame_compilation.make_dataframe_5(save_file=True, clean_cols=False, verbose=False)
                 functions = [data_frame_compilation.make_dataframe_5]
                 # Display main menu
                 main_menu_display1(functions, outfile5, dataframe_5_output_display)
@@ -3032,7 +3032,17 @@ def main():
                     console = Console()
                     console.print("No data selected, thanks for using the EEF Teaching and Learning Toolkit Extractor.")
                 break
+            case 13:
+                _, outfile7 = data_frame_compilation.make_dataframe_7(save_file=True, clean_cols=False, verbose=False)
+                functions = [data_frame_compilation.make_dataframe_7]
+        
+                # Display main menu
+                main_menu_display1(functions, outfile7, dataframe_1_output_display)
 
+                # Crate input file display table
+                input_file_info_display(data_file)
+
+                data_cleaning_option = get_user_input()
 
 
                 
