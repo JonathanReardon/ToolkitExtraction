@@ -2336,6 +2336,7 @@ class DataFrameCompilation:
             eppiid_df = self.data_extraction.retrieve_metadata("ItemId", "id")
             author_df = self.data_extraction.retrieve_metadata("ShortTitle", "pub_author")
             year_df = self.data_extraction.retrieve_metadata("Year", "pub_year")
+
             admin_strand_data = self.data_extraction.retrieve_data(admin_strand_output, "strand_raw")
             admin_strand_info = self.data_extraction.retrieve_info(admin_strand_output, "strand_info")
 
@@ -2355,6 +2356,9 @@ class DataFrameCompilation:
 
             follow_up_ed_data = self.data_extraction.retrieve_data(follow_up_ed_CEDIL, "foll_up_ed_raw")
 
+            ad_edu_out_info = self.data_extraction.retrieve_info(ad_edu_out_CEDIL, "ad_edu_out_info")
+            ad_und_out_info = self.data_extraction.retrieve_info(ad_und_out_CEDIL, "ad_und_out_info")
+
 
             all_variables = pd.concat([
                 eppiid_df,
@@ -2370,7 +2374,9 @@ class DataFrameCompilation:
                 tea_out_rep_info,
                 tea_out_list_data,
                 tea_out_list_info,
-                follow_up_ed_data
+                follow_up_ed_data,
+                ad_edu_out_info,
+                ad_und_out_info,
             ], axis=1, sort=False)
 
 
@@ -3845,17 +3851,17 @@ class StrandSpecificFrames:
 
             If data is missing for any of these columns, it will be filled with "NA".
         """
-        school_target_data = self.data_extraction.retrieve_data(school_target_CEDIL, "schl_target_raw")
-        school_target_info = self.data_extraction.retrieve_info(school_target_CEDIL, "schl_target_info")
+        school_target_data = self.data_extraction.retrieve_data(school_target_CEDIL, "ct_sch_targ_raw")
+        school_target_info = self.data_extraction.retrieve_info(school_target_CEDIL, "ct_sch_targ_info")
 
-        ct_eligibility_data = self.data_extraction.retrieve_data(ct_elig_CEDIL, "elig_raw")
-        ct_eligibility_info = self.data_extraction.retrieve_info(ct_elig_CEDIL, "elig_info")
+        ct_eligibility_data = self.data_extraction.retrieve_data(ct_elig_CEDIL, "ct_elig_raw")
+        ct_eligibility_info = self.data_extraction.retrieve_info(ct_elig_CEDIL, "ct_elig_info")
 
-        means_tested_data = self.data_extraction.retrieve_data(means_tested_CEDIL, "means_test_raw")
-        means_tested_info = self.data_extraction.retrieve_info(means_tested_CEDIL, "means_test_info")
+        means_tested_data = self.data_extraction.retrieve_data(means_tested_CEDIL, "ct_means_test_raw")
+        means_tested_info = self.data_extraction.retrieve_info(means_tested_CEDIL, "ct_means_test_info")
 
-        recip_data = self.data_extraction.retrieve_data(ct_recipient_CEDIL, "recip_raw")
-        recip_info = self.data_extraction.retrieve_info(ct_recipient_CEDIL, "recip_info")
+        recip_data = self.data_extraction.retrieve_data(ct_recipient_CEDIL, "ct_recipient_raw")
+        recip_info = self.data_extraction.retrieve_info(ct_recipient_CEDIL, "ct_recipient_info")
         
         school_target_df = pd.concat([
             school_target_data,
