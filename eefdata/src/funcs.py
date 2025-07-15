@@ -79,7 +79,7 @@ class JSONDataExtractor:
                     codes_section = references[section]["Codes"]
                     code_keys = set(code.keys())
                     holderfind = [code[attribute["AttributeId"]] for attribute in codes_section if attribute["AttributeId"] in code_keys]
-                    holder.append(holderfind if holderfind else "NA")
+                    holder.append(holderfind if holderfind else ["NA"])
             df.append(holder)
         return df
 

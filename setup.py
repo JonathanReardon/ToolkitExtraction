@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 # Read the contents of your README file
-with open('README_package.md', 'r', encoding='utf-8') as fh:
+with open('README.md', 'r', encoding='utf-8') as fh:
     long_description = fh.read()
 
 setup(
@@ -20,7 +20,7 @@ setup(
     },
     python_requires='>=3.10.6',
     long_description=long_description,
-    package_data={'': ['README_package.md']},
+    package_data={'': ['README.md']},
     long_description_content_type='text/markdown',
     entry_points={
         'console_scripts': [
