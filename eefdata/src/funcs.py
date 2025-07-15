@@ -2738,6 +2738,9 @@ class StrandSpecificFrames:
         activity_focus_df = self.data_extraction.retrieve_data(activity_focus_output, "est_activity_focus")
         activity_focus_HT_df = self.data_extraction.retrieve_ht(activity_focus_output, "est_activity_focus_ht")
         activity_focus_Comments_df = self.data_extraction.retrieve_info(activity_focus_output, "est_activity_focus_info")
+        class_or_group_size_df = self.data_extraction.retrieve_data(class_or_group_size_output, "est_class_or_group_size")
+        class_or_group_size_HT_df = self.data_extraction.retrieve_data(class_or_group_size_output, "est_class_or_group_size_ht")
+        class_or_group_size_Comments_df = self.data_extraction.retrieve_data(class_or_group_size_output, "est_class_or_group_size_info")
         staff_kind_df = self.data_extraction.retrieve_data(staff_kind_output, "est_staff_kind")
         staff_kind_HT_df = self.data_extraction.retrieve_ht(staff_kind_output, "est_staff_kind_ht")
         staff_kind_Comments_df = self.data_extraction.retrieve_info(staff_kind_output, "est_staff_kind_info")
@@ -2759,6 +2762,7 @@ class StrandSpecificFrames:
             target_group_df,
             pupil_participation_df,
             activity_focus_df,
+            class_or_group_size_df,
             staff_kind_df,
             parent_involved_df,
             digit_tech_df,

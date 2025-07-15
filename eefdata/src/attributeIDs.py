@@ -1559,6 +1559,14 @@ activity_focus_output = [{
     5861585: "Academic and social"
 }]
 
+class_or_group_size_output = [{
+    # class or group size
+    5861605: "One-to-one or individual teaching",
+    5861606: "Small group (2 - 5 pupils)",
+    5861574: "Large group (6-15 pupils)", 
+    5861575: "Class size (16+)",
+}]
+
 staff_kind_output = [{
     # teachers and/or staff (staff kind)
     5861571: "Qualified teachers",
